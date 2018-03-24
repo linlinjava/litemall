@@ -16,9 +16,17 @@
     ```
 
 5. 测试部署是否成功
-请确保litemall的Spring Boot应用模块所对应的端口已经打开；
-然后测试是否能够访问(xxx.xxx.xxx.xxx是云主机IP）：
+  
+    请确保云主机的安全组已经允许相应的端口（见1.5.3.1）；
+    然后测试是否部署成功(xxx.xxx.xxx.xxx是云主机IP）：
 
-  > http://xxx.xxx.xxx.xxx:8081/storage/index/index
-  > http://xxx.xxx.xxx.xxx:8082/wx/index/index
-  > http://xxx.xxx.xxx.xxx:8083/admin/index/index
+    ```
+    http://xxx.xxx.xxx.xxx:8081/storage/index/index
+    http://xxx.xxx.xxx.xxx:8082/wx/index/index
+    http://xxx.xxx.xxx.xxx:8083/admin/index/index
+    http://xxx.xxx.xxx.xxx:8080/#/login
+    ```
+
+6. 自动上传脚本
+
+    为了简化步骤1和步骤2，完成了util/upload.sh脚本，用户需要设置相应的云主机IP和密钥文件路径

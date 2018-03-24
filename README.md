@@ -109,11 +109,19 @@ litemall
 ==
 
 本项目基于或参考以下项目：
-> 1. nideshop-mini-program
+> 1. [nideshop-mini-program](https://github.com/tumobi/nideshop-mini-program)
 > 如果后端希望采用nodejs，用户可以访问nideshop项目
-> 2. platform
+> 2. [platform](https://gitee.com/fuyang_lipengjun/platform)
 > 如果后端希望采用非spring boot版的普通spring版或者更多功能，
 > 用户可以访问platform项目
-> 3. vue-element-admin
+> 3. [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+> 一个基于Vue和Element的后台集成方案
 
 本项目所依赖的其他开源项目见相关章节
+
+问题
+==
+
+用户有问题或者好的建议可以用Issues反馈交流，请给出详细信息，本人会尽可能解决。
+ * 如果问题是共性问题（如代码bug或文档不全），本人会及时解决。
+ * 如果问题是个人问题（如用户了解不深入或者没有相关技术），请见谅（本人也是百度和谷歌）。
