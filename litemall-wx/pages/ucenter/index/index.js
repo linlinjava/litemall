@@ -5,28 +5,29 @@ var app = getApp();
 
 Page({
   data: {
-    userInfo: {}
+    userInfo: {
+      nickName: '点击登录',
+      avatarUrl: 'http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png'
+    }
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
-    console.log(app.globalData)
   },
   onReady: function () {
 
   },
   onShow: function () {
 
-    let userInfo = wx.getStorageSync('userInfo');
-    let token = wx.getStorageSync('token');
+    //获取用户的登录信息
+    user.checkLogin().then(res => {
+      let userInfo = wx.getStorageSync('userInfo');
 
-    // 页面显示
-    if (userInfo && token) {
-      app.globalData.userInfo = userInfo;
-      app.globalData.token = token;
-    }
+      this.setData({
+        userInfo: userInfo,
+      });
 
-    this.setData({
-      userInfo: app.globalData.userInfo,
+    }).catch(() => {
+
     });
 
   },
@@ -38,14 +39,16 @@ Page({
     // 页面关闭
   },
   goLogin(){
-    user.loginByWeixin().then(res => {
-      this.setData({
-        userInfo: res.data.userInfo
+    user.checkLogin().catch(() => {
+
+      user.loginByWeixin().then(res => {
+        this.setData({
+          userInfo: res.data.userInfo,
+        });
+      }).catch((err) => {
+        util.showErrorToast('登陆失败');
       });
-      app.globalData.userInfo = res.data.userInfo;
-      app.globalData.token = res.data.token;
-    }).catch((err) => {
-      console.log(err)
+
     });
   },
   exitLogin: function () {

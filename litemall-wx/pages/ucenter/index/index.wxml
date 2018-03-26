@@ -2,9 +2,7 @@
   <view class="profile-info" bindtap="goLogin">
     <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
     <view class="info">
-      <!-- <text class="name">{{userInfo.nickName}}</text> -->
-      <text class="name">litemall用户</text> 
-      <text class="level">{{userInfo.userName}}</text> 
+       <text class="name">{{userInfo.nickName}}</text> 
     </view>
   </view>
 
