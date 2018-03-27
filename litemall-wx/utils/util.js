@@ -37,8 +37,8 @@ function request(url, data = {}, method = "GET") {
 
           if (res.data.errno == 401) {
             //需要登录后才可以操作
-            wx.switchTab({
-              url: '/pages/ucenter/index/index'
+            wx.navigateTo({
+              url: '/pages/auth/login/login'
             });
           } else {
             resolve(res.data);

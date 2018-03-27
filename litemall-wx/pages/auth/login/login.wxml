@@ -19,12 +19,14 @@
 			<image class="code-img" src="https://dl.reg.163.com/cp?pd=yanxuan_web&pkid=SkeBZeG&random=1489903563234"></image>
 		</view>
 
-    	<button type="default" class="login-btn" bindtap="startLogin">登录</button>
+    <button type="default" class="login-btn" bindtap="accountLogin">账号登录</button>
 
     	<view class="form-item-text">
     		<navigator url="/pages/auth/register/register" class="register">注册账号</navigator>
 			<navigator url="/pages/auth/reset/reset" class="reset">忘记密码</navigator>
     	</view>
+
+      <button type="primary" class="login-btn" bindtap="wxLogin">微信直接登录</button>
 
     </view>
 </view>

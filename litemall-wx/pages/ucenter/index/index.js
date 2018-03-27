@@ -51,6 +51,47 @@ Page({
 
     });
   },
+  goOrder() {
+    user.checkLogin().then(() => {
+      wx.navigateTo({ url: "/pages/ucenter/order/order" });
+    })
+    .catch(() => {
+      wx.navigateTo({ url: "/pages/auth/login/login" });
+    });
+  },
+  goCoupon() {
+    user.checkLogin().then(() => {
+      wx.navigateTo({ url: "/pages/ucenter/coupon/coupon" });
+    })
+    .catch(() => {
+      wx.navigateTo({ url: "/pages/auth/login/login" });
+    });
+
+  },
+  goCollect() {
+    user.checkLogin().then(() => {
+      wx.navigateTo({ url: "/pages/ucenter/collect/collect" });
+    })
+    .catch(() => {
+      wx.navigateTo({ url: "/pages/auth/login/login" });
+    });
+  },
+  goFootprint() {
+    user.checkLogin().then(() => {
+      wx.navigateTo({ url: "/pages/ucenter/footprint/footprint" });
+    })
+    .catch(() => {
+      wx.navigateTo({ url: "/pages/auth/login/login" });
+    });
+  },
+  goAddress() {
+    user.checkLogin().then(() => {
+      wx.navigateTo({ url: "/pages/ucenter/address/address" });
+    })
+    .catch(() => {
+      wx.navigateTo({ url: "/pages/auth/login/login" });
+    });
+  },
   exitLogin: function () {
     wx.showModal({
       title: '',

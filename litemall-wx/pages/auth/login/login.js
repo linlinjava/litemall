@@ -1,4 +1,7 @@
 var api = require('../../../config/api.js');
+var util = require('../../../utils/util.js');
+var user = require('../../../services/user.js');
+
 var app = getApp();
 Page({
   data: {
@@ -26,7 +29,20 @@ Page({
     // 页面关闭
 
   },
-  startLogin: function () {
+  wxLogin() {
+    user.checkLogin().catch(() => {
+
+      user.loginByWeixin().then(res => {
+        wx.navigateBack({
+          delta: 1
+        })
+      }).catch((err) => {
+        util.showErrorToast('微信登录失败');
+      });
+
+    });
+  },
+  accountLogin: function () {
     var that = this;
 
     if (that.data.password.length < 1 || that.data.username.length < 1) {
