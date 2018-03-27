@@ -52,7 +52,31 @@ function getUserInfo() {
         resolve(res);
       },
       fail: function (err) {
-        reject(err);
+
+        wx.showModal({
+          title: '用户未授权',
+          content: '请给予您的用户信息授权。',
+          success: function (res) {
+            if (res.confirm) {
+              wx.openSetting({
+                success: (res) => {
+                  if (res.authSetting["scope.userInfo"] === true) {
+                    wx.getUserInfo({
+                      withCredentials: true,
+                      success: function (res) {
+                        resolve(res);
+                      },
+                    })
+                  }
+                }
+              })
+            } else if (res.cancel) {
+              wx.navigateBack({
+                delta: 1
+              })
+            }
+          }
+        })
       }
     })
   });
@@ -95,13 +119,11 @@ function loginByWeixin() {
 function checkLogin() {
   return new Promise(function (resolve, reject) {
     if (wx.getStorageSync('userInfo') && wx.getStorageSync('token')) {
-
       checkSession().then(() => {
         resolve(true);
       }).catch(() => {
         reject(false);
       });
-
     } else {
       reject(false);
     }
