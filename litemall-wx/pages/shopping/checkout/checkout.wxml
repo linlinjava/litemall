@@ -1,6 +1,6 @@
 <view class="container">
     <view class="address-box">
-        <view class="address-item" bindtap="selectAddress" wx:if="{{1 > 0}}">
+        <view class="address-item" bindtap="selectAddress" wx:if="{{checkedAddress.id > 0}}">
             <view class="l">
                 <text class="name">{{checkedAddress.name}}</text>
                 <text class="default" wx:if="{{checkedAddress.isDefault}}">默认</text>
@@ -13,7 +13,7 @@
                 <image src="/static/images/address_right.png"></image>
             </view>
         </view>
-        <view class="address-item address-empty" bindtap="addAddress" wx:if="{{checkedAddress.id <= 0}}">
+        <view class="address-item address-empty" bindtap="addAddress" wx:else>
             <view class="m">
                还没有收货地址，去添加
             </view>
