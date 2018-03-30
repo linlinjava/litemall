@@ -24,7 +24,7 @@ public class WxSearchController {
 
     /**
      * 　　index
-     * 用户登陆是可选的，如果用户登陆，则记录用户的搜索数据
+     * 用户登录是可选的，如果用户登录，则记录用户的搜索数据
      */
     @RequestMapping("index")
     public Object index(@LoginUser Integer userId) {

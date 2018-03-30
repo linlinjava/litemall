@@ -41,7 +41,7 @@ public class WxCartController {
     @RequestMapping("index")
     public Object index(@LoginUser Integer userId) {
         if(userId == null){
-            return ResponseUtil.fail(401, "请登陆");
+            return ResponseUtil.fail(401, "请登录");
         }
         
         List<LitemallCart> cartList = cartService.queryByUid(userId);
@@ -312,7 +312,7 @@ public class WxCartController {
 
     /*
      * 获取购物车商品的总件件数
-     * 用户也是可选登陆，如果没有登陆，则返回空数据
+     * 用户也是可选登录，如果没有登录，则返回空数据
      */
     @RequestMapping("goodscount")
     public Object goodscount(@LoginUser Integer userId) {

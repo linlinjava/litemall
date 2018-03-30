@@ -42,7 +42,7 @@ public class ResponseUtil {
     }
 
     public static final Object fail401() {
-        return fail(401, "请登陆");
+        return fail(401, "请登录");
     }
 
     public static final Object unlogin(){

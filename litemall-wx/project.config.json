@@ -194,7 +194,7 @@
 				},
 				{
 					"id": -1,
-					"name": "登陆",
+					"name": "登录",
 					"pathName": "pages/auth/login/login",
 					"query": ""
 				},

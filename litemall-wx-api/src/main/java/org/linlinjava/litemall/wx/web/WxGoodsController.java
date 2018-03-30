@@ -55,7 +55,7 @@ public class WxGoodsController {
 
     /**
      * 商品详情页数据
-     * 用户也是可选登陆，如果登陆了，则查询是否收藏，以及记录用户的足迹
+     * 用户也是可选登录，如果登录了，则查询是否收藏，以及记录用户的足迹
      */
     @RequestMapping("detail")
     public Object detail(@LoginUser Integer userId, Integer id) {
@@ -160,7 +160,7 @@ public class WxGoodsController {
     /**
      * 　　获取商品列表
      * 1. 这里的前五个参数都是可选的，甚至都是空
-     * 2. 用户也是可选登陆，如果登陆了，则记录用户的搜索关键字
+     * 2. 用户也是可选登录，如果登录了，则记录用户的搜索关键字
      *
      */
     @RequestMapping("list")

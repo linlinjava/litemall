@@ -7,7 +7,7 @@
    
 2. 使用FileZilla把deploy整个文件夹上传到云主机的/home/ubuntu文件夹中
 
-3. 使用PuTTY登陆云主机
+3. 使用PuTTY登录云主机
 
 4. 运行脚本部署运行
 
