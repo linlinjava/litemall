@@ -16,16 +16,21 @@
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
+          <el-dropdown-item>
+            <router-link to="/">
               主页
-            </el-dropdown-item>
-          </router-link>
-          <a target='_blank' href="#">
-            <el-dropdown-item>
-              项目地址
-            </el-dropdown-item>
-          </a>
+            </router-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <a target='_blank' href="https://github.com/linlinjava/litemall">
+              GitHub
+            </a>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <a target='_blank' href="https://gitee.com/linlinjava/litemall">
+              码云
+            </a>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>
           </el-dropdown-item>
