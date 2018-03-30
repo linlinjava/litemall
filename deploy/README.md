@@ -9,13 +9,25 @@
 
 3. 使用PuTTY登录云主机
 
-4. 运行脚本部署运行
+4. 如果用户没有部署litemall数据库，可以运行以下命令：
+
+    ```bash
+    cd deploy
+    mysql -h localhost -u root -p123456 
+    source ./litemall-db/litemall_schema.sql 
+    source ./litemall-db/litemall.sql 
+    ```
+    注意，123456是用户所设置的MySQL管理员密码
+    警告：
+    > litemall_schema.sql会尝试删除litemall数据库然后重建一个新的数据。
+
+5. 运行脚本部署运行
 
     ```bash
     sudo ./deploy/bin/deploy.sh
     ```
 
-5. 测试部署是否成功
+6. 测试部署是否成功
   
     请确保云主机的安全组已经允许相应的端口（见1.5.3.1）；
     然后测试是否部署成功(xxx.xxx.xxx.xxx是云主机IP）：
@@ -27,6 +39,12 @@
     http://xxx.xxx.xxx.xxx:8080/#/login
     ```
 
-6. 自动上传脚本
+7. 自动上传脚本
 
-    为了简化步骤1和步骤2，完成了util/upload.sh脚本，用户需要设置相应的云主机IP和密钥文件路径
+    为了简化步骤1和步骤2，完成了util/upload.sh脚本，用户需要设置相应的云主机IP和密钥文件路径。
+    该脚本会自动把当前项目不同模块下的最终部署文件复制到deploy文件夹中，然后上传到云主机。
+    注意：
+    > 上传脚本没有自动做Spring Boot项目打包和Vue项目打包工作
+    > 因此运行该脚本前请确认最终部署文件已经生成。
+    > 如果用户觉得需要，可以自行在upload.sh脚本中添加相应的编译打包命令。
+   

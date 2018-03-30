@@ -19,5 +19,9 @@ cp  -f ./litemall-admin-api/target/litemall-admin-api-*.jar ./deploy/litemall-ad
 # 压缩litemall-admin应用
 tar -zcvf ./deploy/litemall-admin/dist.tar -C ./litemall-admin/dist .
 
+# 复制数据库
+cp  -f ./litemall-db/sql/litemall_schema.sql ./deploy/litemall_db/litemall_schema.sql
+cp  -f ./litemall-db/sql/litemall.sql ./deploy/litemall_db/litemall.sql
+
 # 上传云主机
 scp -i $ID_RSA -r  ./deploy ubuntu@$CVM:/home/ubuntu/
