@@ -19,16 +19,12 @@ Page({
   onShow: function () {
 
     //获取用户的登录信息
-    user.checkLogin().then(res => {
+    if (app.globalData.hasLogin){
       let userInfo = wx.getStorageSync('userInfo');
-
       this.setData({
         userInfo: userInfo,
       });
-
-    }).catch(() => {
-
-    });
+    }
 
   },
   onHide: function () {
@@ -39,58 +35,48 @@ Page({
     // 页面关闭
   },
   goLogin(){
-    user.checkLogin().catch(() => {
-
-      user.loginByWeixin().then(res => {
-        this.setData({
-          userInfo: res.data.userInfo,
-        });
-      }).catch((err) => {
-        util.showErrorToast('登陆失败');
-      });
-
-    });
+    wx.navigateTo({ url: "/pages/auth/login/login" });
   },
   goOrder() {
-    user.checkLogin().then(() => {
+    if (app.globalData.hasLogin) {
       wx.navigateTo({ url: "/pages/ucenter/order/order" });
-    })
-    .catch(() => {
+    }
+    else {
       wx.navigateTo({ url: "/pages/auth/login/login" });
-    });
+    }
   },
   goCoupon() {
-    user.checkLogin().then(() => {
+    if (app.globalData.hasLogin) {
       wx.navigateTo({ url: "/pages/ucenter/coupon/coupon" });
-    })
-    .catch(() => {
+    }
+    else {
       wx.navigateTo({ url: "/pages/auth/login/login" });
-    });
+    };
 
   },
   goCollect() {
-    user.checkLogin().then(() => {
+    if (app.globalData.hasLogin) {
       wx.navigateTo({ url: "/pages/ucenter/collect/collect" });
-    })
-    .catch(() => {
+    }
+    else {
       wx.navigateTo({ url: "/pages/auth/login/login" });
-    });
+    };
   },
   goFootprint() {
-    user.checkLogin().then(() => {
+    if (app.globalData.hasLogin) {
       wx.navigateTo({ url: "/pages/ucenter/footprint/footprint" });
-    })
-    .catch(() => {
+    }
+    else {
       wx.navigateTo({ url: "/pages/auth/login/login" });
-    });
+    };
   },
   goAddress() {
-    user.checkLogin().then(() => {
+    if (app.globalData.hasLogin) {
       wx.navigateTo({ url: "/pages/ucenter/address/address" });
-    })
-    .catch(() => {
+    }
+    else {
       wx.navigateTo({ url: "/pages/auth/login/login" });
-    });
+    };
   },
   exitLogin: function () {
     wx.showModal({

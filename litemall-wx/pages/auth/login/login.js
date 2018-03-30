@@ -33,6 +33,8 @@ Page({
     user.checkLogin().catch(() => {
 
       user.loginByWeixin().then(res => {
+        app.globalData.hasLogin = true;
+
         wx.navigateBack({
           delta: 1
         })
@@ -69,6 +71,7 @@ Page({
           that.setData({
             'loginErrorCount': 0
           });
+          app.globalData.hasLogin = true;
           wx.setStorage({
             key:"token",
             data: res.data.data.token,

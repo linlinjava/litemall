@@ -268,12 +268,7 @@ Page({
 
   },
   openCartPage: function () {
-    user.checkLogin().then(() => {
-      wx.switchTab({ url: '/pages/cart/cart' });
-    })
-    .catch(() => {
-      wx.navigateTo({ url: "/pages/auth/login/login" });
-    });
+    wx.switchTab({ url: '/pages/cart/cart' });
   },
   addFast: function () {
     var that = this;

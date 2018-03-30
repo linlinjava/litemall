@@ -1,5 +1,6 @@
 var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
+var user = require('../../services/user.js');
 
 var app = getApp();
 
@@ -14,7 +15,8 @@ Page({
     },
     isEditCart: false,
     checkedAllStatus: true,
-    editCartList: []
+    editCartList: [],
+    hasLogin: false
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -24,13 +26,23 @@ Page({
   },
   onShow: function () {
     // 页面显示
-    this.getCartList();
+    if (app.globalData.hasLogin){
+      this.getCartList();
+    }
+
+    this.setData({
+      hasLogin: app.globalData.hasLogin
+    });
+
   },
   onHide: function () {
     // 页面隐藏
   },
   onUnload: function () {
     // 页面关闭
+  },
+  goLogin() {
+    wx.navigateTo({ url: "/pages/auth/login/login" });
   },
   getCartList: function () {
     let that = this;
