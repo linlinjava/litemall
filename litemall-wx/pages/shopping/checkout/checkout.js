@@ -107,9 +107,16 @@ Page({
         const orderId = res.data.orderInfo.id;
 
       // 目前不能支持微信支付，这里仅仅是模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
+      wx.showModal({
+        title: '目前不能微信支付',
+        content: '点击确定模拟支付成功',
+        showCancel: false,
+        success: function(res) {        
           wx.redirectTo({
             url: '/pages/payResult/payResult?status=true&orderId=' + orderId
           });
+        }
+      });
 
       //   pay.payOrder(orderId).then(res => {
       //     wx.redirectTo({
