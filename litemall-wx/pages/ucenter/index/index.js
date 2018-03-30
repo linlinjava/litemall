@@ -35,7 +35,9 @@ Page({
     // 页面关闭
   },
   goLogin(){
-    wx.navigateTo({ url: "/pages/auth/login/login" });
+    if (!app.globalData.hasLogin) {
+      wx.navigateTo({ url: "/pages/auth/login/login" });
+    }
   },
   goOrder() {
     if (app.globalData.hasLogin) {
