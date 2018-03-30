@@ -89,6 +89,12 @@ public class AdminController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
+
+        Integer anotherAdminId = admin.getId();
+        if(anotherAdminId.intValue() == 1){
+            return ResponseUtil.fail(403, "超级管理员不能修改");
+        }
+
         adminService.updateById(admin);
         return ResponseUtil.ok(admin);
     }
@@ -101,7 +107,7 @@ public class AdminController {
 
         Integer anotherAdminId = admin.getId();
         if(anotherAdminId.intValue() == 1){
-            return ResponseUtil.fail(403, "超级用户不能删除");
+            return ResponseUtil.fail(403, "超级管理员不能删除");
         }
         adminService.deleteById(anotherAdminId);
         return ResponseUtil.ok();
