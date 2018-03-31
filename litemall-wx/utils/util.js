@@ -1,4 +1,5 @@
 var api = require('../config/api.js');
+var app = getApp();
 
 function formatTime(date) {
   var year = date.getFullYear()
@@ -36,7 +37,16 @@ function request(url, data = {}, method = "GET") {
         if (res.statusCode == 200) {
 
           if (res.data.errno == 401) {
-            //需要登录后才可以操作
+            // 清除登录相关内容
+            try {
+              wx.removeStorageSync('userInfo');
+              wx.removeStorageSync('token');
+            } catch (e) {
+              // Do something when catch error
+            }
+            // 重置app的未登录状态
+            app.globalData.hasLogin = false;
+            // 切换到登录页面
             wx.navigateTo({
               url: '/pages/auth/login/login'
             });
