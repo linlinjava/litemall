@@ -58,6 +58,7 @@ Page({
                   icon: 'success',
                   duration: 2000
                 });
+                that.data.footprintList = [];
                 that.getFootprintList();
               }
             });
