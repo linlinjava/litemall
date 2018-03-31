@@ -39,6 +39,7 @@ Page({
           delta: 1
         })
       }).catch((err) => {
+        app.globalData.hasLogin = false;
         util.showErrorToast('微信登录失败');
       });
 
@@ -81,6 +82,10 @@ Page({
               });
             }
           });
+        }
+        else{
+          app.globalData.hasLogin = false;
+          util.showErrorToast('账户登录失败');
         }
       }
     });

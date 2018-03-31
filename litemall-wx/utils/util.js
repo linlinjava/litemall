@@ -44,8 +44,6 @@ function request(url, data = {}, method = "GET") {
             } catch (e) {
               // Do something when catch error
             }
-            // 重置app的未登录状态
-            app.globalData.hasLogin = false;
             // 切换到登录页面
             wx.navigateTo({
               url: '/pages/auth/login/login'
