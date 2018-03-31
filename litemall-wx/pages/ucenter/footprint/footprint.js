@@ -79,11 +79,15 @@ Page({
       this.setData({
         page: this.data.page + 1
       });
+      this.getFootprintList();
     } else {
+      wx.showToast({
+        title: '没有更多用户足迹了',
+        icon: 'none',
+        duration: 2000
+      });
       return false;
     }
-
-    this.getFootprintList();
   },
   onReady: function () {
 
