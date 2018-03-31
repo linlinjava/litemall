@@ -21,9 +21,11 @@ public class LitemallCollectService {
         return (int)collectMapper.countByExample(example);
     }
 
-    public List<LitemallCollect> queryByType(Integer userId, Integer typeId) {
+    public List<LitemallCollect> queryByType(Integer userId, Integer typeId, Integer page, Integer size) {
         LitemallCollectExample example = new LitemallCollectExample();
         example.or().andUserIdEqualTo(userId).andTypeIdEqualTo(typeId);
+        example.setOrderByClause(LitemallCollect.Column.addTime.desc());
+        PageHelper.startPage(page, size);
         return collectMapper.selectByExample(example);
     }
 

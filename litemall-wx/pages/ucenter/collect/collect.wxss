@@ -6,6 +6,9 @@ page{
 .container{
     background: #f4f4f4;
     min-height: 100%;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
 }
 
 

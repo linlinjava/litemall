@@ -29,7 +29,7 @@ Page({
     // 页面关闭
 
   },
-  wxLogin() {
+  wxLogin: function () {
     user.checkLogin().catch(() => {
 
       user.loginByWeixin().then(res => {

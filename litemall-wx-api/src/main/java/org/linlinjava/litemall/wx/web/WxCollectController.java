@@ -10,6 +10,7 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -30,7 +31,9 @@ public class WxCollectController {
      * 获取用户收藏
      */
     @RequestMapping("list")
-    public Object list(@LoginUser Integer userId, Integer typeId) {
+    public Object list(@LoginUser Integer userId, Integer typeId,
+                       @RequestParam(value = "page", defaultValue = "1") Integer page,
+                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if(userId == null){
             return ResponseUtil.fail401();
         }
@@ -39,8 +42,9 @@ public class WxCollectController {
         }
 
 
-        List<LitemallCollect> collectList = collectService.queryByType(userId, typeId);
+        List<LitemallCollect> collectList = collectService.queryByType(userId, typeId, page, size);
         int count = collectService.countByType(userId, typeId);
+        int totalPages = (int) Math.ceil((double) count / size);
 
         List<Object> collects = new ArrayList<>(collectList.size());
         for(LitemallCollect collect : collectList){
@@ -59,8 +63,8 @@ public class WxCollectController {
         }
 
         Map<String, Object> result = new HashMap();
-        result.put("count", count);
-        result.put("data", collects);
+        result.put("collectList", collects);
+        result.put("totalPages", totalPages);
         return ResponseUtil.ok(result);
     }
 

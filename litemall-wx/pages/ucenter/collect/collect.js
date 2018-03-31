@@ -6,22 +6,44 @@ var app = getApp();
 Page({
   data: {
     typeId: 0,
-    collectList: []
+    collectList: [],
+    page: 1,
+    size: 10,
+    totalPages: 1
   },
   getCollectList() {
+    wx.showLoading({
+      title: '加载中...',
+    });
     let that = this;
-    util.request(api.CollectList, { typeId: that.data.typeId}).then(function (res) {
+    util.request(api.CollectList, { typeId: that.data.typeId, page: that.data.page, size: that.data.size }).then(function (res) {
       if (res.errno === 0) {
-        console.log(res.data);
         that.setData({
-          collectList: res.data.data
+          collectList: that.data.collectList.concat(res.data.collectList),
+          totalPages: res.data.totalPages
         });
       }
+      wx.hideLoading();
     });
   },
   onLoad: function (options) {
     this.getCollectList();
   },
+  onReachBottom() {
+    if (this.data.totalPages > this.data.page) {
+      this.setData({
+        page: this.data.page + 1
+      });
+      this.getCollectList();
+    } else {
+      wx.showToast({
+        title: '没有更多用户收藏了',
+        icon: 'none',
+        duration: 2000
+      });
+      return false;
+    }
+  },  
   onReady: function () {
 
   },
@@ -78,7 +100,6 @@ Page({
     that.setData({
       touchStart: e.timeStamp
     })
-    console.log(e.timeStamp + '- touch-start')
   },
   //按下事件结束  
   touchEnd: function (e) {
@@ -86,6 +107,5 @@ Page({
     that.setData({
       touchEnd: e.timeStamp
     })
-    console.log(e.timeStamp + '- touch-end')
   }, 
 })
