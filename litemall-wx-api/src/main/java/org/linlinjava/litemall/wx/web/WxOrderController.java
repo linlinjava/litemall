@@ -198,9 +198,6 @@ public class WxOrderController {
         // 收货地址
         LitemallAddress checkedAddress = addressService.findById(addressId);
 
-        // 根据收货地址计算运费
-        BigDecimal freightPrice = new BigDecimal(0.00);
-
         // 获取可用的优惠券信息
         // 使用优惠券减免的金额
         BigDecimal couponPrice = new BigDecimal(0.00);
@@ -221,6 +218,12 @@ public class WxOrderController {
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart cart : checkedGoodsList) {
             checkedGoodsPrice = checkedGoodsPrice.add(cart.getRetailPrice().multiply(new BigDecimal(cart.getNumber())));
+        }
+
+        // 根据订单商品总价计算运费，满88则免运费，否则8元；
+        BigDecimal freightPrice = new BigDecimal(0.00);
+        if(checkedGoodsPrice.compareTo(new BigDecimal(88.00)) == -1){
+            freightPrice = new BigDecimal(8.00);
         }
 
         // 可以使用的其他钱，例如用户积分
