@@ -140,11 +140,6 @@ public class LitemallGoodsService {
         return (int)goodsMapper.countByExample(example);
     }
 
-    public String generateGoodsSn() {
-        // TODO
-        return String.valueOf(new Random().nextInt());
-    }
-
     public List<LitemallGoods> querySelective(String goodsSn, String name, Integer page, Integer size, String sort, String order) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         LitemallGoodsExample.Criteria criteria = example.createCriteria();
