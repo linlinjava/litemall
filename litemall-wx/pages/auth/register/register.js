@@ -5,8 +5,8 @@ Page({
     username: '',
     password: '',
     confirmPassword: '',
-    code: '',
-    loginErrorCount: 0
+    mobile: '',
+    code: ''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -28,10 +28,17 @@ Page({
     // 页面关闭
 
   },
+  sendCode: function () {
+    wx.showModal({
+      title: '注意',
+      content: '由于目前不支持手机短信发送，因此验证码任意值都可以',
+      showCancel: false
+    });
+  },
   startRegister: function () {
     var that = this;
 
-    if (that.data.password.length < 3 || that.data.username.length < 3) {
+    if (this.data.password.length < 3 || this.data.username.length < 3) {
       wx.showModal({
         title: '错误信息',
         content: '用户名和密码不得少于3位',
@@ -40,7 +47,7 @@ Page({
       return false;
     }
 
-    if (that.data.password != that.data.confirmPassword) {
+    if (this.data.password != this.data.confirmPassword) {
       wx.showModal({
         title: '错误信息',
         content: '确认密码不一致',
@@ -49,21 +56,31 @@ Page({
       return false;
     }
 
+    if (this.data.mobile.length == 0 || this.data.code.length == 0) {
+      wx.showModal({
+        title: '错误信息',
+        content: '手机号和验证码不能为空',
+        showCancel: false
+      });
+      return false;
+    }
+
     wx.request({
-      url: api.ApiRootUrl + 'auth/register',
+      url: api.AuthRegister,
       data: {
         username: that.data.username,
-        password: that.data.password
+        password: that.data.password,
+        mobile: that.data.mobile,
+        code: that.data.code
       },
       method: 'POST',
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
-        if (res.data.code == 200) {
-          that.setData({
-            'loginErrorCount': 0
-          });
+        if (res.data.errno == 0) {
+          app.globalData.hasLogin = true;
+          wx.setStorageSync('userInfo', res.data.data.userInfo);
           wx.setStorage({
             key: "token",
             data: res.data.data.token,
@@ -75,7 +92,6 @@ Page({
           });
 
         }
-        console.log(res.data.data.token)
       }
     });
   },
@@ -95,6 +111,12 @@ Page({
 
     this.setData({
       confirmPassword: e.detail.value
+    });
+  },
+  bindMobileInput: function (e) {
+
+    this.setData({
+      mobile: e.detail.value
     });
   },
   bindCodeInput: function (e) {
@@ -120,6 +142,11 @@ Page({
           confirmPassword: ''
         });
         break;
+      case 'clear-mobile':
+        this.setData({
+          mobile: ''
+        });
+        break;        
       case 'clear-code':
         this.setData({
           code: ''

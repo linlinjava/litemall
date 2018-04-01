@@ -22,6 +22,7 @@ module.exports = {
 
     AuthLoginByWeixin: WxApiRoot + 'auth/login_by_weixin', //微信登录
     AuthLoginByAccount: WxApiRoot + 'auth/login', //账号登录
+    AuthRegister: WxApiRoot + 'auth/register', //账号注册
 
     GoodsCount: WxApiRoot + 'goods/count',  //统计商品总数
     GoodsList: WxApiRoot + 'goods/list',  //获得商品列表
@@ -43,7 +44,6 @@ module.exports = {
     CartGoodsCount: WxApiRoot + 'cart/goodscount', // 获取购物车商品件数
     CartCheckout: WxApiRoot + 'cart/checkout', // 下单前信息确认
 
-    OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
     PayPrepayId: WxApiRoot + 'pay/prepay', //获取微信统一下单prepay_id
 
     CollectList: WxApiRoot + 'collect/list',  //收藏列表
@@ -57,10 +57,10 @@ module.exports = {
     TopicDetail: WxApiRoot + 'topic/detail',  //专题详情
     TopicRelated: WxApiRoot + 'topic/related',  //相关专题
 
-    SearchIndex: WxApiRoot + 'search/index',  //搜索页面数据
-    SearchResult: WxApiRoot + 'search/result',  //搜索数据
+    SearchIndex: WxApiRoot + 'search/index',  //搜索关键字
+    SearchResult: WxApiRoot + 'search/result',  //搜索结果
     SearchHelper: WxApiRoot + 'search/helper',  //搜索帮助
-    SearchClearHistory: WxApiRoot + 'search/clearhistory',  //搜索帮助
+    SearchClearHistory: WxApiRoot + 'search/clearhistory',  //搜索历史清楚
 
     AddressList: WxApiRoot + 'address/list',  //收货地址列表
     AddressDetail: WxApiRoot + 'address/detail',  //收货地址详情
@@ -69,6 +69,7 @@ module.exports = {
 
     RegionList: WxApiRoot + 'region/list',  //获取区域列表
 
+    OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
     OrderList: WxApiRoot + 'order/list',  //订单列表
     OrderDetail: WxApiRoot + 'order/detail',  //订单详情
     OrderCancel: WxApiRoot + 'order/cancel',  //取消订单

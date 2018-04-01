@@ -14,7 +14,7 @@
     border-bottom: 1px solid #d9d9d9;
 }
 
-.form-item .username, .form-item .password, .form-item .code{
+.form-item .username, .form-item .password, .form-item .mobile, .form-item .code{
     position: absolute;
     top: 26rpx;
     left: 0;
@@ -38,11 +38,11 @@
     width: 350rpx;
 }
 
-.form-item-code .code-img{
+.form-item-code .code-btn{
     float: right;
-    margin-top: 4rpx;
-    height: 88rpx;
-    width: 236rpx;
+    padding: 20rpx 40rpx;
+    border: 1px solid #d9d9d9;
+    border-radius: 10rpx;
 }
 
 .form-item .clear{

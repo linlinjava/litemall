@@ -69,4 +69,10 @@ public class LitemallUserService {
         example.or().andUsernameEqualTo(username);
         return userMapper.selectByExample(example);
     }
+
+    public List<LitemallUser> queryByMobile(String mobile) {
+        LitemallUserExample example = new LitemallUserExample();
+        example.or().andMobileEqualTo(mobile);
+        return userMapper.selectByExample(example);
+    }
 }

@@ -15,6 +15,7 @@ import org.linlinjava.litemall.wx.dao.UserToken;
 import org.linlinjava.litemall.wx.service.UserTokenManager;
 import org.linlinjava.litemall.wx.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,7 @@ public class WxAuthController {
     private WxMaService wxService;
 
     /**
-     * 微信登录
+     * 账号登录
      */
     @RequestMapping("login")
     public Object login(@RequestBody String body, HttpServletRequest request) {
@@ -133,6 +134,60 @@ public class WxAuthController {
             user.setLastLoginIp(IpUtil.client(request));
             userService.update(user);
         }
+
+        // token
+        UserToken userToken = UserTokenManager.generateToken(user.getId());
+
+        Map<Object, Object> result = new HashMap<Object, Object>();
+        result.put("token", userToken.getToken());
+        result.put("tokenExpire", userToken.getExpireTime().toString());
+        result.put("userInfo", userInfo);
+        return ResponseUtil.ok(result);
+    }
+
+    /**
+     * 账号注册
+     */
+    @PostMapping("register")
+    public Object register(@RequestBody String body, HttpServletRequest request) {
+        String username = JacksonUtil.parseString(body, "username");
+        String password = JacksonUtil.parseString(body, "password");
+        String mobile = JacksonUtil.parseString(body, "mobile");
+        String code = JacksonUtil.parseString(body, "code");
+
+        if(username == null || password == null || mobile == null || code == null){
+            return ResponseUtil.badArgument();
+        }
+
+        List<LitemallUser> userList = userService.queryByUsername(username);
+        if(userList.size() > 0){
+            return ResponseUtil.fail(403, "用户名已注册");
+        }
+
+        userList = userService.queryByMobile(mobile);
+        if(userList.size() > 0){
+            return ResponseUtil.fail(403, "手机号已注册");
+        }
+
+        LitemallUser user = new LitemallUser();
+        user = new LitemallUser();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setWeixinOpenid("");
+        user.setAvatar("https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64");
+        user.setNickname(username);
+        user.setGender("未知");
+        user.setUserLevel("普通用户");
+        user.setStatus("可用");
+        user.setLastLoginTime(LocalDate.now());
+        user.setLastLoginIp(IpUtil.client(request));
+        userService.add(user);
+
+
+        // userInfo
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickName(username);
+        userInfo.setAvatarUrl(user.getAvatar());
 
         // token
         UserToken userToken = UserTokenManager.generateToken(user.getId());
