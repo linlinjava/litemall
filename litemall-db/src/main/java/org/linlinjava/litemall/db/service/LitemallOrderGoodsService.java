@@ -25,7 +25,6 @@ public class LitemallOrderGoodsService {
     public List<LitemallOrderGoods> findByOidAndGid(Integer orderId, Integer goodsId) {
         LitemallOrderGoodsExample example = new LitemallOrderGoodsExample();
         example.or().andOrderIdEqualTo(orderId).andGoodsIdEqualTo(goodsId);
-        List<LitemallOrderGoods> orderGoodsList = orderGoodsMapper.selectByExample(example);
         return orderGoodsMapper.selectByExample(example);
     }
 
