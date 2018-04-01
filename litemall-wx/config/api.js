@@ -29,7 +29,6 @@ module.exports = {
     GoodsNew: WxApiRoot + 'goods/new',  //新品
     GoodsHot: WxApiRoot + 'goods/hot',  //热门
     GoodsRelated: WxApiRoot + 'goods/related',  //商品详情页的关联商品（大家都在看）
-    GoodsFilter: WxApiRoot + 'goods/filter',  //商品目录查询接口
 
     BrandList: WxApiRoot + 'brand/list',  //品牌列表
     BrandDetail: WxApiRoot + 'brand/detail',  //品牌详情

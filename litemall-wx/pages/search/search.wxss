@@ -75,7 +75,7 @@ page{
     margin-top: 91rpx;
 }
 
-.serach-keywords{
+.search-keywords{
     background: #fff;
     width: 750rpx;
     height: auto;
@@ -83,7 +83,7 @@ page{
     margin-bottom: 20rpx;
 }
 
-.serach-keywords .h{
+.search-keywords .h{
     padding: 0 31.25rpx;
     height: 93rpx;
     line-height: 93rpx;
@@ -92,13 +92,13 @@ page{
     font-size: 29rpx;
 }
 
-.serach-keywords .title{
+.search-keywords .title{
     display: block;
     width: 120rpx;
     float: left;
 }
 
-.serach-keywords .icon{
+.search-keywords .icon{
     margin-top: 19rpx;
     float: right;
     display: block;
@@ -107,14 +107,14 @@ page{
     width: 55rpx;
 }
 
-.serach-keywords .b{
+.search-keywords .b{
     width: 750rpx;
     height: auto;
     overflow: hidden;
     padding-left: 31.25rpx;
 }
 
-.serach-keywords .item{
+.search-keywords .item{
     display: inline-block;
     width: auto;
     height: 48rpx;
@@ -126,7 +126,7 @@ page{
     color: #333;
 }
 
-.serach-keywords .item.active{
+.search-keywords .item.active{
     color: #b4282d;
     border: 1px solid #b4282d;
 }

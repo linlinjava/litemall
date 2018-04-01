@@ -186,45 +186,17 @@ public class WxGoodsController {
         List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
         int total = goodsService.countSelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
 
-        List<Integer> cats = new ArrayList<Integer>();
-        for(LitemallGoods goods : goodsList){
-            cats.add(goods.getCategoryId());
-        }
-
+        // 查询商品所属类目列表。
+        List<Integer> goodsCatIds = goodsService.getCatIds(brandId, keyword, isHot, isNew);
         List<LitemallCategory> categoryList = null;
-        if(cats.size() != 0) {
-            categoryList = categoryService.queryL2ByIds(cats);
+        if(goodsCatIds.size() != 0) {
+            categoryList = categoryService.queryL2ByIds(goodsCatIds);
         }
 
         Map<String, Object> data = new HashMap();
         data.put("goodsList", goodsList);
-        data.put("filterCategory", categoryList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
-    }
-
-    /**
-     * 　　商品列表筛选的分类列表
-     *     1. 这里的前五个参数都是可选的，甚至都是空
-     */
-    @RequestMapping("filter")
-    public Object filter(Integer categoryId, Integer brandId, String keyword, Integer isNew, Integer isHot,
-                         @RequestParam(value = "page", defaultValue = "1") Integer page,
-                         @RequestParam(value = "size", defaultValue = "10") Integer size,
-                         String sort, String order) {
-
-        String sortWithOrder = SortUtil.goodsSort(sort, order);
-
-        List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
-        int total = goodsService.countSelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
-        List<Integer> cats = new ArrayList<Integer>();
-        for(LitemallGoods goods : goodsList){
-            cats.add(goods.getCategoryId());
-        }
-        List<LitemallCategory> categoryList = categoryService.queryL2ByIds(cats);
-        Map<String, Object> data = new HashMap();
-        data.put("count", total);
         data.put("filterCategoryList", categoryList);
+        data.put("count", total);
         return ResponseUtil.ok(data);
     }
 

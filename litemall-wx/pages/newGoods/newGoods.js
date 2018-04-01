@@ -27,18 +27,6 @@ Page({
       }
     });
   },
-  getCategoryList: function () {
-    var that = this;
-
-    util.request(api.GoodsFilter, { isNew: 1 })
-      .then(function (res) {
-        if (res.errno === 0) {
-          that.setData({
-            filterCategory: res.data.filterCategoryList,
-          });
-        }
-      });
-  },
   getGoodsList: function() {
     var that = this;
 
@@ -47,6 +35,7 @@ Page({
         if (res.errno === 0) {
           that.setData({
             goodsList: res.data.goodsList,
+            filterCategory: res.data.filterCategoryList
           });
         }
       });
@@ -55,7 +44,6 @@ Page({
     // 页面初始化 options为页面跳转所带来的参数
     this.getBanner();
     this.getGoodsList();
-    this.getCategoryList();
   },
   onReady: function () {
     // 页面渲染完成

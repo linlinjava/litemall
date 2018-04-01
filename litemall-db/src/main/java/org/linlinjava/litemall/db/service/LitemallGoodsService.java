@@ -2,12 +2,14 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
+import org.linlinjava.litemall.db.domain.LitemallGoods.Column;
 import org.linlinjava.litemall.db.dao.LitemallGoodsMapper;
 import org.linlinjava.litemall.db.domain.LitemallGoodsExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -88,7 +90,8 @@ public class LitemallGoodsService {
             PageHelper.startPage(offset, limit);
         }
 
-        return goodsMapper.selectByExample(example);
+        Column[] columns = new Column[]{Column.id, Column.name, Column.listPicUrl, Column.retailPrice};
+        return goodsMapper.selectByExampleSelective(example ,columns);
     }
 
     public int countSelective(Integer catId, Integer brandId, String keyword, Integer isHot, Integer isNew, Integer offset, Integer limit, String sort) {
@@ -186,4 +189,31 @@ public class LitemallGoodsService {
         return (int)goodsMapper.countByExample(example);
     }
 
+    public List<Integer> getCatIds(Integer brandId, String keyword, Integer isHot, Integer isNew) {
+        LitemallGoodsExample example = new LitemallGoodsExample();
+        LitemallGoodsExample.Criteria criteria = example.createCriteria();
+
+        if(brandId != null){
+            criteria.andBrandIdEqualTo(brandId);
+        }
+
+        if(isNew != null){
+            criteria.andIsNewEqualTo(isNew.intValue() == 1);
+        }
+
+        if(isHot != null){
+            criteria.andIsHotEqualTo(isHot.intValue() == 1);
+        }
+
+        if(keyword != null){
+            criteria.andKeywordsLike("%" + keyword + "%");
+        }
+
+        List<LitemallGoods> goodsList = goodsMapper.selectByExampleSelective(example, Column.categoryId);
+        List<Integer> cats = new ArrayList<Integer>();
+        for(LitemallGoods goods : goodsList){
+            cats.add(goods.getCategoryId());
+        }
+        return cats;
+    }
 }

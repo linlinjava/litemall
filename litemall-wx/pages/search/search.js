@@ -93,7 +93,7 @@ Page({
           searchStatus: true,
           categoryFilter: false,
           goodsList: res.data.goodsList,
-          filterCategory: res.data.filterCategory
+          filterCategory: res.data.filterCategoryList
         });
       }
 
@@ -121,8 +121,8 @@ Page({
     switch (currentId) {
       case 'categoryFilter':
         this.setData({
-          'categoryFilter': !this.data.categoryFilter,
-          'currentSortOrder': 'asc'
+          categoryFilter: !this.data.categoryFilter,
+          currentSortOrder: 'asc'
         });
         break;
       case 'priceSort':
@@ -131,9 +131,9 @@ Page({
           tmpSortOrder = 'desc';
         }
         this.setData({
-          'currentSortType': 'price',
-          'currentSortOrder': tmpSortOrder,
-          'categoryFilter': false
+          currentSortType: 'price',
+          currentSortOrder: tmpSortOrder,
+          categoryFilter: false
         });
 
         this.getGoodsList();
@@ -141,9 +141,9 @@ Page({
       default:
         //综合排序
         this.setData({
-          'currentSortType': 'default',
-          'currentSortOrder': 'desc',
-          'categoryFilter': false
+          currentSortType: 'default',
+          currentSortOrder: 'desc',
+          categoryFilter: false
         });
         this.getGoodsList();
     }
@@ -161,8 +161,8 @@ Page({
       }
     }
     this.setData({
-      'filterCategory': filterCategory,
-      'categoryFilter': false,
+      filterCategory: filterCategory,
+      categoryFilter: false,
       categoryId: currentCategory.id,
       page: 1,
       goodsList: []

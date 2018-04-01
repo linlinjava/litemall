@@ -2,13 +2,13 @@
   <view class="search-header">
     <view class="input-box">
       <image class="icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png"></image>
-      <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" />
+      <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" placeholder="{{defaultKeyword.keyword}}" />
       <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"></image>
     </view>
     <view class="right" bindtap="closeSearch">取消</view>
   </view>
   <view class="no-search" wx:if="{{ !searchStatus}}">
-      <view class="serach-keywords search-history" wx:if="{{!keyword  && historyKeyword.length}}">
+      <view class="search-keywords search-history" wx:if="{{!keyword  && historyKeyword.length}}">
     <view class="h">
       <text class="title">历史记录</text>
       <image class="icon" bindtap="clearHistory" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/del1-93f0a4add4.png"></image>
@@ -17,7 +17,7 @@
       <view class="item" bindtap="onKeywordTap" data-keyword="{{item}}" wx:for="{{historyKeyword}}" wx:key="keyword" hover-class="navigator-hover">{{item.keyword}}</view>
     </view>
   </view>
-  <view class="serach-keywords search-hot" wx:if="{{!keyword}}">
+  <view class="search-keywords search-hot" wx:if="{{!keyword && hotKeyword.length}}">
     <view class="h">
       <text class="title">热门搜索</text>
     </view>
