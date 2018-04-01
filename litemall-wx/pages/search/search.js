@@ -108,7 +108,7 @@ Page({
   },
   getSearchResult(keyword) {
     if(keyword === ''){
-      return
+      keyword = this.data.defaultKeyword.keyword;
     }
     this.setData({
       keyword: keyword,
