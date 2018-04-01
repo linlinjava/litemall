@@ -73,18 +73,10 @@ public class WxCommentController {
     @RequestMapping("list")
     public Object list(Byte typeId, Integer valueId, Integer showType,
                        @RequestParam(value = "page", defaultValue = "0") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                       String sort, String order) {
+                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if(typeId == null || valueId == null || showType == null){
             return ResponseUtil.fail401();
         }
-        if(sort == null){
-            sort = "";
-        }
-        if(order == null){
-            order = "";
-        }
-
 
         List<LitemallComment> commentList = commentService.query(typeId, valueId, showType, page, size);
         int count = commentService.count(typeId, valueId, showType, page, size);
