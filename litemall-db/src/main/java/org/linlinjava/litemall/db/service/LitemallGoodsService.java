@@ -69,15 +69,15 @@ public class LitemallGoodsService {
         }
 
         if(isNew != null){
-            criteria.andIsNewEqualTo(isNew==1);
+            criteria.andIsNewEqualTo(isNew.intValue() == 1);
         }
 
         if(isHot != null){
-            criteria.andIsHotEqualTo(isHot == 1);
+            criteria.andIsHotEqualTo(isHot.intValue() == 1);
         }
 
         if(keyword != null){
-            criteria.andKeywordsLike(keyword);
+            criteria.andKeywordsLike("%" + keyword + "%");
         }
 
         if(sort != null){
@@ -104,15 +104,15 @@ public class LitemallGoodsService {
         }
 
         if(isNew != null){
-            criteria.andIsNewEqualTo(isNew==1);
+            criteria.andIsNewEqualTo(isNew.intValue() == 1);
         }
 
         if(isHot != null){
-            criteria.andIsHotEqualTo(isHot == 1);
+            criteria.andIsHotEqualTo(isHot.intValue() == 1);
         }
 
         if(keyword != null){
-            criteria.andKeywordsLike(keyword);
+            criteria.andKeywordsLike("%" + keyword + "%");
         }
 
         return (int)goodsMapper.countByExample(example);
