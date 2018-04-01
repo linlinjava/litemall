@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
@@ -61,9 +63,11 @@ public class LitemallOrderService {
     }
 
     public String generateOrderSn(Integer userId) {
-        String orderSn = getRandomNum(10);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String now = df.format(LocalDate.now());
+        String orderSn = now + getRandomNum(6);
         while(countByOrderSn(userId, orderSn) != 0){
-            orderSn = getRandomNum(10);
+            orderSn = getRandomNum(6);
         }
         return orderSn;
     }
