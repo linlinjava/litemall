@@ -18,6 +18,7 @@ public class LitemallCommentService {
 
     public List<LitemallComment> queryGoodsByGid(Integer id, int offset, int limit) {
         LitemallCommentExample example = new LitemallCommentExample();
+        example.setOrderByClause(LitemallComment.Column.addTime.desc());
         example.or().andValueIdEqualTo(id).andTypeIdEqualTo((byte)0);
         PageHelper.startPage(offset, limit);
         return commentMapper.selectByExample(example);
@@ -31,6 +32,7 @@ public class LitemallCommentService {
 
     public List<LitemallComment> query(Byte typeId, Integer valueId, Integer showType, Integer offset, Integer limit) {
         LitemallCommentExample example = new LitemallCommentExample();
+        example.setOrderByClause(LitemallComment.Column.addTime.desc());
         if(showType == 0) {
             example.or().andValueIdEqualTo(valueId).andTypeIdEqualTo(typeId);
         }
@@ -70,6 +72,7 @@ public class LitemallCommentService {
 
     public List<LitemallComment> querySelective(String userId, String valueId, Integer page, Integer size, String sort, String order) {
         LitemallCommentExample example = new LitemallCommentExample();
+        example.setOrderByClause(LitemallComment.Column.addTime.desc());
         LitemallCommentExample.Criteria criteria = example.createCriteria();
 
         if(!StringUtils.isEmpty(userId)){
