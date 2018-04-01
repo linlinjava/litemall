@@ -56,7 +56,7 @@
     width: 44rpx;
 }
 
-.login-btn{
+.register-btn{
     margin: 60rpx 0 40rpx 0;
     height: 96rpx;
     line-height: 96rpx;
@@ -65,25 +65,4 @@
     width: 100%;
     background: #b4282d;
     border-radius: 6rpx;
-}
-
-.form-item-text{
-    height: 35rpx;
-    width: 100%;
-}
-
-.form-item-text .register{
-    display: block;
-    height: 34rpx;
-    float: left;
-    font-size: 28rpx;
-    color: #999;
-}
-
-.form-item-text .reset{
-    display: block;
-    height: 34rpx;
-    float: right;
-    font-size: 28rpx;
-    color: #999;
 }

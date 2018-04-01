@@ -29,7 +29,7 @@
 			<view class="code-btn" bindtap="sendCode">获取验证码</view>
 		</view>
 
-    	<button type="default" class="login-btn" bindtap="startRegister">注册</button>
+    	<button type="default" class="register-btn" bindtap="startRegister">注册</button>
 
     </view>
 </view>
