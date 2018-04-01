@@ -186,8 +186,19 @@ public class WxGoodsController {
         List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
         int total = goodsService.countSelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
 
+        List<Integer> cats = new ArrayList<Integer>();
+        for(LitemallGoods goods : goodsList){
+            cats.add(goods.getCategoryId());
+        }
+
+        List<LitemallCategory> categoryList = null;
+        if(cats.size() != 0) {
+            categoryList = categoryService.queryL2ByIds(cats);
+        }
+
         Map<String, Object> data = new HashMap();
         data.put("goodsList", goodsList);
+        data.put("filterCategory", categoryList);
         data.put("count", total);
         return ResponseUtil.ok(data);
     }
