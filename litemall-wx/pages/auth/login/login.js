@@ -48,7 +48,7 @@ Page({
   accountLogin: function () {
     var that = this;
 
-    if (that.data.password.length < 1 || that.data.username.length < 1) {
+    if (this.data.password.length < 1 || this.data.username.length < 1) {
       wx.showModal({
         title: '错误信息',
         content: '请输入用户名和密码',
@@ -58,7 +58,7 @@ Page({
     }
 
     wx.request({
-      url: api.ApiRootUrl + 'auth/login',
+      url: api.AuthLoginByAccount,
       data: {
         username: that.data.username,
         password: that.data.password
@@ -68,11 +68,12 @@ Page({
         'content-type': 'application/json'
       },
       success: function (res) {
-        if(res.data.code == 200){
+        if (res.data.errno == 0){
           that.setData({
-            'loginErrorCount': 0
+            loginErrorCount: 0
           });
           app.globalData.hasLogin = true;
+          wx.setStorageSync('userInfo', res.data.data.userInfo);
           wx.setStorage({
             key:"token",
             data: res.data.data.token,
@@ -84,6 +85,9 @@ Page({
           });
         }
         else{
+          that.setData({
+            loginErrorCount: that.data.loginErrorCount + 1
+          });
           app.globalData.hasLogin = false;
           util.showErrorToast('账户登录失败');
         }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -38,11 +39,56 @@ public class WxAuthController {
     /**
      * 微信登录
      */
+    @RequestMapping("login")
+    public Object login(@RequestBody String body, HttpServletRequest request) {
+        String username = JacksonUtil.parseString(body, "username");
+        String password = JacksonUtil.parseString(body, "password");
+        if(username == null || password == null){
+            return ResponseUtil.badArgument();
+        }
+
+        List<LitemallUser> userList =userService.queryByUsername(username);
+        LitemallUser user = null;
+        if(userList.size() > 1){
+            return ResponseUtil.fail502();
+        }
+        else if(userList.size() == 0){
+            return ResponseUtil.badArgumentValue();
+        }
+        else {
+            user = userList.get(0);
+        }
+
+        if(!user.getPassword().equals(password)){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        // userInfo
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickName(username);
+        userInfo.setAvatarUrl(user.getAvatar());
+
+        // token
+        UserToken userToken = UserTokenManager.generateToken(user.getId());
+
+        Map<Object, Object> result = new HashMap<Object, Object>();
+        result.put("token", userToken.getToken());
+        result.put("tokenExpire", userToken.getExpireTime().toString());
+        result.put("userInfo", userInfo);
+        return ResponseUtil.ok(result);
+    }
+
+    /**
+     * 微信登录
+     */
     @RequestMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody String body, HttpServletRequest request) {
-
         String code = JacksonUtil.parseString(body, "code");
         FullUserInfo fullUserInfo = JacksonUtil.parseObject(body, "userInfo", FullUserInfo.class);
+        if(code == null || fullUserInfo == null){
+            return ResponseUtil.badArgument();
+        }
+
         UserInfo userInfo = fullUserInfo.getUserInfo();
 
         String sessionKey = null;

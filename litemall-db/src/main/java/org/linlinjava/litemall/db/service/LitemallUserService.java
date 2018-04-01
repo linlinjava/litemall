@@ -63,4 +63,10 @@ public class LitemallUserService {
         LitemallUserExample example = new LitemallUserExample();
         return (int)userMapper.countByExample(example);
     }
+
+    public List<LitemallUser> queryByUsername(String username) {
+        LitemallUserExample example = new LitemallUserExample();
+        example.or().andUsernameEqualTo(username);
+        return userMapper.selectByExample(example);
+    }
 }
