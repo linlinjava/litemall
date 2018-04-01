@@ -33,10 +33,12 @@ public class LitemallKeywordService {
         return keywordsMapper.selectByExample(example);
     }
 
-    public List<LitemallKeyword> queryByKeyword(String keyword) {
+    public List<LitemallKeyword> queryByKeyword(String keyword, Integer page, Integer size) {
         LitemallKeywordExample example = new LitemallKeywordExample();
-        example.or().andKeywordLike(keyword);
-        return keywordsMapper.selectByExample(example);
+        example.setDistinct(true);
+        example.or().andKeywordLike("%" + keyword + "%");
+        PageHelper.startPage(page, size);
+        return keywordsMapper.selectByExampleSelective(example, LitemallKeyword.Column.keyword);
     }
 
     public List<LitemallKeyword> querySelective(String keyword, String url, Integer page, Integer limit, String sort, String order) {
@@ -50,7 +52,7 @@ public class LitemallKeywordService {
             criteria.andUrlLike("%" + url + "%");
         }
         PageHelper.startPage(page, limit);
-        return keywordsMapper.selectByExample(example);
+        return keywordsMapper.selectByExampleSelective(example);
     }
 
     public int countSelective(String keyword, String url, Integer page, Integer limit, String sort, String order) {

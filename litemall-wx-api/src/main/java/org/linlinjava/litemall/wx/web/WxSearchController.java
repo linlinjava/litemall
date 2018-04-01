@@ -55,7 +55,9 @@ public class WxSearchController {
             return ResponseUtil.fail402();
         }
 
-        List<LitemallKeyword> keywordsList = keywordsService.queryByKeyword(keyword);
+        Integer page = 1;
+        Integer size = 10;
+        List<LitemallKeyword> keywordsList = keywordsService.queryByKeyword(keyword, page, size);
         String[] keys = new String[keywordsList.size()];
         int index = 0;
         for (LitemallKeyword key : keywordsList) {
