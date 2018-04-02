@@ -72,10 +72,10 @@ public class WxCommentController {
      */
     @RequestMapping("list")
     public Object list(Byte typeId, Integer valueId, Integer showType,
-                       @RequestParam(value = "page", defaultValue = "0") Integer page,
+                       @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if(typeId == null || valueId == null || showType == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.badArgument();
         }
 
         List<LitemallComment> commentList = commentService.query(typeId, valueId, showType, page, size);
@@ -94,6 +94,7 @@ public class WxCommentController {
         }
         Map<String, Object> data = new HashMap();
         data.put("data", commentVoList);
+        data.put("count", count);
         data.put("currentPage", page);
         return ResponseUtil.ok(data);
     }

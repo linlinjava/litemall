@@ -215,6 +215,18 @@
 					"name": "购买商品评价",
 					"pathName": "pages/commentPost/commentPost",
 					"query": "orderId=2&typeId=0&valueId=1116011"
+				},
+				{
+					"id": 31,
+					"name": "专题评论列表",
+					"pathName": "pages/topicComment/topicComment",
+					"query": "valueId=314&typeId=1"
+				},
+				{
+					"id": -1,
+					"name": "专题评论添加",
+					"pathName": "pages/topicCommentPost/topicCommentPost",
+					"query": "valueId=314&typeId=1"
 				}
 			]
 		}

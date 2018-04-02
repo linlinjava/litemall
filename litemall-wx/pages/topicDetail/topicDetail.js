@@ -15,10 +15,10 @@ Page({
     // 页面初始化 options为页面跳转所带来的参数
     var that = this;
     that.setData({
-      id: parseInt(options.id)
+      id: options.id
     });
 
-    util.request(api.TopicDetail, { id: that.data.id}).then(function (res) {
+    util.request(api.TopicDetail, { id: that.data.id }).then(function (res) {
       if (res.errno === 0) {
 
         that.setData({
@@ -29,18 +29,17 @@ Page({
       }
     });
 
-    util.request(api.TopicRelated, { id: that.data.id}).then(function (res) {
+    util.request(api.TopicRelated, { id: that.data.id }).then(function (res) {
       if (res.errno === 0) {
-
         that.setData({
           topicList: res.data
         });
       }
     });
   },
-  getCommentList(){
+  getCommentList() {
     let that = this;
-    util.request(api.CommentList, { valueId: that.data.id, typeId: 1, size: 5 }).then(function (res) {
+    util.request(api.CommentList, { valueId: that.data.id, typeId: 1, showType: 0, page: 1, size: 5 }).then(function (res) {
       if (res.errno === 0) {
 
         that.setData({
@@ -50,10 +49,15 @@ Page({
       }
     });
   },
-  postComment (){
-    wx.navigateTo({
-      url: '/pages/commentPost/commentPost?valueId='+this.data.id + '&typeId=1',
-    })
+  postComment() {
+    if (!app.globalData.hasLogin) {
+      wx.navigateTo({ url: "/pages/auth/login/login" });
+    }
+    else {
+      wx.navigateTo({
+        url: '/pages/topicCommentPost/topicCommentPost?valueId=' + this.data.id + '&typeId=1',
+      })
+    }
   },
   onReady: function () {
 

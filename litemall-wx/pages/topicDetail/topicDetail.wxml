@@ -15,8 +15,8 @@
         <view class="item" wx:for="{{commentList}}" wx:key="id">
           <view class="info">
             <view class="user">
-              <image class="avatar" src="{{item.userInfo.avatar}}"></image>
-              <text class="nickname">{{item.userInfo.nickname}}</text>
+              <image class="avatar" src="{{item.userInfo.avatarUrl}}"></image>
+              <text class="nickname">{{item.userInfo.nickName}}</text>
             </view>
             <view class="time">{{item.addTime}}</view>
           </view>
@@ -41,7 +41,7 @@
       <text class="txt">专题推荐</text>
     </view>
     <view class="b">
-      <navigator class="item" wx:for="{{topicList}}" url="../topicDetail/topicDetail?id={{item.id}}">
+      <navigator class="item" wx:for="{{topicList}}" wx:key="id" url="../topicDetail/topicDetail?id={{item.id}}">
         <image class="img" src="{{item.scenePicUrl}}"></image>
         <text class="title">{{item.title}}</text>
       </navigator>

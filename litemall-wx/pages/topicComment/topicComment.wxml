@@ -3,8 +3,8 @@
     <view class="item" wx:for="{{comments}}" wx:key="id">
       <view class="info">
         <view class="user">
-          <image src="{{item.userInfo.avatar}}"></image>
-          <text>{{item.userInfo.nickname}}</text>
+          <image src="{{item.userInfo.avatarUrl}}"></image>
+          <text>{{item.userInfo.nickName}}</text>
         </view>
         <view class="time">{{item.addTime}}</view>
       </view>

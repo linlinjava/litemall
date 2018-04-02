@@ -4,6 +4,7 @@
     "pages/catalog/catalog",
     "pages/newGoods/newGoods",
     "pages/hotGoods/hotGoods",
+    "pages/ucenter/index/index",        
     "pages/ucenter/address/address",
     "pages/ucenter/addressAdd/addressAdd",
     "pages/ucenter/footprint/footprint",
@@ -15,11 +16,12 @@
     "pages/auth/register/register",
     "pages/auth/reset/reset",
     "pages/payResult/payResult",
-    "pages/ucenter/index/index",
-    "pages/topic/topic",
     "pages/comment/comment",
     "pages/commentPost/commentPost",
+    "pages/topic/topic",        
     "pages/topicComment/topicComment",
+    "pages/topicDetail/topicDetail",
+    "pages/topicCommentPost/topicCommentPost",        
     "pages/brand/brand",
     "pages/brandDetail/brandDetail",
     "pages/search/search",
@@ -28,8 +30,7 @@
     "pages/shopping/checkout/checkout",
     "pages/shopping/address/address",
     "pages/shopping/addressAdd/addressAdd",
-    "pages/goods/goods",
-    "pages/topicDetail/topicDetail"
+    "pages/goods/goods"
   ],
   "window": {
     "backgroundTextStyle": "dark",
