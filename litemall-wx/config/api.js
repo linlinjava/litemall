@@ -23,6 +23,7 @@ module.exports = {
     AuthLoginByWeixin: WxApiRoot + 'auth/login_by_weixin', //微信登录
     AuthLoginByAccount: WxApiRoot + 'auth/login', //账号登录
     AuthRegister: WxApiRoot + 'auth/register', //账号注册
+    AuthReset: WxApiRoot + 'auth/reset', //账号密码重置
 
     GoodsCount: WxApiRoot + 'goods/count',  //统计商品总数
     GoodsList: WxApiRoot + 'goods/list',  //获得商品列表

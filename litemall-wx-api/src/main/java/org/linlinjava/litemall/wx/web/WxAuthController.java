@@ -173,6 +173,7 @@ public class WxAuthController {
         user = new LitemallUser();
         user.setUsername(username);
         user.setPassword(password);
+        user.setMobile(mobile);
         user.setWeixinOpenid("");
         user.setAvatar("https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64");
         user.setNickname(username);
@@ -197,5 +198,36 @@ public class WxAuthController {
         result.put("tokenExpire", userToken.getExpireTime().toString());
         result.put("userInfo", userInfo);
         return ResponseUtil.ok(result);
+    }
+
+    /**
+     * 账号密码重置
+     */
+    @PostMapping("reset")
+    public Object reset(@RequestBody String body, HttpServletRequest request) {
+        String password = JacksonUtil.parseString(body, "password");
+        String mobile = JacksonUtil.parseString(body, "mobile");
+        String code = JacksonUtil.parseString(body, "code");
+
+        if(mobile == null || code == null || password == null){
+            return ResponseUtil.badArgument();
+        }
+
+        List<LitemallUser> userList = userService.queryByMobile(mobile);
+        LitemallUser user = null;
+        if(userList.size() > 1){
+            return ResponseUtil.serious();
+        }
+        else if(userList.size() == 0){
+            return ResponseUtil.fail(403, "手机号未注册");
+        }
+        else{
+            user = userList.get(0);
+        }
+
+        user.setPassword(password);
+        userService.update(user);
+
+        return ResponseUtil.ok();
     }
 }
