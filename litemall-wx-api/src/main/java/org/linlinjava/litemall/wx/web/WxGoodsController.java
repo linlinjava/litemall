@@ -152,7 +152,7 @@ public class WxGoodsController {
         }
         Map<String, Object> data = new HashMap();
         data.put("currentCategory", cur);
-        data.put("parentCategory", children);
+        data.put("parentCategory", parent);
         data.put("brotherCategory", children);
         return ResponseUtil.ok(data);
     }

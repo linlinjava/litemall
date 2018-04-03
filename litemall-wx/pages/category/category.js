@@ -45,6 +45,10 @@ Page({
             currentCategory: res.data.currentCategory
           });
 
+          wx.setNavigationBarTitle({
+            title: res.data.parentCategory.name
+          })
+
           //nav位置
           let currentIndex = 0;
           let navListCount = that.data.navList.length;
