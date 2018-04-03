@@ -13,6 +13,10 @@ mvn clean
 mvn package
 
 cd ./litemall-admin
+# 安装阿里node镜像工具
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+# 安装node项目依赖环境
+cnpm install
 cnpm run build:prod
 
 cd ..
