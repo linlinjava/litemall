@@ -50,27 +50,27 @@
 				},
 				{
 					"id": -1,
-					"name": "分类",
-					"pathName": "pages/catalog/catalog",
+					"name": "专题评论列表",
+					"pathName": "pages/topicComment/topicComment",
+					"query": "valueId=314&typeId=1"
+				},
+				{
+					"id": -1,
+					"name": "专题评论添加",
+					"pathName": "pages/topicCommentPost/topicCommentPost",
+					"query": "valueId=314&typeId=1"
+				},
+				{
+					"id": -1,
+					"name": "品牌",
+					"pathName": "pages/brand/brand",
 					"query": ""
 				},
 				{
 					"id": -1,
-					"name": "分类详情",
-					"pathName": "pages/category/category",
-					"query": "id=1008002"
-				},
-				{
-					"id": -1,
-					"name": "购物车",
-					"pathName": "pages/cart/cart",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "我的",
-					"pathName": "pages/ucenter/index/index",
-					"query": ""
+					"name": "品牌详情",
+					"pathName": "pages/brandDetail/brandDetail",
+					"query": "id=1001000"
 				},
 				{
 					"id": -1,
@@ -86,18 +86,24 @@
 				},
 				{
 					"id": -1,
-					"name": "品牌",
-					"pathName": "pages/brand/brand",
+					"name": "分类",
+					"pathName": "pages/catalog/catalog",
 					"query": ""
 				},
 				{
 					"id": -1,
-					"name": "品牌详情",
-					"pathName": "pages/brandDetail/brandDetail",
-					"query": "id=1001000"
+					"name": "分类详情",
+					"pathName": "pages/category/category",
+					"query": "id=1008002"
 				},
 				{
-					"id": 11,
+					"id": -1,
+					"name": "查找",
+					"pathName": "pages/search/search",
+					"query": ""
+				},
+				{
+					"id": -1,
 					"name": "商品",
 					"pathName": "pages/goods/goods",
 					"query": "id=1181000"
@@ -110,20 +116,68 @@
 				},
 				{
 					"id": -1,
-					"name": "专题评论留言",
-					"pathName": "pages/commentPost/commentPost",
-					"query": "valueId=314&typeId=1"
-				},
-				{
-					"id": -1,
-					"name": "查找",
-					"pathName": "pages/search/search",
+					"name": "购物车",
+					"pathName": "pages/cart/cart",
 					"query": ""
 				},
 				{
-					"id": 14,
+					"id": -1,
+					"name": "下单",
+					"pathName": "pages/shopping/checkout/checkout",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "下单地址",
+					"pathName": "pages/shopping/address/address",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "下单地址添加",
+					"pathName": "pages/shopping/addressAdd/addressAdd",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "支付结果",
+					"pathName": "pages/payResult/payResult",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/ucenter/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
 					"name": "我的订单列表",
 					"pathName": "pages/ucenter/order/order",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的订单详情",
+					"pathName": "pages/ucenter/orderDetail/orderDetail",
+					"query": "id=1"
+				},
+				{
+					"id": -1,
+					"name": "待评价的订单详情",
+					"pathName": "pages/ucenter/orderDetail/orderDetail",
+					"query": "id=24"
+				},
+				{
+					"id": -1,
+					"name": "购买商品评价",
+					"pathName": "pages/commentPost/commentPost",
+					"query": "orderId=2&typeId=0&valueId=1116011"
+				},
+				{
+					"id": -1,
+					"name": "我的优惠券",
+					"pathName": "pages/ucenter/coupon/coupon",
 					"query": ""
 				},
 				{
@@ -152,48 +206,6 @@
 				},
 				{
 					"id": -1,
-					"name": "我的优惠券",
-					"pathName": "pages/ucenter/coupon/coupon",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "下单",
-					"pathName": "pages/shopping/checkout/checkout",
-					"query": ""
-				},
-				{
-					"id": 22,
-					"name": "下单地址",
-					"pathName": "pages/shopping/address/address",
-					"query": ""
-				},
-				{
-					"id": 23,
-					"name": "下单地址添加",
-					"pathName": "pages/shopping/addressAdd/addressAdd",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "支付结果",
-					"pathName": "pages/payResult/payResult",
-					"query": ""
-				},
-				{
-					"id": 25,
-					"name": "我的订单详情",
-					"pathName": "pages/ucenter/orderDetail/orderDetail",
-					"query": "id=1"
-				},
-				{
-					"id": -1,
-					"name": "待评价的订单详情",
-					"pathName": "pages/ucenter/orderDetail/orderDetail",
-					"query": "id=24"
-				},
-				{
-					"id": -1,
 					"name": "登录",
 					"pathName": "pages/auth/login/login",
 					"query": ""
@@ -209,24 +221,6 @@
 					"name": "找回密码",
 					"pathName": "pages/auth/reset/reset",
 					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "购买商品评价",
-					"pathName": "pages/commentPost/commentPost",
-					"query": "orderId=2&typeId=0&valueId=1116011"
-				},
-				{
-					"id": 31,
-					"name": "专题评论列表",
-					"pathName": "pages/topicComment/topicComment",
-					"query": "valueId=314&typeId=1"
-				},
-				{
-					"id": -1,
-					"name": "专题评论添加",
-					"pathName": "pages/topicCommentPost/topicCommentPost",
-					"query": "valueId=314&typeId=1"
 				}
 			]
 		}
