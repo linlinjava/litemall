@@ -16,7 +16,7 @@
         <text class="desc">{{goods.goodsBrief}}</text>
         <text class="price">￥{{goods.retailPrice}}</text>
         <view class="brand" wx:if="{{brand.name}}">
-          <navigator url="../brandDetail/brandDetail?id={{brand.id}}">
+          <navigator url="/pages/brandDetail/brandDetail?id={{brand.id}}">
             <text>{{brand.name}}</text>
           </navigator>
         </view>
@@ -24,11 +24,11 @@
     </view>
     <view class="section-nav section-attr" bindtap="switchAttrPop">
       <view class="t">{{checkedSpecText}}</view>
-      <image class="i" src="../../static/images/address_right.png" background-size="cover"></image>
+      <image class="i" src="/static/images/address_right.png" background-size="cover"></image>
     </view>
     <view class="comments" wx:if="{{comment.count > 0}}">
       <view class="h">
-        <navigator url="../comment/comment?valueId={{goods.id}}&typeId=0">
+        <navigator url="/pages/comment/comment?valueId={{goods.id}}&typeId=0">
           <text class="t">评价({{comment.count > 999 ? '999+' : comment.count}})</text>
           <text class="i">查看全部</text>
         </navigator>
@@ -62,7 +62,7 @@
     </view>
 
     <view class="detail">
-      <import src="../../lib/wxParse/wxParse.wxml" />
+      <import src="/lib/wxParse/wxParse.wxml" />
       <template is="wxParse" data="{{wxParseData:goodsDetail.nodes}}" />
     </view>
 

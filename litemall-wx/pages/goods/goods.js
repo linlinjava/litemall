@@ -20,9 +20,9 @@ Page({
     number: 1,
     checkedSpecText: '请选择规格数量',
     openAttr: false,
-    noCollectImage: "/static/images/icon_collect.png",
-    hasCollectImage: "/static/images/icon_collect_checked.png",
-    collectBackImage: "/static/images/icon_collect.png"
+    noCollectImage: '/static/images/icon_collect.png',
+    hasCollectImage: '/static/images/icon_collect_checked.png',
+    collectBackImage: '/static/images/icon_collect.png'
   },
   getGoodsInfo: function () {
     let that = this;
@@ -35,7 +35,7 @@ Page({
           if (_specificationList[0].valueList.length == 1) {
             _specificationList[0].valueList[0].checked = true
             that.setData({
-              'checkedSpecText': "已选择：" + _specificationList[0].valueList[0].value
+              checkedSpecText: '已选择：' + _specificationList[0].valueList[0].value
             });
           }
         }
@@ -53,11 +53,11 @@ Page({
 
         if (res.data.userHasCollect == 1) {
           that.setData({
-            'collectBackImage': that.data.hasCollectImage
+            collectBackImage: that.data.hasCollectImage
           });
         } else {
           that.setData({
-            'collectBackImage': that.data.noCollectImage
+            collectBackImage: that.data.noCollectImage
           });
         }
 
@@ -105,7 +105,7 @@ Page({
       }
     }
     this.setData({
-      'specificationList': _specificationList
+      specificationList: _specificationList
     });
     //重新计算spec改变后的信息
     this.changeSpecInfo();
@@ -168,11 +168,11 @@ Page({
     });
     if (checkedValue.length > 0) {
       this.setData({
-        'checkedSpecText': checkedValue.join('　')
+        checkedSpecText: checkedValue.join('　')
       });
     } else {
       this.setData({
-        'checkedSpecText': '请选择规格数量'
+        checkedSpecText: '请选择规格数量'
       });
     }
 
@@ -220,7 +220,7 @@ Page({
     if (this.data.openAttr == false) {
       this.setData({
         openAttr: !this.data.openAttr,
-        collectBackImage: "/static/images/detail_back.png"
+        collectBackImage: '/static/images/detail_back.png'
       });
     }
   },
@@ -232,11 +232,11 @@ Page({
       });
       if (that.data.userHasCollect == 1) {
         that.setData({
-          'collectBackImage': that.data.hasCollectImage
+          collectBackImage: that.data.hasCollectImage
         });
       } else {
         that.setData({
-          'collectBackImage': that.data.noCollectImage
+          collectBackImage: that.data.noCollectImage
         });
       }
     } else {
@@ -247,11 +247,11 @@ Page({
           if (_res.errno == 0) {
             if ( _res.data.type == 'add') {
               that.setData({
-                'collectBackImage': that.data.hasCollectImage
+                collectBackImage: that.data.hasCollectImage
               });
             } else {
               that.setData({
-                'collectBackImage': that.data.noCollectImage
+                collectBackImage: that.data.noCollectImage
               });
             }
 
@@ -276,7 +276,7 @@ Page({
       //打开规格选择窗口
       this.setData({
         openAttr: !this.data.openAttr,
-        collectBackImage: "/static/images/detail_back.png"
+        collectBackImage: '/static/images/detail_back.png'
       });
     } else {
 
@@ -319,7 +319,7 @@ Page({
             try {
               wx.setStorageSync('cartId', res.data);
               wx.navigateTo({
-                url: '../shopping/checkout/checkout'
+                url: '/pages/shopping/checkout/checkout'
               })
             } catch (e) {
             }
@@ -342,7 +342,7 @@ Page({
       //打开规格选择窗口
       this.setData({
         openAttr: !this.data.openAttr,
-        collectBackImage: "/static/images/detail_back.png"
+        collectBackImage: '/static/images/detail_back.png'
       });
     } else {
 
@@ -390,11 +390,11 @@ Page({
             });
             if (that.data.userHasCollect == 1) {
               that.setData({
-                'collectBackImage': that.data.hasCollectImage
+                collectBackImage: that.data.hasCollectImage
               });
             } else {
               that.setData({
-                'collectBackImage': that.data.noCollectImage
+                collectBackImage: that.data.noCollectImage
               });
             }
           } else {
