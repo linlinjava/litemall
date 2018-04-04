@@ -18,7 +18,8 @@ Page({
     cartGoodsCount: 0,
     userHasCollect: 0,
     number: 1,
-    checkedSpecText: '请选择规格数量',
+    checkedSpecText: '规格数量',
+    tmpSpecText: '请选择规格数量',
     openAttr: false,
     noCollectImage: '/static/images/icon_collect.png',
     hasCollectImage: '/static/images/icon_collect_checked.png',
@@ -35,7 +36,8 @@ Page({
           if (_specificationList[0].valueList.length == 1) {
             _specificationList[0].valueList[0].checked = true
             that.setData({
-              checkedSpecText: '已选择：' + _specificationList[0].valueList[0].value
+              checkedSpecText: _specificationList[0].valueList[0].value,
+              tmpSpecText: '已选择：' + _specificationList[0].valueList[0].value
             });
           }
         }
@@ -105,7 +107,7 @@ Page({
       }
     }
     this.setData({
-      specificationList: _specificationList
+      specificationList: _specificationList,
     });
     //重新计算spec改变后的信息
     this.changeSpecInfo();
@@ -132,7 +134,6 @@ Page({
     }
 
     return checkedValues;
-
   },
   //根据已选的值，计算其它值的状态
   setSpecValueStatus: function () {
@@ -168,11 +169,23 @@ Page({
     });
     if (checkedValue.length > 0) {
       this.setData({
-        checkedSpecText: checkedValue.join('　')
+        tmpSpecText: checkedValue.join('　')
       });
     } else {
       this.setData({
-        checkedSpecText: '请选择规格数量'
+        tmpSpecText: '请选择规格数量'
+      });
+    }
+
+
+    if (this.isCheckedAllSpec()) {
+      this.setData({
+        checkedSpecText: this.data.tmpSpecText
+      });
+    }
+    else{
+      this.setData({
+        checkedSpecText: '规格数量'
       });
     }
 
