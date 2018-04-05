@@ -133,7 +133,7 @@ Page({
     let _specificationList = this.data.specificationList;
     for (let i = 0; i < _specificationList.length; i++) {
       let _checkedObj = {
-        name: _specificationList[i].specification,
+        name: _specificationList[i].name,
         valueId: 0,
         valueText: ''
       };
