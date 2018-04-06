@@ -153,8 +153,8 @@
           <el-input v-model="dataForm.goodsBrief"></el-input>
         </el-form-item> 
             
-        <el-form-item label="商品详细介绍">
-          <el-input v-model="dataForm.goodsDesc"></el-input>
+        <el-form-item style="width: 700px;" label="商品详细介绍">
+          <tinymce v-model="dataForm.goodsDesc"></tinymce>
         </el-form-item>
         
         <el-form-item label="商品主图">
@@ -199,16 +199,21 @@
     margin-right: 0;
     margin-bottom: 0;
   }
+  .el-dialog {
+    width: 800px;
+  }
+
 </style>
 
 <script>
 import { listGoods, createGoods, updateGoods, deleteGoods } from '@/api/goods'
 import waves from '@/directive/waves' // 水波纹指令
 import BackToTop from '@/components/BackToTop'
+import Tinymce from '@/components/Tinymce'
 
 export default {
   name: 'Goods',
-  components: { BackToTop },
+  components: { BackToTop, Tinymce },
   directives: { waves },
   data() {
     return {
