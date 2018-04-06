@@ -16,9 +16,9 @@ public class LitemallAdminService {
     @Resource
     private LitemallAdminMapper adminMapper;
 
-    public List<LitemallAdmin> findAdmin(String username, String password) {
+    public List<LitemallAdmin> findAdmin(String username) {
         LitemallAdminExample example = new LitemallAdminExample();
-        example.or().andUsernameEqualTo(username).andPasswordEqualTo(password);
+        example.or().andUsernameEqualTo(username);
         return adminMapper.selectByExample(example);
     }
 

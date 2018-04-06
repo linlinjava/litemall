@@ -14,6 +14,7 @@ import org.linlinjava.litemall.wx.dao.UserInfo;
 import org.linlinjava.litemall.wx.dao.UserToken;
 import org.linlinjava.litemall.wx.service.UserTokenManager;
 import org.linlinjava.litemall.wx.util.IpUtil;
+import org.linlinjava.litemall.wx.util.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,8 +61,9 @@ public class WxAuthController {
             user = userList.get(0);
         }
 
-        if(!user.getPassword().equals(password)){
-            return ResponseUtil.badArgumentValue();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!encoder.matches(password, user.getPassword())){
+            return ResponseUtil.fail(403, "账号密码不对");
         }
 
         // userInfo
@@ -168,11 +170,15 @@ public class WxAuthController {
         if(userList.size() > 0){
             return ResponseUtil.fail(403, "手机号已注册");
         }
-
         LitemallUser user = new LitemallUser();
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(password);
+        user.setPassword(encodedPassword);
+
         user = new LitemallUser();
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(encodedPassword);
         user.setMobile(mobile);
         user.setWeixinOpenid("");
         user.setAvatar("https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64");
@@ -225,7 +231,10 @@ public class WxAuthController {
             user = userList.get(0);
         }
 
-        user.setPassword(password);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(password);
+        user.setPassword(encodedPassword);
+
         userService.update(user);
 
         return ResponseUtil.ok();

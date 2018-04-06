@@ -2,6 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.service.AdminTokenManager;
+import org.linlinjava.litemall.admin.util.bcrypt.BCryptPasswordEncoder;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -66,6 +67,12 @@ public class AdminController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
+
+        String rawPassword = admin.getPassword();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(rawPassword);
+        admin.setPassword(encodedPassword);
+
         adminService.add(admin);
         return ResponseUtil.ok(admin);
     }

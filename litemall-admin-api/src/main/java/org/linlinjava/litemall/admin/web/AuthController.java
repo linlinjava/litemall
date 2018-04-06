@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.dao.AdminToken;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.service.AdminTokenManager;
+import org.linlinjava.litemall.admin.util.bcrypt.BCryptPasswordEncoder;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.linlinjava.litemall.db.util.JacksonUtil;
@@ -39,13 +40,18 @@ public class AuthController {
             return ResponseUtil.badArgument();
         }
 
-        List<LitemallAdmin> adminList = adminService.findAdmin(username, password);
+        List<LitemallAdmin> adminList = adminService.findAdmin(username);
         Assert.state(adminList.size() < 2, "同一个用户名存在两个账户");
         if(adminList.size() == 0){
             return ResponseUtil.badArgumentValue();
         }
-
         LitemallAdmin admin = adminList.get(0);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!encoder.matches(password, admin.getPassword())){
+            return ResponseUtil.fail(403, "账号密码不对");
+        }
+
         Integer adminId = admin.getId();
         // token
         AdminToken adminToken = AdminTokenManager.generateToken(adminId);
