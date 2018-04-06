@@ -63,6 +63,11 @@ page{
     color: #999;
 }
 
+.no-login button{
+    width: 60%;
+    margin: 0 auto;
+}
+
 .no-cart{
     width: 100%;
     height: auto;
