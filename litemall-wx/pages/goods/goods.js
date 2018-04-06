@@ -37,13 +37,11 @@ Page({
           if (_specificationList[0].valueList.length == 1) {
             _specificationList[0].valueList[0].checked = true
 
-            // 如果仅仅存在一种货品，那么商品价格应该和货品价格一致，商品数量应该和货品数量一致
+            // 如果仅仅存在一种货品，那么商品价格应该和货品价格一致
             // 这里检测一下
-            let _producePrice = _specificationList[0].valueList[0].retailPrice;
+            let _productPrice = res.data.productList[0].retailPrice;
             let _goodsPrice = res.data.info.retailPrice;
-            let _produceNumber = _specificationList[0].valueList[0].goodsNumber;
-            let _goodsNumber = res.data.info.number;
-            if (_producePrice != _goodsPrice || _produceNumber != _goodsNumber){
+            if (_productPrice != _goodsPrice){
               console.error('商品数量价格和货品不一致');
             }
 
