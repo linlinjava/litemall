@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +96,7 @@ public class WxCollectController {
             collect.setUserId(userId);
             collect.setValueId(valueId);
             collect.setTypeId(typeId);
-            collect.setAddTime(LocalDate.now());
+            collect.setAddTime(LocalDateTime.now());
             collectService.add(collect);
         }
 

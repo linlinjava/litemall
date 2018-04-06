@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +45,7 @@ public class WxCommentController {
             return ResponseUtil.fail402();
         }
 
-        comment.setAddTime(LocalDate.now());
+        comment.setAddTime(LocalDateTime.now());
         comment.setUserId(userId);
         commentService.save(comment);
         return ResponseUtil.ok(comment);

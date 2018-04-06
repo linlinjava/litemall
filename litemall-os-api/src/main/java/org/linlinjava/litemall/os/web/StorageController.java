@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,8 @@ public class StorageController {
         storageInfo.setName(originalFilename);
         storageInfo.setSize((int)file.getSize());
         storageInfo.setType(file.getContentType());
-        storageInfo.setModified(LocalDate.now());
+        storageInfo.setAddTime(LocalDateTime.now());
+        storageInfo.setModified(LocalDateTime.now());
         storageInfo.setKey(key);
         storageInfo.setUrl(url);
         zmallStorageService.add(storageInfo);

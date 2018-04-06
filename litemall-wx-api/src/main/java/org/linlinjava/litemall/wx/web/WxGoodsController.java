@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -175,7 +176,7 @@ public class WxGoodsController {
         //添加到搜索历史
         if (userId != null && !StringUtils.isNullOrEmpty(keyword)) {
             LitemallSearchHistory searchHistoryVo = new LitemallSearchHistory();
-            searchHistoryVo.setAddTime(LocalDate.now());
+            searchHistoryVo.setAddTime(LocalDateTime.now());
             searchHistoryVo.setKeyword(keyword);
             searchHistoryVo.setUserId(userId);
             searchHistoryVo.setFrom("wx");

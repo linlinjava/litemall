@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,12 +128,12 @@ public class WxAuthController {
             user.setGender(userInfo.getGender() == 1 ? "男" : "女");
             user.setUserLevel("普通用户");
             user.setStatus("可用");
-            user.setLastLoginTime(LocalDate.now());
+            user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.client(request));
             userService.add(user);
         }
         else{
-            user.setLastLoginTime(LocalDate.now());
+            user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.client(request));
             userService.update(user);
         }
@@ -186,7 +187,7 @@ public class WxAuthController {
         user.setGender("未知");
         user.setUserLevel("普通用户");
         user.setStatus("可用");
-        user.setLastLoginTime(LocalDate.now());
+        user.setLastLoginTime(LocalDateTime.now());
         user.setLastLoginIp(IpUtil.client(request));
         userService.add(user);
 
