@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -27,23 +27,14 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.errno !== 0) {
-      Message({
-        message: res.errno + ' ' + res.errmsg,
-        type: 'error',
-        duration: 5 * 1000
+      MessageBox.alert('超时自动退出系统，请重新登录', '已退出', {
+        confirmButtonText: '重新登录',
+        type: 'error'
+      }).then(() => {
+        store.dispatch('FedLogOut').then(() => {
+          location.reload()
+        })
       })
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      // if (res.errno === 50008 || res.errno === 50012 || res.errno === 50014) {
-      //   Message.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
-      //     confirmButtonText: '重新登录',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   }).then(() => {
-      //     store.dispatch('FedLogOut').then(() => {
-      //       location.reload() // 为了重新实例化vue-router对象 避免bug
-      //     })
-      //   })
-      // }
       return Promise.reject('error')
     } else {
       return response
@@ -51,7 +42,7 @@ service.interceptors.response.use(
   }, error => {
     console.log('err' + error)// for debug
     Message({
-      message: error.message,
+      message: '登录连接超时（后台不能连接，请联系系统管理员）',
       type: 'error',
       duration: 5 * 1000
     })
