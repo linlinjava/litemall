@@ -17,16 +17,12 @@ public class LitemallAddressService {
 
     public List<LitemallAddress> queryByUid(Integer uid) {
         LitemallAddressExample example = new LitemallAddressExample();
-        example.or().andUserIdEqualTo(uid);
+        example.or().andUserIdEqualTo(uid).andDeletedEqualTo(false);
         return addressMapper.selectByExample(example);
     }
 
     public LitemallAddress findById(Integer id) {
-        LitemallAddress address = addressMapper.selectByPrimaryKey(id);
-        if(address == null){
-            return null;
-        }
-        return address;
+        return addressMapper.selectByPrimaryKey(id);
     }
 
     public int add(LitemallAddress address) {
@@ -37,13 +33,18 @@ public class LitemallAddressService {
         return addressMapper.updateByPrimaryKeySelective(address);
     }
 
-    public int delete(Integer id) {
-        return addressMapper.deleteByPrimaryKey(id);
+    public void delete(Integer id) {
+        LitemallAddress address = addressMapper.selectByPrimaryKey(id);
+        if(address == null){
+            return;
+        }
+        address.setDeleted(true);
+        addressMapper.updateByPrimaryKey(address);
     }
 
     public LitemallAddress findDefault(Integer userId) {
         LitemallAddressExample example = new LitemallAddressExample();
-        example.or().andUserIdEqualTo(userId).andIsDefaultEqualTo(true);
+        example.or().andUserIdEqualTo(userId).andIsDefaultEqualTo(true).andDeletedEqualTo(false);
         return addressMapper.selectOneByExample(example);
     }
 
@@ -51,7 +52,7 @@ public class LitemallAddressService {
         LitemallAddress address = new LitemallAddress();
         address.setIsDefault(false);
         LitemallAddressExample example = new LitemallAddressExample();
-        example.or().andUserIdEqualTo(userId);
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         addressMapper.updateByExampleSelective(address, example);
     }
 
@@ -65,6 +66,8 @@ public class LitemallAddressService {
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%" + name + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, limit);
         return addressMapper.selectByExample(example);
     }
@@ -79,6 +82,8 @@ public class LitemallAddressService {
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%" + name + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)addressMapper.countByExample(example);
     }
 

@@ -19,12 +19,12 @@ public class LitemallOrderGoodsService {
 
     public List<LitemallOrderGoods> queryByOid(Integer orderId) {
         LitemallOrderGoodsExample example = new LitemallOrderGoodsExample();
-        example.or().andOrderIdEqualTo(orderId);
+        example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
         return orderGoodsMapper.selectByExample(example);
     }
     public List<LitemallOrderGoods> findByOidAndGid(Integer orderId, Integer goodsId) {
         LitemallOrderGoodsExample example = new LitemallOrderGoodsExample();
-        example.or().andOrderIdEqualTo(orderId).andGoodsIdEqualTo(goodsId);
+        example.or().andOrderIdEqualTo(orderId).andGoodsIdEqualTo(goodsId).andDeletedEqualTo(false);
         return orderGoodsMapper.selectByExample(example);
     }
 

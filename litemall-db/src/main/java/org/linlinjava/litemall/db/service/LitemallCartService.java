@@ -16,7 +16,7 @@ public class LitemallCartService {
 
     public LitemallCart queryExist(Integer goodsId, Integer productId, Integer userId) {
         LitemallCartExample example = new LitemallCartExample();
-        example.or().andGoodsIdEqualTo(goodsId).andProductIdEqualTo(productId).andUserIdEqualTo(userId);
+        example.or().andGoodsIdEqualTo(goodsId).andProductIdEqualTo(productId).andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return cartMapper.selectOneByExample(example);
     }
 
@@ -30,27 +30,29 @@ public class LitemallCartService {
 
     public List<LitemallCart> queryByUid(int userId) {
         LitemallCartExample example = new LitemallCartExample();
-        example.or().andUserIdEqualTo(userId);
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return cartMapper.selectByExample(example);
     }
 
 
     public List<LitemallCart> queryByUidAndChecked(Integer userId) {
         LitemallCartExample example = new LitemallCartExample();
-        example.or().andUserIdEqualTo(userId).andCheckedEqualTo(true);
+        example.or().andUserIdEqualTo(userId).andCheckedEqualTo(true).andDeletedEqualTo(false);
         return cartMapper.selectByExample(example);
     }
 
     public List<LitemallCart> queryByUidAndSid(int userId, String sessionId) {
         LitemallCartExample example = new LitemallCartExample();
-        example.or().andUserIdEqualTo(userId);
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return cartMapper.selectByExample(example);
     }
 
     public int delete(List<Integer> productIdList, int userId) {
         LitemallCartExample example = new LitemallCartExample();
         example.or().andUserIdEqualTo(userId).andProductIdIn(productIdList);
-        return cartMapper.deleteByExample(example);
+        LitemallCart cart = new LitemallCart();
+        cart.setDeleted(true);
+        return cartMapper.updateByExampleSelective(cart, example);
     }
 
     public LitemallCart findById(Integer id) {
@@ -59,7 +61,7 @@ public class LitemallCartService {
 
     public int updateCheck(Integer userId, List<Integer> idsList, Boolean checked) {
         LitemallCartExample example = new LitemallCartExample();
-        example.or().andUserIdEqualTo(userId).andProductIdIn(idsList);
+        example.or().andUserIdEqualTo(userId).andProductIdIn(idsList).andDeletedEqualTo(false);
         LitemallCart cart = new LitemallCart();
         cart.setChecked(checked);
         return cartMapper.updateByExampleSelective(cart, example);
@@ -68,7 +70,9 @@ public class LitemallCartService {
     public void clearGoods(Integer userId) {
         LitemallCartExample example = new LitemallCartExample();
         example.or().andUserIdEqualTo(userId).andCheckedEqualTo(true);
-        cartMapper.deleteByExample(example);
+        LitemallCart cart = new LitemallCart();
+        cart.setDeleted(true);
+        cartMapper.updateByExampleSelective(cart, example);
     }
 
     public List<LitemallCart> querySelective(Integer userId, Integer goodsId, Integer page, Integer limit, String sort, String order) {
@@ -81,6 +85,8 @@ public class LitemallCartService {
         if(goodsId != null){
             criteria.andGoodsIdEqualTo(goodsId);
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, limit);
         return cartMapper.selectByExample(example);
     }
@@ -95,10 +101,17 @@ public class LitemallCartService {
         if(goodsId != null){
             criteria.andGoodsIdEqualTo(goodsId);
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)cartMapper.countByExample(example);
     }
 
     public void deleteById(Integer id) {
-        cartMapper.deleteByPrimaryKey(id);
+        LitemallCart cart = cartMapper.selectByPrimaryKey(id);
+        if(cart == null){
+            return;
+        }
+        cart.setDeleted(true);
+        cartMapper.updateByPrimaryKey(cart);
     }
 }

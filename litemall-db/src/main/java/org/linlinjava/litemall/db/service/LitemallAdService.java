@@ -17,7 +17,7 @@ public class LitemallAdService {
 
     public List<LitemallAd> queryByApid(Integer i) {
         LitemallAdExample example = new LitemallAdExample();
-        example.or().andPositionEqualTo(i);
+        example.or().andPositionEqualTo(i).andDeletedEqualTo(false);
         return adMapper.selectByExample(example);
     }
 
@@ -31,6 +31,8 @@ public class LitemallAdService {
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, limit);
         return adMapper.selectByExample(example);
     }
@@ -45,6 +47,8 @@ public class LitemallAdService {
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)adMapper.countByExample(example);
     }
 
@@ -53,7 +57,12 @@ public class LitemallAdService {
     }
 
     public void deleteById(Integer id) {
-        adMapper.deleteByPrimaryKey(id);
+        LitemallAd ad = adMapper.selectByPrimaryKey(id);
+        if(ad == null){
+            return;
+        }
+        ad.setDeleted(true);
+        adMapper.updateByPrimaryKey(ad);
     }
 
     public void add(LitemallAd ad) {

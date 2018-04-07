@@ -24,13 +24,13 @@ public class LitemallOrderService {
 
     public List<LitemallOrder> query(Integer userId) {
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId);
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return orderMapper.selectByExample(example);
     }
 
     public int count(Integer userId) {
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId);
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return (int)orderMapper.countByExample(example);
     }
 
@@ -51,14 +51,13 @@ public class LitemallOrderService {
 
     public LitemallOrder queryByOrderSn(Integer userId, String orderSn){
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn);
-        List<LitemallOrder> orderList = orderMapper.selectByExample(example);
+        example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
         return orderMapper.selectOneByExample(example);
     }
 
     public int countByOrderSn(Integer userId, String orderSn){
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn);
+        example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
         return (int)orderMapper.countByExample(example);
     }
 
@@ -76,20 +75,22 @@ public class LitemallOrderService {
         LitemallOrderExample example = new LitemallOrderExample();
         example.orderBy(LitemallOrder.Column.addTime.desc());
         LitemallOrderExample.Criteria criteria = example.or();
-        criteria.andUserIdEqualTo(userId).andIsDeleteEqualTo(false);
+        criteria.andUserIdEqualTo(userId);
         if(orderStatus != null) {
             criteria.andOrderStatusIn(orderStatus);
         }
+        criteria.andDeletedEqualTo(false);
         return orderMapper.selectByExample(example);
     }
 
     public int countByOrderStatus(Integer userId, List<Short> orderStatus) {
         LitemallOrderExample example = new LitemallOrderExample();
         LitemallOrderExample.Criteria criteria = example.or();
-        criteria.andUserIdEqualTo(userId).andIsDeleteEqualTo(false);
+        criteria.andUserIdEqualTo(userId);
         if(orderStatus != null) {
             criteria.andOrderStatusIn(orderStatus);
         }
+        criteria.andDeletedEqualTo(false);
         return (int)orderMapper.countByExample(example);
     }
 
@@ -107,6 +108,8 @@ public class LitemallOrderService {
         if(!StringUtils.isEmpty(orderSn)){
             criteria.andOrderSnEqualTo(orderSn);
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return orderMapper.selectByExample(example);
     }
@@ -121,19 +124,27 @@ public class LitemallOrderService {
         if(!StringUtils.isEmpty(orderSn)){
             criteria.andOrderSnEqualTo(orderSn);
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)orderMapper.countByExample(example);
     }
 
-    public void updateById(LitemallOrder brand) {
-        orderMapper.updateByPrimaryKeySelective(brand);
+    public void updateById(LitemallOrder order) {
+        orderMapper.updateByPrimaryKeySelective(order);
     }
 
     public void deleteById(Integer id) {
-        orderMapper.deleteByPrimaryKey(id);
+        LitemallOrder order = orderMapper.selectByPrimaryKey(id);
+        if(order == null){
+            return;
+        }
+        order.setDeleted(true);
+        orderMapper.updateByPrimaryKey(order);
     }
 
     public int count() {
         LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andDeletedEqualTo(false);
         return (int)orderMapper.countByExample(example);
     }
 }

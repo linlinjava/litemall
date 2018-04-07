@@ -17,7 +17,7 @@ public class LitemallFootprintService {
 
     public List<LitemallFootprint> queryByAddTime(Integer userId, Integer page, Integer size) {
         LitemallFootprintExample example = new LitemallFootprintExample();
-        example.or().andUserIdEqualTo(userId);
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         example.setOrderByClause(LitemallFootprint.Column.addTime.desc());
         PageHelper.startPage(page, size);
         return footprintMapper.selectByExample(example);
@@ -25,7 +25,7 @@ public class LitemallFootprintService {
 
     public int countByAddTime(Integer userId,Integer page, Integer size) {
         LitemallFootprintExample example = new LitemallFootprintExample();
-        example.or().andUserIdEqualTo(userId);
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return (int)footprintMapper.countByExample(example);
     }
 
@@ -33,8 +33,13 @@ public class LitemallFootprintService {
         return footprintMapper.selectByPrimaryKey(id);
     }
 
-    public int deleteById(Integer footprintId) {
-        return footprintMapper.deleteByPrimaryKey(footprintId);
+    public void deleteById(Integer id){
+        LitemallFootprint footprint = footprintMapper.selectByPrimaryKey(id);
+        if(footprint == null){
+            return;
+        }
+        footprint.setDeleted(true);
+        footprintMapper.updateByPrimaryKey(footprint);
     }
 
     public void add(LitemallFootprint footprint) {
@@ -51,6 +56,8 @@ public class LitemallFootprintService {
         if(!StringUtils.isEmpty(goodsId)){
             criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return footprintMapper.selectByExample(example);
     }
@@ -65,6 +72,8 @@ public class LitemallFootprintService {
         if(!StringUtils.isEmpty(goodsId)){
             criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)footprintMapper.countByExample(example);
     }
 

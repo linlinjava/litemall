@@ -17,26 +17,26 @@ public class LitemallKeywordService {
 
     public List<LitemallKeyword> queryDefaults() {
         LitemallKeywordExample example = new LitemallKeywordExample();
-        example.or().andIsDefaultEqualTo(true);
+        example.or().andIsDefaultEqualTo(true).andDeletedEqualTo(false);
         return keywordsMapper.selectByExample(example);
     }
 
     public LitemallKeyword queryDefault() {
         LitemallKeywordExample example = new LitemallKeywordExample();
-        example.or().andIsDefaultEqualTo(true);
+        example.or().andIsDefaultEqualTo(true).andDeletedEqualTo(false);
         return keywordsMapper.selectOneByExample(example);
     }
 
     public List<LitemallKeyword> queryHots() {
         LitemallKeywordExample example = new LitemallKeywordExample();
-        example.or().andIsHotEqualTo(true);
+        example.or().andIsHotEqualTo(true).andDeletedEqualTo(false);
         return keywordsMapper.selectByExample(example);
     }
 
     public List<LitemallKeyword> queryByKeyword(String keyword, Integer page, Integer size) {
         LitemallKeywordExample example = new LitemallKeywordExample();
         example.setDistinct(true);
-        example.or().andKeywordLike("%" + keyword + "%");
+        example.or().andKeywordLike("%" + keyword + "%").andDeletedEqualTo(false);
         PageHelper.startPage(page, size);
         return keywordsMapper.selectByExampleSelective(example, LitemallKeyword.Column.keyword);
     }
@@ -51,6 +51,8 @@ public class LitemallKeywordService {
         if (!StringUtils.isEmpty(url)) {
             criteria.andUrlLike("%" + url + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, limit);
         return keywordsMapper.selectByExampleSelective(example);
     }
@@ -65,6 +67,8 @@ public class LitemallKeywordService {
         if (!StringUtils.isEmpty(url)) {
             criteria.andUrlLike("%" + url + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, limit);
         return (int)keywordsMapper.countByExample(example);
     }
@@ -82,6 +86,11 @@ public class LitemallKeywordService {
     }
 
     public void deleteById(Integer id) {
-        keywordsMapper.deleteByPrimaryKey(id);
+        LitemallKeyword keywords = keywordsMapper.selectByPrimaryKey(id);
+        if(keywords == null){
+            return;
+        }
+        keywords.setDeleted(true);
+        keywordsMapper.updateByPrimaryKey(keywords);
     }
 }

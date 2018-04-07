@@ -16,7 +16,7 @@ public class LitemallProductService {
 
     public List<LitemallProduct> queryByGid(Integer gid) {
         LitemallProductExample example = new LitemallProductExample();
-        example.or().andGoodsIdEqualTo(gid);
+        example.or().andGoodsIdEqualTo(gid).andDeletedEqualTo(false);
         return productMapper.selectByExample(example);
     }
 
@@ -31,6 +31,8 @@ public class LitemallProductService {
         if(goodsId != null){
             criteria.andGoodsIdEqualTo(goodsId);
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return productMapper.selectByExample(example);
     }
@@ -42,6 +44,8 @@ public class LitemallProductService {
         if(goodsId != null){
             criteria.andGoodsIdEqualTo(goodsId);
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)productMapper.countByExample(example);
     }
 
@@ -50,7 +54,12 @@ public class LitemallProductService {
     }
 
     public void deleteById(Integer id) {
-        productMapper.deleteByPrimaryKey(id);
+        LitemallProduct product = productMapper.selectByPrimaryKey(id);
+        if(product == null){
+            return;
+        }
+        product.setDeleted(true);
+        productMapper.updateByPrimaryKey(product);
     }
 
     public void add(LitemallProduct product) {
@@ -59,6 +68,8 @@ public class LitemallProductService {
 
     public int count() {
         LitemallProductExample example = new LitemallProductExample();
+        example.or().andDeletedEqualTo(false);
+
         return (int)productMapper.countByExample(example);
     }
 }

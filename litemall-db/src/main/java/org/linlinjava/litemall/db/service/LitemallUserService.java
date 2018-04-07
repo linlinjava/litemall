@@ -20,7 +20,7 @@ public class LitemallUserService {
 
     public LitemallUser queryByOid(String openId) {
         LitemallUserExample example = new LitemallUserExample();
-        example.or().andWeixinOpenidEqualTo(openId);
+        example.or().andWeixinOpenidEqualTo(openId).andDeletedEqualTo(false);
         return userMapper.selectOneByExample(example);
     }
 
@@ -42,6 +42,8 @@ public class LitemallUserService {
         if(!StringUtils.isEmpty(mobile)){
             criteria.andMobileEqualTo(mobile);
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return userMapper.selectByExample(example);
     }
@@ -56,23 +58,36 @@ public class LitemallUserService {
         if(!StringUtils.isEmpty(mobile)){
             criteria.andMobileEqualTo(mobile);
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int) userMapper.countByExample(example);
     }
 
     public int count() {
         LitemallUserExample example = new LitemallUserExample();
+        example.or().andDeletedEqualTo(false);
+
         return (int)userMapper.countByExample(example);
     }
 
     public List<LitemallUser> queryByUsername(String username) {
         LitemallUserExample example = new LitemallUserExample();
-        example.or().andUsernameEqualTo(username);
+        example.or().andUsernameEqualTo(username).andDeletedEqualTo(false);
         return userMapper.selectByExample(example);
     }
 
     public List<LitemallUser> queryByMobile(String mobile) {
         LitemallUserExample example = new LitemallUserExample();
-        example.or().andMobileEqualTo(mobile);
+        example.or().andMobileEqualTo(mobile).andDeletedEqualTo(false);
         return userMapper.selectByExample(example);
+    }
+
+    public void deleteById(Integer id) {
+        LitemallUser user = userMapper.selectByPrimaryKey(id);
+        if(user == null){
+            return;
+        }
+        user.setDeleted(true);
+        userMapper.updateByPrimaryKey(user);
     }
 }

@@ -90,7 +90,7 @@
         </table>
         <table tableName="litemall_footprint">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-            <columnOverride javaType="java.time.LocalDate" column="add_time"/>
+            <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_goods">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />

@@ -19,7 +19,7 @@ public class LitemallGoodsSpecificationService {
 
     public List<LitemallGoodsSpecification> queryByGid(Integer id) {
         LitemallGoodsSpecificationExample example = new LitemallGoodsSpecificationExample();
-        example.or().andGoodsIdEqualTo(id);
+        example.or().andGoodsIdEqualTo(id).andDeletedEqualTo(false);
         return goodsSpecificationMapper.selectByExample(example);
     }
 
@@ -34,6 +34,8 @@ public class LitemallGoodsSpecificationService {
         if(goodsId != null){
             criteria.andGoodsIdEqualTo(goodsId);
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return goodsSpecificationMapper.selectByExample(example);
     }
@@ -45,6 +47,8 @@ public class LitemallGoodsSpecificationService {
         if(goodsId != null){
             criteria.andGoodsIdEqualTo(goodsId);
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)goodsSpecificationMapper.countByExample(example);
     }
 
@@ -53,7 +57,12 @@ public class LitemallGoodsSpecificationService {
     }
 
     public void deleteById(Integer id) {
-        goodsSpecificationMapper.deleteByPrimaryKey(id);
+        LitemallGoodsSpecification goodsSpecification = goodsSpecificationMapper.selectByPrimaryKey(id);
+        if(goodsSpecification == null){
+            return;
+        }
+        goodsSpecification.setDeleted(true);
+        goodsSpecificationMapper.updateByPrimaryKey(goodsSpecification);
     }
 
     public void add(LitemallGoodsSpecification goodsSpecification) {

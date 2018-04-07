@@ -17,15 +17,21 @@ public class LitemallIssueService {
 
     public List<LitemallIssue> query() {
         LitemallIssueExample example = new LitemallIssueExample();
+        example.or().andDeletedEqualTo(false);
         return issueMapper.selectByExample(example);
     }
 
-    public int deleteById(Integer id) {
-        return issueMapper.deleteByPrimaryKey(id);
+    public void deleteById(Integer id) {
+        LitemallIssue issue = issueMapper.selectByPrimaryKey(id);
+        if(issue == null){
+            return;
+        }
+        issue.setDeleted(true);
+        issueMapper.updateByPrimaryKey(issue);
     }
 
-    public void add(LitemallIssue searchHistory) {
-        issueMapper.insertSelective(searchHistory);
+    public void add(LitemallIssue issue) {
+        issueMapper.insertSelective(issue);
     }
 
     public List<LitemallIssue> querySelective(String question, Integer page, Integer size, String sort, String order) {
@@ -35,6 +41,8 @@ public class LitemallIssueService {
         if(!StringUtils.isEmpty(question)){
             criteria.andQuestionLike("%" + question + "%" );
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return issueMapper.selectByExample(example);
     }
@@ -46,11 +54,13 @@ public class LitemallIssueService {
         if(!StringUtils.isEmpty(question)){
             criteria.andQuestionLike("%" + question + "%" );
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)issueMapper.countByExample(example);
     }
 
-    public void updateById(LitemallIssue collect) {
-        issueMapper.updateByPrimaryKeySelective(collect);
+    public void updateById(LitemallIssue issue) {
+        issueMapper.updateByPrimaryKeySelective(issue);
     }
 
     public LitemallIssue findById(Integer id) {

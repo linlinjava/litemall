@@ -17,19 +17,21 @@ public class LitemallBrandService {
 
     public List<LitemallBrand> queryWithNew(int offset, int limit) {
         LitemallBrandExample example = new LitemallBrandExample();
-        example.or().andIsNewEqualTo(true);
+        example.or().andIsNewEqualTo(true).andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
         return brandMapper.selectByExample(example);
     }
 
     public List<LitemallBrand> query(int offset, int limit) {
         LitemallBrandExample example = new LitemallBrandExample();
+        example.or().andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
         return brandMapper.selectByExample(example);
     }
 
     public int queryTotalCount() {
         LitemallBrandExample example = new LitemallBrandExample();
+        example.or().andDeletedEqualTo(false);
         return (int)brandMapper.countByExample(example);
     }
 
@@ -47,6 +49,8 @@ public class LitemallBrandService {
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%" + name + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return brandMapper.selectByExample(example);
     }
@@ -61,6 +65,8 @@ public class LitemallBrandService {
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%" + name + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)brandMapper.countByExample(example);
     }
 
@@ -69,7 +75,12 @@ public class LitemallBrandService {
     }
 
     public void deleteById(Integer id) {
-        brandMapper.deleteByPrimaryKey(id);
+        LitemallBrand brand = brandMapper.selectByPrimaryKey(id);
+        if(brand == null){
+            return;
+        }
+        brand.setDeleted(true);
+        brandMapper.updateByPrimaryKey(brand);
     }
 
     public void add(LitemallBrand brand) {

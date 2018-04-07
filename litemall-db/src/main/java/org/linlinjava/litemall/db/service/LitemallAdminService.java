@@ -18,7 +18,7 @@ public class LitemallAdminService {
 
     public List<LitemallAdmin> findAdmin(String username) {
         LitemallAdminExample example = new LitemallAdminExample();
-        example.or().andUsernameEqualTo(username);
+        example.or().andUsernameEqualTo(username).andDeletedEqualTo(false);
         return adminMapper.selectByExample(example);
     }
 
@@ -30,6 +30,8 @@ public class LitemallAdminService {
         if(!StringUtils.isEmpty(username)){
             criteria.andUsernameLike("%" + username + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, limit);
         return adminMapper.selectByExampleSelective(example, result);
     }
@@ -41,6 +43,8 @@ public class LitemallAdminService {
         if(!StringUtils.isEmpty(username)){
             criteria.andUsernameLike("%" + username + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)adminMapper.countByExample(example);
     }
 
@@ -49,7 +53,12 @@ public class LitemallAdminService {
     }
 
     public void deleteById(Integer id) {
-        adminMapper.deleteByPrimaryKey(id);
+        LitemallAdmin admin = adminMapper.selectByPrimaryKey(id);
+        if(admin == null){
+            return;
+        }
+        admin.setDeleted(true);
+        adminMapper.updateByPrimaryKey(admin);
     }
 
     public void add(LitemallAdmin admin) {

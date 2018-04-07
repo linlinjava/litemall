@@ -21,7 +21,7 @@ public class LitemallSearchHistoryService {
 
     public List<LitemallSearchHistory> queryByUid(int uid) {
         LitemallSearchHistoryExample example = new LitemallSearchHistoryExample();
-        example.or().andUserIdEqualTo(uid);
+        example.or().andUserIdEqualTo(uid).andDeletedEqualTo(false);
         example.setDistinct(true);
         return searchHistoryMapper.selectByExampleSelective(example, LitemallSearchHistory.Column.keyword);
     }
@@ -29,11 +29,18 @@ public class LitemallSearchHistoryService {
     public void deleteByUid(int uid) {
         LitemallSearchHistoryExample example = new LitemallSearchHistoryExample();
         example.or().andUserIdEqualTo(uid);
-        searchHistoryMapper.deleteByExample(example);
+        LitemallSearchHistory searchHistory = new LitemallSearchHistory();
+        searchHistory.setDeleted(true);
+        searchHistoryMapper.updateByExampleSelective(searchHistory, example);
     }
 
-    public int deleteById(Integer id) {
-        return searchHistoryMapper.deleteByPrimaryKey(id);
+    public void deleteById(Integer id) {
+        LitemallSearchHistory searchHistory = searchHistoryMapper.selectByPrimaryKey(id);
+        if(searchHistory == null){
+            return;
+        }
+        searchHistory.setDeleted(true);
+        searchHistoryMapper.updateByPrimaryKey(searchHistory);
     }
 
     public void add(LitemallSearchHistory searchHistory) {
@@ -50,6 +57,8 @@ public class LitemallSearchHistoryService {
         if(!StringUtils.isEmpty(keyword)){
             criteria.andKeywordLike("%" + keyword + "%" );
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, size);
         return searchHistoryMapper.selectByExample(example);
     }
@@ -64,6 +73,8 @@ public class LitemallSearchHistoryService {
         if(!StringUtils.isEmpty(keyword)){
             criteria.andKeywordLike("%" + keyword + "%" );
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)searchHistoryMapper.countByExample(example);
     }
 

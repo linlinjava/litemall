@@ -17,24 +17,26 @@ public class LitemallTopicService {
 
     public List<LitemallTopic> queryList(int offset, int limit) {
         LitemallTopicExample example = new LitemallTopicExample();
+        example.or().andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
         return topicMapper.selectByExampleWithBLOBs(example);
     }
 
     public int queryTotal() {
         LitemallTopicExample example = new LitemallTopicExample();
+        example.or().andDeletedEqualTo(false);
         return (int)topicMapper.countByExample(example);
     }
 
     public LitemallTopic findById(Integer id) {
         LitemallTopicExample example = new LitemallTopicExample();
-        example.or().andIdEqualTo(id);
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         return topicMapper.selectOneByExampleWithBLOBs(example);
     }
 
     public List<LitemallTopic> queryRelatedList(Integer id, int offset, int limit) {
         LitemallTopicExample example = new LitemallTopicExample();
-        example.or().andIdEqualTo(id);
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         List<LitemallTopic> topics = topicMapper.selectByExample(example);
         if(topics.size() == 0){
             return queryList(offset, limit);
@@ -42,7 +44,7 @@ public class LitemallTopicService {
         LitemallTopic topic = topics.get(0);
 
         example = new LitemallTopicExample();
-        example.or().andIdNotEqualTo(topic.getId());
+        example.or().andIdNotEqualTo(topic.getId()).andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
         List<LitemallTopic> relateds = topicMapper.selectByExampleWithBLOBs(example);
         if(relateds.size() != 0){
@@ -62,6 +64,8 @@ public class LitemallTopicService {
         if(!StringUtils.isEmpty(subtitle)){
             criteria.andSubtitleLike("%" + subtitle + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         PageHelper.startPage(page, limit);
         return topicMapper.selectByExampleWithBLOBs(example);
     }
@@ -76,6 +80,8 @@ public class LitemallTopicService {
         if(!StringUtils.isEmpty(subtitle)){
             criteria.andSubtitleLike("%" + subtitle + "%");
         }
+        criteria.andDeletedEqualTo(false);
+
         return (int)topicMapper.countByExample(example);
     }
 
@@ -86,13 +92,16 @@ public class LitemallTopicService {
     }
 
     public void deleteById(Integer id) {
-        LitemallTopicExample example = new LitemallTopicExample();
-        example.or().andIdEqualTo(id);
-        topicMapper.deleteByExample(example);
+        LitemallTopic topic = topicMapper.selectByPrimaryKey(id);
+        if(topic == null){
+            return;
+        }
+        topic.setDeleted(true);
+        topicMapper.updateByPrimaryKeySelective(topic);
     }
 
-    public void add(LitemallTopic ad) {
-        topicMapper.insertSelective(ad);
+    public void add(LitemallTopic topic) {
+        topicMapper.insertSelective(topic);
     }
 
 
