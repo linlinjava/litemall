@@ -98,7 +98,7 @@ public class WxGoodsController {
             c.put("picList", comment.getPicUrls());
             commentsVo.add(c);
         }
-        Map<String, Object> commentList = new HashMap();
+        Map<String, Object> commentList = new HashMap<>();
         commentList.put("count", commentCount);
         commentList.put("data", commentsVo);
 
@@ -111,13 +111,13 @@ public class WxGoodsController {
         // 记录用户的足迹
         if(userId != null) {
             LitemallFootprint footprint = new LitemallFootprint();
-            footprint.setAddTime(LocalDate.now());
+            footprint.setAddTime(LocalDateTime.now());
             footprint.setUserId(userId);
             footprint.setGoodsId(id);
             footprintService.add(footprint);
         }
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<>();
         data.put("info", info);
         data.put("userHasCollect", userHasCollect);
         data.put("issue", issue);

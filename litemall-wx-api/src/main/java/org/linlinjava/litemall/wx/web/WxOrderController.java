@@ -353,9 +353,8 @@ public class WxOrderController {
 
         // 订单order_status没有字段用于标识删除
         // 而是存在专门的is_delete字段表示是否删除
-        order.setIsDelete(true);
+        orderService.deleteById(orderId);
 
-        orderService.update(order);
         return ResponseUtil.ok();
     }
 

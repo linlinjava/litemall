@@ -37,7 +37,7 @@ public class WxHomeController {
      */
     @RequestMapping("/index")
     public Object index() {
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<>();
 
         List<LitemallAd> banner = adService.queryByApid(1);
         data.put("banner", banner);
