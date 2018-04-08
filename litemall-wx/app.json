@@ -67,7 +67,7 @@
         "pagePath": "pages/ucenter/index/index",
         "iconPath": "static/images/ic_menu_me_nor.png",
         "selectedIconPath": "static/images/ic_menu_me_pressed.png",
-        "text": "我的"
+        "text": "个人"
       }
     ]
   },
