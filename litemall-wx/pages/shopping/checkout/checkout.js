@@ -109,27 +109,43 @@ Page({
       // 目前不能支持微信支付，这里仅仅是模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
       wx.showModal({
         title: '目前不能微信支付',
-        content: '点击确定模拟支付成功',
-        showCancel: false,
-        success: function(res) {        
-          wx.redirectTo({
-            url: '/pages/payResult/payResult?status=true&orderId=' + orderId
-          });
+        content: '点击确定模拟支付成功，点击取消模拟未支付成功',
+        success: function(res) {
+          if (res.confirm) {
+            util.request(api.OrderPay, { orderId: orderId }, 'POST').then(res => {
+              if (res.errno === 0) {
+                wx.redirectTo({
+                  url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+                });
+              }
+              else{
+                wx.redirectTo({
+                  url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+                });
+              }
+            });
+          }
+          else if (res.cancel) {
+            wx.redirectTo({
+              url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+            });
+          }
+
         }
       });
 
       //   pay.payOrder(orderId).then(res => {
       //     wx.redirectTo({
-      //       url: '/pages/payResult/payResult?status=true&orderId=' + orderId
+      //       url: '/pages/payResult/payResult?status=1&orderId=' + orderId
       //     });
       //   }).catch(res => {
       //     wx.redirectTo({
-      //       url: '/pages/payResult/payResult?status=false&orderId=' + orderId
+      //       url: '/pages/payResult/payResult?status=0&orderId=' + orderId
       //     });
       //   });
       // } else {
       //   wx.redirectTo({
-      //     url: '/pages/payResult/payResult?status=false&orderId=' + orderId
+      //     url: '/pages/payResult/payResult?status=0&orderId=' + orderId
       //   });
       }
     });

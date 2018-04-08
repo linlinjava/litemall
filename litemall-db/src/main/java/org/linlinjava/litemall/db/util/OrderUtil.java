@@ -28,7 +28,7 @@ public class OrderUtil {
     public static final Short STATUS_PAY = 201;
     public static final Short STATUS_SHIP= 301;
     public static final Short STATUS_CONFIRM = 401;
-    public static final Short STATUS_CANCEL= 201;
+    public static final Short STATUS_CANCEL= 102;
     public static final Short STATUS_REFUND = 202;
     public static final Short STATUS_AUTO_CONFIRM= 402;
 

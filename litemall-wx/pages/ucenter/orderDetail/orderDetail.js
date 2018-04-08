@@ -35,7 +35,7 @@ Page({
     let that = this;
     util.request(api.PayPrepayId, {
       orderId: that.data.orderId
-    }).then(function (res) {
+    }, 'POST').then(function (res) {
       if (res.errno === 0) {
         const payParam = res.data;
         wx.requestPayment({
@@ -67,7 +67,7 @@ Page({
         if (res.confirm) {
           util.request(api.OrderCancel, {
             orderId: orderInfo.id
-          }).then(function (res) {
+          }, 'POST').then(function (res) {
             if (res.errno === 0) {
               wx.showToast({
                 title: '取消订单成功'
@@ -94,7 +94,7 @@ Page({
         if (res.confirm) {
           util.request(api.OrderRefund, {
             orderId: orderInfo.id
-          }).then(function (res) {
+          }, 'POST').then(function (res) {
             if (res.errno === 0) {
               wx.showToast({
                 title: '取消订单成功'
@@ -109,7 +109,7 @@ Page({
       }
     });
   },  
-  // “取消订单并退款”点击效果
+  // “删除”点击效果
   deleteOrder: function () {
     let that = this;
     let orderInfo = that.data.orderInfo;
@@ -121,7 +121,7 @@ Page({
         if (res.confirm) {
           util.request(api.OrderDelete, {
             orderId: orderInfo.id
-          }).then(function (res) {
+          }, 'POST').then(function (res) {
             if (res.errno === 0) {
               wx.showToast({
                 title: '删除订单成功'
@@ -148,7 +148,7 @@ Page({
         if (res.confirm) {
           util.request(api.OrderConfirm, {
             orderId: orderInfo.id
-          }).then(function (res) {
+          }, 'POST').then(function (res) {
             if (res.errno === 0) {
               wx.showToast({
                 title: '确认收货成功！'
