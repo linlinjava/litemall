@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.linlinjava.litemall.db.domain.LitemallCollect;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.LitemallCollectService;
@@ -8,10 +9,7 @@ import org.linlinjava.litemall.db.util.JacksonUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,19 +27,36 @@ public class WxCollectController {
     private LitemallGoodsService goodsService;
 
     /**
-     * 获取用户收藏
+     * 用户收藏列表
+     *
+     * @param userId 用户ID
+     * @param typeId 类型ID
+     *    目前没有使用
+     * @param page 分页页数
+     * @param size 分页大小
+     * @return 用户收藏列表
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              collectList: xxx,
+     *              totalPages: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("list")
+    @GetMapping("list")
     public Object list(@LoginUser Integer userId, Integer typeId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(typeId == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
-
 
         List<LitemallCollect> collectList = collectService.queryByType(userId, typeId, page, size);
         int count = collectService.countByType(userId, typeId);
@@ -70,19 +85,37 @@ public class WxCollectController {
     }
 
     /**
-     * 获取用户收藏
+     * 用户收藏添加或删除
+     *
+     * @param userId 用户ID
+     * @param body 请求内容
+     * @return 操作结果
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              type: xxx,
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("addordelete")
+    @PostMapping("addordelete")
     public Object addordelete(@LoginUser Integer userId, @RequestBody String body) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(body == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         Integer typeId = JacksonUtil.parseInteger(body, "typeId");
         Integer valueId = JacksonUtil.parseInteger(body, "valueId");
+        if(!ObjectUtils.allNotNull(typeId, valueId)){
+            return ResponseUtil.badArgument();
+        }
+
         LitemallCollect collect = collectService.queryByTypeAndValue(userId, typeId, valueId);
 
         String handleType = null;

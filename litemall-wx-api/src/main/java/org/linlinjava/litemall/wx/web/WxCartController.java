@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
@@ -8,9 +9,7 @@ import org.linlinjava.litemall.db.util.JacksonUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -35,13 +34,28 @@ public class WxCartController {
     private LitemallAddressService addressService;
     @Autowired
     private LitemallCouponService apiCouponService;
+
     /**
-     * 获取购物车
+     * 购物车
+     *
+     * @param userId 用户ID
+     * @return 购物车
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              cartList: xxx,
+     *              cartTotal: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("index")
+    @GetMapping("index")
     public Object index(@LoginUser Integer userId) {
         if(userId == null){
-            return ResponseUtil.fail(401, "请登录");
+            return ResponseUtil.unlogin();
         }
         
         List<LitemallCart> cartList = cartService.queryByUid(userId);
@@ -72,8 +86,21 @@ public class WxCartController {
 
     /**
      * 添加商品加入购物车
+     * 如果已经存在购物车货品，则添加数量；
+     * 否则添加新的购物车货品项。
+     *
+     * @param userId 用户ID
+     * @param cart 购物车商品信息， { goodsId: xxx, productId: xxx, number: xxx }
+     * @return 加入购物车操作结果
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("add")
+    @PostMapping("add")
     public Object add(@LoginUser Integer userId, @RequestBody LitemallCart cart) {
         if(userId == null){
             return ResponseUtil.unlogin();
@@ -85,6 +112,9 @@ public class WxCartController {
         Integer productId = cart.getProductId();
         Integer number = cart.getNumber().intValue();
         Integer goodsId = cart.getGoodsId();
+        if(!ObjectUtils.allNotNull(productId, number, goodsId)){
+            return ResponseUtil.badArgument();
+        }
 
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
@@ -102,17 +132,17 @@ public class WxCartController {
             }
 
             Integer[] ids = product.getGoodsSpecificationIds();
-            String goodsSepcifitionValue = null;
+            String goodsSpecificationValue = null;
             for(Integer id : ids){
                 LitemallGoodsSpecification goodsSpecification = goodsSpecificationService.findById(id);
                 if(goodsSpecification == null || !goodsSpecification.getGoodsId().equals(goodsId)){
                     return ResponseUtil.badArgument();
                 }
-                if(goodsSepcifitionValue == null){
-                    goodsSepcifitionValue = goodsSpecification.getValue();
+                if(goodsSpecificationValue == null){
+                    goodsSpecificationValue = goodsSpecification.getValue();
                 }
                 else {
-                    goodsSepcifitionValue = goodsSepcifitionValue + " " + goodsSpecification.getValue();
+                    goodsSpecificationValue = goodsSpecificationValue + " " + goodsSpecification.getValue();
                 }
             }
 
@@ -122,7 +152,7 @@ public class WxCartController {
             cart.setPicUrl(goods.getPrimaryPicUrl());
             cart.setRetailPrice(product.getRetailPrice());
             cart.setGoodsSpecificationIds(product.getGoodsSpecificationIds());
-            cart.setGoodsSpecificationValues(goodsSepcifitionValue);
+            cart.setGoodsSpecificationValues(goodsSpecificationValue);
             cart.setUserId(userId);
             cart.setChecked(true);
             cartService.add(cart);
@@ -144,10 +174,21 @@ public class WxCartController {
      * 立即购买商品
      *
      * 和 前面一个方法add的区别在于
-     * 1. 如果购物车内有相同商品存在，前者的逻辑是数量添加，这里的逻辑是数量覆盖
+     * 1. 如果购物车内已经存在购物车货品，前者的逻辑是数量添加，这里的逻辑是数量覆盖
      * 2. 添加成功以后，前者的逻辑是返回当前购物车商品数量，这里的逻辑是返回对应购物车项的ID
+     *
+     * @param userId 用户ID
+     * @param cart 购物车商品信息， { goodsId: xxx, productId: xxx, number: xxx }
+     * @return 即购买操作结果
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("fastadd")
+    @PostMapping("fastadd")
     public Object fastadd(@LoginUser Integer userId, @RequestBody LitemallCart cart) {
         if(userId == null){
             return ResponseUtil.unlogin();
@@ -159,6 +200,9 @@ public class WxCartController {
         Integer productId = cart.getProductId();
         Integer number = cart.getNumber().intValue();
         Integer goodsId = cart.getGoodsId();
+        if(!ObjectUtils.allNotNull(productId, number, goodsId)){
+            return ResponseUtil.badArgument();
+        }
 
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
@@ -176,17 +220,17 @@ public class WxCartController {
             }
 
             Integer[] ids = product.getGoodsSpecificationIds();
-            String goodsSepcifitionValue = null;
+            String goodsSpecificationValue = null;
             for(Integer id : ids){
                 LitemallGoodsSpecification goodsSpecification = goodsSpecificationService.findById(id);
                 if(goodsSpecification == null || !goodsSpecification.getGoodsId().equals(goodsId)){
                     return ResponseUtil.badArgument();
                 }
-                if(goodsSepcifitionValue == null){
-                    goodsSepcifitionValue = goodsSpecification.getValue();
+                if(goodsSpecificationValue == null){
+                    goodsSpecificationValue = goodsSpecification.getValue();
                 }
                 else {
-                    goodsSepcifitionValue = goodsSepcifitionValue + " " + goodsSpecification.getValue();
+                    goodsSpecificationValue = goodsSpecificationValue + " " + goodsSpecification.getValue();
                 }
             }
 
@@ -196,7 +240,7 @@ public class WxCartController {
             cart.setPicUrl(goods.getPrimaryPicUrl());
             cart.setRetailPrice(product.getRetailPrice());
             cart.setGoodsSpecificationIds(product.getGoodsSpecificationIds());
-            cart.setGoodsSpecificationValues(goodsSepcifitionValue);
+            cart.setGoodsSpecificationValues(goodsSpecificationValue);
             cart.setUserId(userId);
             cart.setChecked(true);
             cartService.add(cart);
@@ -217,34 +261,42 @@ public class WxCartController {
     /**
      * 更新指定的购物车信息
      * 目前只支持修改商品的数量
+     *
+     * @param userId 用户ID
+     * @param cart 购物车商品信息， { id: xxx, goodsId: xxx, productId: xxx, number: xxx }
+     * @return 更新购物车操作结果
+     *   成功则 { errno: 0, errmsg: '成功' }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("update")
+    @PostMapping("update")
     public Object update(@LoginUser Integer userId, @RequestBody LitemallCart cart) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(cart == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
-        
         Integer productId = cart.getProductId();
         Integer number = cart.getNumber().intValue();
         Integer goodsId = cart.getGoodsId();
         Integer id = cart.getId();
+        if(!ObjectUtils.allNotNull(id, productId, number, goodsId)){
+            return ResponseUtil.badArgument();
+        }
 
         //判断是否存在该订单
         // 如果不存在，直接返回错误
         LitemallCart existCart = cartService.findById(id);
         if(existCart == null){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgumentValue();
         }
 
         // 判断goodsId和productId是否与当前cart里的值一致
         if(!existCart.getGoodsId().equals(goodsId)){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgumentValue();
         }
         if(!existCart.getProductId().equals(productId)){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgumentValue();
         }
 
         //判断商品是否可以购买
@@ -265,24 +317,37 @@ public class WxCartController {
     }
 
     /**
-     * 是否选择商品，如果已经选择，则取消选择，批量操作
+     * 购物车商品勾选
+     * 如果原来没有勾选，则设置勾选状态；如果商品已经勾选，则设置非勾选状态。
+     *
+     * @param userId 用户ID
+     * @param body 购物车商品信息， { productIds: xxx }
+     * @return 购物车信息
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("checked")
+    @PostMapping("checked")
     public Object checked(@LoginUser Integer userId, @RequestBody String body) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(body == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
         
         List<Integer> productIds = JacksonUtil.parseIntegerList(body, "productIds");
         if(productIds == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
+
         Integer checkValue = JacksonUtil.parseInteger(body, "isChecked");
         if(checkValue == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
         Boolean isChecked = ((checkValue.intValue()) == 1);
 
@@ -290,29 +355,53 @@ public class WxCartController {
         return index(userId);
     }
 
-    //删除选中的购物车商品，批量删除
-    @RequestMapping("delete")
+    /**
+     * 购物车商品删除
+     * 如果原来没有勾选，则设置勾选状态；如果商品已经勾选，则设置非勾选状态。
+     *
+     * @param userId 用户ID
+     * @param body 购物车商品信息， { productIds: xxx }
+     * @return 购物车信息
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
+     */
+    @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody String body) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(body == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
         
         List<Integer> productIds = JacksonUtil.parseIntegerList(body, "productIds");
 
         if(productIds == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         cartService.delete(productIds, 1);
         return index(userId);
     }
 
-    /*
-     * 获取购物车商品的总件件数
-     * 用户也是可选登录，如果没有登录，则返回空数据
+    /**
+     * 购物车商品数量
+     * 如果用户没有登录，则返回空数据。
+     *
+     * @param userId 用户ID
+     * @return 购物车商品数量
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
     @RequestMapping("goodscount")
     public Object goodscount(@LoginUser Integer userId) {
@@ -330,12 +419,41 @@ public class WxCartController {
     }
 
     /**
-     * 订单提交前的检验和填写相关订单信息
+     * 购物车下单信息
+     *
+     * @param userId 用户ID
+     * @param cartId 购物车商品ID
+     *    如果购物车商品ID是空，则下单当前用户所有购物车商品；
+     *    如果购物车商品ID非空，则只下单当前购物车商品。
+     * @param addressId 收货地址ID
+     *    如果收货地址ID是空，则查询当前用户的默认地址。
+     * @param couponId 优惠券ID
+     *    目前不支持
+     * @return 购物车下单信息
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *      {
+     *          addressId: xxx,
+     *          checkedAddress: xxx,
+     *          couponId: xxx,
+     *          checkedCoupon: xxx,
+     *          goodsTotalPrice: xxx,
+     *          freightPrice: xxx,
+     *          couponPrice: xxx,
+     *          orderTotalPrice: xxx,
+     *          actualPrice: xxx,
+     *          checkedGoodsList: xxx
+     *      }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("checkout")
+    @GetMapping("checkout")
     public Object checkout(@LoginUser Integer userId, Integer cartId, Integer addressId, Integer couponId) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
 
         // 收货地址
@@ -398,29 +516,38 @@ public class WxCartController {
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
         Map<String, Object> data = new HashMap();
+        data.put("addressId", addressId);
         data.put("checkedAddress", checkedAddress);
-        data.put("freightPrice", freightPrice);
+        data.put("couponId", couponId);
         data.put("checkedCoupon", 0);
-        data.put("couponList", "");
-        data.put("couponPrice", couponPrice);
-        data.put("checkedGoodsList", checkedGoodsList);
         data.put("goodsTotalPrice", checkedGoodsPrice);
+        data.put("freightPrice", freightPrice);
+        data.put("couponPrice", couponPrice);
         data.put("orderTotalPrice", orderTotalPrice);
         data.put("actualPrice", actualPrice);
-        data.put("addressId", addressId);
-        data.put("couponId", couponId);
+        data.put("checkedGoodsList", checkedGoodsList);
         return ResponseUtil.ok(data);
-
     }
 
     /**
-     * 选择优惠券列表
+     * 商品优惠券列表
+     * 目前不支持
+     *
+     * @param userId 用户ID
+     * @return 商品优惠券信息
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("checkedCouponList")
+    @GetMapping("checkedCouponList")
     public Object checkedCouponList(@LoginUser Integer userId) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
-        return ResponseUtil.fail501();
+        return ResponseUtil.unsupport();
     }
 }

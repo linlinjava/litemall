@@ -8,10 +8,7 @@ import org.linlinjava.litemall.db.util.JacksonUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,27 +24,34 @@ public class WxFootprintController {
     private LitemallGoodsService goodsService;
 
     /**
+     * 删除用户足迹
+     *
+     * @param userId 用户ID
+     * @param body 请求内容， { footprintId: xxx }
+     * @return 删除操作结果
+     *   成功则 { errno: 0, errmsg: '成功' }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("delete")
+    @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody String body) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(body == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         Integer footprintId = JacksonUtil.parseInteger(body, "footprintId");
         if(footprintId == null){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgument();
         }
         LitemallFootprint footprint = footprintService.findById(footprintId);
 
         if(footprint == null){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgumentValue();
         }
         if(!footprint.getUserId().equals(userId)){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgumentValue();
         }
 
         footprintService.deleteById(footprintId);
@@ -55,13 +59,29 @@ public class WxFootprintController {
     }
 
     /**
+     * 用户足迹列表
+     *
+     * @param page 分页页数
+     * @param size 分页大小
+     * @return 用户足迹列表
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              footprintList: xxx,
+     *              totalPages: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("list")
+    @GetMapping("list")
     public Object list(@LoginUser Integer userId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
 
         List<LitemallFootprint> footprintList = footprintService.queryByAddTime(userId, page, size);
@@ -85,7 +105,7 @@ public class WxFootprintController {
         }
 
 
-        Map<String, Object> result = new HashMap();
+        Map<String, Object> result = new HashMap<>();
         result.put("footprintList", footprintVoList);
         result.put("totalPages", totalPages);
         return ResponseUtil.ok(result);

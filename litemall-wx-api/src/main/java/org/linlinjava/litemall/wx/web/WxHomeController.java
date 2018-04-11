@@ -6,6 +6,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +35,25 @@ public class WxHomeController {
 
     /**
      * app首页
+     *
+     * @return app首页相关信息
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              banner: xxx,
+     *              channel: xxx,
+     *              newGoodsList: xxx,
+     *              hotGoodsList: xxx,
+     *              topicList: xxx,
+     *              floorGoodsList: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("/index")
+    @GetMapping("/index")
     public Object index() {
         Map<String, Object> data = new HashMap<>();
 

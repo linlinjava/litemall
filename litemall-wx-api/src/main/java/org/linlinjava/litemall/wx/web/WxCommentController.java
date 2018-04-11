@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.linlinjava.litemall.db.domain.LitemallComment;
 import org.linlinjava.litemall.db.service.LitemallCommentService;
 import org.linlinjava.litemall.db.service.LitemallCouponService;
@@ -9,10 +10,7 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.linlinjava.litemall.wx.dao.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,14 +33,29 @@ public class WxCommentController {
 
     /**
      * 发表评论
+     *
+     * TODO, 对于评论，应该检测用户是否有权限评论。
+     * 1. 如果用户没有购买过商品，则不能发表对该商品的评论
+     * 2. 如果用户购买商品后规定时间内没有评论，则过期也不能再评论
+     *
+     * @param userId 用户ID
+     * @param comment 评论内容
+     * @return 发表评论操作结果
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("post")
+    @PostMapping("post")
     public Object post(@LoginUser Integer userId, @RequestBody LitemallComment comment) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(comment == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         comment.setAddTime(LocalDateTime.now());
@@ -52,8 +65,24 @@ public class WxCommentController {
     }
 
     /**
+     * 评论数量
+     *
+     * @param typeId 类型ID。 如果是0，则查询商品评论；如果是1，则查询专题评论。
+     * @param valueId 商品或专题ID。如果typeId是0，则是商品ID；如果typeId是1，则是专题ID。
+     * @return 评论数量
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              allCount: xxx,
+     *              hasPicCount: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("count")
+    @GetMapping("count")
     public Object count(Byte typeId, Integer valueId) {
         int allCount = commentService.count(typeId, valueId, 0, 0, 0);
         int hasPicCount = commentService.count(typeId, valueId, 1, 0, 0);
@@ -64,18 +93,32 @@ public class WxCommentController {
     }
 
     /**
-     * @param typeId
-     * @param valueId
-     * @param showType 选择评论的类型 0 全部， 1 只显示图片
-     * @param page
-     * @param size
-     * @return
+     * 评论列表
+     *
+     * @param typeId 类型ID。 如果是0，则查询商品评论；如果是1，则查询专题评论。
+     * @param valueId 商品或专题ID。如果typeId是0，则是商品ID；如果typeId是1，则是专题ID。
+     * @param showType 显示类型。如果是0，则查询全部；如果是1，则查询有图片的评论。
+     * @param page 分页页数
+     * @param size 分页大小
+     * @return 评论列表
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              data: xxx,
+     *              count: xxx，
+     *              currentPage: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("list")
+    @GetMapping("list")
     public Object list(Byte typeId, Integer valueId, Integer showType,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        if(typeId == null || valueId == null || showType == null){
+        if(!ObjectUtils.allNotNull(typeId, valueId, showType)){
             return ResponseUtil.badArgument();
         }
 

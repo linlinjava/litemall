@@ -41,6 +41,22 @@ public class WxAuthController {
 
     /**
      * 账号登录
+     *
+     * @param body 请求内容，{ username: xxx, password: xxx }
+     * @param request 请求对象
+     * @return 登录结果
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              token: xxx,
+     *              tokenExpire: xxx,
+     *              userInfo: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
     @RequestMapping("login")
     public Object login(@RequestBody String body, HttpServletRequest request) {
@@ -84,6 +100,22 @@ public class WxAuthController {
 
     /**
      * 微信登录
+     *
+     * @param body 请求内容，{ code: xxx, userInfo: xxx }
+     * @param request 请求对象
+     * @return 登录结果
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              token: xxx,
+     *              tokenExpire: xxx,
+     *              userInfo: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
     @RequestMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody String body, HttpServletRequest request) {
@@ -150,6 +182,29 @@ public class WxAuthController {
 
     /**
      * 账号注册
+     *
+     * @param body 请求内容
+     *  {
+     *      username: xxx,
+     *      password: xxx,
+     *      mobile: xxx
+     *      code: xxx
+     *  }
+     *  其中code是手机验证码，目前还不支持手机短信验证码
+     * @param request 请求对象
+     * @return 登录结果
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              token: xxx,
+     *              tokenExpire: xxx,
+     *              userInfo: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("register")
     public Object register(@RequestBody String body, HttpServletRequest request) {
@@ -209,6 +264,18 @@ public class WxAuthController {
 
     /**
      * 账号密码重置
+     *
+     * @param body 请求内容
+     *  {
+     *      password: xxx,
+     *      mobile: xxx
+     *      code: xxx
+     *  }
+     *  其中code是手机验证码，目前还不支持手机短信验证码
+     * @param request 请求对象
+     * @return 登录结果
+     *   成功则 { errno: 0, errmsg: '成功' }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("reset")
     public Object reset(@RequestBody String body, HttpServletRequest request) {

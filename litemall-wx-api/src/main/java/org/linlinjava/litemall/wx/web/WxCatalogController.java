@@ -4,6 +4,7 @@ import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,11 +20,28 @@ public class WxCatalogController {
     private LitemallCategoryService categoryService;
 
     /**
-     * 获取分类栏目数据
-     * 参数id是可选的，如果没有设置，则选择第一个一级目录
-     * 这里的id应该是一级目录的id。
+     * 分类栏目
+     *
+     * @param id 分类类目ID
+     *    如果分类类目ID是空，则选择第一个分类类目。
+     *    需要注意，这里分类类目是一级类目
+     * @param page 分页页数
+     * @param size 分页大小
+     * @return 分类栏目
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              categoryList: xxx,
+     *              currentCategory: xxx,
+     *              currentSubCategory: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("index")
+    @GetMapping("index")
     public Object index(Integer id,
                         @RequestParam(value = "page", defaultValue = "1") Integer page,
                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
@@ -54,12 +72,26 @@ public class WxCatalogController {
     }
 
     /**
-     * 这里的参数id是一级目录的id。
+     * 当前分类栏目
+     *
+     * @param id 分类类目ID
+     * @return 当前分类栏目
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              currentCategory: xxx,
+     *              currentSubCategory: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("current")
+    @GetMapping("current")
     public Object current(Integer id) {
         if(id == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         // 当前分类

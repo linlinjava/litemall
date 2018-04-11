@@ -6,6 +6,7 @@ import org.linlinjava.litemall.db.domain.LitemallBrand;
 import org.linlinjava.litemall.db.service.LitemallBrandService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +24,24 @@ public class WxBrandController {
     private LitemallBrandService brandService;
 
     /**
-     * 分页获取品牌
+     * 品牌列表
+     *
+     * @param page 分页页数
+     * @param size 分页大小
+     * @return 品牌列表
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              brandList: xxx,
+     *              totalPages: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("list")
+    @GetMapping("list")
     public Object list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
@@ -41,18 +57,31 @@ public class WxBrandController {
 
     /**
      * 品牌详情
+     *
+     * @param id 品牌ID
+     * @return 品牌详情
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *          {
+     *              brand: xxx
+     *          }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("detail")
+    @GetMapping("detail")
     public Object detail(Integer id) {
         if(id == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         LitemallBrand entity = brandService.findById(id);
-
         if(entity == null){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgumentValue();
         }
+
         Map<String, Object> data = new HashMap();
         data.put("brand",entity);
         return ResponseUtil.ok(data);

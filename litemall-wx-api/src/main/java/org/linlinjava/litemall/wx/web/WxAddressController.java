@@ -8,10 +8,7 @@ import org.linlinjava.litemall.db.service.LitemallRegionService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,13 +24,24 @@ public class WxAddressController {
     private LitemallAddressService addressService;
     @Autowired
     private LitemallRegionService regionService;
+
     /**
-     * 获取用户的收货地址
+     * 用户收货地址列表
+     *
+     * @param userId 用户ID
+     * @return 收货地址列表
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data: xxx
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("list")
+    @GetMapping("list")
     public Object list(@LoginUser Integer userId) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         List<LitemallAddress> addressList = addressService.queryByUid(userId);
         List<Map<String, Object>> addressVoList = new ArrayList<>(addressList.size());
@@ -56,9 +64,33 @@ public class WxAddressController {
     }
 
     /**
-     * 获取收货地址的详情
+     * 收货地址详情
+     *
+     * @param userId 用户ID
+     * @param id 收获地址ID
+     * @return 收货地址详情
+     *   成功则
+     *  {
+     *      errno: 0,
+     *      errmsg: '成功',
+     *      data:
+     *        {
+     *           id: xxx,
+     *           name: xxx,
+     *           provinceId: xxx,
+     *           cityId: xxx,
+     *           districtId: xxx,
+     *           mobile: xxx,
+     *           address: xxx,
+     *           isDefault: xxx,
+     *           provinceName: xxx,
+     *           cityName: xxx,
+     *           areaName: xxx
+     *        }
+     *  }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("detail")
+    @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, Integer id) {
         if(userId == null){
             return ResponseUtil.fail401();
@@ -92,6 +124,12 @@ public class WxAddressController {
 
     /**
      * 添加或更新收货地址
+     *
+     * @param userId 用户ID
+     * @param address 用户收货地址
+     * @return 添加或更新操作结果
+     *   成功则 { errno: 0, errmsg: '成功' }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("save")
     public Object save(@LoginUser Integer userId, @RequestBody LitemallAddress address) {
@@ -107,7 +145,7 @@ public class WxAddressController {
             addressService.resetDefault(userId);
         }
 
-        if (address.getId() == null || address.getId() == 0) {
+        if (address.getId() == null || address.getId().equals(0)) {
             address.setId(null);
             address.setUserId(userId);
             addressService.add(address);
@@ -119,9 +157,15 @@ public class WxAddressController {
     }
 
     /**
-     * 删除指定的收货地址
+     * 删除收货地址
+     *
+     * @param userId 用户ID
+     * @param address 用户收货地址
+     * @return 删除结果
+     *   成功则 { errno: 0, errmsg: '成功' }
+     *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("delete")
+    @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody LitemallAddress address) {
         if(userId == null){
             return ResponseUtil.fail401();
