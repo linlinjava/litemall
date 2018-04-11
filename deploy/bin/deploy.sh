@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # 请注意
-# 1. 本脚本的作用是停止当前Spring Boot应用，然后再次部署，此外解压缩litemall-admin的静态文件
-# 2. litemall-admin解压目录是 /home/ubuntu/deploy/litemall-admin/dist，
+# 1. 本脚本的作用是停止当前Spring Boot应用，然后再次部署
+# 2. 解压dist.tar到/home/ubuntu/deploy/litemall-admin/dist，
 #    而这个目录也正是tomcat配置静态文件目录的路径（见1.5.3.5节）
 
 
