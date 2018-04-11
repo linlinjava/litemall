@@ -29,11 +29,13 @@ public class AdminTokenManager {
 
 
     public static AdminToken generateToken(Integer id){
-        AdminToken userToken = idMap.get(id);
-        if(userToken != null) {
-            tokenMap.remove(userToken.getToken());
-            idMap.remove(id);
-        }
+        AdminToken userToken = null;
+
+//        userToken = idMap.get(id);
+//        if(userToken != null) {
+//            tokenMap.remove(userToken.getToken());
+//            idMap.remove(id);
+//        }
 
         String token = CharUtil.getRandomString(32);
         while (tokenMap.containsKey(token)) {
