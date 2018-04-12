@@ -24,7 +24,8 @@ Page({
     openAttr: false,
     noCollectImage: '/static/images/icon_collect.png',
     hasCollectImage: '/static/images/icon_collect_checked.png',
-    collectBackImage: '/static/images/icon_collect.png'
+    collectBackImage: '/static/images/icon_collect.png',
+    soldout: false
   },
   getGoodsInfo: function () {
     let that = this;
@@ -197,6 +198,9 @@ Page({
       // 规格所对应的货品选择以后
       let checkedProductArray = this.getCheckedProductItem(this.getCheckedSpecKey());
       if (!checkedProductArray || checkedProductArray.length <= 0) {
+        this.setData({
+          soldout: true
+        });
         console.error('规格所对应货品不存在');
         return;
       }
@@ -204,21 +208,23 @@ Page({
       let checkedProduct = checkedProductArray[0];
       if (checkedProduct.goodsNumber > 0){
         this.setData({
-          checkedSpecPrice: checkedProduct.retailPrice
+          checkedSpecPrice: checkedProduct.retailPrice,
+          soldout: false
         });
       }
       else{
         this.setData({
-          checkedSpecPrice: this.data.goods.retailPrice
+          checkedSpecPrice: this.data.goods.retailPrice,
+          soldout: true
         }); 
       }
       
-
     }
     else{
       this.setData({
         checkedSpecText: '规格数量选择',
-        checkedSpecPrice: this.data.goods.retailPrice
+        checkedSpecPrice: this.data.goods.retailPrice,
+        soldout: false
       });
     }
 
