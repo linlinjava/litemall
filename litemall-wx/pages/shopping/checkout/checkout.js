@@ -104,7 +104,7 @@ Page({
     }
     util.request(api.OrderSubmit, { cartId: 0, addressId: this.data.addressId, couponId: this.data.couponId }, 'POST').then(res => {
       if (res.errno === 0) {
-        const orderId = res.data.orderInfo.id;
+        const orderId = res.data.orderId;
 
       // 目前不能支持微信支付，这里仅仅是模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
       wx.showModal({

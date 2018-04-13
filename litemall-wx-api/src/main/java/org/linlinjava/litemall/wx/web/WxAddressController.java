@@ -93,15 +93,15 @@ public class WxAddressController {
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, Integer id) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(id == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         LitemallAddress address = addressService.findById(id);
         if(address == null){
-            return ResponseUtil.fail403();
+            return ResponseUtil.badArgumentValue();
         }
 
         Map<Object, Object> data = new HashMap<Object, Object>();
@@ -134,10 +134,10 @@ public class WxAddressController {
     @PostMapping("save")
     public Object save(@LoginUser Integer userId, @RequestBody LitemallAddress address) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(address == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         if(address.getIsDefault()){
@@ -168,10 +168,10 @@ public class WxAddressController {
     @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody LitemallAddress address) {
         if(userId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if(address == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         addressService.delete(address.getId());

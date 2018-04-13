@@ -196,13 +196,13 @@ public class WxOrderController {
             orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
             orderGoodsVo.put("number", orderGoods.getNumber());
             orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
-            orderGoodsVo.put("goodsSpecifitionValues", orderGoods.getGoodsSpecificationValues());
+            orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
             orderGoodsVoList.add(orderGoodsVo);
         }
 
         Map<String, Object> result = new HashMap<>();
         result.put("orderInfo", orderVo);
-        result.put("orderGoods", orderGoodsList);
+        result.put("orderGoods", orderGoodsVoList);
         return ResponseUtil.ok(result);
 
     }
@@ -217,7 +217,7 @@ public class WxOrderController {
      * @param userId 用户ID
      * @param body 订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功', data: { orderInfo: xxx } }
+     *   成功则 { errno: 0, errmsg: '成功', data: { orderId: xxx } }
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("submit")
@@ -262,7 +262,7 @@ public class WxOrderController {
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
         BigDecimal freightPrice = new BigDecimal(0.00);
-        if(checkedGoodsPrice.compareTo(new BigDecimal(88.00)) == -1){
+        if(checkedGoodsPrice.compareTo(new BigDecimal(88.00)) < 0){
             freightPrice = new BigDecimal(8.00);
         }
 
@@ -313,7 +313,6 @@ public class WxOrderController {
 
         // 商品货品数量减少
         for (LitemallCart checkGoods : checkedGoodsList) {
-            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getRetailPrice().multiply(new BigDecimal(checkGoods.getNumber())));
             Integer productId= checkGoods.getProductId();
             LitemallProduct product = productService.findById(productId);
             if(product == null){
@@ -329,7 +328,7 @@ public class WxOrderController {
         }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("orderInfo", order);
+        data.put("orderId", order.getId());
         return ResponseUtil.ok(data);
     }
 
