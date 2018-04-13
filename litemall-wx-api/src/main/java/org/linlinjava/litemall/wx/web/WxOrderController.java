@@ -10,6 +10,10 @@ import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +49,9 @@ public class WxOrderController {
     private final Log logger = LogFactory.getLog(WxOrderController.class);
 
     @Autowired
+    private PlatformTransactionManager txManager;
+
+    @Autowired
     private LitemallOrderService orderService;
     @Autowired
     private LitemallOrderGoodsService orderGoodsService;
@@ -73,36 +80,37 @@ public class WxOrderController {
 
     /**
      * 订单列表
-     * @param userId 用户ID
+     *
+     * @param userId   用户ID
      * @param showType 订单信息
-     *          0， 全部订单
-     *          1，待付款
-     *          2，待发货
-     *          3，待收货
-     *          4，待评价
-     * @param page 分页页数
-     * @param size 分页大小
+     *                 0， 全部订单
+     *                 1，待付款
+     *                 2，待发货
+     *                 3，待收货
+     *                 4，待评价
+     * @param page     分页页数
+     * @param size     分页大小
      * @return 订单操作结果
-     *   成功则
-     *   {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              data: xxx ,
-     *              count: xxx
-     *          }
-     *   }
-     *  失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * data: xxx ,
+     * count: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @RequestMapping("list")
     public Object list(@LoginUser Integer userId, Integer showType,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.fail401();
         }
-        if(showType == null){
+        if (showType == null) {
             showType = 0;
         }
 
@@ -111,7 +119,7 @@ public class WxOrderController {
         int count = orderService.countByOrderStatus(userId, orderStatus);
 
         List<Map<String, Object>> orderVoList = new ArrayList<>(orderList.size());
-        for(LitemallOrder order : orderList){
+        for (LitemallOrder order : orderList) {
             Map<String, Object> orderVo = new HashMap<>();
             orderVo.put("id", order.getId());
             orderVo.put("orderSn", order.getOrderSn());
@@ -121,7 +129,7 @@ public class WxOrderController {
 
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
             List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
-            for(LitemallOrderGoods orderGoods : orderGoodsList){
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Map<String, Object> orderGoodsVo = new HashMap<>();
                 orderGoodsVo.put("id", orderGoods.getId());
                 orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
@@ -143,27 +151,27 @@ public class WxOrderController {
     /**
      * 订单详情
      *
-     * @param userId 用户ID
+     * @param userId  用户ID
      * @param orderId 订单信息
      * @return 订单操作结果
-     *   成功则
-     *   {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              orderInfo: xxx ,
-     *              orderGoods: xxx
-     *          }
-     *   }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * orderInfo: xxx ,
+     * orderGoods: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, Integer orderId) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.fail401();
         }
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.fail402();
         }
 
@@ -172,7 +180,7 @@ public class WxOrderController {
         if (null == order) {
             return ResponseUtil.fail(403, "订单不存在");
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(403, "不是当前用户的订单");
         }
         Map<String, Object> orderVo = new HashMap<String, Object>();
@@ -190,7 +198,7 @@ public class WxOrderController {
 
         List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
         List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
-        for(LitemallOrderGoods orderGoods : orderGoodsList){
+        for (LitemallOrderGoods orderGoods : orderGoodsList) {
             Map<String, Object> orderGoodsVo = new HashMap<>();
             orderGoodsVo.put("id", orderGoods.getId());
             orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
@@ -215,23 +223,23 @@ public class WxOrderController {
      * 4. 商品货品数量减少
      *
      * @param userId 用户ID
-     * @param body 订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx }
+     * @param body   订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功', data: { orderId: xxx } }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功', data: { orderId: xxx } }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("submit")
     public Object submit(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
-        if(body == null){
+        if (body == null) {
             return ResponseUtil.badArgument();
         }
         Integer cartId = JacksonUtil.parseInteger(body, "cartId");
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
         Integer couponId = JacksonUtil.parseInteger(body, "couponId");
-        if(cartId == null || addressId == null || couponId == null){
+        if (cartId == null || addressId == null || couponId == null) {
             return ResponseUtil.badArgument();
         }
 
@@ -246,13 +254,12 @@ public class WxOrderController {
         List<LitemallCart> checkedGoodsList = null;
         if (cartId.equals(0)) {
             checkedGoodsList = cartService.queryByUidAndChecked(userId);
-        }
-        else {
+        } else {
             LitemallCart cart = cartService.findById(cartId);
             checkedGoodsList = new ArrayList<>(1);
             checkedGoodsList.add(cart);
         }
-        if(checkedGoodsList.size() == 0){
+        if (checkedGoodsList.size() == 0) {
             return ResponseUtil.badArgumentValue();
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
@@ -262,7 +269,7 @@ public class WxOrderController {
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
         BigDecimal freightPrice = new BigDecimal(0.00);
-        if(checkedGoodsPrice.compareTo(new BigDecimal(88.00)) < 0){
+        if (checkedGoodsPrice.compareTo(new BigDecimal(88.00)) < 0) {
             freightPrice = new BigDecimal(8.00);
         }
 
@@ -274,7 +281,7 @@ public class WxOrderController {
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
-        // 添加订单表
+        // 订单
         LitemallOrder order = new LitemallOrder();
         order.setUserId(userId);
         order.setOrderSn(orderService.generateOrderSn(userId));
@@ -290,10 +297,10 @@ public class WxOrderController {
         order.setIntegralPrice(integralPrice);
         order.setOrderPrice(orderTotalPrice);
         order.setActualPrice(actualPrice);
-        orderService.add(order);
 
-        // 添加订单商品表
-        for(LitemallCart cartGoods : checkedGoodsList){
+        // 订单商品
+        List<LitemallOrderGoods> orderGoodsList = new ArrayList<>(checkedGoodsList.size());
+        for (LitemallCart cartGoods : checkedGoodsList) {
             LitemallOrderGoods orderGoods = new LitemallOrderGoods();
             orderGoods.setOrderId(order.getId());
             orderGoods.setGoodsId(cartGoods.getGoodsId());
@@ -305,27 +312,43 @@ public class WxOrderController {
             orderGoods.setNumber(cartGoods.getNumber());
             orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
             orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
-            orderGoodsService.add(orderGoods);
+            orderGoodsList.add(orderGoods);
         }
 
-        // 删除购物车里面的商品信息
-        cartService.clearGoods(userId);
+        // 开启事务管理
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+        try {
+            // 添加订单表项
+            orderService.add(order);
 
-        // 商品货品数量减少
-        for (LitemallCart checkGoods : checkedGoodsList) {
-            Integer productId= checkGoods.getProductId();
-            LitemallProduct product = productService.findById(productId);
-            if(product == null){
-                return ResponseUtil.badArgumentValue();
+            // 添加订单商品表项
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
+                orderGoodsService.add(orderGoods);
             }
 
-            Integer remainNumber = product.getGoodsNumber() - checkGoods.getNumber();
-            if(remainNumber < 0){
-                return ResponseUtil.badArgumentValue();
+            // 删除购物车里面的商品信息
+            cartService.clearGoods(userId);
+
+            // 商品货品数量减少
+            for (LitemallCart checkGoods : checkedGoodsList) {
+                Integer productId = checkGoods.getProductId();
+                LitemallProduct product = productService.findById(productId);
+
+                Integer remainNumber = product.getGoodsNumber() - checkGoods.getNumber();
+                if (remainNumber < 0) {
+                    throw new RuntimeException("下单的商品货品数量大于库存量");
+                }
+                product.setGoodsNumber(remainNumber);
+                productService.updateById(product);
             }
-            product.setGoodsNumber(remainNumber);
-            productService.updateById(product);
+        } catch (Exception ex) {
+            txManager.rollback(status);
+            logger.error("系统内部错误", ex);
+            return ResponseUtil.fail(403, "下单失败");
         }
+        txManager.commit(status);
 
         Map<String, Object> data = new HashMap<>();
         data.put("orderId", order.getId());
@@ -337,52 +360,62 @@ public class WxOrderController {
      * 1. 检测当前订单是否能够取消
      * 2. 设置订单取消状态
      * 3. 商品货品数量增加
+     *
      * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx }
+     * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("cancel")
     public Object cancel(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgumentValue();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         // 检测是否能够取消
         OrderHandleOption handleOption = OrderUtil.build(order);
-        if(!handleOption.isCancel()){
+        if (!handleOption.isCancel()) {
             return ResponseUtil.fail(403, "订单不能取消");
         }
 
-        // 设置订单已取消状态
-        order.setOrderStatus(OrderUtil.STATUS_CANCEL);
-        orderService.update(order);
+        // 开启事务管理
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+        try {
+            // 设置订单已取消状态
+            order.setOrderStatus(OrderUtil.STATUS_CANCEL);
+            orderService.update(order);
 
-        // 商品货品数量增加
-        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
-        for(LitemallOrderGoods orderGoods : orderGoodsList){
-            Integer productId = orderGoods.getProductId();
-            LitemallProduct product = productService.findById(productId);
-            if(product == null){
-                return ResponseUtil.badArgumentValue();
+            // 商品货品数量增加
+            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
+                Integer productId = orderGoods.getProductId();
+                LitemallProduct product = productService.findById(productId);
+                Integer number = product.getGoodsNumber() + orderGoods.getNumber();
+                product.setGoodsNumber(number);
+                productService.updateById(product);
             }
-            Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-            product.setGoodsNumber(number);
-            productService.updateById(product);
+        } catch (Exception ex) {
+            txManager.rollback(status);
+            logger.error("系统内部错误", ex);
+            return ResponseUtil.fail(403, "订单取消失败");
         }
+        txManager.commit(status);
+
         return ResponseUtil.ok();
     }
 
@@ -391,33 +424,34 @@ public class WxOrderController {
      * 1. 检测当前订单是否能够付款
      * 2. 设置订单付款状态
      * 3. TODO 微信后台申请支付，同时设置付款状态
+     *
      * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx }
+     * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("pay")
     public Object pay(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         // 检测是否能够付款
         OrderHandleOption handleOption = OrderUtil.build(order);
-        if(!handleOption.isPay()){
+        if (!handleOption.isPay()) {
             return ResponseUtil.fail(403, "订单不能付款");
         }
 
@@ -438,43 +472,44 @@ public class WxOrderController {
      * 付款成功回调接口
      * 1. 检测当前订单是否是付款状态
      * 2. 设置订单付款成功状态相关信息
-     * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx, payId: xxx }
-     * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
      *
+     * @param userId 用户ID
+     * @param body   订单信息，{ orderId：xxx, payId: xxx }
+     * @return 订单操作结果
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
+     * <p>
      * 注意，这里pay_notify是示例地址，开发者应该设立一个隐蔽的回调地址
      * TODO 这里需要根据微信支付文档设计
      */
     @PostMapping("pay_notify")
     public Object pay_notify(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         Integer payId = JacksonUtil.parseInteger(body, "payId");
-        if(orderId == null || payId == null){
+        if (orderId == null || payId == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         // 检测是否是付款状态
-        if(!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)){
+        if (!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)) {
             logger.error("系统内部错误");
         }
-        if(!order.getPayId().equals(payId)){
+        if (!order.getPayId().equals(payId)) {
             logger.error("系统内部错误");
         }
 
-        Short payStatus = (short)2;
+        Short payStatus = (short) 2;
         order.setPayStatus(payStatus);
         order.setPayTime(LocalDateTime.now());
         orderService.update(order);
@@ -489,53 +524,62 @@ public class WxOrderController {
      * 2. 设置订单退款取消状态
      * 3. TODO 退款
      * 4. 商品货品数量增加
+     *
      * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx }
+     * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("refund")
     public Object refund(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         OrderHandleOption handleOption = OrderUtil.build(order);
-        if(!handleOption.isRefund()){
+        if (!handleOption.isRefund()) {
             return ResponseUtil.fail(403, "订单不能取消");
         }
 
-        // 设置订单取消状态
-        order.setOrderStatus(OrderUtil.STATUS_REFUND);
-        orderService.update(order);
+        // 开启事务管理
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+        try {
+            // 设置订单取消状态
+            order.setOrderStatus(OrderUtil.STATUS_REFUND);
+            orderService.update(order);
 
-        // 退款操作
+            // 退款操作
 
-        // 商品货品数量增加
-        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
-        for(LitemallOrderGoods orderGoods : orderGoodsList){
-            Integer productId = orderGoods.getProductId();
-            LitemallProduct product = productService.findById(productId);
-            if(product == null){
-                return ResponseUtil.badArgumentValue();
+            // 商品货品数量增加
+            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
+                Integer productId = orderGoods.getProductId();
+                LitemallProduct product = productService.findById(productId);
+                Integer number = product.getGoodsNumber() + orderGoods.getNumber();
+                product.setGoodsNumber(number);
+                productService.updateById(product);
             }
-            Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-            product.setGoodsNumber(number);
-            productService.updateById(product);
+        } catch (Exception ex) {
+            txManager.rollback(status);
+            logger.error("系统内部错误", ex);
+            return ResponseUtil.fail(403, "订单退款失败");
         }
+        txManager.commit(status);
 
         return ResponseUtil.ok();
     }
@@ -544,34 +588,35 @@ public class WxOrderController {
      * 发货
      * 1. 检测当前订单是否能够发货
      * 2. 设置订单发货状态
+     *
      * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx, shipSn: xxx, shipChannel: xxx }
+     * @param body   订单信息，{ orderId：xxx, shipSn: xxx, shipChannel: xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("ship")
     public Object ship(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         String shipSn = JacksonUtil.parseString(body, "shipSn");
         String shipChannel = JacksonUtil.parseString(body, "shipChannel");
-        if(orderId == null || shipSn == null || shipChannel == null){
+        if (orderId == null || shipSn == null || shipChannel == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         // 如果订单不是已付款状态，则不能发货
-        if(!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)){
+        if (!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)) {
             return ResponseUtil.fail(403, "订单不能确认收货");
         }
 
@@ -588,32 +633,33 @@ public class WxOrderController {
      * 确认收货
      * 1. 检测当前订单是否能够确认订单
      * 2. 设置订单确认状态
+     *
      * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx }
+     * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("confirm")
     public Object confirm(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         OrderHandleOption handleOption = OrderUtil.build(order);
-        if(!handleOption.isConfirm()){
+        if (!handleOption.isConfirm()) {
             return ResponseUtil.fail(403, "订单不能确认收货");
         }
 
@@ -629,32 +675,33 @@ public class WxOrderController {
      * 自动确认收货
      * 1. 检测当前订单是否能够自动确认订单
      * 2. 设置订单自动确认状态
+     *
      * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx }
+     * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("autoconfirm")
     public Object autoconfirm(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         OrderHandleOption handleOption = OrderUtil.build(order);
-        if(!handleOption.isConfirm()){
+        if (!handleOption.isConfirm()) {
             return ResponseUtil.fail(403, "订单不能确认收货");
         }
 
@@ -669,32 +716,33 @@ public class WxOrderController {
      * 删除订单
      * 1. 检测当前订单是否删除
      * 2. 设置订单删除状态
+     *
      * @param userId 用户ID
-     * @param body 订单信息，{ orderId：xxx }
+     * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallOrder order = orderService.findById(orderId);
-        if(order == null){
+        if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if(!order.getUserId().equals(userId)){
+        if (!order.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
         OrderHandleOption handleOption = OrderUtil.build(order);
-        if(!handleOption.isDelete()){
+        if (!handleOption.isDelete()) {
             return ResponseUtil.fail(403, "订单不能删除");
         }
 
@@ -708,19 +756,19 @@ public class WxOrderController {
     /**
      * 可以评价的订单商品信息
      *
-     * @param userId 用户ID
+     * @param userId  用户ID
      * @param orderId 订单ID
      * @param goodsId 商品ID
      * @return 订单操作结果
-     *   成功则 { errno: 0, errmsg: '成功', data: xxx }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功', data: xxx }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("comment")
     public Object comment(@LoginUser Integer userId, Integer orderId, Integer goodsId) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
-        if(orderId == null){
+        if (orderId == null) {
             return ResponseUtil.badArgument();
         }
 
@@ -729,7 +777,7 @@ public class WxOrderController {
 
         Assert.state(size < 2, "存在多个符合条件的订单商品");
 
-        if(size == 0){
+        if (size == 0) {
             return ResponseUtil.badArgumentValue();
         }
 
