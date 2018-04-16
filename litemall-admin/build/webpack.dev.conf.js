@@ -55,7 +55,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true,
       favicon: resolve('favicon.ico'),
-      title: 'zmall-admin',
+      title: 'litemall-admin',
       path: config.dev.assetsPublicPath + config.dev.assetsSubDirectory
     }),
   ]

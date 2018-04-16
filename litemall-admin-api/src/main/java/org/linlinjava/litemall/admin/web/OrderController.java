@@ -76,12 +76,12 @@ public class OrderController {
             return ResponseUtil.badArgument();
         }
 
-        LitemallOrder zmallOrder = orderService.findById(orderId);
-        if(zmallOrder == null){
+        LitemallOrder litemallOrder = orderService.findById(orderId);
+        if(litemallOrder == null){
             return ResponseUtil.badArgumentValue();
         }
 
-        if(OrderUtil.isPayStatus(zmallOrder) || OrderUtil.isShipStatus(zmallOrder)){
+        if(OrderUtil.isPayStatus(litemallOrder) || OrderUtil.isShipStatus(litemallOrder)){
             LitemallOrder newOrder = new LitemallOrder();
             newOrder.setId(orderId);
             newOrder.setShipChannel(order.getShipChannel());
@@ -95,8 +95,8 @@ public class OrderController {
             return ResponseUtil.badArgumentValue();
         }
 
-        zmallOrder = orderService.findById(orderId);
-        return ResponseUtil.ok(zmallOrder);
+        litemallOrder = orderService.findById(orderId);
+        return ResponseUtil.ok(litemallOrder);
     }
 
     @PostMapping("/delete")

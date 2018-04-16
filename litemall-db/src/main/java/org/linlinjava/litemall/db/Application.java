@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("org.linlinjava.zmall.db.dao")
+@MapperScan("org.linlinjava.litemall.db.dao")
 public class Application {
 
     public static void main(String[] args) {

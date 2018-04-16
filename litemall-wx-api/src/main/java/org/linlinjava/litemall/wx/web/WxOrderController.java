@@ -67,15 +67,15 @@ public class WxOrderController {
     public WxOrderController() {
     }
 
-    private String detailedAddress(LitemallAddress zmallAddress) {
-        Integer provinceId = zmallAddress.getProvinceId();
-        Integer cityId = zmallAddress.getCityId();
-        Integer areaId = zmallAddress.getAreaId();
+    private String detailedAddress(LitemallAddress litemallAddress) {
+        Integer provinceId = litemallAddress.getProvinceId();
+        Integer cityId = litemallAddress.getCityId();
+        Integer areaId = litemallAddress.getAreaId();
         String provinceName = regionService.findById(provinceId).getName();
         String cityName = regionService.findById(cityId).getName();
         String areaName = regionService.findById(areaId).getName();
         String fullRegion = provinceName + " " + cityName + " " + areaName;
-        return fullRegion + " " + zmallAddress.getAddress();
+        return fullRegion + " " + litemallAddress.getAddress();
     }
 
     /**

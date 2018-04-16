@@ -142,11 +142,11 @@ public class OrderUtil {
     }
 
 
-    public static boolean isPayStatus(LitemallOrder zmallOrder) {
-        return OrderUtil.STATUS_PAY == zmallOrder.getOrderStatus().shortValue();
+    public static boolean isPayStatus(LitemallOrder litemallOrder) {
+        return OrderUtil.STATUS_PAY == litemallOrder.getOrderStatus().shortValue();
     }
 
-    public static boolean isShipStatus(LitemallOrder zmallOrder) {
-        return OrderUtil.STATUS_SHIP == zmallOrder.getOrderStatus().shortValue();
+    public static boolean isShipStatus(LitemallOrder litemallOrder) {
+        return OrderUtil.STATUS_SHIP == litemallOrder.getOrderStatus().shortValue();
     }
 }

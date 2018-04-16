@@ -28,7 +28,7 @@ public class StorageController {
     @Autowired
     private StorageService storageService;
     @Autowired
-    private LitemallStorageService zmallStorageService;
+    private LitemallStorageService litemallStorageService;
 
     @Autowired
     private ObjectStorageConfig osConfig;
@@ -43,7 +43,7 @@ public class StorageController {
 
         do{
             key = CharUtil.getRandomString(20);
-            storageInfo = zmallStorageService.findByKey(key);
+            storageInfo = litemallStorageService.findByKey(key);
         }
         while(storageInfo != null);
 
@@ -55,8 +55,8 @@ public class StorageController {
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        List<LitemallStorage> storageList = zmallStorageService.querySelective(key, name, page, limit, sort, order);
-        int total = zmallStorageService.countSelective(key, name, page, limit, sort, order);
+        List<LitemallStorage> storageList = litemallStorageService.querySelective(key, name, page, limit, sort, order);
+        int total = litemallStorageService.countSelective(key, name, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", storageList);
@@ -86,7 +86,7 @@ public class StorageController {
         storageInfo.setModified(LocalDateTime.now());
         storageInfo.setKey(key);
         storageInfo.setUrl(url);
-        zmallStorageService.add(storageInfo);
+        litemallStorageService.add(storageInfo);
         return ResponseUtil.ok(storageInfo);
     }
 
@@ -95,7 +95,7 @@ public class StorageController {
         if(id == null){
             return ResponseUtil.badArgument();
         }
-        LitemallStorage storageInfo = zmallStorageService.findById(id);
+        LitemallStorage storageInfo = litemallStorageService.findById(id);
         if(storageInfo == null){
             return ResponseUtil.badArgumentValue();
         }
@@ -105,13 +105,13 @@ public class StorageController {
     @PostMapping("/update")
     public Object update(@RequestBody LitemallStorage litemallStorage) {
 
-        zmallStorageService.update(litemallStorage);
+        litemallStorageService.update(litemallStorage);
         return ResponseUtil.ok(litemallStorage);
     }
 
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallStorage litemallStorage) {
-        zmallStorageService.deleteByKey(litemallStorage.getKey());
+        litemallStorageService.deleteByKey(litemallStorage.getKey());
         storageService.delete(litemallStorage.getKey());
         return ResponseUtil.ok();
     }
