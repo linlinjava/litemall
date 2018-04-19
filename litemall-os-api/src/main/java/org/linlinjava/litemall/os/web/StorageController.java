@@ -9,6 +9,7 @@ import org.linlinjava.litemall.os.config.ObjectStorageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,15 +35,18 @@ public class StorageController {
     private ObjectStorageConfig osConfig;
 
     private String generateUrl(String key){
-        return "http://" + osConfig.getAddress() + ":" + osConfig.getPort() + "/storage/storage/fetch?key=" + key;
+        return "http://" + osConfig.getAddress() + ":" + osConfig.getPort() + "/storage/storage/fetch/" + key;
     }
 
-    private final String generateKey(){
+    private String generateKey(String originalFilename){
+        int index = originalFilename.lastIndexOf('.');
+        String suffix = originalFilename.substring(index);
+
         String key = null;
         LitemallStorage storageInfo = null;
 
         do{
-            key = CharUtil.getRandomString(20);
+            key = CharUtil.getRandomString(20) + suffix;
             storageInfo = litemallStorageService.findByKey(key);
         }
         while(storageInfo != null);
@@ -74,7 +78,7 @@ public class StorageController {
             e.printStackTrace();
             return ResponseUtil.badArgumentValue();
         }
-        String key = generateKey();
+        String key = generateKey(originalFilename);
         storageService.store(inputStream, key);
 
         String url = generateUrl(key);
@@ -116,25 +120,36 @@ public class StorageController {
         return ResponseUtil.ok();
     }
 
-    @GetMapping("/fetch")
-    public ResponseEntity<Resource> fetch(String key) {
+    @GetMapping("/fetch/{key:.+}")
+    public ResponseEntity<Resource> fetch(@PathVariable String key) {
+        LitemallStorage litemallStorage = litemallStorageService.findByKey(key);
+        if(key == null){
+            ResponseEntity.notFound();
+        }
+        String type = litemallStorage.getType();
+        MediaType mediaType = MediaType.parseMediaType(type);
 
         Resource file = storageService.loadAsResource(key);
-
         if(file == null) {
             ResponseEntity.notFound();
         }
-        return ResponseEntity.ok().body(file);
+        return ResponseEntity.ok().contentType(mediaType).body(file);
     }
 
-    @GetMapping("/download")
-    public ResponseEntity<Resource> download(String key) {
+    @GetMapping("/download/{key:.+}")
+    public ResponseEntity<Resource> download(@PathVariable String key) {
+        LitemallStorage litemallStorage = litemallStorageService.findByKey(key);
+        if(key == null){
+            ResponseEntity.notFound();
+        }
+        String type = litemallStorage.getType();
+        MediaType mediaType = MediaType.parseMediaType(type);
 
         Resource file = storageService.loadAsResource(key);
         if(file == null) {
             ResponseEntity.notFound();
         }
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+        return ResponseEntity.ok().contentType(mediaType).header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
