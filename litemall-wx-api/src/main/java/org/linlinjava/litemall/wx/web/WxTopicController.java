@@ -2,7 +2,7 @@ package org.linlinjava.litemall.wx.web;
 
 import org.linlinjava.litemall.db.domain.LitemallTopic;
 import org.linlinjava.litemall.db.service.LitemallTopicService;
-import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

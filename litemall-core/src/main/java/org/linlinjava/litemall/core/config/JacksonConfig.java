@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.admin.config;
+package org.linlinjava.litemall.core.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

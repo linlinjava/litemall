@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.db.util;
+package org.linlinjava.litemall.core.util;
 
 import java.util.Random;
 

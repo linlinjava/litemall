@@ -1,6 +1,6 @@
-package org.linlinjava.litemall.wx.config;
+package org.linlinjava.litemall.core.config;
 
-import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -8,6 +8,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody

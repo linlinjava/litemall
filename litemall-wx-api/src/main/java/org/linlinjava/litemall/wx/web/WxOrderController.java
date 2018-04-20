@@ -4,10 +4,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
-import org.linlinjava.litemall.db.util.JacksonUtil;
 import org.linlinjava.litemall.db.util.OrderHandleOption;
 import org.linlinjava.litemall.db.util.OrderUtil;
-import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.core.util.JacksonUtil;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -201,8 +201,11 @@ public class WxOrderController {
         for (LitemallOrderGoods orderGoods : orderGoodsList) {
             Map<String, Object> orderGoodsVo = new HashMap<>();
             orderGoodsVo.put("id", orderGoods.getId());
+            orderGoodsVo.put("orderId", orderGoods.getOrderId());
+            orderGoodsVo.put("goodsId", orderGoods.getGoodsId());
             orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
             orderGoodsVo.put("number", orderGoods.getNumber());
+            orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
             orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
             orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
             orderGoodsVoList.add(orderGoodsVo);

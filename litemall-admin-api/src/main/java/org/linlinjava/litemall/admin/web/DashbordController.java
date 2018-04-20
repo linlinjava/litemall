@@ -7,7 +7,7 @@ import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.LitemallProductService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.db.util;
+package org.linlinjava.litemall.core.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.wx.util.bcrypt;
+package org.linlinjava.litemall.core.util.bcrypt;
 /*
  * Copyright 2002-2011 the original author or authors.
  *

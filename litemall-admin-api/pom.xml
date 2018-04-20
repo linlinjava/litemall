@@ -10,8 +10,9 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.10.RELEASE</version>
-        <relativePath></relativePath>
+        <relativePath/>
     </parent>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,28 +24,15 @@
 
         <dependency>
             <groupId>org.linlinjava</groupId>
-            <artifactId>litemall-db</artifactId>
+            <artifactId>litemall-core</artifactId>
             <version>0.1.0</version>
         </dependency>
 
-        <!-- Spring Boot Web 依赖 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.linlinjava</groupId>
+            <artifactId>litemall-db</artifactId>
+            <version>0.1.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.8.10</version>
-        </dependency>
-
-        <!-- Spring Boot Shiro 依赖 -->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.shiro</groupId>-->
-            <!--<artifactId>shiro-spring-boot-web-starter</artifactId>-->
-            <!--<version>1.4.0</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
