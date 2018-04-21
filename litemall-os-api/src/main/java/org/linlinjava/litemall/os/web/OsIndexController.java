@@ -13,7 +13,7 @@ public class OsIndexController {
 
     @RequestMapping("/index")
     public Object index(){
-        return ResponseUtil.ok("hello world");
+        return ResponseUtil.ok("hello world, this is os service");
     }
 
 }

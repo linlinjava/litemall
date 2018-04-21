@@ -13,7 +13,7 @@ public class WxIndexController {
 
     @RequestMapping("/index")
     public Object index(){
-        return ResponseUtil.ok("hello world");
+        return ResponseUtil.ok("hello world, this is wx service");
     }
 
 }
