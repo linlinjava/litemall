@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/storage/index")
+@RequestMapping("/os/index")
 public class OsIndexController {
     private final Log logger = LogFactory.getLog(OsIndexController.class);
 

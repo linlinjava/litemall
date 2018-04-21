@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/storage/storage")
-public class StorageController {
+@RequestMapping("/os/storage")
+public class OsStorageController {
 
     @Autowired
     private StorageService storageService;
@@ -34,7 +34,7 @@ public class StorageController {
     private ObjectStorageConfig osConfig;
 
     private String generateUrl(String key){
-        return "http://" + osConfig.getAddress() + ":" + osConfig.getPort() + "/storage/storage/fetch/" + key;
+        return "http://" + osConfig.getAddress() + ":" + osConfig.getPort() + "/os/storage/fetch/" + key;
     }
 
     private String generateKey(String originalFilename){
