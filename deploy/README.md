@@ -33,7 +33,7 @@
     然后测试是否部署成功(xxx.xxx.xxx.xxx是云主机IP）：
 
     ```
-    http://xxx.xxx.xxx.xxx:8081/storage/index/index
+    http://xxx.xxx.xxx.xxx:8081/os/index/index
     http://xxx.xxx.xxx.xxx:8082/wx/index/index
     http://xxx.xxx.xxx.xxx:8083/admin/index/index
     http://xxx.xxx.xxx.xxx:8080/#/login
