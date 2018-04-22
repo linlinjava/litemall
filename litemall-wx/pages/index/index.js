@@ -16,7 +16,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      title: 'NideShop',
+      title: 'litemall小商场',
       desc: '仿网易严选微信小程序商城',
       path: '/pages/index/index'
     }
