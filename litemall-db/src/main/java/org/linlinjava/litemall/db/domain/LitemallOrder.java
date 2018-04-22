@@ -183,7 +183,7 @@ public class LitemallOrder {
      *
      * @mbg.generated Sat Apr 07 10:22:31 CST 2018
      */
-    private Date shipEndTime;
+    private LocalDateTime shipEndTime;
 
     /**
      *
@@ -685,7 +685,7 @@ public class LitemallOrder {
      *
      * @mbg.generated Sat Apr 07 10:22:31 CST 2018
      */
-    public Date getShipEndTime() {
+    public LocalDateTime getShipEndTime() {
         return shipEndTime;
     }
 
@@ -697,7 +697,7 @@ public class LitemallOrder {
      *
      * @mbg.generated Sat Apr 07 10:22:31 CST 2018
      */
-    public void setShipEndTime(Date shipEndTime) {
+    public void setShipEndTime(LocalDateTime shipEndTime) {
         this.shipEndTime = shipEndTime;
     }
 

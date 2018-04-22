@@ -118,7 +118,7 @@
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="pay_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="ship_start_time"/>
-            <columnOverride javaType="java.time.LocalDateTime" column="shop_end_time"/>
+            <columnOverride javaType="java.time.LocalDateTime" column="ship_end_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="confirm_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="end_time"/>
         </table>
