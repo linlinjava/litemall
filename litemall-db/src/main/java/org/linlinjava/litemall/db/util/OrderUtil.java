@@ -9,7 +9,7 @@ import java.util.List;
 /*
  * 订单流程：下单成功－》支付订单－》发货－》收货
  * 订单状态：
- * 101 订单生成，未支付；102，订单生产，但是未支付就取消；
+ * 101 订单生成，未支付；102，下单未支付用户取消；103，下单未支付超期系统自动取消
  * 201 支付完成，商家未发货；202，订单生产，已付款未发货，却取消
  * 301 商家发货，用户未确认；
  * 401 用户确认收货，订单结束； 402 用户没有确认收货，但是快递反馈已收获后，超过一定时间，系统自动确认收货，订单结束。
@@ -26,11 +26,12 @@ public class OrderUtil {
 
     public static final Short STATUS_CREATE = 101;
     public static final Short STATUS_PAY = 201;
-    public static final Short STATUS_SHIP= 301;
+    public static final Short STATUS_SHIP = 301;
     public static final Short STATUS_CONFIRM = 401;
-    public static final Short STATUS_CANCEL= 102;
+    public static final Short STATUS_CANCEL = 102;
+    public static final Short STATUS_AUTO_CANCEL = 103;
     public static final Short STATUS_REFUND = 202;
-    public static final Short STATUS_AUTO_CONFIRM= 402;
+    public static final Short STATUS_AUTO_CONFIRM = 402;
 
 
     public static String orderStatusText(LitemallOrder order) {
@@ -40,7 +41,7 @@ public class OrderUtil {
             return "未付款";
         }
 
-        if (status == 102) {
+        if (status == 102 || status == 103) {
             return "已取消";
         }
 
@@ -79,7 +80,7 @@ public class OrderUtil {
             handleOption.setCancel(true);
             handleOption.setPay(true);
         }
-        else if (status == 102) {
+        else if (status == 102 || status == 103) {
             // 如果订单已经取消或是已完成，则可删除
             handleOption.setDelete(true);
             handleOption.setRebuy(true);

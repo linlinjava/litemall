@@ -30,7 +30,7 @@ import java.util.Map;
  * 订单设计
  *
  * 订单状态：
- * 101 订单生成，未支付；102，订单生产，但是未支付就取消；
+ * 101 订单生成，未支付；102，下单后未支付用户取消；103，下单后未支付超时系统自动取消
  * 201 支付完成，商家未发货；202，订单生产，已付款未发货，但是退款取消；
  * 301 商家发货，用户未确认；
  * 401 用户确认收货，订单结束； 402 用户没有确认收货，但是快递反馈已收获后，超过一定时间，系统自动确认收货，订单结束。
@@ -776,7 +776,7 @@ public class WxOrderController {
             TransactionStatus status = txManager.getTransaction(def);
             try {
                 // 设置订单已取消状态
-                order.setOrderStatus(OrderUtil.STATUS_CANCEL);
+                order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
                 order.setEndTime(LocalDateTime.now());
                 orderService.updateById(order);
 
