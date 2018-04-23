@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallOrderMapper;
 import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.domain.LitemallOrderExample;
+import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -146,5 +147,17 @@ public class LitemallOrderService {
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andDeletedEqualTo(false);
         return (int)orderMapper.countByExample(example);
+    }
+
+    public List<LitemallOrder> queryUnpaid() {
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_CREATE).andDeletedEqualTo(false);
+        return orderMapper.selectByExample(example);
+    }
+
+    public List<LitemallOrder> queryUnconfirm() {
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_SHIP).andShipEndTimeIsNotNull().andDeletedEqualTo(false);
+        return orderMapper.selectByExample(example);
     }
 }
