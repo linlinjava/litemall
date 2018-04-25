@@ -515,11 +515,12 @@ public class WxCartController {
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<>();
         data.put("addressId", addressId);
         data.put("checkedAddress", checkedAddress);
         data.put("couponId", couponId);
         data.put("checkedCoupon", 0);
+        data.put("couponList", "");
         data.put("goodsTotalPrice", checkedGoodsPrice);
         data.put("freightPrice", freightPrice);
         data.put("couponPrice", couponPrice);
