@@ -285,50 +285,47 @@ public class WxOrderController {
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
-        // 订单
-        LitemallOrder order = new LitemallOrder();
-        order.setUserId(userId);
-        order.setOrderSn(orderService.generateOrderSn(userId));
-        order.setAddTime(LocalDateTime.now());
-        order.setOrderStatus(OrderUtil.STATUS_CREATE);
-        order.setConsignee(checkedAddress.getName());
-        order.setMobile(checkedAddress.getMobile());
-        String detailedAddress = detailedAddress(checkedAddress);
-        order.setAddress(detailedAddress);
-        order.setGoodsPrice(checkedGoodsPrice);
-        order.setFreightPrice(freightPrice);
-        order.setCouponPrice(couponPrice);
-        order.setIntegralPrice(integralPrice);
-        order.setOrderPrice(orderTotalPrice);
-        order.setActualPrice(actualPrice);
-
-        // 订单商品
-        List<LitemallOrderGoods> orderGoodsList = new ArrayList<>(checkedGoodsList.size());
-        for (LitemallCart cartGoods : checkedGoodsList) {
-            LitemallOrderGoods orderGoods = new LitemallOrderGoods();
-            orderGoods.setOrderId(order.getId());
-            orderGoods.setGoodsId(cartGoods.getGoodsId());
-            orderGoods.setGoodsSn(cartGoods.getGoodsSn());
-            orderGoods.setProductId(cartGoods.getProductId());
-            orderGoods.setGoodsName(cartGoods.getGoodsName());
-            orderGoods.setPicUrl(cartGoods.getPicUrl());
-            orderGoods.setRetailPrice(cartGoods.getRetailPrice());
-            orderGoods.setNumber(cartGoods.getNumber());
-            orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
-            orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
-            orderGoodsList.add(orderGoods);
-        }
-
         // 开启事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = txManager.getTransaction(def);
+        Integer orderId = null;
         try {
+            // 订单
+            LitemallOrder order = new LitemallOrder();
+            order.setUserId(userId);
+            order.setOrderSn(orderService.generateOrderSn(userId));
+            order.setAddTime(LocalDateTime.now());
+            order.setOrderStatus(OrderUtil.STATUS_CREATE);
+            order.setConsignee(checkedAddress.getName());
+            order.setMobile(checkedAddress.getMobile());
+            String detailedAddress = detailedAddress(checkedAddress);
+            order.setAddress(detailedAddress);
+            order.setGoodsPrice(checkedGoodsPrice);
+            order.setFreightPrice(freightPrice);
+            order.setCouponPrice(couponPrice);
+            order.setIntegralPrice(integralPrice);
+            order.setOrderPrice(orderTotalPrice);
+            order.setActualPrice(actualPrice);
             // 添加订单表项
             orderService.add(order);
+            orderId = order.getId();
 
-            // 添加订单商品表项
-            for (LitemallOrderGoods orderGoods : orderGoodsList) {
+            for (LitemallCart cartGoods : checkedGoodsList) {
+                // 订单商品
+                LitemallOrderGoods orderGoods = new LitemallOrderGoods();
+                orderGoods.setOrderId(order.getId());
+                orderGoods.setGoodsId(cartGoods.getGoodsId());
+                orderGoods.setGoodsSn(cartGoods.getGoodsSn());
+                orderGoods.setProductId(cartGoods.getProductId());
+                orderGoods.setGoodsName(cartGoods.getGoodsName());
+                orderGoods.setPicUrl(cartGoods.getPicUrl());
+                orderGoods.setRetailPrice(cartGoods.getRetailPrice());
+                orderGoods.setNumber(cartGoods.getNumber());
+                orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
+                orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
+
+                // 添加订单商品表项
                 orderGoodsService.add(orderGoods);
             }
 
@@ -355,7 +352,7 @@ public class WxOrderController {
         txManager.commit(status);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("orderId", order.getId());
+        data.put("orderId", orderId);
         return ResponseUtil.ok(data);
     }
 
