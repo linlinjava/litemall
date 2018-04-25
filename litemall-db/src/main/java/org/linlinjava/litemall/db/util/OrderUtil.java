@@ -108,8 +108,11 @@ public class OrderUtil {
             handleOption.setComment(true);
             handleOption.setRebuy(true);
         }
+        else {
+            throw new IllegalStateException("status不支持");
+        }
 
-        throw new IllegalStateException("status不支持");
+        return handleOption;
     }
 
     public static List<Short> orderStatus(Integer showType){

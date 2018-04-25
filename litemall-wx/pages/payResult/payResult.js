@@ -31,12 +31,37 @@ Page({
 
   },
   payOrder() {
-    pay.payOrder(this.data.orderId).then(res => {
-      this.setData({
-        status: true
-      });
-    }).catch(res => {
-      util.showErrorToast('支付失败');
+    let that = this;
+    // 目前不能支持微信支付，这里仅仅是模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
+    wx.showModal({
+      title: '目前不能微信支付',
+      content: '点击确定模拟支付成功，点击取消模拟未支付成功',
+      success: function (res) {
+        if (res.confirm) {
+          util.request(api.OrderPay, { orderId: that.data.orderId }, 'POST').then(res => {
+            if (res.errno === 0) {
+              that.setData({
+                status: true
+              });
+            }
+            else {
+              util.showErrorToast('支付失败');
+            }
+          });
+        }
+        else if (res.cancel) {
+          util.showErrorToast('支付失败');
+        }
+
+      }
     });
+
+    // pay.payOrder(this.data.orderId).then(res => {
+    //   this.setData({
+    //     status: true
+    //   });
+    // }).catch(res => {
+    //   util.showErrorToast('支付失败');
+    // });
   }
 })

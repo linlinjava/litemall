@@ -71,10 +71,11 @@ module.exports = {
     RegionList: WxApiRoot + 'region/list',  //获取区域列表
 
     OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
+    OrderPay: WxApiRoot + 'order/pay', // 支付订单
     OrderList: WxApiRoot + 'order/list',  //订单列表
     OrderDetail: WxApiRoot + 'order/detail',  //订单详情
     OrderCancel: WxApiRoot + 'order/cancel',  //取消订单
-    OrderRefund: WxApiRoot + 'order/refund',  //取消订单并退款
+    OrderRefund: WxApiRoot + 'order/refund',  //退款取消订单
     OrderDelete: WxApiRoot + 'order/delete',  //删除订单
     OrderConfirm: WxApiRoot + 'order/confirm',  //确认收货
     OrderComment: WxApiRoot + 'order/comment',  // 代评价商品信息

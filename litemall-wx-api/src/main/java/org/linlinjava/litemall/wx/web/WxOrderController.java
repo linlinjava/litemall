@@ -357,6 +357,50 @@ public class WxOrderController {
     }
 
     /**
+     * 付款订单
+     *
+     * 1. 检测当前订单是否能够付款
+     * 2. 微信支付平台返回支付订单ID
+     * 3. 设置订单付款状态
+     * TODO 与微信后台交互产生付款订单ID，以及不同的付款状态
+     * 目前这里直接设置订单已付款状态模拟支付成功
+     *
+     * @param userId 用户ID
+     * @param body   订单信息，{ orderId：xxx }
+     * @return 订单操作结果
+     * 成功则 { errno: 0, errmsg: '模拟付款支付成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
+     */
+    @RequestMapping("pay")
+    public Object payPrepay(@LoginUser Integer userId, @RequestBody String body) {
+        if(userId == null){
+            return ResponseUtil.unlogin();
+        }
+        Integer orderId = JacksonUtil.parseInteger(body, "orderId");
+        if (orderId == null) {
+            return ResponseUtil.badArgument();
+        }
+
+        LitemallOrder order = orderService.findById(orderId);
+        if (order == null) {
+            return ResponseUtil.badArgumentValue();
+        }
+        if (!order.getUserId().equals(userId)) {
+            return ResponseUtil.badArgumentValue();
+        }
+
+        // 检测是否能够取消
+        OrderHandleOption handleOption = OrderUtil.build(order);
+        if (!handleOption.isPay()) {
+            return ResponseUtil.fail(403, "订单不能支付");
+        }
+
+        order.setPayStatus(OrderUtil.STATUS_PAY);
+        orderService.updateById(order);
+        return ResponseUtil.ok("模拟付款支付成功");
+    }
+
+    /**
      * 取消订单
      * 1. 检测当前订单是否能够取消
      * 2. 设置订单取消状态
