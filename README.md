@@ -150,7 +150,7 @@ V 3.0.0 完成以下目标：
   * `小商场`简单运费计算
   * `小商场`专题评价
   * `管理后台`禁止管理员修改超级管理员信息
-  * `部署`自动脚本util/lazy.sh和util/upload.sh
+  * `基础系统`自动脚本util/lazy.sh和util/upload.sh
 * V 0.3.0,
   * `小商场`的后台服务加密用户账号密码
   * `小商场`如果用户选择货品，则显示货品对应的价格；否则显示商品价格
@@ -168,7 +168,7 @@ V 3.0.0 完成以下目标：
   * `基础系统`litemall-os-api的链接从`storage/index/index`调整至`os/index/index`
   * `基础系统`litemall-os-api支持浏览器显示。
   * `基础系统`新增litemall-core模块，综合了litemall-os-api、litemall-wx-api
-     和litemall-admin-api的共性代码，目前主要是配置和util代码
+     和litemall-admin-api的共性代码
   * `基础系统`新增litemall-all模块作为包裹模块，支持三个后台服务和静态文件
      打包成一个war项目包
     
