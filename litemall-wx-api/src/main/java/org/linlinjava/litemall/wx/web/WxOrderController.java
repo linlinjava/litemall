@@ -500,9 +500,6 @@ public class WxOrderController {
             return ResponseUtil.fail(403, "订单不能支付");
         }
 
-        order.setOrderStatus(OrderUtil.STATUS_PAY);
-        // 0 初始，1 预支付，2 支付成功
-        order.setPayStatus((short)1);
         orderService.updateById(order);
         return ResponseUtil.ok(result);
     }
@@ -549,9 +546,8 @@ public class WxOrderController {
             }
 
             order.setPayId(payId);
-            // 0 初始，1 预支付，2 支付成功
-            order.setPayStatus((short)2);
             order.setPayTime(LocalDateTime.now());
+            order.setOrderStatus(OrderUtil.STATUS_PAY);
             orderService.updateById(order);
 
             return WxPayNotifyResponse.success("处理成功!");
