@@ -33,22 +33,28 @@ Page({
   // “去付款”按钮点击效果
   payOrder: function () {
     let that = this;
-    util.request(api.PayPrepayId, {
+    util.request(api.OrderPrepay, {
       orderId: that.data.orderId
     }, 'POST').then(function (res) {
       if (res.errno === 0) {
         const payParam = res.data;
+        console.log("支付过程开始")
         wx.requestPayment({
           'timeStamp': payParam.timeStamp,
           'nonceStr': payParam.nonceStr,
-          'package': payParam.package,
+          'package': payParam.packageValue,
           'signType': payParam.signType,
           'paySign': payParam.paySign,
           'success': function (res) {
-            console.log(res)
+            console.log("支付过程成功")
+            util.redirect('/pages/ucenter/order/order');
           },
           'fail': function (res) {
-            console.log(res)
+            console.log("支付过程失败")
+            util.showErrorToast('支付失败');
+          },
+          'complete': function (res) {
+            console.log("支付过程结束")
           }
         });
       }

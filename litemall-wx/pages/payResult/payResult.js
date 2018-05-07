@@ -1,6 +1,5 @@
 var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
-const pay = require('../../services/pay.js');
 
 var app = getApp();
 Page({
@@ -32,36 +31,57 @@ Page({
   },
   payOrder() {
     let that = this;
-    // 目前不能支持微信支付，这里仅仅是模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
-    wx.showModal({
-      title: '目前不能微信支付',
-      content: '点击确定模拟支付成功，点击取消模拟未支付成功',
-      success: function (res) {
-        if (res.confirm) {
-          util.request(api.OrderPay, { orderId: that.data.orderId }, 'POST').then(res => {
-            if (res.errno === 0) {
-              that.setData({
-                status: true
-              });
-            }
-            else {
-              util.showErrorToast('支付失败');
-            }
-          });
-        }
-        else if (res.cancel) {
-          util.showErrorToast('支付失败');
-        }
+    // 模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
+    // wx.showModal({
+    //   title: '目前不能微信支付',
+    //   content: '点击确定模拟支付成功，点击取消模拟未支付成功',
+    //   success: function (res) {
+    //     if (res.confirm) {
+    //       util.request(api.OrderPrepay, { orderId: that.data.orderId }, 'POST').then(res => {
+    //         if (res.errno === 0) {
+    //           that.setData({
+    //             status: true
+    //           });
+    //         }
+    //         else {
+    //           util.showErrorToast('支付失败');
+    //         }
+    //       });
+    //     }
+    //     else if (res.cancel) {
+    //       util.showErrorToast('支付失败');
+    //     }
 
+    //   }
+    // });
+
+    util.request(api.OrderPrepay, {
+      orderId: that.data.orderId
+    }, 'POST').then(function (res) {
+      if (res.errno === 0) {
+        const payParam = res.data;
+        console.log("支付过程开始")
+        wx.requestPayment({
+          'timeStamp': payParam.timeStamp,
+          'nonceStr': payParam.nonceStr,
+          'package': payParam.packageValue,
+          'signType': payParam.signType,
+          'paySign': payParam.paySign,
+          'success': function (res) {
+            console.log("支付过程成功")
+            that.setData({
+              status: true
+            });
+          },
+          'fail': function (res) {
+            console.log("支付过程失败")
+            util.showErrorToast('支付失败');
+          },
+          'complete': function (res) {
+            console.log("支付过程结束")
+          }
+        });
       }
     });
-
-    // pay.payOrder(this.data.orderId).then(res => {
-    //   this.setData({
-    //     status: true
-    //   });
-    // }).catch(res => {
-    //   util.showErrorToast('支付失败');
-    // });
   }
 })

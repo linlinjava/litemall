@@ -5,6 +5,8 @@
 // var WxApiRoot = 'http://192.168.0.101:8082/wx/';
 // 云平台部署时使用
  var WxApiRoot = 'http://122.152.206.172:8082/wx/';
+// 云平台上线时使用
+// var WxApiRoot = 'https://www.example.com/wx/';
 
 // 以下是图片存储服务器API地址
 // 本机开发时使用
@@ -13,7 +15,8 @@
 // var StorageApi = 'http://192.168.0.101:8081/os/storage/create';
 // 云平台部署时使用
 var StorageApi = 'http://122.152.206.172:8081/os/storage/create';
-
+// 云平台上线时使用
+// var StorageApi = 'https://www.example.com/os/storage/create';
 
 module.exports = {
     IndexUrl: WxApiRoot + 'home/index', //首页数据接口
@@ -45,8 +48,6 @@ module.exports = {
     CartGoodsCount: WxApiRoot + 'cart/goodscount', // 获取购物车商品件数
     CartCheckout: WxApiRoot + 'cart/checkout', // 下单前信息确认
 
-    PayPrepayId: WxApiRoot + 'pay/prepay', //获取微信统一下单prepay_id
-
     CollectList: WxApiRoot + 'collect/list',  //收藏列表
     CollectAddOrDelete: WxApiRoot + 'collect/addordelete',  //添加或取消收藏
 
@@ -71,7 +72,7 @@ module.exports = {
     RegionList: WxApiRoot + 'region/list',  //获取区域列表
 
     OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
-    OrderPay: WxApiRoot + 'order/pay', // 支付订单
+    OrderPrepay: WxApiRoot + 'order/prepay', // 订单的预支付会话
     OrderList: WxApiRoot + 'order/list',  //订单列表
     OrderDetail: WxApiRoot + 'order/detail',  //订单详情
     OrderCancel: WxApiRoot + 'order/cancel',  //取消订单

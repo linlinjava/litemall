@@ -1,6 +1,5 @@
 var util = require('../../../utils/util.js');
 var api = require('../../../config/api.js');
-const pay = require('../../../services/pay.js');
 
 var app = getApp();
 
@@ -106,47 +105,69 @@ Page({
       if (res.errno === 0) {
         const orderId = res.data.orderId;
 
-      // 目前不能支持微信支付，这里仅仅是模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
-      wx.showModal({
-        title: '目前不能微信支付',
-        content: '点击确定模拟支付成功，点击取消模拟未支付成功',
-        success: function(res) {
-          if (res.confirm) {
-            util.request(api.OrderPay, { orderId: orderId }, 'POST').then(res => {
-              if (res.errno === 0) {
+        // 模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
+        // wx.showModal({
+        //   title: '目前不能微信支付',
+        //   content: '点击确定模拟支付成功，点击取消模拟未支付成功',
+        //   success: function(res) {
+        //     if (res.confirm) {
+        //       util.request(api.OrderPrepay, { orderId: orderId }, 'POST').then(res => {
+        //         if (res.errno === 0) {
+        //           wx.redirectTo({
+        //             url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+        //           });
+        //         }
+        //         else{
+        //           wx.redirectTo({
+        //             url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+        //           });
+        //         }
+        //       });
+        //     }
+        //     else if (res.cancel) {
+        //       wx.redirectTo({
+        //         url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+        //       });
+        //     }
+
+        //   }
+        // });
+
+        util.request(api.OrderPrepay, {
+          orderId: orderId
+        }, 'POST').then(function (res) {
+          if (res.errno === 0) {
+            const payParam = res.data;
+            console.log("支付过程开始")
+            wx.requestPayment({
+              'timeStamp': payParam.timeStamp,
+              'nonceStr': payParam.nonceStr,
+              'package': payParam.packageValue,
+              'signType': payParam.signType,
+              'paySign': payParam.paySign,
+              'success': function (res) {
+                console.log("支付过程成功")
                 wx.redirectTo({
                   url: '/pages/payResult/payResult?status=1&orderId=' + orderId
                 });
-              }
-              else{
+              },
+              'fail': function (res) {
+                console.log("支付过程失败")
                 wx.redirectTo({
                   url: '/pages/payResult/payResult?status=0&orderId=' + orderId
                 });
+              },
+              'complete': function (res) {
+                console.log("支付过程结束")
               }
             });
           }
-          else if (res.cancel) {
-            wx.redirectTo({
-              url: '/pages/payResult/payResult?status=0&orderId=' + orderId
-            });
-          }
+        });
 
-        }
-      });
-
-      //   pay.payOrder(orderId).then(res => {
-      //     wx.redirectTo({
-      //       url: '/pages/payResult/payResult?status=1&orderId=' + orderId
-      //     });
-      //   }).catch(res => {
-      //     wx.redirectTo({
-      //       url: '/pages/payResult/payResult?status=0&orderId=' + orderId
-      //     });
-      //   });
-      // } else {
-      //   wx.redirectTo({
-      //     url: '/pages/payResult/payResult?status=0&orderId=' + orderId
-      //   });
+      } else {
+        wx.redirectTo({
+          url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+        });
       }
     });
   }
