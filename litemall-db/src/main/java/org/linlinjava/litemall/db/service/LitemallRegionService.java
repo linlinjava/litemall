@@ -14,14 +14,6 @@ import java.util.List;
 public class LitemallRegionService {
     @Resource
     private LitemallRegionMapper regionMapper;
-    @Resource
-    private LitemallRegionProvinceMapper provinceMapper;
-    @Resource
-    private LitemallRegionCityMapper cityMapper;
-    @Resource
-    private LitemallRegionAreaMapper areaMapper;
-    @Resource
-    private LitemallRegionStreetMapper streetMapper;
 
     public List<LitemallRegion> queryByPid(Integer parentId) {
         LitemallRegionExample example = new LitemallRegionExample();
