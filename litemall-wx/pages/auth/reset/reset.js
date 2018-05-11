@@ -1,4 +1,6 @@
 var api = require('../../../config/api.js');
+var check = require('../../../utils/check.js');
+
 var app = getApp();
 Page({
   data: {
@@ -41,6 +43,15 @@ Page({
       wx.showModal({
         title: '错误信息',
         content: '手机号和验证码不能为空',
+        showCancel: false
+      });
+      return false;
+    }
+
+    if (!check.isValidPhone(this.data.mobile)) {
+      wx.showModal({
+        title: '错误信息',
+        content: '手机号输入不正确',
         showCancel: false
       });
       return false;
