@@ -30,9 +30,9 @@
         <view class="done {{selectRegionDone ? '' : 'disabled'}}" bindtap="doneSelectRegion">确定</view>
       </view>
       <view class="bd">
-        <view class="region-list">
+        <scroll-view scroll-y class="region-list">
           <view class="item {{item.selected ? 'selected' : ''}}" bindtap="selectRegion" data-region-index="{{index}}" wx:for="{{regionList}}" wx:key="id">{{item.name}}</view>
-        </view>
+        </scroll-view>
       </view>
     </view>
 </view>
