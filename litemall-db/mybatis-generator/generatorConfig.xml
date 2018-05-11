@@ -135,18 +135,6 @@
         <table tableName="litemall_region">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
-        <table tableName="litemall_region_province">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="litemall_region_city">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="litemall_region_area">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="litemall_region_street">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
-        </table>
         <table tableName="litemall_search_history">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
