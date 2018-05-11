@@ -298,6 +298,11 @@ Page({
       isDefault: address.isDefault,
     }, 'POST').then(function (res) {
       if (res.errno === 0) {
+        try {
+          wx.setStorageSync('addressId', res.data);
+        } catch (e) {
+
+        }
         wx.navigateBack();
       }
     });

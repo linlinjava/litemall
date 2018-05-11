@@ -153,7 +153,7 @@ public class WxAddressController {
             address.setUserId(userId);
             addressService.update(address);
         }
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(address.getId());
     }
 
     /**
