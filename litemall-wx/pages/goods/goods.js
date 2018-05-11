@@ -2,7 +2,7 @@ var app = getApp();
 var WxParse = require('../../lib/wxParse/wxParse.js');
 var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
-var user = require('../../services/user.js');
+var user = require('../../utils/user.js');
 
 Page({
   data: {

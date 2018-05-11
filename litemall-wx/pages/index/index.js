@@ -1,6 +1,6 @@
 const util = require('../../utils/util.js');
 const api = require('../../config/api.js');
-const user = require('../../services/user.js');
+const user = require('../../utils/user.js');
 
 //获取应用实例
 const app = getApp()

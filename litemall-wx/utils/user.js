@@ -85,19 +85,7 @@ function checkLogin() {
   });
 }
 
-
 module.exports = {
   loginByWeixin,
   checkLogin,
 };
-
-
-
-
-
-
-
-
-
-
-
