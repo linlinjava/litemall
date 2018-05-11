@@ -42,59 +42,14 @@ function login() {
 }
 
 /**
- * Promise封装wx.getUserInfo
- */
-function getUserInfo() {
-  return new Promise(function (resolve, reject) {
-    wx.getUserInfo({
-      withCredentials: true,
-      success: function (res) {
-        resolve(res);
-      },
-      fail: function (err) {
-
-        wx.showModal({
-          title: '用户未授权',
-          content: '请给予您的用户信息授权。',
-          success: function (res) {
-            if (res.confirm) {
-              wx.openSetting({
-                success: (res) => {
-                  if (res.authSetting["scope.userInfo"] === true) {
-                    wx.getUserInfo({
-                      withCredentials: true,
-                      success: function (res) {
-                        resolve(res);
-                      },
-                    })
-                  }
-                }
-              })
-            } else if (res.cancel) {
-              wx.navigateBack({
-                delta: 1
-              })
-            }
-          }
-        })
-      }
-    })
-  });
-}
-
-/**
  * 调用微信登录
  */
-function loginByWeixin() {
+function loginByWeixin(userInfo) {
 
-  let code = null;
   return new Promise(function (resolve, reject) {
     return login().then((res) => {
-      code = res.code;
-      return getUserInfo();
-    }).then((userInfo) => {
       //登录远程服务器
-      util.request(api.AuthLoginByWeixin, { code: code, userInfo: userInfo }, 'POST').then(res => {
+      util.request(api.AuthLoginByWeixin, { code: res.code, userInfo: userInfo }, 'POST').then(res => {
         if (res.errno === 0) {
           //存储用户信息
           wx.setStorageSync('userInfo', res.data.userInfo);

@@ -26,7 +26,7 @@
 			<navigator url="/pages/auth/reset/reset" class="reset">忘记密码</navigator>
     </view> 
 
-    <button type="primary" class="login-btn" bindtap="wxLogin">微信直接登录</button>
+    <button type="primary" open-type="getUserInfo" class="login-btn" bindgetuserinfo="wxLogin">微信直接登录</button>
 
     </view>
 </view>

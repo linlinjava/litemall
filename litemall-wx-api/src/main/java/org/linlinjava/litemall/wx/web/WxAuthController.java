@@ -9,7 +9,7 @@ import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.wx.dao.FullUserInfo;
+import org.linlinjava.litemall.wx.dao.WxLoginInfo;
 import org.linlinjava.litemall.wx.dao.UserInfo;
 import org.linlinjava.litemall.wx.dao.UserToken;
 import org.linlinjava.litemall.wx.service.UserTokenManager;
@@ -100,7 +100,7 @@ public class WxAuthController {
     /**
      * 微信登录
      *
-     * @param body 请求内容，{ code: xxx, userInfo: xxx }
+     * @param wxLoginInfo 请求内容，{ code: xxx, userInfo: xxx }
      * @param request 请求对象
      * @return 登录结果
      *   成功则
@@ -117,14 +117,12 @@ public class WxAuthController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @RequestMapping("login_by_weixin")
-    public Object loginByWeixin(@RequestBody String body, HttpServletRequest request) {
-        String code = JacksonUtil.parseString(body, "code");
-        FullUserInfo fullUserInfo = JacksonUtil.parseObject(body, "userInfo", FullUserInfo.class);
-        if(code == null || fullUserInfo == null){
+    public Object loginByWeixin(@RequestBody WxLoginInfo wxLoginInfo, HttpServletRequest request) {
+        String code = wxLoginInfo.getCode();
+        UserInfo userInfo = wxLoginInfo.getUserInfo();
+        if(code == null || userInfo == null){
             return ResponseUtil.badArgument();
         }
-
-        UserInfo userInfo = fullUserInfo.getUserInfo();
 
         String sessionKey = null;
         String openId = null;
@@ -139,14 +137,6 @@ public class WxAuthController {
         if(sessionKey == null || openId == null){
             return ResponseUtil.fail();
         }
-
-        //验证用户信息完整性
-        if (!this.wxService.getUserService().checkUserInfo(sessionKey, fullUserInfo.getRawData(), fullUserInfo.getSignature())) {
-            return ResponseUtil.fail();
-        }
-
-        // 解密用户信息
-//        WxMaUserInfo wxMaUserInfo = this.wxService.getUserService().getUserInfo(sessionKey, fullUserInfo.getEncryptedData(), fullUserInfo.getIv());
 
         LitemallUser user = userService.queryByOid(openId);
         if(user == null){

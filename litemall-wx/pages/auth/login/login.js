@@ -29,10 +29,16 @@ Page({
     // 页面关闭
 
   },
-  wxLogin: function () {
+  wxLogin: function (e) {
+    if (e.detail.userInfo == undefined){
+      app.globalData.hasLogin = false;
+      util.showErrorToast('微信登录失败');
+      return;
+    }
+
     user.checkLogin().catch(() => {
 
-      user.loginByWeixin().then(res => {
+      user.loginByWeixin(e.detail.userInfo).then(res => {
         app.globalData.hasLogin = true;
 
         wx.navigateBack({
