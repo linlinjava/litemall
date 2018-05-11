@@ -87,9 +87,3 @@ litemall的设计受众是小微型企业，而不是互联网企业，因此lit
 * 在提交issue之前，请搜索是否存在相关问题。
 * 提交的Issue请尽可能给出详细信息
 * 建议Issue基于最新的代码
-
-### QQ群提问
-
-不建议开发者在QQ群讨论遇到的Bug或者问题，而是应该在Issue中提交。
-
-当然，如果仍然坚持，那么请先看看[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md)

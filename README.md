@@ -101,11 +101,12 @@ litemall
 ==
 
 1. [系统架构](doc/1.md)
-2. [基础子系统](doc/2.md)
-3. [小商场子系统](doc/3.md)
-4. [管理后台子系统](doc/4.md)
-5. [商场子系统](doc/5.md)
+2. [基础平台](doc/2.md)
+3. [小商场](doc/3.md)
+4. [管理后台](doc/4.md)
+5. [商场](doc/5.md)
 6. [下一步计划](doc/6.md)
+7. [FAQ](doc/7.md)
 
 文档内容采用 [署名-禁止演绎 4.0 国际协议许可](https://creativecommons.org/licenses/by-nd/4.0/deed.zh)
 
@@ -175,8 +176,13 @@ V 3.0.0 完成以下目标：
 开发者有问题或者好的建议可以用Issues反馈交流，请给出详细信息，本人会尽可能解决。
  * 如果问题是共性问题（如代码bug或文档不全），本人会及时解决。
  * 如果问题是个人问题（如开发者了解不深入或者没有相关技术），请见谅（本人也是百度和谷歌）。
- * 请教问题，
- 
+ * 如果真的需要QQ群里提问，请在提问前先完成以下过程：
+    * 请仔细阅读本项目文档，特别是是[**FAQ**](./doc/7.md)，查看能否解决；
+    * 请阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md)；
+    * 请百度或谷歌相关技术；
+    * 请查看相关技术的官方文档，例如微信小程序的官方文档；
+    * 请提问前尽可能做一些DEBUG或者思考分析，然后提问时给出详细的错误相关信息以及个人对问题的理解。
+     
 贡献
 ==
 
@@ -188,3 +194,8 @@ V 3.0.0 完成以下目标：
 > * 如果开发者开发使用中有问题，建议采用Issue来报告问题和解决问题。
 > * 在开发交流群中应讨论开发、业务和合作问题。
 > * 交流结果如果是共识性的则在文档中记录，如果是开放性的则会在Issue中记录。
+
+相关项目
+====
+
+[HubertYoung](https://github.com/HubertYoung)正在开发Android端[Litemall-Android](https://github.com/HubertYoung/Litemall-Android)
