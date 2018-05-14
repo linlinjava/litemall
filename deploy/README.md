@@ -39,14 +39,24 @@
     http://xxx.xxx.xxx.xxx:8080/#/login
     ```
 
-7. 自动上传脚本
+7. 部署脚本
 
-    为了简化步骤1和步骤2，完成了util/upload.sh脚本，开发者需要设置相应的云主机IP和密钥文件路径。
-    该脚本会自动把当前项目不同模块下的最终部署文件复制到deploy文件夹中，然后上传到云主机。
-    注意：
-    > 上传脚本没有自动做Spring Boot项目打包和Vue项目打包工作
+    为了简化步骤1和步骤2，完成了deploy/util/upload.sh上传脚本和deploy/util/lazy.sh部署脚本，
     
-    如果开发者需要先编译项目再上传，可以运行util/lazy.sh。
+    注意：
+    > * 开发者需要在deploy/util/upload.sh和deploy/util/lazy.sh中设置相应的云主机登录账号和密钥文件路径。
+    > * 开发者需要在deploy/util/reset.sh设置云主机的MySQL的root登录账户。
+    > * 请先执行上述1-6步骤，确保部署环境成功。
+    
+    * 上传脚本
+    
+    该脚本会自动把当前项目不同模块下的最终部署文件复制到deploy文件夹中，然后上传到云主机。
+    该上传脚本没有自动做Spring Boot项目打包和Vue项目打包工作
+    
+    * 部署脚本
+    
+    该脚本会编译项目，再上传deploy文件，最后ssh登录远程主机执行bin下面的deploy.sh脚本。
+    
     注意，运行命令必须在项目主目录中，类似如下命令：
     ```bash
     cd litemall

@@ -3,8 +3,7 @@
 # 请注意
 # 1. 本脚本的作用是停止当前Spring Boot应用，然后再次部署
 # 2. 解压dist.tar到/home/ubuntu/deploy/litemall-admin/dist，
-#    而这个目录也正是tomcat配置静态文件目录的路径（见1.5.3.5节）
-
+#    而这个目录也正是tomcat或者nginx所配置静态文件目录的路径（见1.5.3.5节）
 
 #部署litemall-admin静态文件应用
 cd /home/ubuntu/deploy/litemall-admin
@@ -29,6 +28,6 @@ sudo /etc/init.d/litemall-os-api restart
 sudo /etc/init.d/litemall-wx-api restart
 sudo /etc/init.d/litemall-admin-api restart
 
-# tomcat8服务也启动
-sudo service tomcat8 stop
-sudo service tomcat8 start
+# 如果静态文件是通过tomcat来服务，则tomcat8服务最好也再启动
+#sudo service tomcat8 stop
+#sudo service tomcat8 start

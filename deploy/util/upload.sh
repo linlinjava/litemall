@@ -6,10 +6,24 @@
 # 3. util/upload.sh脚本是运行在开发机中，bin/deploy.sh脚本是运行在云主机中
 # 4. 这是一个简单的脚本，开发者可以按照自己需求修改
 
-# 请设置云主机的IP地址
-CVM=XXX.XXX.XXX.XXX
-# 请设置本地SSH私钥文件id_rsa
-ID_RSA=/XXX/id_rsa
+# 请设置云主机登录IP地址和账户
+# 例如 ubuntu@122.152.206.172
+REMOTE=
+# 请设置本地SSH私钥文件id_rsa路径
+# 例如 /home/litemall/id_rsa
+ID_RSA=
+
+if test -z "$REMOTE"
+then
+  echo "请设置云主机登录IP地址和账户"
+  exit -1
+fi
+
+if test -z "$ID_RSA"
+then
+  echo "请设置云主机登录IP地址和账户"
+  exit -1
+fi
 
 # 复制三个Spring Boot应用
 # 需要注意的是target目录里面存在两种jar，一种是当前模块纯编译代码的jar，另外一种是包含依赖库的可执行jar，
@@ -26,4 +40,4 @@ cp  -f ./litemall-db/sql/litemall_schema.sql ./deploy/litemall-db/litemall_schem
 cp  -f ./litemall-db/sql/litemall.sql ./deploy/litemall-db/litemall.sql
 
 # 上传云主机
-scp -i $ID_RSA -r  ./deploy ubuntu@$CVM:/home/ubuntu/
+scp -i $ID_RSA -r  ./deploy $REMOTE:/home/ubuntu/
