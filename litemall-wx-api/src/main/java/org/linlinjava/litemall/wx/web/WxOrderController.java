@@ -559,11 +559,9 @@ public class WxOrderController {
 
 
     /**
-     * 退款取消订单
-     * 1. 检测当前订单是否能够退款取消
-     * 2. 设置订单退款取消状态
-     * 3. TODO 退款
-     * 4. 商品货品数量增加
+     * 订单申请退款
+     * 1. 检测当前订单是否能够退款
+     * 2. 设置订单申请退款状态
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
@@ -594,76 +592,8 @@ public class WxOrderController {
             return ResponseUtil.fail(403, "订单不能取消");
         }
 
-        // 开启事务管理
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        TransactionStatus status = txManager.getTransaction(def);
-        try {
-            // 设置订单取消状态
-            order.setOrderStatus(OrderUtil.STATUS_REFUND);
-            orderService.update(order);
-
-            // 退款操作
-
-            // 商品货品数量增加
-            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
-            for (LitemallOrderGoods orderGoods : orderGoodsList) {
-                Integer productId = orderGoods.getProductId();
-                LitemallProduct product = productService.findById(productId);
-                Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                product.setGoodsNumber(number);
-                productService.updateById(product);
-            }
-        } catch (Exception ex) {
-            txManager.rollback(status);
-            logger.error("系统内部错误", ex);
-            return ResponseUtil.fail(403, "订单退款失败");
-        }
-        txManager.commit(status);
-
-        return ResponseUtil.ok();
-    }
-
-    /**
-     * 发货
-     * 1. 检测当前订单是否能够发货
-     * 2. 设置订单发货状态
-     *
-     * @param userId 用户ID
-     * @param body   订单信息，{ orderId：xxx, shipSn: xxx, shipChannel: xxx }
-     * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
-     */
-    @PostMapping("ship")
-    public Object ship(@LoginUser Integer userId, @RequestBody String body) {
-        if (userId == null) {
-            return ResponseUtil.unlogin();
-        }
-        Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        String shipSn = JacksonUtil.parseString(body, "shipSn");
-        String shipChannel = JacksonUtil.parseString(body, "shipChannel");
-        if (orderId == null || shipSn == null || shipChannel == null) {
-            return ResponseUtil.badArgument();
-        }
-
-        LitemallOrder order = orderService.findById(orderId);
-        if (order == null) {
-            return ResponseUtil.badArgument();
-        }
-        if (!order.getUserId().equals(userId)) {
-            return ResponseUtil.badArgumentValue();
-        }
-
-        // 如果订单不是已付款状态，则不能发货
-        if (!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)) {
-            return ResponseUtil.fail(403, "订单不能确认收货");
-        }
-
-        order.setOrderStatus(OrderUtil.STATUS_SHIP);
-        order.setShipSn(shipSn);
-        order.setShipChannel(shipChannel);
-        order.setShipStartTime(LocalDateTime.now());
+        // 设置订单申请退款状态
+        order.setOrderStatus(OrderUtil.STATUS_REFUND);
         orderService.update(order);
 
         return ResponseUtil.ok();
@@ -780,93 +710,6 @@ public class WxOrderController {
 
         LitemallOrderGoods orderGoods = orderGoodsList.get(0);
         return ResponseUtil.ok(orderGoods);
-    }
-
-    /**
-     * 自动取消订单
-     *
-     * 定时检查订单未付款情况，如果超时半个小时则自动取消订单
-     * 定时时间是每次相隔半个小时。
-     *
-     * 注意，因为是相隔半小时检查，因此导致有订单是超时一个小时以后才设置取消状态。
-     * TODO
-     * 这里可以进一步地配合用户订单查询时订单未付款检查，如果订单超时半小时则取消。
-     */
-    @Scheduled(fixedDelay = 30*60*1000)
-    public void checkOrderUnpaid() {
-        logger.debug(LocalDateTime.now());
-
-        List<LitemallOrder> orderList = orderService.queryUnpaid();
-        for(LitemallOrder order : orderList){
-            LocalDateTime add = order.getAddTime();
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expired = add.plusMinutes(30);
-            if(expired.isAfter(now)){
-                continue;
-            }
-
-            // 开启事务管理
-            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-            TransactionStatus status = txManager.getTransaction(def);
-            try {
-                // 设置订单已取消状态
-                order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
-                order.setEndTime(LocalDateTime.now());
-                orderService.updateById(order);
-
-                // 商品货品数量增加
-                Integer orderId = order.getId();
-                List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
-                for (LitemallOrderGoods orderGoods : orderGoodsList) {
-                    Integer productId = orderGoods.getProductId();
-                    LitemallProduct product = productService.findById(productId);
-                    Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                    product.setGoodsNumber(number);
-                    productService.updateById(product);
-                }
-            } catch (Exception ex) {
-                txManager.rollback(status);
-                logger.error("系统内部错误", ex);
-            }
-            txManager.commit(status);
-        }
-    }
-
-    /**
-     * 自动确认订单
-     *
-     * 定时检查订单未确认情况，如果超时七天则自动确认订单
-     * 定时时间是每天凌晨3点。
-     *
-     * 注意，因为是相隔一天检查，因此导致有订单是超时八天以后才设置自动确认。
-     * 这里可以进一步地配合用户订单查询时订单未确认检查，如果订单超时7天则自动确认。
-     * 但是，这里可能不是非常必要。相比订单未付款检查中存在商品资源有限所以应该
-     * 早点清理未付款情况，这里八天再确认是可以的。
-     *
-     * TODO
-     * 目前自动确认是基于管理后台管理员所设置的商品快递到达时间，见orderService.queryUnconfirm。
-     * 那么在实际业务上有可能存在商品寄出以后商品因为一些原因快递最终没有到达，
-     * 也就是商品快递失败而shipEndTime一直是空的情况，因此这里业务可能需要扩展，以防止订单一直
-     * 处于发货状态。
-     */
-    @Scheduled(cron = "0 0 3 * * ?")
-    public void checkOrderUnconfirm() {
-        logger.debug(LocalDateTime.now());
-
-        List<LitemallOrder> orderList = orderService.queryUnconfirm();
-        for(LitemallOrder order : orderList){
-            LocalDateTime shipEnd = order.getShipEndTime();
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expired = shipEnd.plusDays(7);
-            if(expired.isAfter(now)){
-                continue;
-            }
-            // 设置订单已取消状态
-            order.setOrderStatus(OrderUtil.STATUS_AUTO_CONFIRM);
-            order.setConfirmTime(now);
-            orderService.updateById(order);
-        }
     }
 
 }
