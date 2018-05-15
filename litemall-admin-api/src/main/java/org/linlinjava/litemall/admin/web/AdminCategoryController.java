@@ -15,8 +15,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/category")
-public class CategoryController {
-    private final Log logger = LogFactory.getLog(CategoryController.class);
+public class AdminCategoryController {
+    private final Log logger = LogFactory.getLog(AdminCategoryController.class);
 
     @Autowired
     private LitemallCategoryService categoryService;

@@ -3,8 +3,8 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.db.domain.LitemallGoodsAttribute;
-import org.linlinjava.litemall.db.service.LitemallGoodsAttributeService;
+import org.linlinjava.litemall.db.domain.LitemallAd;
+import org.linlinjava.litemall.db.service.LitemallAdService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/goods-attribute")
-public class GoodsAttributeController {
-    private final Log logger = LogFactory.getLog(GoodsAttributeController.class);
+@RequestMapping("/admin/ad")
+public class AdminAdController {
+    private final Log logger = LogFactory.getLog(AdminAdController.class);
 
     @Autowired
-    private LitemallGoodsAttributeService goodsAttributeService;
+    private LitemallAdService adService;
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       Integer goodsId,
+                       String name, String content,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
@@ -31,22 +31,22 @@ public class GoodsAttributeController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallGoodsAttribute> goodsAttributeList = goodsAttributeService.querySelective(goodsId, page, limit, sort, order);
-        int total = goodsAttributeService.countSelective(goodsId, page, limit, sort, order);
+        List<LitemallAd> adList = adService.querySelective(name, content, page, limit, sort, order);
+        int total = adService.countSelective(name, content, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", goodsAttributeList);
+        data.put("items", adList);
 
         return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsAttribute goodsAttribute){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        goodsAttributeService.add(goodsAttribute);
-        return ResponseUtil.ok(goodsAttribute);
+        adService.add(ad);
+        return ResponseUtil.ok(ad);
     }
 
     @GetMapping("/read")
@@ -59,25 +59,25 @@ public class GoodsAttributeController {
             return ResponseUtil.badArgument();
         }
 
-        LitemallGoodsAttribute goodsAttribute = goodsAttributeService.findById(id);
-        return ResponseUtil.ok(goodsAttribute);
+        LitemallAd brand = adService.findById(id);
+        return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsAttribute goodsAttribute){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        goodsAttributeService.updateById(goodsAttribute);
-        return ResponseUtil.ok(goodsAttribute);
+        adService.updateById(ad);
+        return ResponseUtil.ok(ad);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsAttribute goodsAttribute){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        goodsAttributeService.deleteById(goodsAttribute.getId());
+        adService.deleteById(ad.getId());
         return ResponseUtil.ok();
     }
 

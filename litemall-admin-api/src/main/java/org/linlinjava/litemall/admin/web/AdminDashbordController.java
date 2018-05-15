@@ -16,8 +16,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/dashboard")
-public class DashbordController {
-    private final Log logger = LogFactory.getLog(DashbordController.class);
+public class AdminDashbordController {
+    private final Log logger = LogFactory.getLog(AdminDashbordController.class);
 
     @Autowired
     private LitemallUserService userService;

@@ -3,8 +3,8 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.db.domain.LitemallIssue;
-import org.linlinjava.litemall.db.service.LitemallIssueService;
+import org.linlinjava.litemall.db.domain.LitemallSearchHistory;
+import org.linlinjava.litemall.db.service.LitemallSearchHistoryService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/issue")
-public class IssueController {
-    private final Log logger = LogFactory.getLog(IssueController.class);
+@RequestMapping("/admin/history")
+public class AdminHistoryController {
+    private final Log logger = LogFactory.getLog(AdminHistoryController.class);
 
     @Autowired
-    private LitemallIssueService issueService;
+    private LitemallSearchHistoryService searchHistoryService;
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       String question,
+                       String userId, String keyword,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
@@ -31,22 +31,21 @@ public class IssueController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallIssue> issueList = issueService.querySelective(question, page, limit, sort, order);
-        int total = issueService.countSelective(question, page, limit, sort, order);
+        List<LitemallSearchHistory> footprintList = searchHistoryService.querySelective(userId, keyword, page, limit, sort, order);
+        int total = searchHistoryService.countSelective(userId, keyword, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", issueList);
+        data.put("items", footprintList);
 
         return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
         if(adminId == null){
-            return ResponseUtil.unlogin();
+            return ResponseUtil.fail401();
         }
-        issueService.add(brand);
-        return ResponseUtil.ok(brand);
+        return ResponseUtil.fail501();
     }
 
     @GetMapping("/read")
@@ -59,25 +58,25 @@ public class IssueController {
             return ResponseUtil.badArgument();
         }
 
-        LitemallIssue brand = issueService.findById(id);
-        return ResponseUtil.ok(brand);
+        LitemallSearchHistory history = searchHistoryService.findById(id);
+        return ResponseUtil.ok(history);
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        issueService.updateById(brand);
-        return ResponseUtil.ok(brand);
+        searchHistoryService.updateById(history);
+        return ResponseUtil.ok();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        issueService.deleteById(brand.getId());
+        searchHistoryService.deleteById(history.getId());
         return ResponseUtil.ok();
     }
 

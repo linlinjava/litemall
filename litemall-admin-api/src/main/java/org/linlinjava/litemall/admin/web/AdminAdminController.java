@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/admin")
-public class AdminController {
+public class AdminAdminController {
     @Autowired
     private LitemallAdminService adminService;
 

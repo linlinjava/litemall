@@ -3,8 +3,8 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.db.domain.LitemallComment;
-import org.linlinjava.litemall.db.service.LitemallCommentService;
+import org.linlinjava.litemall.db.domain.LitemallFootprint;
+import org.linlinjava.litemall.db.service.LitemallFootprintService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/comment")
-public class CommentController {
-    private final Log logger = LogFactory.getLog(CommentController.class);
+@RequestMapping("/admin/footprint")
+public class AdminFootprintController {
+    private final Log logger = LogFactory.getLog(AdminFootprintController.class);
 
     @Autowired
-    private LitemallCommentService commentService;
+    private LitemallFootprintService footprintService;
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       String userId, String valueId,
+                       String userId, String goodsId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
@@ -31,22 +31,21 @@ public class CommentController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallComment> brandList = commentService.querySelective(userId, valueId, page, limit, sort, order);
-        int total = commentService.countSelective(userId, valueId, page, limit, sort, order);
+        List<LitemallFootprint> footprintList = footprintService.querySelective(userId, goodsId, page, limit, sort, order);
+        int total = footprintService.countSelective(userId, goodsId, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", brandList);
+        data.put("items", footprintList);
 
         return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallFootprint footprint){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        commentService.add(comment);
-        return ResponseUtil.ok(comment);
+        return ResponseUtil.unsupport();
     }
 
     @GetMapping("/read")
@@ -59,25 +58,25 @@ public class CommentController {
             return ResponseUtil.badArgument();
         }
 
-        LitemallComment comment = commentService.findById(id);
-        return ResponseUtil.ok(comment);
+        LitemallFootprint footprint = footprintService.findById(id);
+        return ResponseUtil.ok(footprint);
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallFootprint footprint){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        commentService.updateById(comment);
-        return ResponseUtil.ok(comment);
+        footprintService.updateById(footprint);
+        return ResponseUtil.ok();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallFootprint footprint){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        commentService.deleteById(comment.getId());
+        footprintService.deleteById(footprint.getId());
         return ResponseUtil.ok();
     }
 

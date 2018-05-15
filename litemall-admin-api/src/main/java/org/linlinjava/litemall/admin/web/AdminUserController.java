@@ -16,8 +16,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/user")
-public class UserController {
-    private final Log logger = LogFactory.getLog(UserController.class);
+public class AdminUserController {
+    private final Log logger = LogFactory.getLog(AdminUserController.class);
 
     @Autowired
     private LitemallUserService userService;

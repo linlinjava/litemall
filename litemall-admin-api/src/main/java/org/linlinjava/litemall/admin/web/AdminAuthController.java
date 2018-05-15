@@ -22,8 +22,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/login")
-public class AuthController {
-    private final Log logger = LogFactory.getLog(AuthController.class);
+public class AdminAuthController {
+    private final Log logger = LogFactory.getLog(AdminAuthController.class);
 
     @Autowired
     private LitemallAdminService adminService;

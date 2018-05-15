@@ -16,8 +16,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/order")
-public class OrderController {
-    private final Log logger = LogFactory.getLog(OrderController.class);
+public class AdminOrderController {
+    private final Log logger = LogFactory.getLog(AdminOrderController.class);
 
     @Autowired
     private LitemallOrderService orderService;

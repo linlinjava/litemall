@@ -15,8 +15,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/goods-specification")
-public class GoodsSpecificationController {
-    private final Log logger = LogFactory.getLog(GoodsSpecificationController.class);
+public class AdminGoodsSpecificationController {
+    private final Log logger = LogFactory.getLog(AdminGoodsSpecificationController.class);
 
     @Autowired
     private LitemallGoodsSpecificationService goodsSpecificationService;

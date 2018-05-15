@@ -18,8 +18,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/cart")
-public class CartController {
-    private final Log logger = LogFactory.getLog(CartController.class);
+public class AdminCartController {
+    private final Log logger = LogFactory.getLog(AdminCartController.class);
 
     @Autowired
     private LitemallCartService cartService;

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin/index")
-public class IndexController {
-    private final Log logger = LogFactory.getLog(IndexController.class);
+public class AdminIndexController {
+    private final Log logger = LogFactory.getLog(AdminIndexController.class);
 
     @RequestMapping("/index")
     public Object index(){

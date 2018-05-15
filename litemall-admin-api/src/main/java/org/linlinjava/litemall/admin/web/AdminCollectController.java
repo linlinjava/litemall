@@ -15,8 +15,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/collect")
-public class CollectController {
-    private final Log logger = LogFactory.getLog(CollectController.class);
+public class AdminCollectController {
+    private final Log logger = LogFactory.getLog(AdminCollectController.class);
 
     @Autowired
     private LitemallCollectService collectService;

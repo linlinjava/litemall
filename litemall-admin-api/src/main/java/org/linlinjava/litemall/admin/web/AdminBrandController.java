@@ -15,8 +15,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/brand")
-public class BrandController {
-    private final Log logger = LogFactory.getLog(BrandController.class);
+public class AdminBrandController {
+    private final Log logger = LogFactory.getLog(AdminBrandController.class);
 
     @Autowired
     private LitemallBrandService brandService;

@@ -3,8 +3,8 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.db.domain.LitemallAd;
-import org.linlinjava.litemall.db.service.LitemallAdService;
+import org.linlinjava.litemall.db.domain.LitemallIssue;
+import org.linlinjava.litemall.db.service.LitemallIssueService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/ad")
-public class AdController {
-    private final Log logger = LogFactory.getLog(AdController.class);
+@RequestMapping("/admin/issue")
+public class AdminIssueController {
+    private final Log logger = LogFactory.getLog(AdminIssueController.class);
 
     @Autowired
-    private LitemallAdService adService;
+    private LitemallIssueService issueService;
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       String name, String content,
+                       String question,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
@@ -31,22 +31,22 @@ public class AdController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallAd> adList = adService.querySelective(name, content, page, limit, sort, order);
-        int total = adService.countSelective(name, content, page, limit, sort, order);
+        List<LitemallIssue> issueList = issueService.querySelective(question, page, limit, sort, order);
+        int total = issueService.countSelective(question, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", adList);
+        data.put("items", issueList);
 
         return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        adService.add(ad);
-        return ResponseUtil.ok(ad);
+        issueService.add(brand);
+        return ResponseUtil.ok(brand);
     }
 
     @GetMapping("/read")
@@ -59,25 +59,25 @@ public class AdController {
             return ResponseUtil.badArgument();
         }
 
-        LitemallAd brand = adService.findById(id);
+        LitemallIssue brand = issueService.findById(id);
         return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        adService.updateById(ad);
-        return ResponseUtil.ok(ad);
+        issueService.updateById(brand);
+        return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        adService.deleteById(ad.getId());
+        issueService.deleteById(brand.getId());
         return ResponseUtil.ok();
     }
 

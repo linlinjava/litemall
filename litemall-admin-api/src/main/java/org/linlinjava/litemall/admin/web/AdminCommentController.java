@@ -3,8 +3,8 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.db.domain.LitemallKeyword;
-import org.linlinjava.litemall.db.service.LitemallKeywordService;
+import org.linlinjava.litemall.db.domain.LitemallComment;
+import org.linlinjava.litemall.db.service.LitemallCommentService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/keyword")
-public class KeywordController {
-    private final Log logger = LogFactory.getLog(KeywordController.class);
+@RequestMapping("/admin/comment")
+public class AdminCommentController {
+    private final Log logger = LogFactory.getLog(AdminCommentController.class);
 
     @Autowired
-    private LitemallKeywordService keywordService;
+    private LitemallCommentService commentService;
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       String keyword, String url,
+                       String userId, String valueId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
@@ -31,8 +31,8 @@ public class KeywordController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallKeyword> brandList = keywordService.querySelective(keyword, url, page, limit, sort, order);
-        int total = keywordService.countSelective(keyword, url, page, limit, sort, order);
+        List<LitemallComment> brandList = commentService.querySelective(userId, valueId, page, limit, sort, order);
+        int total = commentService.countSelective(userId, valueId, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", brandList);
@@ -41,12 +41,12 @@ public class KeywordController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        keywordService.add(keywords);
-        return ResponseUtil.ok(keywords);
+        commentService.add(comment);
+        return ResponseUtil.ok(comment);
     }
 
     @GetMapping("/read")
@@ -59,25 +59,25 @@ public class KeywordController {
             return ResponseUtil.badArgument();
         }
 
-        LitemallKeyword brand = keywordService.findById(id);
-        return ResponseUtil.ok(brand);
+        LitemallComment comment = commentService.findById(id);
+        return ResponseUtil.ok(comment);
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        keywordService.updateById(keywords);
-        return ResponseUtil.ok(keywords);
+        commentService.updateById(comment);
+        return ResponseUtil.ok(comment);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword brand){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        keywordService.deleteById(brand.getId());
+        commentService.deleteById(comment.getId());
         return ResponseUtil.ok();
     }
 

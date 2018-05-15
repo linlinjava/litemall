@@ -18,8 +18,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/region")
-public class RegionController {
-    private final Log logger = LogFactory.getLog(RegionController.class);
+public class AdminRegionController {
+    private final Log logger = LogFactory.getLog(AdminRegionController.class);
 
     @Autowired
     private LitemallRegionService regionService;
