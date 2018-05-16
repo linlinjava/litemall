@@ -27,7 +27,7 @@
         <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
 
         <commentGenerator>
-            <!--<property name="suppressDate" value="true"/>-->
+            <property name="suppressDate" value="true"/>
             <!--<property name="suppressAllComments" value="true"/>-->
         </commentGenerator>
 
