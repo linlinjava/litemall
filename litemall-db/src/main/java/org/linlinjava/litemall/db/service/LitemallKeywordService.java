@@ -86,11 +86,6 @@ public class LitemallKeywordService {
     }
 
     public void deleteById(Integer id) {
-        LitemallKeyword keywords = keywordsMapper.selectByPrimaryKey(id);
-        if(keywords == null){
-            return;
-        }
-        keywords.setDeleted(true);
-        keywordsMapper.updateByPrimaryKey(keywords);
+        keywordsMapper.logicalDeleteByPrimaryKey(id);
     }
 }

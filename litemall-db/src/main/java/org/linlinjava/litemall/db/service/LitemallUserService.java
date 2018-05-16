@@ -83,11 +83,6 @@ public class LitemallUserService {
     }
 
     public void deleteById(Integer id) {
-        LitemallUser user = userMapper.selectByPrimaryKey(id);
-        if(user == null){
-            return;
-        }
-        user.setDeleted(true);
-        userMapper.updateByPrimaryKey(user);
+        userMapper.logicalDeleteByPrimaryKey(id);
     }
 }

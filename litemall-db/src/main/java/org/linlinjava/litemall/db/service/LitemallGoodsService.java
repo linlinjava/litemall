@@ -169,12 +169,7 @@ public class LitemallGoodsService {
     }
 
     public void deleteById(Integer id) {
-        LitemallGoods goods = goodsMapper.selectByPrimaryKey(id);
-        if(goods == null){
-            return;
-        }
-        goods.setDeleted(true);
-        goodsMapper.updateByPrimaryKeySelective(goods);
+        goodsMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallGoods goods) {

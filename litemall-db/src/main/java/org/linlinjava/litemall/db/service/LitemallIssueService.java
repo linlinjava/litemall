@@ -22,12 +22,7 @@ public class LitemallIssueService {
     }
 
     public void deleteById(Integer id) {
-        LitemallIssue issue = issueMapper.selectByPrimaryKey(id);
-        if(issue == null){
-            return;
-        }
-        issue.setDeleted(true);
-        issueMapper.updateByPrimaryKey(issue);
+        issueMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallIssue issue) {

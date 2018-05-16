@@ -107,12 +107,7 @@ public class LitemallCommentService {
     }
 
     public void deleteById(Integer id) {
-        LitemallComment comment = commentMapper.selectByPrimaryKey(id);
-        if(comment == null){
-            return;
-        }
-        comment.setDeleted(true);
-        commentMapper.updateByPrimaryKey(comment);
+        commentMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallComment comment) {

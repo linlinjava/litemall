@@ -18,9 +18,7 @@ public class LitemallStorageService {
     public void deleteByKey(String key) {
         LitemallStorageExample example = new LitemallStorageExample();
         example.or().andKeyEqualTo(key);
-        LitemallStorage storage = new LitemallStorage();
-        storage.setDeleted(true);
-        storageMapper.updateByExampleSelective(storage, example);
+        storageMapper.logicalDeleteByExample(example);
     }
 
     public void add(LitemallStorage storageInfo) {

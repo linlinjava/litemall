@@ -50,9 +50,7 @@ public class LitemallCartService {
     public int delete(List<Integer> productIdList, int userId) {
         LitemallCartExample example = new LitemallCartExample();
         example.or().andUserIdEqualTo(userId).andProductIdIn(productIdList);
-        LitemallCart cart = new LitemallCart();
-        cart.setDeleted(true);
-        return cartMapper.updateByExampleSelective(cart, example);
+        return cartMapper.logicalDeleteByExample(example);
     }
 
     public LitemallCart findById(Integer id) {
@@ -107,11 +105,6 @@ public class LitemallCartService {
     }
 
     public void deleteById(Integer id) {
-        LitemallCart cart = cartMapper.selectByPrimaryKey(id);
-        if(cart == null){
-            return;
-        }
-        cart.setDeleted(true);
-        cartMapper.updateByPrimaryKey(cart);
+        cartMapper.logicalDeleteByPrimaryKey(id);
     }
 }

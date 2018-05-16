@@ -29,9 +29,7 @@ public class LitemallSearchHistoryService {
     public void deleteByUid(int uid) {
         LitemallSearchHistoryExample example = new LitemallSearchHistoryExample();
         example.or().andUserIdEqualTo(uid);
-        LitemallSearchHistory searchHistory = new LitemallSearchHistory();
-        searchHistory.setDeleted(true);
-        searchHistoryMapper.updateByExampleSelective(searchHistory, example);
+        searchHistoryMapper.logicalDeleteByExample(example);
     }
 
     public void deleteById(Integer id) {
@@ -40,7 +38,7 @@ public class LitemallSearchHistoryService {
             return;
         }
         searchHistory.setDeleted(true);
-        searchHistoryMapper.updateByPrimaryKey(searchHistory);
+        searchHistoryMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallSearchHistory searchHistory) {

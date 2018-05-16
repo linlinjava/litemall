@@ -53,12 +53,7 @@ public class LitemallAdminService {
     }
 
     public void deleteById(Integer id) {
-        LitemallAdmin admin = adminMapper.selectByPrimaryKey(id);
-        if(admin == null){
-            return;
-        }
-        admin.setDeleted(true);
-        adminMapper.updateByPrimaryKey(admin);
+        adminMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallAdmin admin) {

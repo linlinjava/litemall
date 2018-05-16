@@ -136,12 +136,7 @@ public class LitemallOrderService {
     }
 
     public void deleteById(Integer id) {
-        LitemallOrder order = orderMapper.selectByPrimaryKey(id);
-        if(order == null){
-            return;
-        }
-        order.setDeleted(true);
-        orderMapper.updateByPrimaryKey(order);
+        orderMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public int count() {
