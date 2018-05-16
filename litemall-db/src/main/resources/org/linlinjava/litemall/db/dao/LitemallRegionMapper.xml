@@ -113,9 +113,16 @@
     <if test="example.distinct">
       distinct
     </if>
-    <foreach collection="selective" item="column" separator=",">
-      ${column.value}
-    </foreach>
+    <choose>
+      <when test="selective != null and selective.length &gt; 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.value}
+        </foreach>
+      </when>
+      <otherwise>
+        id, pid, `name`, `type`, code
+      </otherwise>
+    </choose>
     from litemall_region
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -141,9 +148,16 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     select
-    <foreach collection="selective" item="column" separator=",">
-      ${column.value}
-    </foreach>
+    <choose>
+      <when test="selective != null and selective.length &gt; 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.value}
+        </foreach>
+      </when>
+      <otherwise>
+        id, pid, `name`, `type`, code
+      </otherwise>
+    </choose>
     from litemall_region
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -326,9 +340,16 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     select
-    <foreach collection="selective" item="column" separator=",">
-      ${column.value}
-    </foreach>
+    <choose>
+      <when test="selective != null and selective.length &gt; 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.value}
+        </foreach>
+      </when>
+      <otherwise>
+        id, pid, `name`, `type`, code
+      </otherwise>
+    </choose>
     from litemall_region
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
