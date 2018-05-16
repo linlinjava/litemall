@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.db.domain.LitemallAddress;
 import org.linlinjava.litemall.db.service.LitemallAddressService;
 import org.linlinjava.litemall.db.service.LitemallRegionService;
@@ -75,6 +76,11 @@ public class AdminAddressController {
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAddress address){
         if(adminId == null){
             return ResponseUtil.fail401();
+        }
+
+        String mobile = address.getMobile();
+        if(!RegexUtil.isMobileExact(mobile)){
+            return ResponseUtil.fail(403, "手机号格式不正确");
         }
 
         addressService.add(address);

@@ -5,6 +5,7 @@ import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.core.util.JacksonUtil;
@@ -214,6 +215,9 @@ public class WxAuthController {
         userList = userService.queryByMobile(mobile);
         if(userList.size() > 0){
             return ResponseUtil.fail(403, "手机号已注册");
+        }
+        if(!RegexUtil.isMobileExact(mobile)){
+            return ResponseUtil.fail(403, "手机号格式不正确");
         }
         LitemallUser user = new LitemallUser();
 
