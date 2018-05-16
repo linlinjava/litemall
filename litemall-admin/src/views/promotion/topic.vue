@@ -68,7 +68,7 @@
           <el-input v-model="dataForm.subtitle"></el-input>
         </el-form-item>
         <el-form-item style="width: 700px;" label="专题内容">
-          <tinymce v-model="dataForm.content"></tinymce>
+          <editor :init="editorInit" v-model="dataForm.content"></editor>
         </el-form-item>        
         <el-form-item label="商品低价" prop="priceInfo">
           <el-input v-model="dataForm.priceInfo"></el-input>
@@ -117,11 +117,11 @@ import { listTopic, createTopic, updateTopic, deleteTopic } from '@/api/topic'
 import { createStorage } from '@/api/storage'
 import waves from '@/directive/waves' // 水波纹指令
 import BackToTop from '@/components/BackToTop'
-import Tinymce from '@/components/Tinymce'
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
   name: 'Topic',
-  components: { BackToTop, Tinymce },
+  components: { BackToTop, Editor },
   directives: {
     waves
   },
@@ -141,7 +141,7 @@ export default {
         id: undefined,
         titile: undefined,
         subtitle: undefined,
-        content: undefined,
+        content: '',
         priceInfo: undefined,
         readCount: undefined,
         isShow: false
@@ -157,7 +157,21 @@ export default {
         subtitle: [{ required: true, message: '专题子标题不能为空', trigger: 'blur' }],
         content: [{ required: true, message: '专题内容不能为空', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      editorInit: {
+        language: 'zh_CN',
+        plugins: ['advlist anchor autolink autoresize autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime legacyoutput link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace tabfocus table template textcolor textpattern visualblocks visualchars wordcount'],
+        toolbar: ['bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript ', 'hr bullist numlist link image charmap preview anchor pagebreak fullscreen media table emoticons forecolor backcolor'],
+        images_upload_handler: function(blobInfo, success, failure) {
+          const formData = new FormData()
+          formData.append('file', blobInfo.blob())
+          createStorage(formData).then(res => {
+            success(res.data.data.url)
+          }).catch(() => {
+            failure('上传失败，请重新上传')
+          })
+        }
+      }
     }
   },
   created() {
@@ -193,7 +207,7 @@ export default {
         id: undefined,
         titile: undefined,
         subtitle: undefined,
-        content: undefined,
+        content: '',
         priceInfo: undefined,
         readCount: undefined,
         isShow: false

@@ -154,7 +154,7 @@
         </el-form-item> 
             
         <el-form-item style="width: 700px;" label="商品详细介绍">
-          <tinymce v-model="dataForm.goodsDesc"></tinymce>
+          <editor :init="editorInit" v-model="dataForm.goodsDesc"></editor>
         </el-form-item>
         
         <el-form-item label="商品主图">
@@ -207,13 +207,14 @@
 
 <script>
 import { listGoods, createGoods, updateGoods, deleteGoods } from '@/api/goods'
+import { createStorage } from '@/api/storage'
 import waves from '@/directive/waves' // 水波纹指令
 import BackToTop from '@/components/BackToTop'
-import Tinymce from '@/components/Tinymce'
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
   name: 'Goods',
-  components: { BackToTop, Tinymce },
+  components: { BackToTop, Editor },
   directives: { waves },
   data() {
     return {
@@ -239,7 +240,7 @@ export default {
         listPicUrl: undefined,
         primaryPicUrl: undefined,
         goodsBrief: undefined,
-        goodsDesc: undefined,
+        goodsDesc: '',
         keywords: undefined,
         gallery: undefined,
         categoryId: undefined,
@@ -255,7 +256,21 @@ export default {
         goodsSn: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
         name: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      editorInit: {
+        language: 'zh_CN',
+        plugins: ['advlist anchor autolink autoresize autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime legacyoutput link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace tabfocus table template textcolor textpattern visualblocks visualchars wordcount'],
+        toolbar: ['bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript ', 'hr bullist numlist link image charmap preview anchor pagebreak fullscreen media table emoticons forecolor backcolor'],
+        images_upload_handler: function(blobInfo, success, failure) {
+          const formData = new FormData()
+          formData.append('file', blobInfo.blob())
+          createStorage(formData).then(res => {
+            success(res.data.data.url)
+          }).catch(() => {
+            failure('上传失败，请重新上传')
+          })
+        }
+      }
     }
   },
   created() {
@@ -299,7 +314,7 @@ export default {
         listPicUrl: undefined,
         primaryPicUrl: undefined,
         goodsBrief: undefined,
-        goodsDesc: undefined,
+        goodsDesc: '',
         keywords: undefined,
         gallery: undefined,
         categoryId: undefined,
