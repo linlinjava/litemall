@@ -287,7 +287,7 @@ Page({
       return false;
     }
 
-    if (!check.isValidPhone(this.data.mobile)) {
+    if (!check.isValidPhone(address.mobile)) {
       util.showErrorToast('手机号不正确');
       return false;
     }
