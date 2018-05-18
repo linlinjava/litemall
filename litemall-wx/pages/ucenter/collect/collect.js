@@ -60,7 +60,8 @@ Page({
   openGoods(event) {
     
     let that = this;
-    let goodsId = this.data.collectList[event.currentTarget.dataset.index].valueId;
+    let index = event.currentTarget.dataset.index;
+    let goodsId = this.data.collectList[index].valueId;
 
     //触摸时间距离页面打开的毫秒数  
     var touchTime = that.data.touchEnd - that.data.touchStart;
@@ -81,7 +82,10 @@ Page({
                   icon: 'success',
                   duration: 2000
                 });
-                that.getCollectList();
+                that.data.collectList.splice(index, 1)
+                that.setData({
+                  collectList: that.data.collectList
+                });
               }
             });
           }
