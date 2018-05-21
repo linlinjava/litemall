@@ -66,8 +66,7 @@ export const asyncRouterMap = [
       { path: 'address', component: _import('user/address'), name: 'address', meta: { title: '收货地址', noCache: true }},
       { path: 'collect', component: _import('user/collect'), name: 'collect', meta: { title: '会员收藏', noCache: true }},
       { path: 'footprint', component: _import('user/footprint'), name: 'footprint', meta: { title: '会员足迹', noCache: true }},
-      { path: 'history', component: _import('user/history'), name: 'history', meta: { title: '搜索历史', noCache: true }},
-      { path: 'cart', component: _import('user/cart'), name: 'cart', meta: { title: '购物车', noCache: true }}
+      { path: 'history', component: _import('user/history'), name: 'history', meta: { title: '搜索历史', noCache: true }}
     ]
   },
 
