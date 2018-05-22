@@ -54,12 +54,7 @@ public class LitemallProductService {
     }
 
     public void deleteById(Integer id) {
-        LitemallProduct product = productMapper.selectByPrimaryKey(id);
-        if(product == null){
-            return;
-        }
-        product.setDeleted(true);
-        productMapper.updateByPrimaryKey(product);
+        productMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallProduct product) {

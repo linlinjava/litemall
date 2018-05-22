@@ -92,12 +92,7 @@ public class LitemallTopicService {
     }
 
     public void deleteById(Integer id) {
-        LitemallTopic topic = topicMapper.selectByPrimaryKey(id);
-        if(topic == null){
-            return;
-        }
-        topic.setDeleted(true);
-        topicMapper.updateByPrimaryKeySelective(topic);
+        topicMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallTopic topic) {

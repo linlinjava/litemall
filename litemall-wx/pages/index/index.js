@@ -1,6 +1,6 @@
 const util = require('../../utils/util.js');
 const api = require('../../config/api.js');
-const user = require('../../services/user.js');
+const user = require('../../utils/user.js');
 
 //获取应用实例
 const app = getApp()
@@ -16,7 +16,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      title: 'NideShop',
+      title: 'litemall小商场',
       desc: '仿网易严选微信小程序商城',
       path: '/pages/index/index'
     }

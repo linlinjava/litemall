@@ -57,12 +57,7 @@ public class LitemallAdService {
     }
 
     public void deleteById(Integer id) {
-        LitemallAd ad = adMapper.selectByPrimaryKey(id);
-        if(ad == null){
-            return;
-        }
-        ad.setDeleted(true);
-        adMapper.updateByPrimaryKey(ad);
+        adMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallAd ad) {

@@ -57,12 +57,7 @@ public class LitemallGoodsSpecificationService {
     }
 
     public void deleteById(Integer id) {
-        LitemallGoodsSpecification goodsSpecification = goodsSpecificationMapper.selectByPrimaryKey(id);
-        if(goodsSpecification == null){
-            return;
-        }
-        goodsSpecification.setDeleted(true);
-        goodsSpecificationMapper.updateByPrimaryKey(goodsSpecification);
+        goodsSpecificationMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallGoodsSpecification goodsSpecification) {

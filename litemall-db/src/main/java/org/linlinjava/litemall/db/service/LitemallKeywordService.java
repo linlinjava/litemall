@@ -54,7 +54,7 @@ public class LitemallKeywordService {
         criteria.andDeletedEqualTo(false);
 
         PageHelper.startPage(page, limit);
-        return keywordsMapper.selectByExampleSelective(example);
+        return keywordsMapper.selectByExample(example);
     }
 
     public int countSelective(String keyword, String url, Integer page, Integer limit, String sort, String order) {
@@ -86,11 +86,6 @@ public class LitemallKeywordService {
     }
 
     public void deleteById(Integer id) {
-        LitemallKeyword keywords = keywordsMapper.selectByPrimaryKey(id);
-        if(keywords == null){
-            return;
-        }
-        keywords.setDeleted(true);
-        keywordsMapper.updateByPrimaryKey(keywords);
+        keywordsMapper.logicalDeleteByPrimaryKey(id);
     }
 }

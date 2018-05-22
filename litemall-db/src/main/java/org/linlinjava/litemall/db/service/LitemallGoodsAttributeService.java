@@ -50,12 +50,7 @@ public class LitemallGoodsAttributeService {
     }
 
     public void deleteById(Integer id) {
-        LitemallGoodsAttribute goodsAttribute = goodsAttributeMapper.selectByPrimaryKey(id);
-        if(goodsAttribute == null){
-            return;
-        }
-        goodsAttribute.setDeleted(true);
-        goodsAttributeMapper.updateByPrimaryKey(goodsAttribute);
+        goodsAttributeMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallGoodsAttribute goodsAttribute) {

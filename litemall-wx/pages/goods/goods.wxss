@@ -590,6 +590,17 @@
     text-align: center;
     color: #fff;
 }
+
+.bottom-btn .n{
+    border:1px solid #f4f4f4;
+    background: #f4f4f4;
+    float: left;
+    height: 100rpx;
+    line-height: 96rpx;
+    flex: 1;
+    text-align: center;
+}
+
 @import "../../lib/wxParse/wxParse.wxss";
 
 .attr-pop{

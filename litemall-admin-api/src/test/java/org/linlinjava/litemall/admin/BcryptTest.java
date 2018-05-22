@@ -3,7 +3,7 @@ package org.linlinjava.litemall.admin;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.linlinjava.litemall.admin.util.bcrypt.BCryptPasswordEncoder;
+import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

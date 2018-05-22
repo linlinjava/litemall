@@ -34,12 +34,7 @@ public class LitemallFootprintService {
     }
 
     public void deleteById(Integer id){
-        LitemallFootprint footprint = footprintMapper.selectByPrimaryKey(id);
-        if(footprint == null){
-            return;
-        }
-        footprint.setDeleted(true);
-        footprintMapper.updateByPrimaryKey(footprint);
+        footprintMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallFootprint footprint) {

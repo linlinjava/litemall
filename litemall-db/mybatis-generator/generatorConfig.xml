@@ -25,9 +25,21 @@
         <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin"/>
         <!-- 数据Model属性对应Column获取插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
+        <!-- 逻辑删除插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.LogicalDeletePlugin">
+            <!-- 这里配置的是全局逻辑删除列和逻辑删除值，当然在table中配置的值会覆盖该全局配置 -->
+            <!-- 逻辑删除列类型只能为数字、字符串或者布尔类型 -->
+            <property name="logicalDeleteColumn" value="deleted"/>
+            <!-- 逻辑删除-已删除值 -->
+            <property name="logicalDeleteValue" value="1"/>
+            <!-- 逻辑删除-未删除值 -->
+            <property name="logicalUnDeleteValue" value="0"/>
+        </plugin>
+        <!-- 乐观锁插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.OptimisticLockerPlugin"/>
 
         <commentGenerator>
-            <!--<property name="suppressDate" value="true"/>-->
+            <property name="suppressDate" value="true"/>
             <!--<property name="suppressAllComments" value="true"/>-->
         </commentGenerator>
 
@@ -118,7 +130,7 @@
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="pay_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="ship_start_time"/>
-            <columnOverride javaType="java.time.LocalDateTime" column="shop_end_time"/>
+            <columnOverride javaType="java.time.LocalDateTime" column="ship_end_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="confirm_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="end_time"/>
         </table>
@@ -134,18 +146,6 @@
         </table>
         <table tableName="litemall_region">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="litemall_region_province">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="litemall_region_city">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="litemall_region_area">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="litemall_region_street">
-            <generatedKey column="code" sqlStatement="MySql" identity="true" />
         </table>
         <table tableName="litemall_search_history">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />

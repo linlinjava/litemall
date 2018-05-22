@@ -42,12 +42,7 @@ public class LitemallCollectService {
     }
 
     public void deleteById(Integer id) {
-        LitemallCollect collect = collectMapper.selectByPrimaryKey(id);
-        if(collect == null){
-            return;
-        }
-        collect.setDeleted(true);
-        collectMapper.updateByPrimaryKey(collect);
+        collectMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public int add(LitemallCollect collect) {

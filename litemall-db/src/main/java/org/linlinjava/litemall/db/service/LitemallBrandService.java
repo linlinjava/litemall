@@ -75,12 +75,7 @@ public class LitemallBrandService {
     }
 
     public void deleteById(Integer id) {
-        LitemallBrand brand = brandMapper.selectByPrimaryKey(id);
-        if(brand == null){
-            return;
-        }
-        brand.setDeleted(true);
-        brandMapper.updateByPrimaryKey(brand);
+        brandMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallBrand brand) {

@@ -54,6 +54,10 @@
       </el-pagination>
     </div>
 
+    <el-tooltip placement="top" content="返回顶部">
+      <back-to-top :visibilityHeight="100" ></back-to-top>
+    </el-tooltip>
+    
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
@@ -63,9 +67,9 @@
         <el-form-item label="专题子标题" prop="subtitle">
           <el-input v-model="dataForm.subtitle"></el-input>
         </el-form-item>
-        <el-form-item label="专题内容" prop="content">
-          <el-input v-model="dataForm.content" type="textarea" :rows="4"></el-input>
-        </el-form-item> 
+        <el-form-item style="width: 700px;" label="专题内容">
+          <editor :init="editorInit" v-model="dataForm.content"></editor>
+        </el-form-item>        
         <el-form-item label="商品低价" prop="priceInfo">
           <el-input v-model="dataForm.priceInfo"></el-input>
         </el-form-item>
@@ -103,15 +107,21 @@
     margin-right: 0;
     margin-bottom: 0;
   }
+  .el-dialog {
+    width: 800px;
+  }  
 </style>
 
 <script>
 import { listTopic, createTopic, updateTopic, deleteTopic } from '@/api/topic'
 import { createStorage } from '@/api/storage'
 import waves from '@/directive/waves' // 水波纹指令
+import BackToTop from '@/components/BackToTop'
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
   name: 'Topic',
+  components: { BackToTop, Editor },
   directives: {
     waves
   },
@@ -131,7 +141,7 @@ export default {
         id: undefined,
         titile: undefined,
         subtitle: undefined,
-        content: undefined,
+        content: '',
         priceInfo: undefined,
         readCount: undefined,
         isShow: false
@@ -143,11 +153,25 @@ export default {
         create: '创建'
       },
       rules: {
-        name: [{ required: true, message: '广告标题不能为空', trigger: 'blur' }],
-        content: [{ required: true, message: '广告内容不能为空', trigger: 'blur' }],
-        url: [{ required: true, message: '广告链接不能为空', trigger: 'blur' }]
+        title: [{ required: true, message: '专题标题不能为空', trigger: 'blur' }],
+        subtitle: [{ required: true, message: '专题子标题不能为空', trigger: 'blur' }],
+        content: [{ required: true, message: '专题内容不能为空', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      editorInit: {
+        language: 'zh_CN',
+        plugins: ['advlist anchor autolink autoresize autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime legacyoutput link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace tabfocus table template textcolor textpattern visualblocks visualchars wordcount'],
+        toolbar: ['bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript ', 'hr bullist numlist link image charmap preview anchor pagebreak fullscreen media table emoticons forecolor backcolor'],
+        images_upload_handler: function(blobInfo, success, failure) {
+          const formData = new FormData()
+          formData.append('file', blobInfo.blob())
+          createStorage(formData).then(res => {
+            success(res.data.data.url)
+          }).catch(() => {
+            failure('上传失败，请重新上传')
+          })
+        }
+      }
     }
   },
   created() {
@@ -183,7 +207,7 @@ export default {
         id: undefined,
         titile: undefined,
         subtitle: undefined,
-        content: undefined,
+        content: '',
         priceInfo: undefined,
         readCount: undefined,
         isShow: false

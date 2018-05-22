@@ -1,7 +1,7 @@
 package org.linlinjava.litemall.admin.service;
 
 import org.linlinjava.litemall.admin.dao.AdminToken;
-import org.linlinjava.litemall.db.util.CharUtil;
+import org.linlinjava.litemall.core.util.CharUtil;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -29,11 +29,13 @@ public class AdminTokenManager {
 
 
     public static AdminToken generateToken(Integer id){
-        AdminToken userToken = idMap.get(id);
-        if(userToken != null) {
-            tokenMap.remove(userToken.getToken());
-            idMap.remove(id);
-        }
+        AdminToken userToken = null;
+
+//        userToken = idMap.get(id);
+//        if(userToken != null) {
+//            tokenMap.remove(userToken.getToken());
+//            idMap.remove(id);
+//        }
 
         String token = CharUtil.getRandomString(32);
         while (tokenMap.containsKey(token)) {

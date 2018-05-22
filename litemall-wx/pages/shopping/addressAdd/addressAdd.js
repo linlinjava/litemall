@@ -1,5 +1,7 @@
 var util = require('../../../utils/util.js');
 var api = require('../../../config/api.js');
+var check = require('../../../utils/check.js');
+
 var app = getApp();
 Page({
   data: {
@@ -285,6 +287,10 @@ Page({
       return false;
     }
 
+    if (!check.isValidPhone(address.mobile)) {
+      util.showErrorToast('手机号不正确');
+      return false;
+    }
 
     let that = this;
     util.request(api.AddressSave, {
@@ -298,6 +304,11 @@ Page({
       isDefault: address.isDefault,
     }, 'POST').then(function (res) {
       if (res.errno === 0) {
+        try {
+          wx.setStorageSync('addressId', res.data);
+        } catch (e) {
+
+        }
         wx.navigateBack();
       }
     });

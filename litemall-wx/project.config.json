@@ -9,8 +9,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.93",
-	"appid": "wxa5b486c6b918ecfb",
-	"projectname": "litemall-wx",
+  "appid": "wxa5b486c6b918ecfb",
+  "projectname": "litemall-wx",
 	"condition": {
 		"search": {
 			"current": -1,

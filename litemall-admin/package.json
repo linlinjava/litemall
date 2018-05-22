@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "build:dep": "cross-env NODE_ENV=production env_config=dep node build/build.js",
     "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint"
@@ -28,7 +29,8 @@
     "vue-router": "3.0.1",
     "vue-splitpane": "1.0.2",
     "vuex": "3.0.1",
-    "xlsx": "^0.11.16"
+    "xlsx": "^0.11.16",
+    "@tinymce/tinymce-vue": "1.0.8"
   },
   "devDependencies": {
     "autoprefixer": "7.2.3",

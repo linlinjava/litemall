@@ -34,9 +34,9 @@
       <el-table-column align="center" min-width="200px" label="活动链接" prop="link">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="是否启用" prop="enable">
+      <el-table-column align="center" min-width="100px" label="是否启用" prop="enabled">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.enable ? 'success' : 'error' ">{{ scope.row.enable ? '启用' : '不启用' }}</el-tag>
+          <el-tag :type="scope.row.enabled ? 'success' : 'error' ">{{ scope.row.enabled ? '启用' : '不启用' }}</el-tag>
         </template>
       </el-table-column>
 

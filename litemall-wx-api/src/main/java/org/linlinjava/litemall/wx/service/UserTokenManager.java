@@ -1,6 +1,6 @@
 package org.linlinjava.litemall.wx.service;
 
-import org.linlinjava.litemall.db.util.CharUtil;
+import org.linlinjava.litemall.core.util.CharUtil;
 import org.linlinjava.litemall.wx.dao.UserToken;
 
 import java.time.LocalDateTime;
@@ -30,11 +30,13 @@ public class UserTokenManager {
 
 
     public static UserToken generateToken(Integer id){
-        UserToken userToken = idMap.get(id);
-        if(userToken != null) {
-            tokenMap.remove(userToken.getToken());
-            idMap.remove(id);
-        }
+        UserToken userToken = null;
+
+//        userToken = idMap.get(id);
+//        if(userToken != null) {
+//            tokenMap.remove(userToken.getToken());
+//            idMap.remove(id);
+//        }
 
         String token = CharUtil.getRandomString(32);
         while (tokenMap.containsKey(token)) {

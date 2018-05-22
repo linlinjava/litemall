@@ -87,12 +87,7 @@ public class LitemallCategoryService {
     }
 
     public void deleteById(Integer id) {
-        LitemallCategory category = categoryMapper.selectByPrimaryKey(id);
-        if(category == null){
-            return;
-        }
-        category.setDeleted(true);
-        categoryMapper.updateByPrimaryKey(category);
+        categoryMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallCategory category) {

@@ -34,12 +34,7 @@ public class LitemallAddressService {
     }
 
     public void delete(Integer id) {
-        LitemallAddress address = addressMapper.selectByPrimaryKey(id);
-        if(address == null){
-            return;
-        }
-        address.setDeleted(true);
-        addressMapper.updateByPrimaryKey(address);
+        addressMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public LitemallAddress findDefault(Integer userId) {
