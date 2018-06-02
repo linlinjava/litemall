@@ -102,13 +102,13 @@
         </el-form-item>
         <el-form-item label="图标" prop="iconUrl">
           <el-input v-model="dataForm.iconUrl"></el-input>
-          <el-upload action="http://localhost:8080/storage/create" :show-file-list="false" :on-success="handleIconUrl">
+          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="handleIconUrl">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
         <el-form-item label="首页横幅" prop="bannerUrl">
           <el-input v-model="dataForm.bannerUrl"></el-input>
-          <el-upload action="http://localhost:8080/storage/create" :show-file-list="false" :on-success="handleBannerUrl">
+          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="handleBannerUrl">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
@@ -120,7 +120,7 @@
         </el-form-item>
         <el-form-item label="类目页横幅" prop="wapBannerUrl">
           <el-input v-model="dataForm.wapBannerUrl"></el-input>
-          <el-upload action="http://localhost:8080/storage/create" :show-file-list="false" :on-success="handleWapBannerUrl">
+          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="handleWapBannerUrl">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>        
@@ -151,6 +151,7 @@
 
 <script>
 import { listCategory, listCatL1, createCategory, updateCategory, deleteCategory } from '@/api/category'
+import { createStorage } from '@/api/storage'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
@@ -257,20 +258,32 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleIconUrl(response, file, fileList) {
-      if (response.errno === 0) {
-        this.dataForm.iconUrl = response.data.url
-      }
+    handleIconUrl(item) {
+      const formData = new FormData()
+      formData.append('file', item.file)
+      createStorage(formData).then(res => {
+        this.dataForm.iconUrl = res.data.data.url
+      }).catch(() => {
+        this.$message.error('上传失败，请重新上传')
+      })
     },
-    handleBannerUrl(response, file, fileList) {
-      if (response.errno === 0) {
-        this.dataForm.bannerUrl = response.data.url
-      }
+    handleBannerUrl(item) {
+      const formData = new FormData()
+      formData.append('file', item.file)
+      createStorage(formData).then(res => {
+        this.dataForm.bannerUrl = res.data.data.url
+      }).catch(() => {
+        this.$message.error('上传失败，请重新上传')
+      })
     },
-    handleWapBannerUrl(response, file, fileList) {
-      if (response.errno === 0) {
-        this.dataForm.wapBannerUrl = response.data.url
-      }
+    handleWapBannerUrl(item) {
+      const formData = new FormData()
+      formData.append('file', item.file)
+      createStorage(formData).then(res => {
+        this.dataForm.wapBannerUrl = res.data.data.url
+      }).catch(() => {
+        this.$message.error('上传失败，请重新上传')
+      })
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
