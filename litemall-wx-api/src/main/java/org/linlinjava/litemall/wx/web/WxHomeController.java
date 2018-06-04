@@ -84,7 +84,14 @@ public class WxHomeController {
                 l2List.add(catL2.getId());
             }
 
-            List<LitemallGoods> categoryGoods = goodsService.queryByCategory(l2List, 0, 5);
+            List<LitemallGoods> categoryGoods = null;
+            if(l2List.size() == 0){
+                categoryGoods = new ArrayList<>();
+            }
+            else{
+                categoryGoods = goodsService.queryByCategory(l2List, 0, 5);
+            }
+
             Map catGoods = new HashMap();
             catGoods.put("id", catL1.getId());
             catGoods.put("name", catL1.getName());

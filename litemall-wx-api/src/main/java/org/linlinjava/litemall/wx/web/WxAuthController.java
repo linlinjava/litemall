@@ -237,6 +237,7 @@ public class WxAuthController {
         user.setStatus("可用");
         user.setLastLoginTime(LocalDateTime.now());
         user.setLastLoginIp(IpUtil.client(request));
+        user.setAddTime(LocalDateTime.now());
         userService.add(user);
 
 

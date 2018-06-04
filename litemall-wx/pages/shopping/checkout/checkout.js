@@ -162,6 +162,11 @@ Page({
               }
             });
           }
+          else{
+            wx.redirectTo({
+              url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+            });
+          }
         });
 
       } else {

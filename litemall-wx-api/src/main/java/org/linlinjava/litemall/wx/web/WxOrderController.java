@@ -341,6 +341,7 @@ public class WxOrderController {
                 orderGoods.setNumber(cartGoods.getNumber());
                 orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
                 orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
+                orderGoods.setAddTime(LocalDateTime.now());
 
                 // 添加订单商品表项
                 orderGoodsService.add(orderGoods);
