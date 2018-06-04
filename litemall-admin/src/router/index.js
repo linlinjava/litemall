@@ -106,6 +106,7 @@ export const asyncRouterMap = [
       { path: 'comment', component: _import('goods/comment'), name: 'comment', meta: { title: '用户评论', noCache: true }}
     ]
   },
+
   {
     path: '/promotion',
     component: Layout,
@@ -120,6 +121,7 @@ export const asyncRouterMap = [
       { path: 'topic', component: _import('promotion/topic'), name: 'topic', meta: { title: '专题管理', noCache: true }}
     ]
   },
+
   {
     path: '/sys',
     component: Layout,
@@ -132,6 +134,22 @@ export const asyncRouterMap = [
     children: [
       { path: 'admin', component: _import('sys/admin'), name: 'admin', meta: { title: '管理员', noCache: true }},
       { path: 'os', component: _import('sys/os'), name: 'os', meta: { title: '对象存储', noCache: true }}
+    ]
+  },
+
+  {
+    path: '/stat',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'statManage',
+    meta: {
+      title: '统计',
+      icon: 'chart'
+    },
+    children: [
+      { path: 'user', component: _import('stat/user'), name: 'statUser', meta: { title: '用户统计', noCache: true }},
+      { path: 'order', component: _import('stat/order'), name: 'statOrder', meta: { title: '订单统计', noCache: true }},
+      { path: 'goods', component: _import('stat/goods'), name: 'statGoods', meta: { title: '商品统计', noCache: true }}
     ]
   },
 
