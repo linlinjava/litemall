@@ -231,7 +231,7 @@ public class AdminOrderController {
      * 早点清理未付款情况，这里八天再确认是可以的。
      *
      * TODO
-     * 目前自动确认是基于管理后台管理员所设置的商品快递到达时间，见orderService.queryUnconfirm。
+     * 目前自动确认是基于管理后台管理员所设置的商品快递时间，见orderService.queryUnconfirm。
      * 那么在实际业务上有可能存在商品寄出以后商品因为一些原因快递最终没有到达，
      * 也就是商品快递失败而shipEndTime一直是空的情况，因此这里业务可能需要扩展，以防止订单一直
      * 处于发货状态。

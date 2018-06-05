@@ -153,7 +153,7 @@ public class LitemallOrderService {
 
     public List<LitemallOrder> queryUnconfirm() {
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_SHIP).andShipEndTimeIsNotNull().andDeletedEqualTo(false);
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_SHIP).andShipStartTimeIsNotNull().andDeletedEqualTo(false);
         return orderMapper.selectByExample(example);
     }
 
