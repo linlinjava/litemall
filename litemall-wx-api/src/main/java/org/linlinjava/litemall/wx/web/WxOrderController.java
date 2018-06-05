@@ -125,7 +125,7 @@ public class WxOrderController {
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if (userId == null) {
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if (showType == null) {
             showType = 0;
@@ -186,10 +186,10 @@ public class WxOrderController {
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, Integer orderId) {
         if (userId == null) {
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if (orderId == null) {
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         // 订单信息

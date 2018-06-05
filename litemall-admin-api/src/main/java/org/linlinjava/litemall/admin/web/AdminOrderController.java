@@ -48,7 +48,7 @@ public class AdminOrderController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, page, limit, sort, order);
         int total = orderService.countSelective(userId, orderSn, page, limit, sort, order);
@@ -74,7 +74,7 @@ public class AdminOrderController {
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, Integer id){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
 
         LitemallOrder order = orderService.findById(id);

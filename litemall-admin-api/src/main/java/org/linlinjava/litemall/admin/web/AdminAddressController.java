@@ -53,7 +53,7 @@ public class AdminAddressController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
 
         List<LitemallAddress> addressList = addressService.querySelective(userId, name, page, limit, sort, order);
@@ -75,7 +75,7 @@ public class AdminAddressController {
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAddress address){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
 
         String mobile = address.getMobile();
@@ -92,7 +92,7 @@ public class AdminAddressController {
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, Integer addressId){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
 
         LitemallAddress address = addressService.findById(addressId);
@@ -103,7 +103,7 @@ public class AdminAddressController {
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAddress address){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         addressService.updateById(address);
         Map<String, Object> addressVo = toVo(address);
@@ -113,7 +113,7 @@ public class AdminAddressController {
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAddress address){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         addressService.delete(address.getId());
         return ResponseUtil.ok();

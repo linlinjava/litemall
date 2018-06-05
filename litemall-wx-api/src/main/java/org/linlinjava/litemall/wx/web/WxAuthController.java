@@ -69,7 +69,7 @@ public class WxAuthController {
         List<LitemallUser> userList =userService.queryByUsername(username);
         LitemallUser user = null;
         if(userList.size() > 1){
-            return ResponseUtil.fail502();
+            return ResponseUtil.serious();
         }
         else if(userList.size() == 0){
             return ResponseUtil.badArgumentValue();
