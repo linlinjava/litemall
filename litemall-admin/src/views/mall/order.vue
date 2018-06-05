@@ -25,17 +25,14 @@
       <el-table-column align="center" min-width="100px" label="用户ID" prop="userId">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="订单编号" prop="orderSn">
+      <el-table-column align="center" min-width="200px" label="订单编号" prop="orderSn">
       </el-table-column>
 
       <el-table-column align="center" min-width="100px" label="订单状态" prop="orderStatus">
-      </el-table-column>
-
-      <el-table-column align="center" min-width="100px" label="是否删除" prop="isDelete">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.isDelete ? 'success' : 'error' ">{{scope.row.isDelete ? '未删除' : '已删除'}}</el-tag>
+          <el-tag>{{scope.row.orderStatus | orderStatusFilter}}</el-tag>
         </template>
-      </el-table-column>
+      </el-table-column>  
 
       <el-table-column align="center" min-width="100px" label="订单费用" prop="orderPrice">
       </el-table-column>
@@ -43,10 +40,10 @@
       <el-table-column align="center" min-width="100px" label="实际费用" prop="actualPrice">
       </el-table-column>
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleSend(scope.row)">发货</el-button>
-          <el-button type="primary" size="mini"  @click="handleRecv(scope.row)">收货</el-button>
+          <el-button type="primary" size="mini" @click="handleShip(scope.row)" v-if="scope.row.orderStatus==201">发货</el-button>
+          <el-button type="primary" size="mini"  @click="handleRefund(scope.row)" v-if="scope.row.orderStatus==202">退款</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -59,46 +56,31 @@
     </div>
 
     <!-- 发货对话框 -->
-    <el-dialog title="发货" :visible.sync="sendDialogFormVisible">
-      <el-form ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
+    <el-dialog title="发货" :visible.sync="shipDialogVisible">
+      <el-form ref="shipForm" :model="shipForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="快递公司" prop="shipChannel">
-          <el-input v-model="dataForm.shipChannel"></el-input>
+          <el-input v-model="shipForm.shipChannel"></el-input>
         </el-form-item>
         <el-form-item label="快递编号" prop="shipSn">
-          <el-input v-model="dataForm.shipSn"></el-input>
-        </el-form-item>
-        <el-form-item label="快递发货时间" prop="shipStartTime">
-          <el-date-picker v-model="dataForm.shipStartTime" type="datetime" placeholder="选择日期时间">
-          </el-date-picker>
+          <el-input v-model="shipForm.shipSn"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="sendDialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="sendData">确定</el-button>
+        <el-button @click="shipDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmShip">确定</el-button>
       </div>
     </el-dialog>
 
-    <!-- 收货对话框 -->
-    <el-dialog title="收货" :visible.sync="recvDialogFormVisible">
-      <el-form ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
-       <el-form-item label="快递公司" prop="shipChannel">
-          <el-input disabled v-model="dataForm.shipChannel"></el-input>
-        </el-form-item>
-        <el-form-item label="快递编号" prop="shipSn">
-          <el-input disabled v-model="dataForm.shipSn"></el-input>
-        </el-form-item>
-        <el-form-item label="快递发货时间" prop="shipStartTime">
-          <el-date-picker disabled v-model="dataForm.shipStartTime" type="datetime" placeholder="选择日期时间">
-          </el-date-picker>
-        </el-form-item>        
-        <el-form-item label="快递收货时间" prop="shipEndTime">
-          <el-date-picker v-model="dataForm.shipEndTime" type="datetime" placeholder="选择日期时间">
-          </el-date-picker>
+    <!-- 退款对话框 -->
+    <el-dialog title="退款" :visible.sync="refundDialogVisible">
+      <el-form ref="refundForm" :model="refundForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
+        <el-form-item label="退款金额" prop="refundMoney">
+          <el-input v-model="refundForm.refundMoney" :disabled="true"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="recvDialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="recvData">确定</el-button>
+        <el-button @click="refundDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmRefund">确定</el-button>
       </div>
     </el-dialog>
 
@@ -120,7 +102,7 @@
 </style>
 
 <script>
-import { listOrder, updateOrder } from '@/api/order'
+import { listOrder, shipOrder, refundOrder } from '@/api/order'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
@@ -140,16 +122,34 @@ export default {
         name: undefined,
         sort: '+id'
       },
-      dataForm: {
-        id: undefined,
+      shipForm: {
+        orderId: undefined,
         shipChannel: undefined,
-        shipSn: undefined,
-        shipStartTime: undefined,
-        shipEndTime: undefined
+        shipSn: undefined
       },
-      sendDialogFormVisible: false,
-      recvDialogFormVisible: false,
+      shipDialogVisible: false,
+      refundForm: {
+        orderId: undefined,
+        refundMoney: undefined
+      },
+      refundDialogVisible: false,
       downloadLoading: false
+    }
+  },
+  filters: {
+    orderStatusFilter(status) {
+      const statusMap = {
+        '101': '未付款',
+        '102': '已取消',
+        '103': '已取消',
+        '201': '已付款',
+        '202': '申请退款',
+        '203': '已退款',
+        '301': '已发货',
+        '401': '确认收货',
+        '402': '确认收货'
+      }
+      return statusMap[status]
     }
   },
   created() {
@@ -180,69 +180,53 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
-    resetForm(row) {
-      this.dataForm.id = row.id
-      this.dataForm.shipChannel = row.shipChannel
-      this.dataForm.shipSn = row.shipSn
-      this.dataForm.shipStartTime = row.shipStartTime
-      this.dataForm.shipEndTime = row.shipEndTime
-    },
-    handleSend(row) {
-      this.resetForm(row)
-      this.sendDialogFormVisible = true
+    handleShip(row) {
+      this.shipForm.orderId = row.id
+      this.shipForm.shipChannel = row.shipChannel
+      this.shipForm.shipSn = row.shipSn
+
+      this.shipDialogVisible = true
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['shipForm'].clearValidate()
       })
     },
-    sendData() {
-      this.$refs['dataForm'].validate((valid) => {
+    confirmShip() {
+      this.$refs['shipForm'].validate((valid) => {
         if (valid) {
-          updateOrder(this.dataForm).then(response => {
-            const updatedOrder = response.data.data
-            for (const v of this.list) {
-              if (v.id === updatedOrder.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, updatedOrder)
-                break
-              }
-            }
-            this.sendDialogFormVisible = false
+          shipOrder(this.shipForm).then(response => {
+            this.shipDialogVisible = false
             this.$notify({
               title: '成功',
-              message: '更新成功',
+              message: '确认发货成功',
               type: 'success',
               duration: 2000
             })
+            this.getList()
           })
         }
       })
     },
-    handleRecv(row) {
-      this.resetForm(row)
-      this.recvDialogFormVisible = true
+    handleRefund(row) {
+      this.refundForm.orderId = row.id
+      this.refundForm.refundMoney = row.actualPrice
+
+      this.refundDialogVisible = true
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['refundForm'].clearValidate()
       })
     },
-    recvData() {
-      this.$refs['dataForm'].validate((valid) => {
+    confirmRefund() {
+      this.$refs['refundForm'].validate((valid) => {
         if (valid) {
-          updateOrder(this.dataForm).then(response => {
-            const updatedOrder = response.data.data
-            for (const v of this.list) {
-              if (v.id === updatedOrder.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, updatedOrder)
-                break
-              }
-            }
-            this.recvDialogFormVisible = false
+          refundOrder(this.refundForm).then(response => {
+            this.refundDialogVisible = false
             this.$notify({
               title: '成功',
-              message: '更新成功',
+              message: '确认退款成功',
               type: 'success',
               duration: 2000
             })
+            this.getList()
           })
         }
       })

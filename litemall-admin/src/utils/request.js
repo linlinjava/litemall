@@ -49,6 +49,8 @@ service.interceptors.response.use(
         type: 'error'
       })
       return Promise.reject('error')
+    } else if (res.errno !== 0) {
+      return Promise.reject('error')
     } else {
       return response
     }
