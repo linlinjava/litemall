@@ -146,8 +146,10 @@
         </el-form-item>
         
         <el-form-item label="宣传画廊">
-          <el-input v-model="dataForm.gallery"></el-input>
-        </el-form-item>            
+          <el-upload :action='UPLOAD_API' :limit='5' multiple accept=".jpg,.jpeg,.png,.gif" :file-list="galleryFileList" list-type="picture" :on-exceed='uploadOverrun' :on-success="handleGalleryUrl" :on-remove="handleRemove">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>        
         
         <el-form-item label="商品介绍">
           <el-input v-model="dataForm.goodsBrief"></el-input>
@@ -207,7 +209,7 @@
 
 <script>
 import { listGoods, createGoods, updateGoods, deleteGoods } from '@/api/goods'
-import { createStorage } from '@/api/storage'
+import { createStorage, getUploadApi } from '@/api/storage'
 import waves from '@/directive/waves' // 水波纹指令
 import BackToTop from '@/components/BackToTop'
 import Editor from '@tinymce/tinymce-vue'
@@ -219,6 +221,8 @@ export default {
   data() {
     return {
       list: undefined,
+      galleryFileList: [],
+      UPLOAD_API: getUploadApi(),
       total: undefined,
       listLoading: true,
       listQuery: {
@@ -242,7 +246,7 @@ export default {
         goodsBrief: undefined,
         goodsDesc: '',
         keywords: undefined,
-        gallery: undefined,
+        gallery: [],
         categoryId: undefined,
         brandId: undefined
       },
@@ -302,6 +306,7 @@ export default {
       this.getList()
     },
     resetForm() {
+      this.galleryFileList = []
       this.dataForm = {
         id: undefined,
         goodsSn: undefined,
@@ -316,13 +321,31 @@ export default {
         goodsBrief: undefined,
         goodsDesc: '',
         keywords: undefined,
-        gallery: undefined,
+        gallery: [],
         categoryId: undefined,
         brandId: undefined
       }
     },
     filterLevel(value, row) {
       return row.level === value
+    },
+    uploadOverrun: function() {
+      this.$message({
+        type: 'error',
+        message: '上传文件个数超出限制!最多上传5张图片!'
+      })
+    },
+    handleGalleryUrl(response, file, fileList) {
+      if (response.errno === 0) {
+        this.dataForm.gallery.push(response.data.url)
+      }
+    },
+    handleRemove: function(file, fileList) {
+      for (var i = 0; i < this.dataForm.gallery.length; i++) {
+        if (this.dataForm.gallery[i] === file.response.data.url) {
+          this.dataForm.gallery.splice(i, 1)
+        }
+      }
     },
     handleCreate() {
       this.resetForm()
@@ -350,6 +373,16 @@ export default {
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
+      this.galleryFileList = []
+      if (this.dataForm.gallery.length > 0) {
+        for (var i = 0; i < row.gallery.length; i++) {
+          this.galleryFileList.push({
+            name: row.gallery[i].substring(row.gallery[i].lastIndexOf('/') + 1),
+            url: row.gallery[i]
+          })
+        }
+      }
+
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
