@@ -60,3 +60,7 @@ export function deleteStorage(data) {
     data
   })
 }
+
+export function getUploadApi(data) {
+  return process.env.OS_API + '/storage/create'
+}
