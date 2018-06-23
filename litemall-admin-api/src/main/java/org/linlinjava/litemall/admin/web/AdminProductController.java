@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,7 @@ public class AdminProductController {
         product.setGoodsNumber(0);
         product.setRetailPrice(new BigDecimal(0.00));
         product.setGoodsSpecificationIds(goodsSpecificationIds);
+        product.setAddTime(LocalDateTime.now());
         productService.add(product);
 
         return ResponseUtil.ok();

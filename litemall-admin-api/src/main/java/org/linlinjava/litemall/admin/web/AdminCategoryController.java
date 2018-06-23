@@ -9,6 +9,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class AdminCategoryController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
+        category.setAddTime(LocalDateTime.now());
         categoryService.add(category);
         return ResponseUtil.ok();
     }

@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +73,7 @@ public class AdminAdminController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(rawPassword);
         admin.setPassword(encodedPassword);
+        admin.setAddTime(LocalDateTime.now());
 
         adminService.add(admin);
         return ResponseUtil.ok(admin);

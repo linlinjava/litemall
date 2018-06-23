@@ -10,6 +10,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class AdminUserController {
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallUser user){
         logger.debug(user);
-
+        user.setAddTime(LocalDateTime.now());
         userService.add(user);
         return ResponseUtil.ok(user);
     }

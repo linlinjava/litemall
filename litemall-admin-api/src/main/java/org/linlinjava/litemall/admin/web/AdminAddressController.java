@@ -11,6 +11,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +84,7 @@ public class AdminAddressController {
             return ResponseUtil.fail(403, "手机号格式不正确");
         }
 
+        address.setAddTime(LocalDateTime.now());
         addressService.add(address);
 
         Map<String, Object> addressVo = toVo(address);

@@ -9,6 +9,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +42,13 @@ public class AdminIssueController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        issueService.add(brand);
-        return ResponseUtil.ok(brand);
+        issue.setAddTime(LocalDateTime.now());
+        issueService.add(issue);
+        return ResponseUtil.ok(issue);
     }
 
     @GetMapping("/read")
@@ -59,25 +61,25 @@ public class AdminIssueController {
             return ResponseUtil.badArgument();
         }
 
-        LitemallIssue brand = issueService.findById(id);
-        return ResponseUtil.ok(brand);
+        LitemallIssue issue = issueService.findById(id);
+        return ResponseUtil.ok(issue);
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        issueService.updateById(brand);
-        return ResponseUtil.ok(brand);
+        issueService.updateById(issue);
+        return ResponseUtil.ok(issue);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        issueService.deleteById(brand.getId());
+        issueService.deleteById(issue.getId());
         return ResponseUtil.ok();
     }
 
