@@ -54,8 +54,8 @@
     <view class="goods-attr">
       <view class="t">商品参数</view>
       <view class="l">
-        <view class="item" wx:for="{{attribute}}" wx:key="name">
-          <text class="left">{{item.name}}</text>
+        <view class="item" wx:for="{{attribute}}" wx:key="item">
+          <text class="left">{{item.attribute}}</text>
           <text class="right">{{item.value}}</text>
         </view>
       </view>
