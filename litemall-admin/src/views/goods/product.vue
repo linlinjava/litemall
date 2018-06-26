@@ -6,7 +6,6 @@
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入商品ID" v-model="listQuery.goodsId">
       </el-input>
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
     </div>
 
@@ -42,7 +41,6 @@
       <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -54,20 +52,8 @@
       </el-pagination>
     </div>
 
-    <el-dialog title="添加货品" :visible.sync="createDialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
-        <el-form-item label="商品ID" prop="goodsId">
-          <el-input v-model="dataForm.goodsId"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="createDialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="createData">确定</el-button>
-      </div>
-    </el-dialog>
-
     <!-- 修改对话框 -->
-    <el-dialog title="修改货品" :visible.sync="editDialogFormVisible">
+    <el-dialog title="编辑商品货品" :visible.sync="editDialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="商品ID" prop="goodsId">
           <el-input v-model="dataForm.goodsId" :disabled="true"></el-input>
@@ -112,7 +98,7 @@
 </style>
 
 <script>
-import { listProduct, createProduct, updateProduct, deleteProduct } from '@/api/product'
+import { listProduct, updateProduct } from '@/api/product'
 import { createStorage } from '@/api/storage'
 
 import waves from '@/directive/waves' // 水波纹指令
@@ -133,7 +119,6 @@ export default {
         goodsId: undefined,
         sort: '+id'
       },
-      createDialogFormVisible: false,
       editDialogFormVisible: false,
       dataForm: {
         id: undefined,
@@ -197,29 +182,6 @@ export default {
         this.$message.error('上传失败，请重新上传')
       })
     },
-    handleCreate() {
-      this.resetForm()
-      this.createDialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          createProduct(this.dataForm).then(response => {
-            this.getList()
-            this.createDialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
       this.editDialogFormVisible = true
@@ -247,18 +209,6 @@ export default {
             })
           })
         }
-      })
-    },
-    handleDelete(row) {
-      deleteProduct(row).then(response => {
-        this.$notify({
-          title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
-        })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
       })
     },
     handleDownload() {

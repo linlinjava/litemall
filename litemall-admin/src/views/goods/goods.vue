@@ -181,8 +181,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button type="primary" @click="updateData">确定</el-button>
       </div>
     </el-dialog>
 
@@ -208,7 +207,7 @@
 </style>
 
 <script>
-import { listGoods, createGoods, updateGoods, deleteGoods } from '@/api/goods'
+import { listGoods, updateGoods, deleteGoods } from '@/api/goods'
 import { createStorage, getUploadApi } from '@/api/storage'
 import waves from '@/directive/waves' // 水波纹指令
 import BackToTop from '@/components/BackToTop'
@@ -359,28 +358,7 @@ export default {
       }
     },
     handleCreate() {
-      this.resetForm()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          createGoods(this.dataForm).then(response => {
-            this.list.unshift(response.data.data)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
+      this.$router.push({ path: '/goods/publish' })
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)

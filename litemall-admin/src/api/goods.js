@@ -39,3 +39,11 @@ export function deleteGoods(data) {
     data
   })
 }
+
+export function publishGoods(data) {
+  return request({
+    url: '/goods/publish',
+    method: 'post',
+    data
+  })
+}

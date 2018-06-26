@@ -98,6 +98,7 @@ export const asyncRouterMap = [
       icon: 'chart'
     },
     children: [
+      { path: 'publish', component: _import('goods/publish'), name: 'publish', meta: { title: '商品上架', noCache: true }},
       { path: 'goods', component: _import('goods/goods'), name: 'goods', meta: { title: '商品管理', noCache: true }},
       { path: 'attribute', component: _import('goods/attribute'), name: 'attribute', meta: { title: '商品参数', noCache: true }},
       { path: 'specification', component: _import('goods/specification'), name: 'specification', meta: { title: '商品规格', noCache: true }},

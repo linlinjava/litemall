@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.admin.util.CatVo;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +98,37 @@ public class AdminCategoryController {
             data.put(category.getId(), category.getName());
         }
         return ResponseUtil.ok(data);
+    }
+
+
+
+    @GetMapping("/list2")
+    public Object list2(@LoginAdmin Integer adminId) {
+        if (adminId == null) {
+            return ResponseUtil.unlogin();
+        }
+
+        List<LitemallCategory> l1CatList = categoryService.queryL1();
+        List<CatVo> list = new ArrayList<>(l1CatList.size());
+
+        for(LitemallCategory l1 : l1CatList){
+            CatVo l1CatVo = new CatVo();
+            l1CatVo.setValue(l1.getId());
+            l1CatVo.setLabel(l1.getName());
+
+            List<LitemallCategory> l2CatList = categoryService.queryByPid(l1.getId());
+            List<CatVo> children = new ArrayList<>(l2CatList.size());
+            for(LitemallCategory l2 : l2CatList) {
+                CatVo l2CatVo = new CatVo();
+                l2CatVo.setValue(l2.getId());
+                l2CatVo.setLabel(l2.getName());
+                children.add(l2CatVo);
+            }
+            l1CatVo.setChildren(children);
+
+            list.add(l1CatVo);
+        }
+        return ResponseUtil.ok(list);
     }
 
 }

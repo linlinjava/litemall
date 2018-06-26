@@ -207,4 +207,10 @@ public class LitemallGoodsService {
         }
         return cats;
     }
+
+    public boolean checkExistByName(String name) {
+        LitemallGoodsExample example = new LitemallGoodsExample();
+        example.or().andNameEqualTo(name).andDeletedEqualTo(false);
+        return goodsMapper.countByExample(example) != 0;
+    }
 }
