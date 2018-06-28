@@ -489,9 +489,12 @@ public class WxOrderController {
             // TODO 更有意义的显示名称
             orderRequest.setBody("litemall小商场-订单测试支付");
             // 元转成分
-            // 这里仅支付1分
-            // TODO 这里1分钱需要改成实际订单金额
-            orderRequest.setTotalFee(1);
+            Integer fee = 1;
+            // 这里演示仅支付1分
+            // 实际项目取消下面两行注释
+            // BigDecimal actualPrice = order.getActualPrice();
+            // fee = actualPrice.multiply(new BigDecimal(100)).intValue();
+            orderRequest.setTotalFee(fee);
             // TODO 用户IP地址
             orderRequest.setSpbillCreateIp("123.12.12.123");
 
