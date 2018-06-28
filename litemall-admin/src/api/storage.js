@@ -61,9 +61,5 @@ export function deleteStorage(data) {
   })
 }
 
-export function getUploadApi(data) {
-  return process.env.OS_API + '/storage/create'
-}
-
 const uploadPath = process.env.OS_API + '/storage/create'
 export { uploadPath }

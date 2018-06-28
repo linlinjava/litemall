@@ -208,7 +208,7 @@
 
 <script>
 import { listGoods, updateGoods, deleteGoods } from '@/api/goods'
-import { createStorage, getUploadApi } from '@/api/storage'
+import { createStorage } from '@/api/storage'
 import waves from '@/directive/waves' // 水波纹指令
 import BackToTop from '@/components/BackToTop'
 import Editor from '@tinymce/tinymce-vue'
@@ -219,10 +219,9 @@ export default {
   directives: { waves },
   data() {
     return {
-      list: undefined,
+      list: [],
       galleryFileList: [],
-      UPLOAD_API: getUploadApi(),
-      total: undefined,
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
