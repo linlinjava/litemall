@@ -5,8 +5,8 @@
     <div class="filter-container">
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入商品ID" v-model="listQuery.goodsId">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -101,13 +101,8 @@
 import { listProduct, updateProduct } from '@/api/product'
 import { createStorage } from '@/api/storage'
 
-import waves from '@/directive/waves' // 水波纹指令
-
 export default {
   name: 'Product',
-  directives: {
-    waves
-  },
   data() {
     return {
       list: undefined,

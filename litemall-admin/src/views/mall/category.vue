@@ -7,9 +7,9 @@
       </el-input>
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入类目名称" v-model="listQuery.name">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" :loading="downloadLoading" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -152,13 +152,9 @@
 <script>
 import { listCategory, listCatL1, createCategory, updateCategory, deleteCategory } from '@/api/category'
 import { createStorage } from '@/api/storage'
-import waves from '@/directive/waves' // 水波纹指令
 
 export default {
   name: 'Category',
-  directives: {
-    waves
-  },
   data() {
     return {
       list: undefined,

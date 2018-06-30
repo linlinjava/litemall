@@ -7,9 +7,9 @@
       </el-input>
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入手机号" v-model="listQuery.mobile">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" :loading="downloadLoading" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -116,13 +116,9 @@
 
 <script>
 import { fetchList, createUser, updateUser } from '@/api/user'
-import waves from '@/directive/waves' // 水波纹指令
 
 export default {
   name: 'User',
-  directives: {
-    waves
-  },
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
