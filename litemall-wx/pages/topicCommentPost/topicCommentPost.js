@@ -97,7 +97,7 @@ Page({
 
   },
   onLoad: function (options) {
-    if (parseInt(options.typeId) !== 1){
+    if (parseInt(options.type) !== 1){
       return;
     }
 
@@ -131,7 +131,7 @@ Page({
     }
 
     util.request(api.CommentPost, {
-      typeId: 1,
+      type: 1,
       valueId: that.data.valueId,
       content: that.data.content,
       star: that.data.star,

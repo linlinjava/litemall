@@ -182,14 +182,14 @@ public class WxGoodsController {
         LitemallCategory parent = null;
         List<LitemallCategory> children = null;
 
-        if(cur.getParentId() == 0){
+        if(cur.getPid() == 0){
             parent = cur;
             children = categoryService.queryByPid(cur.getId());
             cur = children.get(0);
         }
         else{
-            parent = categoryService.findById(cur.getParentId());
-            children = categoryService.queryByPid(cur.getParentId());
+            parent = categoryService.findById(cur.getPid());
+            children = categoryService.queryByPid(cur.getPid());
         }
         Map<String, Object> data = new HashMap<>();
         data.put("currentCategory", cur);

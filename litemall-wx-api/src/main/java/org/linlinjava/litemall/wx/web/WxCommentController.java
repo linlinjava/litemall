@@ -66,8 +66,8 @@ public class WxCommentController {
     /**
      * 评论数量
      *
-     * @param typeId 类型ID。 如果是0，则查询商品评论；如果是1，则查询专题评论。
-     * @param valueId 商品或专题ID。如果typeId是0，则是商品ID；如果typeId是1，则是专题ID。
+     * @param type 类型ID。 如果是0，则查询商品评论；如果是1，则查询专题评论。
+     * @param valueId 商品或专题ID。如果type是0，则是商品ID；如果type是1，则是专题ID。
      * @return 评论数量
      *   成功则
      *  {
@@ -82,9 +82,9 @@ public class WxCommentController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("count")
-    public Object count(Byte typeId, Integer valueId) {
-        int allCount = commentService.count(typeId, valueId, 0, 0, 0);
-        int hasPicCount = commentService.count(typeId, valueId, 1, 0, 0);
+    public Object count(Byte type, Integer valueId) {
+        int allCount = commentService.count(type, valueId, 0, 0, 0);
+        int hasPicCount = commentService.count(type, valueId, 1, 0, 0);
         Map<String, Object> data = new HashMap();
         data.put("allCount", allCount);
         data.put("hasPicCount", hasPicCount);
@@ -94,8 +94,8 @@ public class WxCommentController {
     /**
      * 评论列表
      *
-     * @param typeId 类型ID。 如果是0，则查询商品评论；如果是1，则查询专题评论。
-     * @param valueId 商品或专题ID。如果typeId是0，则是商品ID；如果typeId是1，则是专题ID。
+     * @param type 类型ID。 如果是0，则查询商品评论；如果是1，则查询专题评论。
+     * @param valueId 商品或专题ID。如果type是0，则是商品ID；如果type是1，则是专题ID。
      * @param showType 显示类型。如果是0，则查询全部；如果是1，则查询有图片的评论。
      * @param page 分页页数
      * @param size 分页大小
@@ -114,15 +114,15 @@ public class WxCommentController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
-    public Object list(Byte typeId, Integer valueId, Integer showType,
+    public Object list(Byte type, Integer valueId, Integer showType,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        if(!ObjectUtils.allNotNull(typeId, valueId, showType)){
+        if(!ObjectUtils.allNotNull(type, valueId, showType)){
             return ResponseUtil.badArgument();
         }
 
-        List<LitemallComment> commentList = commentService.query(typeId, valueId, showType, page, size);
-        int count = commentService.count(typeId, valueId, showType, page, size);
+        List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, size);
+        int count = commentService.count(type, valueId, showType, page, size);
 
         List<Map<String, Object>> commentVoList = new ArrayList<>(commentList.size());
         for(LitemallComment comment : commentList){

@@ -57,7 +57,7 @@ public class WxHomeController {
     public Object index() {
         Map<String, Object> data = new HashMap<>();
 
-        List<LitemallAd> banner = adService.queryByApid(1);
+        List<LitemallAd> banner = adService.queryIndex();
         data.put("banner", banner);
 
         List<LitemallCategory> channel = categoryService.queryChannel();

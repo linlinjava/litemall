@@ -33,7 +33,7 @@
                   </view>
                   <view class="attr">{{ isEditCart ? '已选择:' : ''}}{{item.goodsSpecificationValues||''}}</view>
                   <view class="b">
-                    <text class="price">￥{{item.retailPrice}}</text>
+                    <text class="price">￥{{item.price}}</text>
                     <view class="selnum">
                       <view class="cut" bindtap="cutNumber" data-item-index="{{index}}">-</view>
                       <input value="{{item.number}}" class="number" disabled="true" type="number" />

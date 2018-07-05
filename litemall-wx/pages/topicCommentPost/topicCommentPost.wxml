@@ -2,7 +2,7 @@
   <view class="post-comment">
     <view class="goods">
       <view class="img">
-        <image src="{{topic.scenePicUrl}}"></image>
+        <image src="{{topic.picUrl}}"></image>
       </view>
       <view class="info">
         <view class="t">

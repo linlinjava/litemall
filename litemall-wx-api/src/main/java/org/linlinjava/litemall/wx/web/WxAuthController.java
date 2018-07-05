@@ -147,11 +147,13 @@ public class WxAuthController {
             user.setWeixinOpenid(openId);
             user.setAvatar(userInfo.getAvatarUrl());
             user.setNickname(userInfo.getNickName());
-            user.setGender(userInfo.getGender() == 1 ? "男" : "女");
-            user.setUserLevel("普通用户");
-            user.setStatus("可用");
+            user.setGender(userInfo.getGender());
+            user.setUserLevel((byte)0);
+            user.setStatus((byte)0);
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.client(request));
+            user.setAddTime(LocalDateTime.now());
+
             userService.add(user);
         }
         else{
@@ -232,9 +234,9 @@ public class WxAuthController {
         user.setWeixinOpenid("");
         user.setAvatar("https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64");
         user.setNickname(username);
-        user.setGender("未知");
-        user.setUserLevel("普通用户");
-        user.setStatus("可用");
+        user.setGender((byte)0);
+        user.setUserLevel((byte)0);
+        user.setStatus((byte)0);
         user.setLastLoginTime(LocalDateTime.now());
         user.setLastLoginIp(IpUtil.client(request));
         user.setAddTime(LocalDateTime.now());
