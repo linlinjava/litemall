@@ -20,7 +20,8 @@ fi
 
 cd /home/ubuntu/deploy/litemall-db
 cat litemall_schema.sql > db.sql
-cat litemall.sql >> db.sql
+cat litemall_table.sql >> db.sql
+cat litemall_data.sql >> db.sql
 mysql -h localhost -u $ROOT -p$PASSWORD < db.sql
 rm db.sql
 
