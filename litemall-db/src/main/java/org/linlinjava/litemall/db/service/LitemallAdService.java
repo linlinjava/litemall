@@ -15,9 +15,9 @@ public class LitemallAdService {
     @Resource
     private LitemallAdMapper adMapper;
 
-    public List<LitemallAd> queryByApid(Integer i) {
+    public List<LitemallAd> queryIndex() {
         LitemallAdExample example = new LitemallAdExample();
-        example.or().andPositionEqualTo(i).andDeletedEqualTo(false);
+        example.or().andPositionEqualTo((byte)1).andDeletedEqualTo(false);
         return adMapper.selectByExample(example);
     }
 

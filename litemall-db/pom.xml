@@ -78,7 +78,7 @@
                     <dependency>
                         <groupId>com.itfsw</groupId>
                         <artifactId>mybatis-generator-plugin</artifactId>
-                        <version>1.2.3</version>
+                        <version>1.2.6</version>
                     </dependency>
                 </dependencies>
             </plugin>

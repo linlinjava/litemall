@@ -19,25 +19,25 @@ public class LitemallCommentService {
     public List<LitemallComment> queryGoodsByGid(Integer id, int offset, int limit) {
         LitemallCommentExample example = new LitemallCommentExample();
         example.setOrderByClause(LitemallComment.Column.addTime.desc());
-        example.or().andValueIdEqualTo(id).andTypeIdEqualTo((byte)0).andDeletedEqualTo(false);
+        example.or().andValueIdEqualTo(id).andTypeEqualTo((byte)0).andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
         return commentMapper.selectByExample(example);
     }
 
     public int countGoodsByGid(Integer id, int offset, int limit) {
         LitemallCommentExample example = new LitemallCommentExample();
-        example.or().andValueIdEqualTo(id).andTypeIdEqualTo((byte)0).andDeletedEqualTo(false);
+        example.or().andValueIdEqualTo(id).andTypeEqualTo((byte)0).andDeletedEqualTo(false);
         return (int)commentMapper.countByExample(example);
     }
 
-    public List<LitemallComment> query(Byte typeId, Integer valueId, Integer showType, Integer offset, Integer limit) {
+    public List<LitemallComment> query(Byte type, Integer valueId, Integer showType, Integer offset, Integer limit) {
         LitemallCommentExample example = new LitemallCommentExample();
         example.setOrderByClause(LitemallComment.Column.addTime.desc());
         if(showType == 0) {
-            example.or().andValueIdEqualTo(valueId).andTypeIdEqualTo(typeId).andDeletedEqualTo(false);
+            example.or().andValueIdEqualTo(valueId).andTypeEqualTo(type).andDeletedEqualTo(false);
         }
         else if(showType == 1){
-            example.or().andValueIdEqualTo(valueId).andTypeIdEqualTo(typeId).andHasPictureEqualTo(true).andDeletedEqualTo(false);
+            example.or().andValueIdEqualTo(valueId).andTypeEqualTo(type).andHasPictureEqualTo(true).andDeletedEqualTo(false);
         }
         else{
             Assert.state(false, "showType不支持");
@@ -46,13 +46,13 @@ public class LitemallCommentService {
         return commentMapper.selectByExample(example);
     }
 
-    public int count(Byte typeId, Integer valueId, Integer showType, Integer offset, Integer size){
+    public int count(Byte type, Integer valueId, Integer showType, Integer offset, Integer size){
         LitemallCommentExample example = new LitemallCommentExample();
         if(showType == 0) {
-            example.or().andValueIdEqualTo(valueId).andTypeIdEqualTo(typeId).andDeletedEqualTo(false);
+            example.or().andValueIdEqualTo(valueId).andTypeEqualTo(type).andDeletedEqualTo(false);
         }
         else if(showType == 1){
-            example.or().andValueIdEqualTo(valueId).andTypeIdEqualTo(typeId).andHasPictureEqualTo(true).andDeletedEqualTo(false);
+            example.or().andValueIdEqualTo(valueId).andTypeEqualTo(type).andHasPictureEqualTo(true).andDeletedEqualTo(false);
         }
         else{
             Assert.state(false, "");
@@ -79,7 +79,7 @@ public class LitemallCommentService {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
         if(!StringUtils.isEmpty(valueId)){
-            criteria.andValueIdEqualTo(Integer.valueOf(valueId)).andTypeIdEqualTo((byte)0);
+            criteria.andValueIdEqualTo(Integer.valueOf(valueId)).andTypeEqualTo((byte)0);
         }
         criteria.andDeletedEqualTo(false);
 
@@ -95,7 +95,7 @@ public class LitemallCommentService {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
         if(!StringUtils.isEmpty(valueId)){
-            criteria.andValueIdEqualTo(Integer.valueOf(valueId)).andTypeIdEqualTo((byte)0);
+            criteria.andValueIdEqualTo(Integer.valueOf(valueId)).andTypeEqualTo((byte)0);
         }
         criteria.andDeletedEqualTo(false);
 

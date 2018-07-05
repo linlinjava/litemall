@@ -346,6 +346,76 @@ public class LitemallGoodsSpecificationExample {
             return (Criteria) this;
         }
 
+        public Criteria andSpecificationIsNull() {
+            addCriterion("specification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIsNotNull() {
+            addCriterion("specification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationEqualTo(String value) {
+            addCriterion("specification =", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotEqualTo(String value) {
+            addCriterion("specification <>", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThan(String value) {
+            addCriterion("specification >", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThanOrEqualTo(String value) {
+            addCriterion("specification >=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThan(String value) {
+            addCriterion("specification <", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThanOrEqualTo(String value) {
+            addCriterion("specification <=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLike(String value) {
+            addCriterion("specification like", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotLike(String value) {
+            addCriterion("specification not like", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIn(List<String> values) {
+            addCriterion("specification in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotIn(List<String> values) {
+            addCriterion("specification not in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationBetween(String value1, String value2) {
+            addCriterion("specification between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotBetween(String value1, String value2) {
+            addCriterion("specification not between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
         public Criteria andValueIsNull() {
             addCriterion("`value` is null");
             return (Criteria) this;
@@ -483,76 +553,6 @@ public class LitemallGoodsSpecificationExample {
 
         public Criteria andPicUrlNotBetween(String value1, String value2) {
             addCriterion("pic_url not between", value1, value2, "picUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationIsNull() {
-            addCriterion("specification is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationIsNotNull() {
-            addCriterion("specification is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationEqualTo(String value) {
-            addCriterion("specification =", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationNotEqualTo(String value) {
-            addCriterion("specification <>", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationGreaterThan(String value) {
-            addCriterion("specification >", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationGreaterThanOrEqualTo(String value) {
-            addCriterion("specification >=", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationLessThan(String value) {
-            addCriterion("specification <", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationLessThanOrEqualTo(String value) {
-            addCriterion("specification <=", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationLike(String value) {
-            addCriterion("specification like", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationNotLike(String value) {
-            addCriterion("specification not like", value, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationIn(List<String> values) {
-            addCriterion("specification in", values, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationNotIn(List<String> values) {
-            addCriterion("specification not in", values, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationBetween(String value1, String value2) {
-            addCriterion("specification between", value1, value2, "specification");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpecificationNotBetween(String value1, String value2) {
-            addCriterion("specification not between", value1, value2, "specification");
             return (Criteria) this;
         }
 
@@ -738,18 +738,6 @@ public class LitemallGoodsSpecificationExample {
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Criteria andLogicalDeleted(boolean deleted) {
-            return deleted ? andDeletedEqualTo(LitemallGoodsSpecification.IS_DELETED) : andDeletedNotEqualTo(LitemallGoodsSpecification.IS_DELETED);
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table litemall_goods_specification
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        @Deprecated
-        public Criteria andDeleted(boolean deleted) {
             return deleted ? andDeletedEqualTo(LitemallGoodsSpecification.IS_DELETED) : andDeletedNotEqualTo(LitemallGoodsSpecification.IS_DELETED);
         }
 

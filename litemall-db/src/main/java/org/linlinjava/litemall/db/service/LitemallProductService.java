@@ -67,4 +67,10 @@ public class LitemallProductService {
 
         return (int)productMapper.countByExample(example);
     }
+
+    public void deleteByGid(Integer gid) {
+        LitemallProductExample example = new LitemallProductExample();
+        example.or().andGoodsIdEqualTo(gid);
+        productMapper.logicalDeleteByExample(example);
+    }
 }

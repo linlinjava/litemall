@@ -86,7 +86,7 @@ public class LitemallGoodsService {
             PageHelper.startPage(offset, limit);
         }
 
-        Column[] columns = new Column[]{Column.id, Column.name, Column.listPicUrl, Column.retailPrice};
+        Column[] columns = new Column[]{Column.id, Column.name, Column.picUrl, Column.retailPrice};
         return goodsMapper.selectByExampleSelective(example ,columns);
     }
 
@@ -124,7 +124,7 @@ public class LitemallGoodsService {
     public List<LitemallGoods> queryByIds(List<Integer> relatedGoodsIds) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andIdIn(relatedGoodsIds).andDeletedEqualTo(false);
-        return goodsMapper.selectByExample(example);
+        return goodsMapper.selectByExampleWithBLOBs(example);
     }
 
     public Integer queryOnSale() {
@@ -146,7 +146,7 @@ public class LitemallGoodsService {
         criteria.andDeletedEqualTo(false);
 
         PageHelper.startPage(page, size);
-        return goodsMapper.selectByExample(example);
+        return goodsMapper.selectByExampleWithBLOBs(example);
     }
 
     public int countSelective(String goodsSn, String name, Integer page, Integer size, String sort, String order) {

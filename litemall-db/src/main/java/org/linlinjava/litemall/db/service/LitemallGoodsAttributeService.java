@@ -60,4 +60,10 @@ public class LitemallGoodsAttributeService {
     public LitemallGoodsAttribute findById(Integer id) {
         return goodsAttributeMapper.selectByPrimaryKey(id);
     }
+
+    public void deleteByGid(Integer gid) {
+        LitemallGoodsAttributeExample example = new LitemallGoodsAttributeExample();
+        example.or().andGoodsIdEqualTo(gid);
+        goodsAttributeMapper.logicalDeleteByExample(example);
+    }
 }

@@ -60,6 +60,12 @@ public class LitemallGoodsSpecificationService {
         goodsSpecificationMapper.logicalDeleteByPrimaryKey(id);
     }
 
+    public void deleteByGid(Integer gid) {
+        LitemallGoodsSpecificationExample example = new LitemallGoodsSpecificationExample();
+        example.or().andGoodsIdEqualTo(gid);
+        goodsSpecificationMapper.logicalDeleteByExample(example);
+    }
+
     public void add(LitemallGoodsSpecification goodsSpecification) {
         goodsSpecificationMapper.insertSelective(goodsSpecification);
     }

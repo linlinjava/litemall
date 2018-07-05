@@ -286,66 +286,6 @@ public class LitemallAdExample {
             return (Criteria) this;
         }
 
-        public Criteria andPositionIsNull() {
-            addCriterion("`position` is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionIsNotNull() {
-            addCriterion("`position` is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionEqualTo(Integer value) {
-            addCriterion("`position` =", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNotEqualTo(Integer value) {
-            addCriterion("`position` <>", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionGreaterThan(Integer value) {
-            addCriterion("`position` >", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionGreaterThanOrEqualTo(Integer value) {
-            addCriterion("`position` >=", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionLessThan(Integer value) {
-            addCriterion("`position` <", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionLessThanOrEqualTo(Integer value) {
-            addCriterion("`position` <=", value, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionIn(List<Integer> values) {
-            addCriterion("`position` in", values, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNotIn(List<Integer> values) {
-            addCriterion("`position` not in", values, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionBetween(Integer value1, Integer value2) {
-            addCriterion("`position` between", value1, value2, "position");
-            return (Criteria) this;
-        }
-
-        public Criteria andPositionNotBetween(Integer value1, Integer value2) {
-            addCriterion("`position` not between", value1, value2, "position");
-            return (Criteria) this;
-        }
-
         public Criteria andNameIsNull() {
             addCriterion("`name` is null");
             return (Criteria) this;
@@ -553,6 +493,66 @@ public class LitemallAdExample {
 
         public Criteria andUrlNotBetween(String value1, String value2) {
             addCriterion("url not between", value1, value2, "url");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionIsNull() {
+            addCriterion("`position` is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionIsNotNull() {
+            addCriterion("`position` is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionEqualTo(Byte value) {
+            addCriterion("`position` =", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotEqualTo(Byte value) {
+            addCriterion("`position` <>", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionGreaterThan(Byte value) {
+            addCriterion("`position` >", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionGreaterThanOrEqualTo(Byte value) {
+            addCriterion("`position` >=", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionLessThan(Byte value) {
+            addCriterion("`position` <", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionLessThanOrEqualTo(Byte value) {
+            addCriterion("`position` <=", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionIn(List<Byte> values) {
+            addCriterion("`position` in", values, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotIn(List<Byte> values) {
+            addCriterion("`position` not in", values, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionBetween(Byte value1, Byte value2) {
+            addCriterion("`position` between", value1, value2, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotBetween(Byte value1, Byte value2) {
+            addCriterion("`position` not between", value1, value2, "position");
             return (Criteria) this;
         }
 
@@ -988,18 +988,6 @@ public class LitemallAdExample {
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Criteria andLogicalDeleted(boolean deleted) {
-            return deleted ? andDeletedEqualTo(LitemallAd.IS_DELETED) : andDeletedNotEqualTo(LitemallAd.IS_DELETED);
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table litemall_ad
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        @Deprecated
-        public Criteria andDeleted(boolean deleted) {
             return deleted ? andDeletedEqualTo(LitemallAd.IS_DELETED) : andDeletedNotEqualTo(LitemallAd.IS_DELETED);
         }
 

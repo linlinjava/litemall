@@ -426,383 +426,133 @@ public class LitemallCategoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescIsNull() {
-            addCriterion("front_desc is null");
+        public Criteria andDescIsNull() {
+            addCriterion("`desc` is null");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescIsNotNull() {
-            addCriterion("front_desc is not null");
+        public Criteria andDescIsNotNull() {
+            addCriterion("`desc` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescEqualTo(String value) {
-            addCriterion("front_desc =", value, "frontDesc");
+        public Criteria andDescEqualTo(String value) {
+            addCriterion("`desc` =", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescNotEqualTo(String value) {
-            addCriterion("front_desc <>", value, "frontDesc");
+        public Criteria andDescNotEqualTo(String value) {
+            addCriterion("`desc` <>", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescGreaterThan(String value) {
-            addCriterion("front_desc >", value, "frontDesc");
+        public Criteria andDescGreaterThan(String value) {
+            addCriterion("`desc` >", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescGreaterThanOrEqualTo(String value) {
-            addCriterion("front_desc >=", value, "frontDesc");
+        public Criteria andDescGreaterThanOrEqualTo(String value) {
+            addCriterion("`desc` >=", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescLessThan(String value) {
-            addCriterion("front_desc <", value, "frontDesc");
+        public Criteria andDescLessThan(String value) {
+            addCriterion("`desc` <", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescLessThanOrEqualTo(String value) {
-            addCriterion("front_desc <=", value, "frontDesc");
+        public Criteria andDescLessThanOrEqualTo(String value) {
+            addCriterion("`desc` <=", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescLike(String value) {
-            addCriterion("front_desc like", value, "frontDesc");
+        public Criteria andDescLike(String value) {
+            addCriterion("`desc` like", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescNotLike(String value) {
-            addCriterion("front_desc not like", value, "frontDesc");
+        public Criteria andDescNotLike(String value) {
+            addCriterion("`desc` not like", value, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescIn(List<String> values) {
-            addCriterion("front_desc in", values, "frontDesc");
+        public Criteria andDescIn(List<String> values) {
+            addCriterion("`desc` in", values, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescNotIn(List<String> values) {
-            addCriterion("front_desc not in", values, "frontDesc");
+        public Criteria andDescNotIn(List<String> values) {
+            addCriterion("`desc` not in", values, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescBetween(String value1, String value2) {
-            addCriterion("front_desc between", value1, value2, "frontDesc");
+        public Criteria andDescBetween(String value1, String value2) {
+            addCriterion("`desc` between", value1, value2, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andFrontDescNotBetween(String value1, String value2) {
-            addCriterion("front_desc not between", value1, value2, "frontDesc");
+        public Criteria andDescNotBetween(String value1, String value2) {
+            addCriterion("`desc` not between", value1, value2, "desc");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdIsNull() {
-            addCriterion("parent_id is null");
+        public Criteria andPidIsNull() {
+            addCriterion("pid is null");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdIsNotNull() {
-            addCriterion("parent_id is not null");
+        public Criteria andPidIsNotNull() {
+            addCriterion("pid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdEqualTo(Integer value) {
-            addCriterion("parent_id =", value, "parentId");
+        public Criteria andPidEqualTo(Integer value) {
+            addCriterion("pid =", value, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdNotEqualTo(Integer value) {
-            addCriterion("parent_id <>", value, "parentId");
+        public Criteria andPidNotEqualTo(Integer value) {
+            addCriterion("pid <>", value, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdGreaterThan(Integer value) {
-            addCriterion("parent_id >", value, "parentId");
+        public Criteria andPidGreaterThan(Integer value) {
+            addCriterion("pid >", value, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("parent_id >=", value, "parentId");
+        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pid >=", value, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdLessThan(Integer value) {
-            addCriterion("parent_id <", value, "parentId");
+        public Criteria andPidLessThan(Integer value) {
+            addCriterion("pid <", value, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdLessThanOrEqualTo(Integer value) {
-            addCriterion("parent_id <=", value, "parentId");
+        public Criteria andPidLessThanOrEqualTo(Integer value) {
+            addCriterion("pid <=", value, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdIn(List<Integer> values) {
-            addCriterion("parent_id in", values, "parentId");
+        public Criteria andPidIn(List<Integer> values) {
+            addCriterion("pid in", values, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdNotIn(List<Integer> values) {
-            addCriterion("parent_id not in", values, "parentId");
+        public Criteria andPidNotIn(List<Integer> values) {
+            addCriterion("pid not in", values, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdBetween(Integer value1, Integer value2) {
-            addCriterion("parent_id between", value1, value2, "parentId");
+        public Criteria andPidBetween(Integer value1, Integer value2) {
+            addCriterion("pid between", value1, value2, "pid");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("parent_id not between", value1, value2, "parentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderIsNull() {
-            addCriterion("sort_order is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderIsNotNull() {
-            addCriterion("sort_order is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderEqualTo(Byte value) {
-            addCriterion("sort_order =", value, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderNotEqualTo(Byte value) {
-            addCriterion("sort_order <>", value, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderGreaterThan(Byte value) {
-            addCriterion("sort_order >", value, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderGreaterThanOrEqualTo(Byte value) {
-            addCriterion("sort_order >=", value, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderLessThan(Byte value) {
-            addCriterion("sort_order <", value, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderLessThanOrEqualTo(Byte value) {
-            addCriterion("sort_order <=", value, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderIn(List<Byte> values) {
-            addCriterion("sort_order in", values, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderNotIn(List<Byte> values) {
-            addCriterion("sort_order not in", values, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderBetween(Byte value1, Byte value2) {
-            addCriterion("sort_order between", value1, value2, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortOrderNotBetween(Byte value1, Byte value2) {
-            addCriterion("sort_order not between", value1, value2, "sortOrder");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexIsNull() {
-            addCriterion("show_index is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexIsNotNull() {
-            addCriterion("show_index is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexEqualTo(Byte value) {
-            addCriterion("show_index =", value, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexNotEqualTo(Byte value) {
-            addCriterion("show_index <>", value, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexGreaterThan(Byte value) {
-            addCriterion("show_index >", value, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexGreaterThanOrEqualTo(Byte value) {
-            addCriterion("show_index >=", value, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexLessThan(Byte value) {
-            addCriterion("show_index <", value, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexLessThanOrEqualTo(Byte value) {
-            addCriterion("show_index <=", value, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexIn(List<Byte> values) {
-            addCriterion("show_index in", values, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexNotIn(List<Byte> values) {
-            addCriterion("show_index not in", values, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexBetween(Byte value1, Byte value2) {
-            addCriterion("show_index between", value1, value2, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andShowIndexNotBetween(Byte value1, Byte value2) {
-            addCriterion("show_index not between", value1, value2, "showIndex");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowIsNull() {
-            addCriterion("is_show is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowIsNotNull() {
-            addCriterion("is_show is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowEqualTo(Boolean value) {
-            addCriterion("is_show =", value, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowNotEqualTo(Boolean value) {
-            addCriterion("is_show <>", value, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowGreaterThan(Boolean value) {
-            addCriterion("is_show >", value, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("is_show >=", value, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowLessThan(Boolean value) {
-            addCriterion("is_show <", value, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowLessThanOrEqualTo(Boolean value) {
-            addCriterion("is_show <=", value, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowIn(List<Boolean> values) {
-            addCriterion("is_show in", values, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowNotIn(List<Boolean> values) {
-            addCriterion("is_show not in", values, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_show between", value1, value2, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsShowNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_show not between", value1, value2, "isShow");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlIsNull() {
-            addCriterion("banner_url is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlIsNotNull() {
-            addCriterion("banner_url is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlEqualTo(String value) {
-            addCriterion("banner_url =", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlNotEqualTo(String value) {
-            addCriterion("banner_url <>", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlGreaterThan(String value) {
-            addCriterion("banner_url >", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlGreaterThanOrEqualTo(String value) {
-            addCriterion("banner_url >=", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlLessThan(String value) {
-            addCriterion("banner_url <", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlLessThanOrEqualTo(String value) {
-            addCriterion("banner_url <=", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlLike(String value) {
-            addCriterion("banner_url like", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlNotLike(String value) {
-            addCriterion("banner_url not like", value, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlIn(List<String> values) {
-            addCriterion("banner_url in", values, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlNotIn(List<String> values) {
-            addCriterion("banner_url not in", values, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlBetween(String value1, String value2) {
-            addCriterion("banner_url between", value1, value2, "bannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andBannerUrlNotBetween(String value1, String value2) {
-            addCriterion("banner_url not between", value1, value2, "bannerUrl");
+        public Criteria andPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("pid not between", value1, value2, "pid");
             return (Criteria) this;
         }
 
@@ -876,143 +626,73 @@ public class LitemallCategoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlIsNull() {
-            addCriterion("img_url is null");
+        public Criteria andPicUrlIsNull() {
+            addCriterion("pic_url is null");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlIsNotNull() {
-            addCriterion("img_url is not null");
+        public Criteria andPicUrlIsNotNull() {
+            addCriterion("pic_url is not null");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlEqualTo(String value) {
-            addCriterion("img_url =", value, "imgUrl");
+        public Criteria andPicUrlEqualTo(String value) {
+            addCriterion("pic_url =", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlNotEqualTo(String value) {
-            addCriterion("img_url <>", value, "imgUrl");
+        public Criteria andPicUrlNotEqualTo(String value) {
+            addCriterion("pic_url <>", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlGreaterThan(String value) {
-            addCriterion("img_url >", value, "imgUrl");
+        public Criteria andPicUrlGreaterThan(String value) {
+            addCriterion("pic_url >", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlGreaterThanOrEqualTo(String value) {
-            addCriterion("img_url >=", value, "imgUrl");
+        public Criteria andPicUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("pic_url >=", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlLessThan(String value) {
-            addCriterion("img_url <", value, "imgUrl");
+        public Criteria andPicUrlLessThan(String value) {
+            addCriterion("pic_url <", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlLessThanOrEqualTo(String value) {
-            addCriterion("img_url <=", value, "imgUrl");
+        public Criteria andPicUrlLessThanOrEqualTo(String value) {
+            addCriterion("pic_url <=", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlLike(String value) {
-            addCriterion("img_url like", value, "imgUrl");
+        public Criteria andPicUrlLike(String value) {
+            addCriterion("pic_url like", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlNotLike(String value) {
-            addCriterion("img_url not like", value, "imgUrl");
+        public Criteria andPicUrlNotLike(String value) {
+            addCriterion("pic_url not like", value, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlIn(List<String> values) {
-            addCriterion("img_url in", values, "imgUrl");
+        public Criteria andPicUrlIn(List<String> values) {
+            addCriterion("pic_url in", values, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlNotIn(List<String> values) {
-            addCriterion("img_url not in", values, "imgUrl");
+        public Criteria andPicUrlNotIn(List<String> values) {
+            addCriterion("pic_url not in", values, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlBetween(String value1, String value2) {
-            addCriterion("img_url between", value1, value2, "imgUrl");
+        public Criteria andPicUrlBetween(String value1, String value2) {
+            addCriterion("pic_url between", value1, value2, "picUrl");
             return (Criteria) this;
         }
 
-        public Criteria andImgUrlNotBetween(String value1, String value2) {
-            addCriterion("img_url not between", value1, value2, "imgUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlIsNull() {
-            addCriterion("wap_banner_url is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlIsNotNull() {
-            addCriterion("wap_banner_url is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlEqualTo(String value) {
-            addCriterion("wap_banner_url =", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlNotEqualTo(String value) {
-            addCriterion("wap_banner_url <>", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlGreaterThan(String value) {
-            addCriterion("wap_banner_url >", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlGreaterThanOrEqualTo(String value) {
-            addCriterion("wap_banner_url >=", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlLessThan(String value) {
-            addCriterion("wap_banner_url <", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlLessThanOrEqualTo(String value) {
-            addCriterion("wap_banner_url <=", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlLike(String value) {
-            addCriterion("wap_banner_url like", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlNotLike(String value) {
-            addCriterion("wap_banner_url not like", value, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlIn(List<String> values) {
-            addCriterion("wap_banner_url in", values, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlNotIn(List<String> values) {
-            addCriterion("wap_banner_url not in", values, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlBetween(String value1, String value2) {
-            addCriterion("wap_banner_url between", value1, value2, "wapBannerUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andWapBannerUrlNotBetween(String value1, String value2) {
-            addCriterion("wap_banner_url not between", value1, value2, "wapBannerUrl");
+        public Criteria andPicUrlNotBetween(String value1, String value2) {
+            addCriterion("pic_url not between", value1, value2, "picUrl");
             return (Criteria) this;
         }
 
@@ -1086,133 +766,63 @@ public class LitemallCategoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("`type` is null");
+        public Criteria andSortOrderIsNull() {
+            addCriterion("sort_order is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("`type` is not null");
+        public Criteria andSortOrderIsNotNull() {
+            addCriterion("sort_order is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("`type` =", value, "type");
+        public Criteria andSortOrderEqualTo(Byte value) {
+            addCriterion("sort_order =", value, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("`type` <>", value, "type");
+        public Criteria andSortOrderNotEqualTo(Byte value) {
+            addCriterion("sort_order <>", value, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("`type` >", value, "type");
+        public Criteria andSortOrderGreaterThan(Byte value) {
+            addCriterion("sort_order >", value, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("`type` >=", value, "type");
+        public Criteria andSortOrderGreaterThanOrEqualTo(Byte value) {
+            addCriterion("sort_order >=", value, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("`type` <", value, "type");
+        public Criteria andSortOrderLessThan(Byte value) {
+            addCriterion("sort_order <", value, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("`type` <=", value, "type");
+        public Criteria andSortOrderLessThanOrEqualTo(Byte value) {
+            addCriterion("sort_order <=", value, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("`type` in", values, "type");
+        public Criteria andSortOrderIn(List<Byte> values) {
+            addCriterion("sort_order in", values, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("`type` not in", values, "type");
+        public Criteria andSortOrderNotIn(List<Byte> values) {
+            addCriterion("sort_order not in", values, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("`type` between", value1, value2, "type");
+        public Criteria andSortOrderBetween(Byte value1, Byte value2) {
+            addCriterion("sort_order between", value1, value2, "sortOrder");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("`type` not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameIsNull() {
-            addCriterion("front_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameIsNotNull() {
-            addCriterion("front_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameEqualTo(String value) {
-            addCriterion("front_name =", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameNotEqualTo(String value) {
-            addCriterion("front_name <>", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameGreaterThan(String value) {
-            addCriterion("front_name >", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameGreaterThanOrEqualTo(String value) {
-            addCriterion("front_name >=", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameLessThan(String value) {
-            addCriterion("front_name <", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameLessThanOrEqualTo(String value) {
-            addCriterion("front_name <=", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameLike(String value) {
-            addCriterion("front_name like", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameNotLike(String value) {
-            addCriterion("front_name not like", value, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameIn(List<String> values) {
-            addCriterion("front_name in", values, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameNotIn(List<String> values) {
-            addCriterion("front_name not in", values, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameBetween(String value1, String value2) {
-            addCriterion("front_name between", value1, value2, "frontName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFrontNameNotBetween(String value1, String value2) {
-            addCriterion("front_name not between", value1, value2, "frontName");
+        public Criteria andSortOrderNotBetween(Byte value1, Byte value2) {
+            addCriterion("sort_order not between", value1, value2, "sortOrder");
             return (Criteria) this;
         }
 
@@ -1398,18 +1008,6 @@ public class LitemallCategoryExample {
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Criteria andLogicalDeleted(boolean deleted) {
-            return deleted ? andDeletedEqualTo(LitemallCategory.IS_DELETED) : andDeletedNotEqualTo(LitemallCategory.IS_DELETED);
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table litemall_category
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        @Deprecated
-        public Criteria andDeleted(boolean deleted) {
             return deleted ? andDeletedEqualTo(LitemallCategory.IS_DELETED) : andDeletedNotEqualTo(LitemallCategory.IS_DELETED);
         }
 
