@@ -39,20 +39,13 @@
           </el-radio-group>
         </el-form-item>
             
-        <el-form-item label="首页主图">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadListPicUrl">
-			      <img v-if="goods.listPicUrl" :src="goods.listPicUrl" class="avatar">
+        <el-form-item label="商品图片">
+          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
+			      <img v-if="goods.picUrl" :src="goods.picUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         
-        <el-form-item label="商品页主图">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPrimaryPicUrl">
-			      <img v-if="goods.primaryPicUrl" :src="goods.primaryPicUrl" class="avatar">
-						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
-
         <el-form-item label="宣传画廊">
           <el-upload :action='uploadPath' :limit='5' multiple accept=".jpg,.jpeg,.png,.gif" :file-list="galleryFileList" list-type="picture-card" :on-exceed='uploadOverrun' :on-success="handleGalleryUrl" :on-remove="handleRemove">
              <i class="el-icon-plus"></i>
@@ -60,7 +53,7 @@
         </el-form-item>        
             
         <el-form-item label="商品单位">
-          <el-input v-model="goods.goodsUnit" placeholder="件 / 个 / 盒"></el-input>
+          <el-input v-model="goods.unit" placeholder="件 / 个 / 盒"></el-input>
         </el-form-item>
             
         <el-form-item label="关键字">
@@ -73,36 +66,29 @@
         </el-form-item>
             
         <el-form-item label="所属分类">
-          <el-cascader expand-trigger="hover" :options="categoryList" @change="handleCategoryChange"></el-cascader>
+          <el-cascader expand-trigger="hover" :options="categoryList" v-model="categoryIds" @change="handleCategoryChange"></el-cascader>
         </el-form-item>
         
         <el-form-item label="所属品牌商">
-          <el-input v-model="goods.brandId"></el-input>              
+          <el-select v-model="goods.brandId">
+            <el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item label="商品简介">
-          <el-input v-model="goods.goodsBrief"></el-input>
+          <el-input v-model="goods.brief"></el-input>
         </el-form-item> 
             
         <el-form-item label="商品详细介绍">
-          <editor :init="editorInit" v-model="goods.goodsDesc"></editor>
+          <editor :init="editorInit" v-model="goods.desc"></editor>
         </el-form-item>    
     </el-form>
   </el-card>
 
   <el-card class="box-card">
       <h3>商品规格</h3>
-      <el-row type="flex" align="middle" :gutter="20" style="padding:20px 0;">
-        <el-col :span="10" >
-          <el-radio-group v-model="multipleSpec" @change="specChanged">
-            <el-radio-button :label="false" >默认标准规格</el-radio-button>
-            <el-radio-button :label="true">多规格支持</el-radio-button>
-          </el-radio-group>
-        </el-col>
-        <el-col :span="10" v-if="multipleSpec">
-          <el-button :plain="true" @click="handleSpecificationShow" type="primary">添加</el-button>
-        </el-col>
-      </el-row>
+        <el-button :plain="true" @click="handleSpecificationShow" type="primary">添加</el-button>
 
       <el-table :data="specifications">
         <el-table-column property="specification" label="规格名" ></el-table-column>
@@ -118,7 +104,7 @@
             <img :src="scope.row.picUrl" width="40" v-if="scope.row.picUrl"/>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width" v-if="multipleSpec">
+        <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button type="danger" size="mini"  @click="handleSpecificationDelete(scope.row)">删除</el-button>
           </template>
@@ -161,7 +147,7 @@
         </el-table-column>
         <el-table-column property="number" width="100" label="货品数量">
         </el-table-column>
-        <el-table-column property="price" width="100" label="货品图片">
+        <el-table-column property="url" width="100" label="货品图片">
           <template slot-scope="scope">
             <img :src="scope.row.url" width="40" v-if="scope.row.url"/>
           </template>
@@ -186,7 +172,7 @@
         <el-form-item label="货品数量" prop="number">
           <el-input v-model="productForm.number"></el-input>
         </el-form-item>
-        <el-form-item label="货品图片" prop="picUrl">
+        <el-form-item label="货品图片" prop="url">
           <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadProductUrl">
 			      <img v-if="productForm.url" :src="productForm.url" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -233,7 +219,7 @@
 
     <div class="op-container">
       <el-button @click="handleCancel">取消</el-button>
-      <el-button @click="handlePublish" type="primary">上架</el-button>
+      <el-button @click="handleEdit" type="primary">更新商品</el-button>
     </div>
 
   </div>
@@ -277,14 +263,13 @@
 </style>
 
 <script>
-import { publishGoods } from '@/api/goods'
+import { detailGoods, editGoods, listCatAndBrand } from '@/api/goods'
 import { createStorage, uploadPath } from '@/api/storage'
-import { listCategory2 } from '@/api/category'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
 
 export default {
-  name: 'GoodsAdd',
+  name: 'GoodsEdit',
   components: { Editor },
   data() {
     return {
@@ -294,27 +279,11 @@ export default {
       keywords: [],
       galleryFileList: [],
       categoryList: [],
-      goods: {
-        id: undefined,
-        goodsSn: undefined,
-        name: undefined,
-        counterPrice: undefined,
-        retailPrice: undefined,
-        isHot: false,
-        isNew: true,
-        isOnSale: true,
-        listPicUrl: undefined,
-        primaryPicUrl: undefined,
-        goodsBrief: undefined,
-        goodsDesc: '',
-        keywords: '',
-        gallery: [],
-        categoryId: undefined,
-        brandId: undefined
-      },
+      brandList: [],
+      categoryIds: [],
+      goods: { gallery: [] },
       specVisiable: false,
       specForm: { specification: '', value: '', picUrl: '' },
-      multipleSpec: false,
       specifications: [{ specification: '规格', value: '标准', picUrl: '' }],
       productVisiable: false,
       productForm: { id: 0, specifications: [], price: 0.00, number: 0, url: '' },
@@ -343,35 +312,56 @@ export default {
     }
   },
   created() {
-    this.getCatList()
+    this.init()
   },
   methods: {
-    getCatList: function() {
-      listCategory2().then(response => {
-        this.categoryList = response.data.data
+    init: function() {
+      if (this.$route.query.id == null) {
+        return
+      }
+
+      const goodsId = this.$route.query.id
+      detailGoods(goodsId).then(response => {
+        this.goods = response.data.data.goods
+        this.specifications = response.data.data.specifications
+        this.products = response.data.data.products
+        this.attributes = response.data.data.attributes
+        this.categoryIds = response.data.data.categoryIds
+
+        this.galleryFileList = []
+        for (var i = 0; i < this.goods.gallery.length; i++) {
+          this.galleryFileList.push({
+            url: this.goods.gallery[i]
+          })
+        }
+      })
+
+      listCatAndBrand().then(response => {
+        this.categoryList = response.data.data.categoryList
+        this.brandList = response.data.data.brandList
       })
     },
     handleCategoryChange(value) {
       this.goods.categoryId = value[value.length - 1]
     },
     handleCancel: function() {
-      this.$router.push({ path: '/goods/goods' })
+      this.$router.push({ path: '/goods/list' })
     },
-    handlePublish: function() {
+    handleEdit: function() {
       const finalGoods = {
         goods: this.goods,
         specifications: this.specifications,
         products: this.products,
         attributes: this.attributes
       }
-      publishGoods(finalGoods).then(response => {
+      editGoods(finalGoods).then(response => {
         this.$notify({
           title: '成功',
           message: '创建成功',
           type: 'success',
           duration: 2000
         })
-        this.$router.push({ path: '/goods/goods' })
+        this.$router.push({ path: '/goods/list' })
       }).catch(response => {
         MessageBox.alert('业务错误：' + response.data.errmsg, '警告', {
           confirmButtonText: '确定',
@@ -398,11 +388,8 @@ export default {
       this.newKeywordVisible = false
       this.newKeyword = ''
     },
-    uploadPrimaryPicUrl: function(response) {
-      this.goods.primaryPicUrl = response.data.url
-    },
-    uploadListPicUrl: function(response) {
-      this.goods.listPicUrl = response.data.url
+    uploadPicUrl: function(response) {
+      this.goods.picUrl = response.data.url
     },
     uploadOverrun: function() {
       this.$message({

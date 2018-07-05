@@ -15,54 +15,41 @@
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" class="demo-table-expand">
-            <el-form-item label="首页页面类目图标">
-       				<img :src="props.row.iconUrl">
-            </el-form-item>
-            <el-form-item label="首页页面类目横幅图片">
-       				<img :src="props.row.bannerUrl">
-            </el-form-item>            
-            <el-form-item label="类目页标题">
-              <span>{{ props.row.frontName }}</span>
-            </el-form-item>
-            <el-form-item label="类目页介绍">
-              <span>{{ props.row.frontDesc }}</span>
-            </el-form-item>
-            <el-form-item label="类目页横幅">
-       				<img :src="props.row.wapBannerUrl">
-            </el-form-item>
-          </el-form>
+      <el-table-column align="center" label="类目ID" prop="id">
+      </el-table-column>
+
+      <el-table-column align="center" label="类目名" prop="name">
+      </el-table-column>
+
+      <el-table-column align="center" property="iconUrl" label="类目图标">
+        <template slot-scope="scope">
+          <img :src="scope.row.iconUrl" width="40" v-if="scope.row.iconUrl"/>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" width="100px" label="类目ID" prop="id" sortable>
+      <el-table-column align="center" property="picUrl" label="类目图片">
+        <template slot-scope="scope">
+          <img :src="scope.row.picUrl" width="80" v-if="scope.row.picUrl"/>
+        </template>
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="名称" prop="name">
-      </el-table-column>
-
-      <el-table-column align="center" min-width="100px" label="关键字" prop="keyword">
+      <el-table-column align="center" label="关键字" prop="keyword">
       </el-table-column>
       
-      <el-table-column align="center" min-width="100px" label="级别" prop="level"
+      <el-table-column align="center" min-width="100" label="简介" prop="desc">
+      </el-table-column>
+
+      <el-table-column align="center" label="级别" prop="level"
         :filters="[{ text: '一级类目', value: 'L1' }, { text: '二级类目', value: 'L2' }]" :filter-method="filterLevel">
         <template slot-scope="scope">
           <el-tag :type="scope.row.level === 'L1' ? 'primary' : 'info' ">{{scope.row.level === 'L1' ? '一级类目' : '二级类目'}}</el-tag>
         </template>
       </el-table-column>   
 
-      <el-table-column align="center" min-width="100px" label="父类目ID" prop="parentId">
+      <el-table-column align="center" label="父类目ID" prop="pid">
       </el-table-column> 
 
-      <el-table-column align="center" min-width="100px" label="是否显示" prop="isShow">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.isShow ? 'success' : 'error' ">{{scope.row.isShow ? '可显示' : '不显示'}}</el-tag>
-        </template>
-      </el-table-column> 
-
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
@@ -83,10 +70,10 @@
         <el-form-item label="类目名称" prop="name">
           <el-input v-model="dataForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="类目关键字" prop="keyword">
+        <el-form-item label="关键字" prop="keyword">
           <el-input v-model="dataForm.keyword"></el-input>
         </el-form-item>
-        <el-form-item label="类目级别" prop="level">
+        <el-form-item label="级别" prop="level">
           <el-select v-model="dataForm.level" placeholder="请选择">
             <el-option label="一级类目" value="L1">
             </el-option>
@@ -94,36 +81,27 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="父类目" prop="parentId" v-if="dataForm.level === 'L2'">
-          <el-select v-model="dataForm.parentId" placeholder="请选择">
-            <el-option v-for="(key, val) in catL1" :key="key" :label="key" :value="val">
+        <el-form-item label="父类目" prop="pid" v-if="dataForm.level === 'L2'">
+          <el-select v-model="dataForm.pid">
+            <el-option v-for="item in catL1" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="图标" prop="iconUrl">
-          <el-input v-model="dataForm.iconUrl"></el-input>
-          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="handleIconUrl">
-            <el-button size="small" type="primary">点击上传</el-button>
+        <el-form-item label="类目图标" prop="iconUrl">
+          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadIconUrl">
+			      <img v-if="dataForm.iconUrl" :src="dataForm.iconUrl" class="avatar">
+						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="首页横幅" prop="bannerUrl">
-          <el-input v-model="dataForm.bannerUrl"></el-input>
-          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="handleBannerUrl">
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
-          <el-form-item label="类目页标题" prop="frontName">
-          <el-input v-model="dataForm.frontName"></el-input>
-        </el-form-item>
-        <el-form-item label="类目页介绍" prop="frontDesc">
-          <el-input v-model="dataForm.frontDesc"></el-input>
-        </el-form-item>
-        <el-form-item label="类目页横幅" prop="wapBannerUrl">
-          <el-input v-model="dataForm.wapBannerUrl"></el-input>
-          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="handleWapBannerUrl">
-            <el-button size="small" type="primary">点击上传</el-button>
+        <el-form-item label="类目图片" prop="picUrl">
+          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
+			      <img v-if="dataForm.picUrl" :src="dataForm.picUrl" class="avatar">
+						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>        
+        <el-form-item label="类目简介" prop="desc">
+          <el-input v-model="dataForm.desc"></el-input>
+        </el-form-item>      
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -136,27 +114,40 @@
 </template>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 200px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-  }
+  .avatar-uploader .el-upload {
+	  border: 1px dashed #d9d9d9;
+	  border-radius: 6px;
+	  cursor: pointer;
+	  position: relative;
+	  overflow: hidden;
+	}
+	.avatar-uploader .el-upload:hover {
+	  border-color: #20a0ff;
+	}
+	.avatar-uploader-icon {
+	    font-size: 28px;
+	    color: #8c939d;
+	    width: 120px;
+	    height: 120px;
+	    line-height: 120px;
+	    text-align: center;
+	}
+	.avatar {
+	    width: 120px;
+	    height: 120px;
+	    display: block;
+	}
 </style>
 
 <script>
 import { listCategory, listCatL1, createCategory, updateCategory, deleteCategory } from '@/api/category'
-import { createStorage } from '@/api/storage'
+import { uploadPath } from '@/api/storage'
 
 export default {
   name: 'Category',
   data() {
     return {
+      uploadPath,
       list: undefined,
       total: undefined,
       listLoading: true,
@@ -172,14 +163,11 @@ export default {
         id: undefined,
         name: '',
         keyword: '',
-        level: 'L1',
-        parentId: '',
-        isShow: 'true',
-        frontName: '',
-        frontDesc: '',
+        level: 'L2',
+        pid: 1005000,
+        desc: '',
         iconUrl: undefined,
-        bannerUrl: undefined,
-        wapBannerUrl: undefined
+        picUrl: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -188,8 +176,7 @@ export default {
         create: '创建'
       },
       rules: {
-        name: [{ required: true, message: '类目名称不能为空', trigger: 'blur' }],
-        keyword: [{ required: true, message: '类目关键字不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: '类目名不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -233,14 +220,11 @@ export default {
         id: undefined,
         name: '',
         keyword: '',
-        level: 'L1',
-        parentId: '',
-        isShow: 'true',
-        frontName: '',
-        frontDesc: '',
+        level: 'L2',
+        pid: 1005000,
+        desc: '',
         iconUrl: undefined,
-        bannerUrl: undefined,
-        wapBannerUrl: undefined
+        picUrl: undefined
       }
     },
     filterLevel(value, row) {
@@ -254,32 +238,11 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleIconUrl(item) {
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(res => {
-        this.dataForm.iconUrl = res.data.data.url
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
+    uploadIconUrl: function(response) {
+      this.dataForm.iconUrl = response.data.data.url
     },
-    handleBannerUrl(item) {
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(res => {
-        this.dataForm.bannerUrl = res.data.data.url
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
-    },
-    handleWapBannerUrl(item) {
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(res => {
-        this.dataForm.wapBannerUrl = res.data.data.url
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
+    uploadPicUrl: function(response) {
+      this.dataForm.picUrl = response.data.data.url
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -342,8 +305,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['类目ID', '名称', '关键字', '级别', '父类目ID', '是否显示', '图标', '首页横幅', '类目页标题', '类目页介绍', '类目页横幅']
-        const filterVal = ['id', 'name', 'keyword', 'level', 'parentId', 'isShow', 'iconUrl', 'bannerUrl', 'frontName', 'frontDesc', 'wapBannerUrl']
+        const tHeader = ['类目ID', '名称', '关键字', '级别', '父类目ID', '类目图标', '类目图片', '简介']
+        const filterVal = ['id', 'name', 'keyword', 'level', 'pid', 'iconUrl', 'picUrl', 'desc']
         excel.export_json_to_excel2(tHeader, this.list, filterVal, '商品类目信息')
         this.downloadLoading = false
       })

@@ -15,25 +15,25 @@
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" width="150px" label="评论ID" prop="id" sortable>
+      <el-table-column align="center" label="评论ID" prop="id">
       </el-table-column>
 
-      <el-table-column align="center" width="100px" label="用户ID" prop="userId">
+      <el-table-column align="center" label="用户ID" prop="userId">
       </el-table-column>
 
-      <el-table-column align="center" width="100px" label="商品ID" prop="valueId">
+      <el-table-column align="center" label="商品ID" prop="valueId">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200px" label="评论内容" prop="content">
+      <el-table-column align="center" min-width="200" label="评论内容" prop="content">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200px" label="评论图片" prop="picUrls">
+      <el-table-column align="center" min-width="200" label="评论图片" prop="picUrls">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="时间" prop="addTime">
+      <el-table-column align="center" min-width="100" label="时间" prop="addTime">
       </el-table-column>
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>

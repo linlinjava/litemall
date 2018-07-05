@@ -98,12 +98,10 @@ export const asyncRouterMap = [
       icon: 'chart'
     },
     children: [
-      { path: 'publish', component: _import('goods/publish'), name: 'publish', meta: { title: '商品上架', noCache: true }},
-      { path: 'goods', component: _import('goods/goods'), name: 'goods', meta: { title: '商品管理', noCache: true }},
-      { path: 'attribute', component: _import('goods/attribute'), name: 'attribute', meta: { title: '商品参数', noCache: true }},
-      { path: 'specification', component: _import('goods/specification'), name: 'specification', meta: { title: '商品规格', noCache: true }},
-      { path: 'product', component: _import('goods/product'), name: 'product', meta: { title: '货品管理', noCache: true }},
-      { path: 'comment', component: _import('goods/comment'), name: 'comment', meta: { title: '用户评论', noCache: true }}
+      { path: 'list', component: _import('goods/list'), name: 'goodsList', meta: { title: '商品列表', noCache: true }},
+      { path: 'create', component: _import('goods/create'), name: 'goodsCreate', meta: { title: '商品上架', noCache: true }},
+      { path: 'edit', component: _import('goods/edit'), name: 'goodsEdit', meta: { title: '商品编辑', noCache: true }, hidden: true },
+      { path: 'comment', component: _import('goods/comment'), name: 'goodsComment', meta: { title: '商品评论', noCache: true }}
     ]
   },
 

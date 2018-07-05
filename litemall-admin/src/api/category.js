@@ -46,11 +46,3 @@ export function deleteCategory(data) {
     data
   })
 }
-
-export function listCategory2(query) {
-  return request({
-    url: '/category/list2',
-    method: 'get',
-    params: query
-  })
-}

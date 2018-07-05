@@ -93,42 +93,13 @@ public class AdminCategoryController {
 
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
-        HashMap<Integer, String> data = new HashMap<>(l1CatList.size());
+        List<Map<String, Object>> data = new ArrayList<>(l1CatList.size());
         for(LitemallCategory category : l1CatList){
-            data.put(category.getId(), category.getName());
+            Map<String, Object> d = new HashMap<>(2);
+            d.put("value", category.getId());
+            d.put("label", category.getName());
+            data.add(d);
         }
         return ResponseUtil.ok(data);
     }
-
-
-
-    @GetMapping("/list2")
-    public Object list2(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
-        List<LitemallCategory> l1CatList = categoryService.queryL1();
-        List<CatVo> list = new ArrayList<>(l1CatList.size());
-
-        for(LitemallCategory l1 : l1CatList){
-            CatVo l1CatVo = new CatVo();
-            l1CatVo.setValue(l1.getId());
-            l1CatVo.setLabel(l1.getName());
-
-            List<LitemallCategory> l2CatList = categoryService.queryByPid(l1.getId());
-            List<CatVo> children = new ArrayList<>(l2CatList.size());
-            for(LitemallCategory l2 : l2CatList) {
-                CatVo l2CatVo = new CatVo();
-                l2CatVo.setValue(l2.getId());
-                l2CatVo.setLabel(l2.getName());
-                children.add(l2CatVo);
-            }
-            l1CatVo.setChildren(children);
-
-            list.add(l1CatVo);
-        }
-        return ResponseUtil.ok(list);
-    }
-
 }
