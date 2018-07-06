@@ -39,15 +39,15 @@
           </el-radio-group>
         </el-form-item>
             
-        <el-form-item label="首页主图">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
+        <el-form-item label="商品图片">
+          <el-upload class="avatar-uploader" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
 			      <img v-if="goods.picUrl" :src="goods.picUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         
         <el-form-item label="宣传画廊">
-          <el-upload :action='uploadPath' :limit='5' multiple accept=".jpg,.jpeg,.png,.gif" list-type="picture-card" :on-exceed='uploadOverrun' :on-success="handleGalleryUrl" :on-remove="handleRemove">
+          <el-upload :action="uploadPath" :limit="5" multiple accept=".jpg,.jpeg,.png,.gif" list-type="picture-card" :on-exceed="uploadOverrun" :on-success="handleGalleryUrl" :on-remove="handleRemove">
              <i class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>        

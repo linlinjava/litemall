@@ -187,7 +187,7 @@ export default {
       })
     },
     uploadPicUrl: function(response) {
-      this.dataForm.picUrl = response.data.data.url
+      this.dataForm.picUrl = response.data.url
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {

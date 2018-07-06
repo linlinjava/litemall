@@ -74,7 +74,7 @@
           <el-input v-model="dataForm.keyword"></el-input>
         </el-form-item>
         <el-form-item label="级别" prop="level">
-          <el-select v-model="dataForm.level" placeholder="请选择">
+          <el-select v-model="dataForm.level" @change="onLevelChange">
             <el-option label="一级类目" value="L1">
             </el-option>
             <el-option label="二级类目" value="L2">
@@ -164,7 +164,7 @@ export default {
         name: '',
         keyword: '',
         level: 'L2',
-        pid: 1005000,
+        pid: undefined,
         desc: '',
         iconUrl: undefined,
         picUrl: undefined
@@ -221,14 +221,19 @@ export default {
         name: '',
         keyword: '',
         level: 'L2',
-        pid: 1005000,
+        pid: undefined,
         desc: '',
         iconUrl: undefined,
         picUrl: undefined
       }
     },
-    filterLevel(value, row) {
+    filterLevel: function(value, row) {
       return row.level === value
+    },
+    onLevelChange: function(value) {
+      if (value === 'L1') {
+        this.pid = undefined
+      }
     },
     handleCreate() {
       this.resetForm()
@@ -239,10 +244,10 @@ export default {
       })
     },
     uploadIconUrl: function(response) {
-      this.dataForm.iconUrl = response.data.data.url
+      this.dataForm.iconUrl = response.data.url
     },
     uploadPicUrl: function(response) {
-      this.dataForm.picUrl = response.data.data.url
+      this.dataForm.picUrl = response.data.url
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
