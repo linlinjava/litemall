@@ -58,8 +58,7 @@ export default {
         page: 1,
         limit: 20,
         name: undefined,
-        code: undefined,
-        sort: '+id'
+        code: undefined
       },
       downloadLoading: false
     }

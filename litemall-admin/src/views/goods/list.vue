@@ -139,7 +139,8 @@ export default {
         limit: 20,
         goodsSn: undefined,
         name: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,

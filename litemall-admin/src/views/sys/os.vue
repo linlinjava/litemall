@@ -85,7 +85,8 @@ export default {
         limit: 20,
         key: undefined,
         name: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       createDialogVisible: false,
       dataForm: {

@@ -156,7 +156,8 @@ export default {
         limit: 20,
         id: undefined,
         name: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       catL1: {},
       dataForm: {

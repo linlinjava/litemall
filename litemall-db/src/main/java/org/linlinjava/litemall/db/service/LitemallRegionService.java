@@ -32,9 +32,14 @@ public class LitemallRegionService {
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%" + name + "%");
         }
-        if(code != null){
+        if(!StringUtils.isEmpty(code)){
             criteria.andCodeEqualTo(code);
         }
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
         PageHelper.startPage(page, size);
         return regionMapper.selectByExample(example);
     }

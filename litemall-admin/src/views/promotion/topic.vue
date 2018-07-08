@@ -131,7 +131,8 @@ export default {
         limit: 20,
         title: undefined,
         subtitle: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,

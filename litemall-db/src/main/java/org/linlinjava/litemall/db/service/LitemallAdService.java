@@ -33,6 +33,10 @@ public class LitemallAdService {
         }
         criteria.andDeletedEqualTo(false);
 
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
         PageHelper.startPage(page, limit);
         return adMapper.selectByExample(example);
     }

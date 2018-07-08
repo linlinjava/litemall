@@ -3,7 +3,6 @@ package org.linlinjava.litemall.wx.web;
 import org.apache.commons.lang3.ObjectUtils;
 import org.linlinjava.litemall.db.domain.LitemallComment;
 import org.linlinjava.litemall.db.service.LitemallCommentService;
-import org.linlinjava.litemall.db.service.LitemallCouponService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
@@ -25,8 +24,6 @@ public class WxCommentController {
     private LitemallCommentService commentService;
     @Autowired
     private LitemallUserService userService;
-    @Autowired
-    private LitemallCouponService couponService;
     @Autowired
     private UserInfoService userInfoService;
 

@@ -5,7 +5,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
-import org.linlinjava.litemall.db.util.SortUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +46,6 @@ public class WxGoodsController {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallSearchHistoryService searchHistoryService;
-    @Autowired
-    private LitemallCouponService apiCouponService;
     @Autowired
     private LitemallCartService cartService;
     @Autowired
@@ -229,13 +226,11 @@ public class WxGoodsController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
-    public Object list(Integer categoryId, Integer brandId, String keyword, Integer isNew, Integer isHot,
+    public Object list(Integer categoryId, Integer brandId, String keyword, Boolean isNew, Boolean isHot,
                        @LoginUser Integer userId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size,
                        String sort, String order) {
-
-        String sortWithOrder = SortUtil.goodsSort(sort, order);
 
         //添加到搜索历史
         if (userId != null && !StringUtils.isNullOrEmpty(keyword)) {
@@ -248,8 +243,8 @@ public class WxGoodsController {
         }
 
         //查询列表数据
-        List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
-        int total = goodsService.countSelective(categoryId, brandId, keyword, isHot, isNew, page, size, sortWithOrder);
+        List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, size, sort, order);
+        int total = goodsService.countSelective(categoryId, brandId, keyword, isHot, isNew, page, size, sort, order);
 
         // 查询商品所属类目列表。
         List<Integer> goodsCatIds = goodsService.getCatIds(brandId, keyword, isHot, isNew);

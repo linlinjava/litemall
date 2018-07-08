@@ -99,7 +99,8 @@ export default {
         page: 1,
         limit: 20,
         username: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,

@@ -111,7 +111,8 @@ export default {
         limit: 20,
         userId: undefined,
         valueId: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,
@@ -119,8 +120,7 @@ export default {
         valueId: undefined,
         content: undefined,
         hasPicture: false,
-        picUrls: [],
-        addTime: undefined
+        picUrls: []
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -170,8 +170,7 @@ export default {
         userId: undefined,
         valueId: undefined,
         content: undefined,
-        picUrls: [],
-        addTime: undefined
+        picUrls: []
       }
     },
     handleCreate() {

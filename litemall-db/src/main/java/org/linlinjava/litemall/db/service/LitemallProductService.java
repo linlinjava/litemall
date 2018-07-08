@@ -24,31 +24,6 @@ public class LitemallProductService {
         return productMapper.selectByPrimaryKey(id);
     }
 
-    public List<LitemallProduct> querySelective(Integer goodsId, Integer page, Integer size, String sort, String order) {
-        LitemallProductExample example = new LitemallProductExample();
-        LitemallProductExample.Criteria criteria = example.createCriteria();
-
-        if(goodsId != null){
-            criteria.andGoodsIdEqualTo(goodsId);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        PageHelper.startPage(page, size);
-        return productMapper.selectByExample(example);
-    }
-
-    public int countSelective(Integer goodsId, Integer page, Integer size, String sort, String order) {
-        LitemallProductExample example = new LitemallProductExample();
-        LitemallProductExample.Criteria criteria = example.createCriteria();
-
-        if(goodsId != null){
-            criteria.andGoodsIdEqualTo(goodsId);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int)productMapper.countByExample(example);
-    }
-
     public void updateById(LitemallProduct product) {
         productMapper.updateByPrimaryKeySelective(product);
     }

@@ -80,7 +80,8 @@ export default {
         limit: 20,
         userId: undefined,
         valueId: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,

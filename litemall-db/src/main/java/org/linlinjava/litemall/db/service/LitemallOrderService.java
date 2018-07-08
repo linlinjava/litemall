@@ -75,7 +75,7 @@ public class LitemallOrderService {
 
     public List<LitemallOrder> queryByOrderStatus(Integer userId, List<Short> orderStatus) {
         LitemallOrderExample example = new LitemallOrderExample();
-        example.orderBy(LitemallOrder.Column.addTime.desc());
+        example.setOrderByClause(LitemallOrder.Column.addTime.desc());
         LitemallOrderExample.Criteria criteria = example.or();
         criteria.andUserIdEqualTo(userId);
         if(orderStatus != null) {
@@ -111,6 +111,10 @@ public class LitemallOrderService {
             criteria.andOrderSnEqualTo(orderSn);
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, size);
         return orderMapper.selectByExample(example);

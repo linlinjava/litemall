@@ -32,8 +32,6 @@ public class WxCartController {
     private LitemallGoodsSpecificationService goodsSpecificationService;
     @Autowired
     private LitemallAddressService addressService;
-    @Autowired
-    private LitemallCouponService apiCouponService;
 
     /**
      * 购物车
