@@ -79,7 +79,8 @@ export default {
         limit: 20,
         userId: undefined,
         keyword: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,

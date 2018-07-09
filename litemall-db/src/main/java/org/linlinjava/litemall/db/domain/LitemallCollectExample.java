@@ -406,123 +406,63 @@ public class LitemallCollectExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionIsNull() {
-            addCriterion("is_attention is null");
+        public Criteria andTypeIsNull() {
+            addCriterion("`type` is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionIsNotNull() {
-            addCriterion("is_attention is not null");
+        public Criteria andTypeIsNotNull() {
+            addCriterion("`type` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionEqualTo(Boolean value) {
-            addCriterion("is_attention =", value, "isAttention");
+        public Criteria andTypeEqualTo(Byte value) {
+            addCriterion("`type` =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionNotEqualTo(Boolean value) {
-            addCriterion("is_attention <>", value, "isAttention");
+        public Criteria andTypeNotEqualTo(Byte value) {
+            addCriterion("`type` <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionGreaterThan(Boolean value) {
-            addCriterion("is_attention >", value, "isAttention");
+        public Criteria andTypeGreaterThan(Byte value) {
+            addCriterion("`type` >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("is_attention >=", value, "isAttention");
+        public Criteria andTypeGreaterThanOrEqualTo(Byte value) {
+            addCriterion("`type` >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionLessThan(Boolean value) {
-            addCriterion("is_attention <", value, "isAttention");
+        public Criteria andTypeLessThan(Byte value) {
+            addCriterion("`type` <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionLessThanOrEqualTo(Boolean value) {
-            addCriterion("is_attention <=", value, "isAttention");
+        public Criteria andTypeLessThanOrEqualTo(Byte value) {
+            addCriterion("`type` <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionIn(List<Boolean> values) {
-            addCriterion("is_attention in", values, "isAttention");
+        public Criteria andTypeIn(List<Byte> values) {
+            addCriterion("`type` in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionNotIn(List<Boolean> values) {
-            addCriterion("is_attention not in", values, "isAttention");
+        public Criteria andTypeNotIn(List<Byte> values) {
+            addCriterion("`type` not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_attention between", value1, value2, "isAttention");
+        public Criteria andTypeBetween(Byte value1, Byte value2) {
+            addCriterion("`type` between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsAttentionNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_attention not between", value1, value2, "isAttention");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdIsNull() {
-            addCriterion("type_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdIsNotNull() {
-            addCriterion("type_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdEqualTo(Integer value) {
-            addCriterion("type_id =", value, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdNotEqualTo(Integer value) {
-            addCriterion("type_id <>", value, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdGreaterThan(Integer value) {
-            addCriterion("type_id >", value, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type_id >=", value, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdLessThan(Integer value) {
-            addCriterion("type_id <", value, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdLessThanOrEqualTo(Integer value) {
-            addCriterion("type_id <=", value, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdIn(List<Integer> values) {
-            addCriterion("type_id in", values, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdNotIn(List<Integer> values) {
-            addCriterion("type_id not in", values, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdBetween(Integer value1, Integer value2) {
-            addCriterion("type_id between", value1, value2, "typeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("type_id not between", value1, value2, "typeId");
+        public Criteria andTypeNotBetween(Byte value1, Byte value2) {
+            addCriterion("`type` not between", value1, value2, "type");
             return (Criteria) this;
         }
 
@@ -708,18 +648,6 @@ public class LitemallCollectExample {
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Criteria andLogicalDeleted(boolean deleted) {
-            return deleted ? andDeletedEqualTo(LitemallCollect.IS_DELETED) : andDeletedNotEqualTo(LitemallCollect.IS_DELETED);
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table litemall_collect
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        @Deprecated
-        public Criteria andDeleted(boolean deleted) {
             return deleted ? andDeletedEqualTo(LitemallCollect.IS_DELETED) : andDeletedNotEqualTo(LitemallCollect.IS_DELETED);
         }
 

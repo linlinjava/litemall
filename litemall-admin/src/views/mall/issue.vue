@@ -70,7 +70,8 @@ export default {
         page: 1,
         limit: 20,
         question: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,

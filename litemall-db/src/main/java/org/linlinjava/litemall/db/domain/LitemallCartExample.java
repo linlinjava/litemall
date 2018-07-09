@@ -187,7 +187,7 @@ public class LitemallCartExample {
      * @mbg.generated
      */
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> goodsSpecificationIdsCriteria;
+        protected List<Criterion> specificationsCriteria;
 
         protected List<Criterion> allCriteria;
 
@@ -196,39 +196,39 @@ public class LitemallCartExample {
         protected GeneratedCriteria() {
             super();
             criteria = new ArrayList<Criterion>();
-            goodsSpecificationIdsCriteria = new ArrayList<Criterion>();
+            specificationsCriteria = new ArrayList<Criterion>();
         }
 
-        public List<Criterion> getGoodsSpecificationIdsCriteria() {
-            return goodsSpecificationIdsCriteria;
+        public List<Criterion> getSpecificationsCriteria() {
+            return specificationsCriteria;
         }
 
-        protected void addGoodsSpecificationIdsCriterion(String condition, Object value, String property) {
+        protected void addSpecificationsCriterion(String condition, Object value, String property) {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
-            goodsSpecificationIdsCriteria.add(new Criterion(condition, value, "org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler"));
+            specificationsCriteria.add(new Criterion(condition, value, "org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"));
             allCriteria = null;
         }
 
-        protected void addGoodsSpecificationIdsCriterion(String condition, Integer[] value1, Integer[] value2, String property) {
+        protected void addSpecificationsCriterion(String condition, String[] value1, String[] value2, String property) {
             if (value1 == null || value2 == null) {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
-            goodsSpecificationIdsCriteria.add(new Criterion(condition, value1, value2, "org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler"));
+            specificationsCriteria.add(new Criterion(condition, value1, value2, "org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"));
             allCriteria = null;
         }
 
         public boolean isValid() {
             return criteria.size() > 0
-                || goodsSpecificationIdsCriteria.size() > 0;
+                || specificationsCriteria.size() > 0;
         }
 
         public List<Criterion> getAllCriteria() {
             if (allCriteria == null) {
                 allCriteria = new ArrayList<Criterion>();
                 allCriteria.addAll(criteria);
-                allCriteria.addAll(goodsSpecificationIdsCriteria);
+                allCriteria.addAll(specificationsCriteria);
             }
             return allCriteria;
         }
@@ -511,66 +511,6 @@ public class LitemallCartExample {
             return (Criteria) this;
         }
 
-        public Criteria andProductIdIsNull() {
-            addCriterion("product_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdIsNotNull() {
-            addCriterion("product_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdEqualTo(Integer value) {
-            addCriterion("product_id =", value, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdNotEqualTo(Integer value) {
-            addCriterion("product_id <>", value, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdGreaterThan(Integer value) {
-            addCriterion("product_id >", value, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("product_id >=", value, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdLessThan(Integer value) {
-            addCriterion("product_id <", value, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdLessThanOrEqualTo(Integer value) {
-            addCriterion("product_id <=", value, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdIn(List<Integer> values) {
-            addCriterion("product_id in", values, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdNotIn(List<Integer> values) {
-            addCriterion("product_id not in", values, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdBetween(Integer value1, Integer value2) {
-            addCriterion("product_id between", value1, value2, "productId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("product_id not between", value1, value2, "productId");
-            return (Criteria) this;
-        }
-
         public Criteria andGoodsNameIsNull() {
             addCriterion("goods_name is null");
             return (Criteria) this;
@@ -641,63 +581,123 @@ public class LitemallCartExample {
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceIsNull() {
-            addCriterion("retail_price is null");
+        public Criteria andProductIdIsNull() {
+            addCriterion("product_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceIsNotNull() {
-            addCriterion("retail_price is not null");
+        public Criteria andProductIdIsNotNull() {
+            addCriterion("product_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceEqualTo(BigDecimal value) {
-            addCriterion("retail_price =", value, "retailPrice");
+        public Criteria andProductIdEqualTo(Integer value) {
+            addCriterion("product_id =", value, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceNotEqualTo(BigDecimal value) {
-            addCriterion("retail_price <>", value, "retailPrice");
+        public Criteria andProductIdNotEqualTo(Integer value) {
+            addCriterion("product_id <>", value, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceGreaterThan(BigDecimal value) {
-            addCriterion("retail_price >", value, "retailPrice");
+        public Criteria andProductIdGreaterThan(Integer value) {
+            addCriterion("product_id >", value, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("retail_price >=", value, "retailPrice");
+        public Criteria andProductIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("product_id >=", value, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceLessThan(BigDecimal value) {
-            addCriterion("retail_price <", value, "retailPrice");
+        public Criteria andProductIdLessThan(Integer value) {
+            addCriterion("product_id <", value, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("retail_price <=", value, "retailPrice");
+        public Criteria andProductIdLessThanOrEqualTo(Integer value) {
+            addCriterion("product_id <=", value, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceIn(List<BigDecimal> values) {
-            addCriterion("retail_price in", values, "retailPrice");
+        public Criteria andProductIdIn(List<Integer> values) {
+            addCriterion("product_id in", values, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceNotIn(List<BigDecimal> values) {
-            addCriterion("retail_price not in", values, "retailPrice");
+        public Criteria andProductIdNotIn(List<Integer> values) {
+            addCriterion("product_id not in", values, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("retail_price between", value1, value2, "retailPrice");
+        public Criteria andProductIdBetween(Integer value1, Integer value2) {
+            addCriterion("product_id between", value1, value2, "productId");
             return (Criteria) this;
         }
 
-        public Criteria andRetailPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("retail_price not between", value1, value2, "retailPrice");
+        public Criteria andProductIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("product_id not between", value1, value2, "productId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNull() {
+            addCriterion("price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNotNull() {
+            addCriterion("price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceEqualTo(BigDecimal value) {
+            addCriterion("price =", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotEqualTo(BigDecimal value) {
+            addCriterion("price <>", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThan(BigDecimal value) {
+            addCriterion("price >", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("price >=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThan(BigDecimal value) {
+            addCriterion("price <", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("price <=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIn(List<BigDecimal> values) {
+            addCriterion("price in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotIn(List<BigDecimal> values) {
+            addCriterion("price not in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price between", value1, value2, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price not between", value1, value2, "price");
             return (Criteria) this;
         }
 
@@ -761,143 +761,73 @@ public class LitemallCartExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesIsNull() {
-            addCriterion("goods_specification_values is null");
+        public Criteria andSpecificationsIsNull() {
+            addCriterion("specifications is null");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesIsNotNull() {
-            addCriterion("goods_specification_values is not null");
+        public Criteria andSpecificationsIsNotNull() {
+            addCriterion("specifications is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesEqualTo(String value) {
-            addCriterion("goods_specification_values =", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsEqualTo(String[] value) {
+            addSpecificationsCriterion("specifications =", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesNotEqualTo(String value) {
-            addCriterion("goods_specification_values <>", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsNotEqualTo(String[] value) {
+            addSpecificationsCriterion("specifications <>", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesGreaterThan(String value) {
-            addCriterion("goods_specification_values >", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsGreaterThan(String[] value) {
+            addSpecificationsCriterion("specifications >", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesGreaterThanOrEqualTo(String value) {
-            addCriterion("goods_specification_values >=", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsGreaterThanOrEqualTo(String[] value) {
+            addSpecificationsCriterion("specifications >=", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesLessThan(String value) {
-            addCriterion("goods_specification_values <", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsLessThan(String[] value) {
+            addSpecificationsCriterion("specifications <", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesLessThanOrEqualTo(String value) {
-            addCriterion("goods_specification_values <=", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsLessThanOrEqualTo(String[] value) {
+            addSpecificationsCriterion("specifications <=", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesLike(String value) {
-            addCriterion("goods_specification_values like", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsLike(String[] value) {
+            addSpecificationsCriterion("specifications like", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesNotLike(String value) {
-            addCriterion("goods_specification_values not like", value, "goodsSpecificationValues");
+        public Criteria andSpecificationsNotLike(String[] value) {
+            addSpecificationsCriterion("specifications not like", value, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesIn(List<String> values) {
-            addCriterion("goods_specification_values in", values, "goodsSpecificationValues");
+        public Criteria andSpecificationsIn(List<String[]> values) {
+            addSpecificationsCriterion("specifications in", values, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesNotIn(List<String> values) {
-            addCriterion("goods_specification_values not in", values, "goodsSpecificationValues");
+        public Criteria andSpecificationsNotIn(List<String[]> values) {
+            addSpecificationsCriterion("specifications not in", values, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesBetween(String value1, String value2) {
-            addCriterion("goods_specification_values between", value1, value2, "goodsSpecificationValues");
+        public Criteria andSpecificationsBetween(String[] value1, String[] value2) {
+            addSpecificationsCriterion("specifications between", value1, value2, "specifications");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsSpecificationValuesNotBetween(String value1, String value2) {
-            addCriterion("goods_specification_values not between", value1, value2, "goodsSpecificationValues");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsIsNull() {
-            addCriterion("goods_specification_ids is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsIsNotNull() {
-            addCriterion("goods_specification_ids is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsEqualTo(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids =", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsNotEqualTo(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids <>", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsGreaterThan(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids >", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsGreaterThanOrEqualTo(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids >=", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsLessThan(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids <", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsLessThanOrEqualTo(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids <=", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsLike(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids like", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsNotLike(Integer[] value) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids not like", value, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsIn(List<Integer[]> values) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids in", values, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsNotIn(List<Integer[]> values) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids not in", values, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsBetween(Integer[] value1, Integer[] value2) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids between", value1, value2, "goodsSpecificationIds");
-            return (Criteria) this;
-        }
-
-        public Criteria andGoodsSpecificationIdsNotBetween(Integer[] value1, Integer[] value2) {
-            addGoodsSpecificationIdsCriterion("goods_specification_ids not between", value1, value2, "goodsSpecificationIds");
+        public Criteria andSpecificationsNotBetween(String[] value1, String[] value2) {
+            addSpecificationsCriterion("specifications not between", value1, value2, "specifications");
             return (Criteria) this;
         }
 
@@ -1213,18 +1143,6 @@ public class LitemallCartExample {
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Criteria andLogicalDeleted(boolean deleted) {
-            return deleted ? andDeletedEqualTo(LitemallCart.IS_DELETED) : andDeletedNotEqualTo(LitemallCart.IS_DELETED);
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table litemall_cart
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        @Deprecated
-        public Criteria andDeleted(boolean deleted) {
             return deleted ? andDeletedEqualTo(LitemallCart.IS_DELETED) : andDeletedNotEqualTo(LitemallCart.IS_DELETED);
         }
 

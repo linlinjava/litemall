@@ -8,30 +8,6 @@ export function listGoods(query) {
   })
 }
 
-export function createGoods(data) {
-  return request({
-    url: '/goods/create',
-    method: 'post',
-    data
-  })
-}
-
-export function readGoods(data) {
-  return request({
-    url: '/goods/read',
-    method: 'get',
-    data
-  })
-}
-
-export function updateGoods(data) {
-  return request({
-    url: '/goods/update',
-    method: 'post',
-    data
-  })
-}
-
 export function deleteGoods(data) {
   return request({
     url: '/goods/delete',
@@ -42,8 +18,31 @@ export function deleteGoods(data) {
 
 export function publishGoods(data) {
   return request({
-    url: '/goods/publish',
+    url: '/goods/create',
     method: 'post',
     data
+  })
+}
+
+export function detailGoods(id) {
+  return request({
+    url: '/goods/detail',
+    method: 'get',
+    params: { id }
+  })
+}
+
+export function editGoods(data) {
+  return request({
+    url: '/goods/update',
+    method: 'post',
+    data
+  })
+}
+
+export function listCatAndBrand() {
+  return request({
+    url: '/goods/catAndBrand',
+    method: 'get'
   })
 }

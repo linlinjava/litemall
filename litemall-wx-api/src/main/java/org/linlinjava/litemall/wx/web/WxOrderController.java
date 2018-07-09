@@ -222,9 +222,9 @@ public class WxOrderController {
             orderGoodsVo.put("goodsId", orderGoods.getGoodsId());
             orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
             orderGoodsVo.put("number", orderGoods.getNumber());
-            orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
+            orderGoodsVo.put("retailPrice", orderGoods.getPrice());
             orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
-            orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
+            orderGoodsVo.put("goodsSpecificationValues", orderGoods.getSpecifications());
             orderGoodsVoList.add(orderGoodsVo);
         }
 
@@ -284,7 +284,7 @@ public class WxOrderController {
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart checkGoods : checkedGoodsList) {
-            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getRetailPrice().multiply(new BigDecimal(checkGoods.getNumber())));
+            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().multiply(new BigDecimal(checkGoods.getNumber())));
         }
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
@@ -337,10 +337,9 @@ public class WxOrderController {
                 orderGoods.setProductId(cartGoods.getProductId());
                 orderGoods.setGoodsName(cartGoods.getGoodsName());
                 orderGoods.setPicUrl(cartGoods.getPicUrl());
-                orderGoods.setRetailPrice(cartGoods.getRetailPrice());
+                orderGoods.setPrice(cartGoods.getPrice());
                 orderGoods.setNumber(cartGoods.getNumber());
-                orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
-                orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
+                orderGoods.setSpecifications(cartGoods.getSpecifications());
                 orderGoods.setAddTime(LocalDateTime.now());
 
                 // 添加订单商品表项
@@ -355,11 +354,11 @@ public class WxOrderController {
                 Integer productId = checkGoods.getProductId();
                 LitemallProduct product = productService.findById(productId);
 
-                Integer remainNumber = product.getGoodsNumber() - checkGoods.getNumber();
+                Integer remainNumber = product.getNumber() - checkGoods.getNumber();
                 if (remainNumber < 0) {
                     throw new RuntimeException("下单的商品货品数量大于库存量");
                 }
-                product.setGoodsNumber(remainNumber);
+                product.setNumber(remainNumber);
                 productService.updateById(product);
             }
         } catch (Exception ex) {
@@ -425,8 +424,8 @@ public class WxOrderController {
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
                 LitemallProduct product = productService.findById(productId);
-                Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                product.setGoodsNumber(number);
+                Integer number = product.getNumber() + orderGoods.getNumber();
+                product.setNumber(number);
                 productService.updateById(product);
             }
         } catch (Exception ex) {

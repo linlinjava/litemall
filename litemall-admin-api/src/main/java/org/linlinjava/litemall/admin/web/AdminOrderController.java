@@ -112,8 +112,8 @@ public class AdminOrderController {
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
                 LitemallProduct product = productService.findById(productId);
-                Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                product.setGoodsNumber(number);
+                Integer number = product.getNumber() + orderGoods.getNumber();
+                product.setNumber(number);
                 productService.updateById(product);
             }
         } catch (Exception ex) {
@@ -162,7 +162,7 @@ public class AdminOrderController {
         order.setOrderStatus(OrderUtil.STATUS_SHIP);
         order.setShipSn(shipSn);
         order.setShipChannel(shipChannel);
-        order.setShipStartTime(LocalDateTime.now());
+        order.setShipTime(LocalDateTime.now());
         orderService.update(order);
 
         return ResponseUtil.ok();
@@ -207,8 +207,8 @@ public class AdminOrderController {
                 for (LitemallOrderGoods orderGoods : orderGoodsList) {
                     Integer productId = orderGoods.getProductId();
                     LitemallProduct product = productService.findById(productId);
-                    Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                    product.setGoodsNumber(number);
+                    Integer number = product.getNumber() + orderGoods.getNumber();
+                    product.setNumber(number);
                     productService.updateById(product);
                 }
             } catch (Exception ex) {
@@ -242,9 +242,9 @@ public class AdminOrderController {
 
         List<LitemallOrder> orderList = orderService.queryUnconfirm();
         for(LitemallOrder order : orderList){
-            LocalDateTime shipEnd = order.getShipEndTime();
+            LocalDateTime ship = order.getShipTime();
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expired = shipEnd.plusDays(7);
+            LocalDateTime expired = ship.plusDays(7);
             if(expired.isAfter(now)){
                 continue;
             }

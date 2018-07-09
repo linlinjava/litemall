@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.dao.LitemallCartMapper;
 import org.linlinjava.litemall.db.domain.LitemallCart;
 import org.linlinjava.litemall.db.domain.LitemallCartExample;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -77,13 +78,17 @@ public class LitemallCartService {
         LitemallCartExample example = new LitemallCartExample();
         LitemallCartExample.Criteria criteria = example.createCriteria();
 
-        if(userId != null){
+        if(!StringUtils.isEmpty(userId)){
             criteria.andUserIdEqualTo(userId);
         }
-        if(goodsId != null){
+        if(!StringUtils.isEmpty(goodsId)){
             criteria.andGoodsIdEqualTo(goodsId);
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, limit);
         return cartMapper.selectByExample(example);

@@ -437,62 +437,52 @@ public class LitemallUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andGenderEqualTo(String value) {
+        public Criteria andGenderEqualTo(Byte value) {
             addCriterion("gender =", value, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderNotEqualTo(String value) {
+        public Criteria andGenderNotEqualTo(Byte value) {
             addCriterion("gender <>", value, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderGreaterThan(String value) {
+        public Criteria andGenderGreaterThan(Byte value) {
             addCriterion("gender >", value, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderGreaterThanOrEqualTo(String value) {
+        public Criteria andGenderGreaterThanOrEqualTo(Byte value) {
             addCriterion("gender >=", value, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderLessThan(String value) {
+        public Criteria andGenderLessThan(Byte value) {
             addCriterion("gender <", value, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderLessThanOrEqualTo(String value) {
+        public Criteria andGenderLessThanOrEqualTo(Byte value) {
             addCriterion("gender <=", value, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderLike(String value) {
-            addCriterion("gender like", value, "gender");
-            return (Criteria) this;
-        }
-
-        public Criteria andGenderNotLike(String value) {
-            addCriterion("gender not like", value, "gender");
-            return (Criteria) this;
-        }
-
-        public Criteria andGenderIn(List<String> values) {
+        public Criteria andGenderIn(List<Byte> values) {
             addCriterion("gender in", values, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderNotIn(List<String> values) {
+        public Criteria andGenderNotIn(List<Byte> values) {
             addCriterion("gender not in", values, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderBetween(String value1, String value2) {
+        public Criteria andGenderBetween(Byte value1, Byte value2) {
             addCriterion("gender between", value1, value2, "gender");
             return (Criteria) this;
         }
 
-        public Criteria andGenderNotBetween(String value1, String value2) {
+        public Criteria andGenderNotBetween(Byte value1, Byte value2) {
             addCriterion("gender not between", value1, value2, "gender");
             return (Criteria) this;
         }
@@ -697,62 +687,52 @@ public class LitemallUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelEqualTo(String value) {
+        public Criteria andUserLevelEqualTo(Byte value) {
             addCriterion("user_level =", value, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelNotEqualTo(String value) {
+        public Criteria andUserLevelNotEqualTo(Byte value) {
             addCriterion("user_level <>", value, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelGreaterThan(String value) {
+        public Criteria andUserLevelGreaterThan(Byte value) {
             addCriterion("user_level >", value, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelGreaterThanOrEqualTo(String value) {
+        public Criteria andUserLevelGreaterThanOrEqualTo(Byte value) {
             addCriterion("user_level >=", value, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelLessThan(String value) {
+        public Criteria andUserLevelLessThan(Byte value) {
             addCriterion("user_level <", value, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelLessThanOrEqualTo(String value) {
+        public Criteria andUserLevelLessThanOrEqualTo(Byte value) {
             addCriterion("user_level <=", value, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelLike(String value) {
-            addCriterion("user_level like", value, "userLevel");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserLevelNotLike(String value) {
-            addCriterion("user_level not like", value, "userLevel");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserLevelIn(List<String> values) {
+        public Criteria andUserLevelIn(List<Byte> values) {
             addCriterion("user_level in", values, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelNotIn(List<String> values) {
+        public Criteria andUserLevelNotIn(List<Byte> values) {
             addCriterion("user_level not in", values, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelBetween(String value1, String value2) {
+        public Criteria andUserLevelBetween(Byte value1, Byte value2) {
             addCriterion("user_level between", value1, value2, "userLevel");
             return (Criteria) this;
         }
 
-        public Criteria andUserLevelNotBetween(String value1, String value2) {
+        public Criteria andUserLevelNotBetween(Byte value1, Byte value2) {
             addCriterion("user_level not between", value1, value2, "userLevel");
             return (Criteria) this;
         }
@@ -894,76 +874,6 @@ public class LitemallUserExample {
 
         public Criteria andMobileNotBetween(String value1, String value2) {
             addCriterion("mobile not between", value1, value2, "mobile");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpIsNull() {
-            addCriterion("register_ip is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpIsNotNull() {
-            addCriterion("register_ip is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpEqualTo(String value) {
-            addCriterion("register_ip =", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpNotEqualTo(String value) {
-            addCriterion("register_ip <>", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpGreaterThan(String value) {
-            addCriterion("register_ip >", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpGreaterThanOrEqualTo(String value) {
-            addCriterion("register_ip >=", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpLessThan(String value) {
-            addCriterion("register_ip <", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpLessThanOrEqualTo(String value) {
-            addCriterion("register_ip <=", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpLike(String value) {
-            addCriterion("register_ip like", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpNotLike(String value) {
-            addCriterion("register_ip not like", value, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpIn(List<String> values) {
-            addCriterion("register_ip in", values, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpNotIn(List<String> values) {
-            addCriterion("register_ip not in", values, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpBetween(String value1, String value2) {
-            addCriterion("register_ip between", value1, value2, "registerIp");
-            return (Criteria) this;
-        }
-
-        public Criteria andRegisterIpNotBetween(String value1, String value2) {
-            addCriterion("register_ip not between", value1, value2, "registerIp");
             return (Criteria) this;
         }
 
@@ -1117,62 +1027,52 @@ public class LitemallUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(String value) {
+        public Criteria andStatusEqualTo(Byte value) {
             addCriterion("`status` =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(String value) {
+        public Criteria andStatusNotEqualTo(Byte value) {
             addCriterion("`status` <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(String value) {
+        public Criteria andStatusGreaterThan(Byte value) {
             addCriterion("`status` >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
             addCriterion("`status` >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(String value) {
+        public Criteria andStatusLessThan(Byte value) {
             addCriterion("`status` <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(String value) {
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
             addCriterion("`status` <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLike(String value) {
-            addCriterion("`status` like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("`status` not like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<String> values) {
+        public Criteria andStatusIn(List<Byte> values) {
             addCriterion("`status` in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<String> values) {
+        public Criteria andStatusNotIn(List<Byte> values) {
             addCriterion("`status` not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(String value1, String value2) {
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
             addCriterion("`status` between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(String value1, String value2) {
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
             addCriterion("`status` not between", value1, value2, "status");
             return (Criteria) this;
         }
@@ -1359,18 +1259,6 @@ public class LitemallUserExample {
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Criteria andLogicalDeleted(boolean deleted) {
-            return deleted ? andDeletedEqualTo(LitemallUser.IS_DELETED) : andDeletedNotEqualTo(LitemallUser.IS_DELETED);
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table litemall_user
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        @Deprecated
-        public Criteria andDeleted(boolean deleted) {
             return deleted ? andDeletedEqualTo(LitemallUser.IS_DELETED) : andDeletedNotEqualTo(LitemallUser.IS_DELETED);
         }
 

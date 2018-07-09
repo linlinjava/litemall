@@ -15,13 +15,6 @@ public class LitemallBrandService {
     @Resource
     private LitemallBrandMapper brandMapper;
 
-    public List<LitemallBrand> queryWithNew(int offset, int limit) {
-        LitemallBrandExample example = new LitemallBrandExample();
-        example.or().andIsNewEqualTo(true).andDeletedEqualTo(false);
-        PageHelper.startPage(offset, limit);
-        return brandMapper.selectByExample(example);
-    }
-
     public List<LitemallBrand> query(int offset, int limit) {
         LitemallBrandExample example = new LitemallBrandExample();
         example.or().andDeletedEqualTo(false);
@@ -50,6 +43,10 @@ public class LitemallBrandService {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, size);
         return brandMapper.selectByExample(example);
@@ -82,4 +79,7 @@ public class LitemallBrandService {
         brandMapper.insertSelective(brand);
     }
 
+    public List<LitemallBrand> all() {
+        return brandMapper.selectByExample(new LitemallBrandExample());
+    }
 }

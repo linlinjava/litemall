@@ -1117,66 +1117,6 @@ public class LitemallOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andPayStatusIsNull() {
-            addCriterion("pay_status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusIsNotNull() {
-            addCriterion("pay_status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusEqualTo(Short value) {
-            addCriterion("pay_status =", value, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusNotEqualTo(Short value) {
-            addCriterion("pay_status <>", value, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusGreaterThan(Short value) {
-            addCriterion("pay_status >", value, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusGreaterThanOrEqualTo(Short value) {
-            addCriterion("pay_status >=", value, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusLessThan(Short value) {
-            addCriterion("pay_status <", value, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusLessThanOrEqualTo(Short value) {
-            addCriterion("pay_status <=", value, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusIn(List<Short> values) {
-            addCriterion("pay_status in", values, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusNotIn(List<Short> values) {
-            addCriterion("pay_status not in", values, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusBetween(Short value1, Short value2) {
-            addCriterion("pay_status between", value1, value2, "payStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andPayStatusNotBetween(Short value1, Short value2) {
-            addCriterion("pay_status not between", value1, value2, "payStatus");
-            return (Criteria) this;
-        }
-
         public Criteria andPayTimeIsNull() {
             addCriterion("pay_time is null");
             return (Criteria) this;
@@ -1377,123 +1317,63 @@ public class LitemallOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeIsNull() {
-            addCriterion("ship_start_time is null");
+        public Criteria andShipTimeIsNull() {
+            addCriterion("ship_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeIsNotNull() {
-            addCriterion("ship_start_time is not null");
+        public Criteria andShipTimeIsNotNull() {
+            addCriterion("ship_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeEqualTo(LocalDateTime value) {
-            addCriterion("ship_start_time =", value, "shipStartTime");
+        public Criteria andShipTimeEqualTo(LocalDateTime value) {
+            addCriterion("ship_time =", value, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeNotEqualTo(LocalDateTime value) {
-            addCriterion("ship_start_time <>", value, "shipStartTime");
+        public Criteria andShipTimeNotEqualTo(LocalDateTime value) {
+            addCriterion("ship_time <>", value, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeGreaterThan(LocalDateTime value) {
-            addCriterion("ship_start_time >", value, "shipStartTime");
+        public Criteria andShipTimeGreaterThan(LocalDateTime value) {
+            addCriterion("ship_time >", value, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeGreaterThanOrEqualTo(LocalDateTime value) {
-            addCriterion("ship_start_time >=", value, "shipStartTime");
+        public Criteria andShipTimeGreaterThanOrEqualTo(LocalDateTime value) {
+            addCriterion("ship_time >=", value, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeLessThan(LocalDateTime value) {
-            addCriterion("ship_start_time <", value, "shipStartTime");
+        public Criteria andShipTimeLessThan(LocalDateTime value) {
+            addCriterion("ship_time <", value, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeLessThanOrEqualTo(LocalDateTime value) {
-            addCriterion("ship_start_time <=", value, "shipStartTime");
+        public Criteria andShipTimeLessThanOrEqualTo(LocalDateTime value) {
+            addCriterion("ship_time <=", value, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeIn(List<LocalDateTime> values) {
-            addCriterion("ship_start_time in", values, "shipStartTime");
+        public Criteria andShipTimeIn(List<LocalDateTime> values) {
+            addCriterion("ship_time in", values, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeNotIn(List<LocalDateTime> values) {
-            addCriterion("ship_start_time not in", values, "shipStartTime");
+        public Criteria andShipTimeNotIn(List<LocalDateTime> values) {
+            addCriterion("ship_time not in", values, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeBetween(LocalDateTime value1, LocalDateTime value2) {
-            addCriterion("ship_start_time between", value1, value2, "shipStartTime");
+        public Criteria andShipTimeBetween(LocalDateTime value1, LocalDateTime value2) {
+            addCriterion("ship_time between", value1, value2, "shipTime");
             return (Criteria) this;
         }
 
-        public Criteria andShipStartTimeNotBetween(LocalDateTime value1, LocalDateTime value2) {
-            addCriterion("ship_start_time not between", value1, value2, "shipStartTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeIsNull() {
-            addCriterion("ship_end_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeIsNotNull() {
-            addCriterion("ship_end_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeEqualTo(LocalDateTime value) {
-            addCriterion("ship_end_time =", value, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeNotEqualTo(LocalDateTime value) {
-            addCriterion("ship_end_time <>", value, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeGreaterThan(LocalDateTime value) {
-            addCriterion("ship_end_time >", value, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeGreaterThanOrEqualTo(LocalDateTime value) {
-            addCriterion("ship_end_time >=", value, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeLessThan(LocalDateTime value) {
-            addCriterion("ship_end_time <", value, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeLessThanOrEqualTo(LocalDateTime value) {
-            addCriterion("ship_end_time <=", value, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeIn(List<LocalDateTime> values) {
-            addCriterion("ship_end_time in", values, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeNotIn(List<LocalDateTime> values) {
-            addCriterion("ship_end_time not in", values, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeBetween(LocalDateTime value1, LocalDateTime value2) {
-            addCriterion("ship_end_time between", value1, value2, "shipEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andShipEndTimeNotBetween(LocalDateTime value1, LocalDateTime value2) {
-            addCriterion("ship_end_time not between", value1, value2, "shipEndTime");
+        public Criteria andShipTimeNotBetween(LocalDateTime value1, LocalDateTime value2) {
+            addCriterion("ship_time not between", value1, value2, "shipTime");
             return (Criteria) this;
         }
 
@@ -1799,18 +1679,6 @@ public class LitemallOrderExample {
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Criteria andLogicalDeleted(boolean deleted) {
-            return deleted ? andDeletedEqualTo(LitemallOrder.IS_DELETED) : andDeletedNotEqualTo(LitemallOrder.IS_DELETED);
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table litemall_order
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        @Deprecated
-        public Criteria andDeleted(boolean deleted) {
             return deleted ? andDeletedEqualTo(LitemallOrder.IS_DELETED) : andDeletedNotEqualTo(LitemallOrder.IS_DELETED);
         }
 

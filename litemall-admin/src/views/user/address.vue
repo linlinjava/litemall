@@ -117,7 +117,8 @@ export default {
         limit: 20,
         name: undefined,
         userId: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       provinces: {},
       cities: {},

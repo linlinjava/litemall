@@ -10,10 +10,10 @@
       <view class="day-hd" wx:if="{{item.length > 0}}">{{item[0].addTime}}</view>
       <view class="day-list" wx:if="{{item.length > 0}}">
         <view class="item" data-index="{{index}}" data-iindex="{{iindex}}" bindtouchstart="touchStart" bindtouchend="touchEnd" bindtap="deleteItem" wx:for="{{item}}"  wx:for-index="iindex" wx:for-item="iitem" wx:key="id">
-          <image class="img" src="{{iitem.listPicUrl}}"></image>
+          <image class="img" src="{{iitem.picUrl}}"></image>
           <view class="info">
             <view class="name">{{iitem.name}}</view>
-            <view class="subtitle">{{iitem.goodsBrief}}</view>
+            <view class="subtitle">{{iitem.brief}}</view>
             <view class="price">￥{{iitem.retailPrice}}</view>
           </view>
         </view>

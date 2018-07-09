@@ -97,8 +97,8 @@ public class WxFootprintController {
 
             LitemallGoods goods = goodsService.findById(footprint.getGoodsId());
             c.put("name", goods.getName());
-            c.put("goodsBrief", goods.getGoodsBrief());
-            c.put("listPicUrl", goods.getListPicUrl());
+            c.put("brief", goods.getBrief());
+            c.put("picUrl", goods.getPicUrl());
             c.put("retailPrice", goods.getRetailPrice());
 
             footprintVoList.add(c);
