@@ -17,29 +17,34 @@
       <el-table-column align="center" width="100px" label="用户ID" prop="id" sortable>
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="用户名" prop="username">
+      <el-table-column align="center" label="用户名" prop="username">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="手机号码" prop="mobile">
+      <el-table-column align="center" label="手机号码" prop="mobile">
       </el-table-column>
       
-      <el-table-column align="center" min-width="50px" label="性别" prop="gender">
+      <el-table-column align="center" label="性别" prop="gender">
+        <template slot-scope="scope">
+          <el-tag >{{genderDic[scope.row.status]}}</el-tag>
+        </template>
       </el-table-column>   
 
-      <el-table-column align="center" min-width="100px" label="生日" prop="birthday">
+      <el-table-column align="center" label="生日" prop="birthday">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="用户等级" prop="userLevel">
-      </el-table-column>
-
-      <el-table-column align="center" min-width="100px" label="状态" prop="status"
-        :filters="[{ text: '可用', value: '可用' }, { text: '禁用', value: '禁用' }, { text: '删除', value: '删除' }]" :filter-method="filterStatus">
+      <el-table-column align="center" label="用户等级" prop="userLevel">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
+          <el-tag >{{levelDic[scope.row.userLevel]}}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="状态" prop="status">
+        <template slot-scope="scope">
+          <el-tag>{{statusDic[scope.row.status]}}</el-tag>
         </template>
       </el-table-column>     
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
@@ -70,36 +75,36 @@
           <el-input type="password" v-model="dataForm.checkPassword" auto-complete="off"></el-input>
         </el-form-item>        
         <el-form-item label="性别" prop="gender">
-          <el-select v-model="dataForm.gender" placeholder="请选择">
-            <el-option label="未知" value="未知">
+          <el-select v-model="dataForm.gender">
+            <el-option label="未知" :value="0">
             </el-option>
-            <el-option label="男" value="男">
+            <el-option label="男" :value="1">
             </el-option>
-            <el-option label="女" value="女">
+            <el-option label="女" :value="2">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="生日" prop="birthday">
-          <el-date-picker v-model="dataForm.birthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
+          <el-date-picker v-model="dataForm.birthday" type="date" value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="用户等级" prop="userLevel">
-          <el-select v-model="dataForm.userLevel" placeholder="请选择">
-            <el-option label="普通用户" value="普通用户">
+          <el-select v-model="dataForm.userLevel">
+            <el-option label="普通用户" :value="0">
             </el-option>
-            <el-option label="VIP用户" value="VIP用户">
+            <el-option label="VIP用户" :value="1">
             </el-option>
-            <el-option label="高级VIP用户" value="高级VIP用户">
+            <el-option label="高级VIP用户" :value="2">
             </el-option>
           </el-select>
         </el-form-item>            
         <el-form-item label="状态" prop="status">
-          <el-select v-model="dataForm.status" placeholder="请选择">
-            <el-option label="可用" value="可用">
+          <el-select v-model="dataForm.status">
+            <el-option label="可用" :value="0">
             </el-option>
-            <el-option label="禁用" value="禁用">
+            <el-option label="禁用" :value="1">
             </el-option>
-            <el-option label="删除" value="删除">
+            <el-option label="注销" :value="2">
             </el-option>
           </el-select>
         </el-form-item>
@@ -157,10 +162,10 @@ export default {
         mobile: '',
         password: undefined,
         checkPassword: undefined,
-        gender: '男',
-        userLevel: '普通用户',
+        gender: 0,
+        userLevel: 0,
         birthday: undefined,
-        status: '可用'
+        status: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -180,17 +185,10 @@ export default {
           { validator: validatePass2, trigger: 'blur' }
         ]
       },
-      downloadLoading: false
-    }
-  },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        '可用': 'success',
-        '禁用': 'info',
-        '删除': 'danger'
-      }
-      return statusMap[status]
+      downloadLoading: false,
+      genderDic: ['未知', '男', '女'],
+      levelDic: ['普通用户', 'VIP用户', '高级VIP用户'],
+      statusDic: ['可用', '禁用', '注销']
     }
   },
   created() {
@@ -228,14 +226,11 @@ export default {
         mobile: '',
         pass: undefined,
         checkPass: undefined,
-        gender: '男',
-        userLevel: '普通用户',
+        gender: 0,
+        userLevel: 0,
         birthday: undefined,
-        status: '可用'
+        status: 0
       }
-    },
-    filterStatus(value, row) {
-      return row.status === value
     },
     handleCreate() {
       this.resetForm()
