@@ -15,22 +15,22 @@
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" label="评论ID" prop="id">
-      </el-table-column>
-
       <el-table-column align="center" label="用户ID" prop="userId">
       </el-table-column>
 
       <el-table-column align="center" label="商品ID" prop="valueId">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200" label="评论内容" prop="content">
+      <el-table-column align="center" label="评论内容" prop="content">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200" label="评论图片" prop="picUrls">
+      <el-table-column align="center" label="评论图片" prop="picUrls">
+        <template slot-scope="scope">
+          <img v-for="item in scope.row.picUrls" :key="item" :src="item" width="40"/>
+        </template>
       </el-table-column>
 
-      <el-table-column align="center" min-width="100" label="时间" prop="addTime">
+      <el-table-column align="center" label="时间" prop="addTime">
       </el-table-column>
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">

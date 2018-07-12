@@ -14,25 +14,29 @@
 
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" width="100px" label="存储ID" prop="id" sortable>
+
+      <el-table-column align="center" label="对象KEY" prop="key">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="对象KEY" prop="key">
-      </el-table-column>
-
-      <el-table-column align="center" min-width="100px" label="对象名称" prop="name">
+      <el-table-column align="center" label="对象名称" prop="name">
       </el-table-column>
       
-      <el-table-column align="center" min-width="100px" label="对象类型" prop="type">
+      <el-table-column align="center" label="对象类型" prop="type">
       </el-table-column>          
 
-      <el-table-column align="center" min-width="100px" label="对象大小" prop="size">
+      <el-table-column align="center" label="对象大小" prop="size">
       </el-table-column>   
 
-      <el-table-column align="center" min-width="100px" label="访问链接" prop="url">
-      </el-table-column>          
+      <el-table-column align="center" property="url" label="图片">
+        <template slot-scope="scope">
+          <img :src="scope.row.url" width="40"/>
+        </template>
+      </el-table-column>
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="图片链接" prop="url">
+      </el-table-column>
+
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
