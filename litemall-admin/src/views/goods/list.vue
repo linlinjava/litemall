@@ -36,14 +36,8 @@
             <el-form-item label="品牌商ID">
               <span>{{ props.row.brandId }}</span>
             </el-form-item>
-            <el-form-item label="商品详细介绍">
-              <div v-html="props.row.desc"></div>
-            </el-form-item>         
           </el-form>          
         </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="商品ID" prop="id">
       </el-table-column>
       
       <el-table-column align="center" label="商品编号" prop="goodsSn">
@@ -55,6 +49,15 @@
       <el-table-column align="center" property="iconUrl" label="图片">
         <template slot-scope="scope">
           <img :src="scope.row.picUrl" width="40"/>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="详情" prop="desc">
+        <template slot-scope="scope">
+          <el-dialog title="商品详情" :visible.sync="descDialogVisible">
+            <div v-html="descDetail"></div>
+          </el-dialog>
+          <el-button type="primary" size="mini" @click="showDesc(scope.row.desc)">查看</el-button>
         </template>
       </el-table-column>
 
@@ -142,23 +145,8 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
-      dataForm: {
-        id: undefined,
-        goodsSn: undefined,
-        name: undefined,
-        counterPrice: undefined,
-        retailPrice: undefined,
-        isHot: false,
-        isNew: true,
-        isOnSale: true,
-        picUrl: undefined,
-        brief: undefined,
-        desc: undefined,
-        keywords: undefined,
-        gallery: [],
-        categoryId: undefined,
-        brandId: undefined
-      },
+      descDetail: '',
+      descDialogVisible: false,
       downloadLoading: false
     }
   },
@@ -195,6 +183,10 @@ export default {
     },
     handleUpdate(row) {
       this.$router.push({ path: '/goods/edit', query: { id: row.id }})
+    },
+    showDesc(desc) {
+      this.descDetail = desc
+      this.descDialogVisible = true
     },
     handleDelete(row) {
       deleteGoods(row).then(response => {
