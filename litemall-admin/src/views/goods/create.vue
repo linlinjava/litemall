@@ -289,7 +289,7 @@ export default {
       keywords: [],
       categoryList: [],
       brandList: [],
-      goods: { gallery: [] },
+      goods: { picUrl: '', gallery: [] },
       specVisiable: false,
       specForm: { specification: '', value: '', picUrl: '' },
       multipleSpec: false,
