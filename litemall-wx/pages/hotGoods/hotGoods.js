@@ -13,6 +13,7 @@ Page({
     goodsList: [],
     categoryId: 0,
     currentSortType: 'default',
+    currentSort: 'add_time',
     currentSortOrder: 'desc',
     page: 1,
     size: 100
@@ -42,7 +43,7 @@ Page({
   getGoodsList: function (){
     var that = this;
 
-    util.request(api.GoodsList, { isHot: 1, page: that.data.page, size: that.data.size, order: that.data.currentSortOrder, sort: that.data.currentSortType, categoryId: that.data.categoryId})
+    util.request(api.GoodsList, { isHot: true, page: that.data.page, size: that.data.size, order: that.data.currentSortOrder, sort: that.data.currentSort, categoryId: that.data.categoryId})
       .then(function (res) {
         if (res.errno === 0) {
           that.setData({
@@ -80,7 +81,8 @@ Page({
         this.setData({
           categoryFilter: !this.data.categoryFilter,
           currentSortType: 'category',
-          currentSortOrder: 'asc'
+          currentSort: 'add_time',
+          currentSortOrder: 'desc'
         });
         break;
       case 'priceSort':
@@ -90,6 +92,7 @@ Page({
         }
         this.setData({
           currentSortType: 'price',
+          currentSort: 'retail_price',
           currentSortOrder: tmpSortOrder,
           categoryFilter: false
         });
@@ -100,6 +103,7 @@ Page({
         //综合排序
         this.setData({
           currentSortType: 'default',
+          currentSort: 'add_time',
           currentSortOrder: 'desc',
           categoryFilter: false,
           categoryId: 0,

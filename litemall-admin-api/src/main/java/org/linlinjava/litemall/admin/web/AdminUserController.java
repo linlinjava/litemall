@@ -10,6 +10,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class AdminUserController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         List<LitemallUser> userList = userService.querySelective(username, mobile, page, limit, sort, order);
         int total = userService.countSeletive(username, mobile, page, limit, sort, order);
@@ -43,7 +44,7 @@ public class AdminUserController {
     @GetMapping("/username")
     public Object username(String username){
         if(StringUtil.isEmpty(username)){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         int total = userService.countSeletive(username, null, null, null, null, null);
@@ -57,7 +58,7 @@ public class AdminUserController {
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallUser user){
         logger.debug(user);
-
+        user.setAddTime(LocalDateTime.now());
         userService.add(user);
         return ResponseUtil.ok(user);
     }

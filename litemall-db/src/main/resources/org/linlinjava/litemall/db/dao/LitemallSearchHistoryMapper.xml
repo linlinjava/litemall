@@ -8,7 +8,7 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="keyword" jdbcType="CHAR" property="keyword" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
     <result column="from" jdbcType="VARCHAR" property="from" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
@@ -214,7 +214,7 @@
     </selectKey>
     insert into litemall_search_history (user_id, keyword, `from`, 
       add_time, deleted)
-    values (#{userId,jdbcType=INTEGER}, #{keyword,jdbcType=CHAR}, #{from,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=INTEGER}, #{keyword,jdbcType=VARCHAR}, #{from,jdbcType=VARCHAR}, 
       #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallSearchHistory">
@@ -248,7 +248,7 @@
         #{userId,jdbcType=INTEGER},
       </if>
       <if test="keyword != null">
-        #{keyword,jdbcType=CHAR},
+        #{keyword,jdbcType=VARCHAR},
       </if>
       <if test="from != null">
         #{from,jdbcType=VARCHAR},
@@ -285,7 +285,7 @@
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
       <if test="record.keyword != null">
-        keyword = #{record.keyword,jdbcType=CHAR},
+        keyword = #{record.keyword,jdbcType=VARCHAR},
       </if>
       <if test="record.from != null">
         `from` = #{record.from,jdbcType=VARCHAR},
@@ -309,7 +309,7 @@
     update litemall_search_history
     set id = #{record.id,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
-      keyword = #{record.keyword,jdbcType=CHAR},
+      keyword = #{record.keyword,jdbcType=VARCHAR},
       `from` = #{record.from,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT}
@@ -328,7 +328,7 @@
         user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="keyword != null">
-        keyword = #{keyword,jdbcType=CHAR},
+        keyword = #{keyword,jdbcType=VARCHAR},
       </if>
       <if test="from != null">
         `from` = #{from,jdbcType=VARCHAR},
@@ -349,7 +349,7 @@
     -->
     update litemall_search_history
     set user_id = #{userId,jdbcType=INTEGER},
-      keyword = #{keyword,jdbcType=CHAR},
+      keyword = #{keyword,jdbcType=VARCHAR},
       `from` = #{from,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT}

@@ -125,7 +125,7 @@ public class WxOrderController {
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if (userId == null) {
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if (showType == null) {
             showType = 0;
@@ -186,10 +186,10 @@ public class WxOrderController {
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, Integer orderId) {
         if (userId == null) {
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         if (orderId == null) {
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         // 订单信息
@@ -222,9 +222,9 @@ public class WxOrderController {
             orderGoodsVo.put("goodsId", orderGoods.getGoodsId());
             orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
             orderGoodsVo.put("number", orderGoods.getNumber());
-            orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
+            orderGoodsVo.put("retailPrice", orderGoods.getPrice());
             orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
-            orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
+            orderGoodsVo.put("goodsSpecificationValues", orderGoods.getSpecifications());
             orderGoodsVoList.add(orderGoodsVo);
         }
 
@@ -284,7 +284,7 @@ public class WxOrderController {
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart checkGoods : checkedGoodsList) {
-            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getRetailPrice().multiply(new BigDecimal(checkGoods.getNumber())));
+            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().multiply(new BigDecimal(checkGoods.getNumber())));
         }
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
@@ -337,10 +337,10 @@ public class WxOrderController {
                 orderGoods.setProductId(cartGoods.getProductId());
                 orderGoods.setGoodsName(cartGoods.getGoodsName());
                 orderGoods.setPicUrl(cartGoods.getPicUrl());
-                orderGoods.setRetailPrice(cartGoods.getRetailPrice());
+                orderGoods.setPrice(cartGoods.getPrice());
                 orderGoods.setNumber(cartGoods.getNumber());
-                orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
-                orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
+                orderGoods.setSpecifications(cartGoods.getSpecifications());
+                orderGoods.setAddTime(LocalDateTime.now());
 
                 // 添加订单商品表项
                 orderGoodsService.add(orderGoods);
@@ -354,11 +354,11 @@ public class WxOrderController {
                 Integer productId = checkGoods.getProductId();
                 LitemallProduct product = productService.findById(productId);
 
-                Integer remainNumber = product.getGoodsNumber() - checkGoods.getNumber();
+                Integer remainNumber = product.getNumber() - checkGoods.getNumber();
                 if (remainNumber < 0) {
                     throw new RuntimeException("下单的商品货品数量大于库存量");
                 }
-                product.setGoodsNumber(remainNumber);
+                product.setNumber(remainNumber);
                 productService.updateById(product);
             }
         } catch (Exception ex) {
@@ -424,8 +424,8 @@ public class WxOrderController {
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
                 LitemallProduct product = productService.findById(productId);
-                Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                product.setGoodsNumber(number);
+                Integer number = product.getNumber() + orderGoods.getNumber();
+                product.setNumber(number);
                 productService.updateById(product);
             }
         } catch (Exception ex) {
@@ -488,9 +488,12 @@ public class WxOrderController {
             // TODO 更有意义的显示名称
             orderRequest.setBody("litemall小商场-订单测试支付");
             // 元转成分
-            // 这里仅支付1分
-            // TODO 这里1分钱需要改成实际订单金额
-            orderRequest.setTotalFee(1);
+            Integer fee = 1;
+            // 这里演示仅支付1分
+            // 实际项目取消下面两行注释
+            // BigDecimal actualPrice = order.getActualPrice();
+            // fee = actualPrice.multiply(new BigDecimal(100)).intValue();
+            orderRequest.setTotalFee(fee);
             // TODO 用户IP地址
             orderRequest.setSpbillCreateIp("123.12.12.123");
 

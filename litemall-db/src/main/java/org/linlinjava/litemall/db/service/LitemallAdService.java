@@ -15,9 +15,9 @@ public class LitemallAdService {
     @Resource
     private LitemallAdMapper adMapper;
 
-    public List<LitemallAd> queryByApid(Integer i) {
+    public List<LitemallAd> queryIndex() {
         LitemallAdExample example = new LitemallAdExample();
-        example.or().andPositionEqualTo(i).andDeletedEqualTo(false);
+        example.or().andPositionEqualTo((byte)1).andDeletedEqualTo(false);
         return adMapper.selectByExample(example);
     }
 
@@ -32,6 +32,10 @@ public class LitemallAdService {
             criteria.andContentLike("%" + content + "%");
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, limit);
         return adMapper.selectByExample(example);

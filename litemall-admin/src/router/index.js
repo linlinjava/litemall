@@ -29,7 +29,6 @@ import Layout from '../views/layout/Layout'
 **/
 export const constantRouterMap = [
   { path: '/login', component: _import('login/index'), hidden: true },
-  { path: '/authredirect', component: _import('login/authredirect'), hidden: true },
   { path: '/404', component: _import('error/404'), hidden: true },
   { path: '/401', component: _import('error/401'), hidden: true },
   {
@@ -66,8 +65,7 @@ export const asyncRouterMap = [
       { path: 'address', component: _import('user/address'), name: 'address', meta: { title: '收货地址', noCache: true }},
       { path: 'collect', component: _import('user/collect'), name: 'collect', meta: { title: '会员收藏', noCache: true }},
       { path: 'footprint', component: _import('user/footprint'), name: 'footprint', meta: { title: '会员足迹', noCache: true }},
-      { path: 'history', component: _import('user/history'), name: 'history', meta: { title: '搜索历史', noCache: true }},
-      { path: 'cart', component: _import('user/cart'), name: 'cart', meta: { title: '购物车', noCache: true }}
+      { path: 'history', component: _import('user/history'), name: 'history', meta: { title: '搜索历史', noCache: true }}
     ]
   },
 
@@ -100,13 +98,13 @@ export const asyncRouterMap = [
       icon: 'chart'
     },
     children: [
-      { path: 'goods', component: _import('goods/goods'), name: 'goods', meta: { title: '商品管理', noCache: true }},
-      { path: 'attribute', component: _import('goods/attribute'), name: 'attribute', meta: { title: '商品参数', noCache: true }},
-      { path: 'specification', component: _import('goods/specification'), name: 'specification', meta: { title: '商品规格', noCache: true }},
-      { path: 'product', component: _import('goods/product'), name: 'product', meta: { title: '货品管理', noCache: true }},
-      { path: 'comment', component: _import('goods/comment'), name: 'comment', meta: { title: '用户评论', noCache: true }}
+      { path: 'list', component: _import('goods/list'), name: 'goodsList', meta: { title: '商品列表', noCache: true }},
+      { path: 'create', component: _import('goods/create'), name: 'goodsCreate', meta: { title: '商品上架', noCache: true }},
+      { path: 'edit', component: _import('goods/edit'), name: 'goodsEdit', meta: { title: '商品编辑', noCache: true }, hidden: true },
+      { path: 'comment', component: _import('goods/comment'), name: 'goodsComment', meta: { title: '商品评论', noCache: true }}
     ]
   },
+
   {
     path: '/promotion',
     component: Layout,
@@ -121,6 +119,7 @@ export const asyncRouterMap = [
       { path: 'topic', component: _import('promotion/topic'), name: 'topic', meta: { title: '专题管理', noCache: true }}
     ]
   },
+
   {
     path: '/sys',
     component: Layout,
@@ -133,6 +132,22 @@ export const asyncRouterMap = [
     children: [
       { path: 'admin', component: _import('sys/admin'), name: 'admin', meta: { title: '管理员', noCache: true }},
       { path: 'os', component: _import('sys/os'), name: 'os', meta: { title: '对象存储', noCache: true }}
+    ]
+  },
+
+  {
+    path: '/stat',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'statManage',
+    meta: {
+      title: '统计',
+      icon: 'chart'
+    },
+    children: [
+      { path: 'user', component: _import('stat/user'), name: 'statUser', meta: { title: '用户统计', noCache: true }},
+      { path: 'order', component: _import('stat/order'), name: 'statOrder', meta: { title: '订单统计', noCache: true }},
+      { path: 'goods', component: _import('stat/goods'), name: 'statGoods', meta: { title: '商品统计', noCache: true }}
     ]
   },
 

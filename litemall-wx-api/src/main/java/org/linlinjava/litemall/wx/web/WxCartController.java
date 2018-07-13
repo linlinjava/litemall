@@ -32,8 +32,6 @@ public class WxCartController {
     private LitemallGoodsSpecificationService goodsSpecificationService;
     @Autowired
     private LitemallAddressService addressService;
-    @Autowired
-    private LitemallCouponService apiCouponService;
 
     /**
      * 购物车
@@ -65,10 +63,10 @@ public class WxCartController {
         BigDecimal checkedGoodsAmount = new BigDecimal(0.00);
         for (LitemallCart cart : cartList) {
             goodsCount += cart.getNumber();
-            goodsAmount = goodsAmount.add(cart.getRetailPrice().multiply(new BigDecimal(cart.getNumber())));
+            goodsAmount = goodsAmount.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
             if (cart.getChecked()) {
                 checkedGoodsCount += cart.getNumber();
-                checkedGoodsAmount = checkedGoodsAmount.add(cart.getRetailPrice().multiply(new BigDecimal(cart.getNumber())));
+                checkedGoodsAmount = checkedGoodsAmount.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
             }
         }
         Map<String, Object> cartTotal = new HashMap<>();
@@ -127,32 +125,16 @@ public class WxCartController {
         LitemallCart existCart = cartService.queryExist(goodsId, productId, userId);
         if(existCart == null){
             //取得规格的信息,判断规格库存
-            if(product == null || number > product.getGoodsNumber() ){
+            if(product == null || number > product.getNumber() ){
                 return ResponseUtil.fail(400, "库存不足");
-            }
-
-            Integer[] ids = product.getGoodsSpecificationIds();
-            String goodsSpecificationValue = null;
-            for(Integer id : ids){
-                LitemallGoodsSpecification goodsSpecification = goodsSpecificationService.findById(id);
-                if(goodsSpecification == null || !goodsSpecification.getGoodsId().equals(goodsId)){
-                    return ResponseUtil.badArgument();
-                }
-                if(goodsSpecificationValue == null){
-                    goodsSpecificationValue = goodsSpecification.getValue();
-                }
-                else {
-                    goodsSpecificationValue = goodsSpecificationValue + " " + goodsSpecification.getValue();
-                }
             }
 
             cart.setId(null);
             cart.setGoodsSn(goods.getGoodsSn());
             cart.setGoodsName((goods.getName()));
-            cart.setPicUrl(goods.getPrimaryPicUrl());
-            cart.setRetailPrice(product.getRetailPrice());
-            cart.setGoodsSpecificationIds(product.getGoodsSpecificationIds());
-            cart.setGoodsSpecificationValues(goodsSpecificationValue);
+            cart.setPicUrl(goods.getPicUrl());
+            cart.setPrice(product.getPrice());
+            cart.setSpecifications(product.getSpecifications());
             cart.setUserId(userId);
             cart.setChecked(true);
             cartService.add(cart);
@@ -160,7 +142,7 @@ public class WxCartController {
         else{
             //取得规格的信息,判断规格库存
             int num = existCart.getNumber() + number;
-            if(num >  product.getGoodsNumber()){
+            if(num >  product.getNumber()){
                 return ResponseUtil.fail(400, "库存不足");
             }
             existCart.setNumber((short)num);
@@ -215,32 +197,16 @@ public class WxCartController {
         LitemallCart existCart = cartService.queryExist(goodsId, productId, userId);
         if(existCart == null){
             //取得规格的信息,判断规格库存
-            if(product == null || number > product.getGoodsNumber() ){
+            if(product == null || number > product.getNumber() ){
                 return ResponseUtil.fail(400, "库存不足");
-            }
-
-            Integer[] ids = product.getGoodsSpecificationIds();
-            String goodsSpecificationValue = null;
-            for(Integer id : ids){
-                LitemallGoodsSpecification goodsSpecification = goodsSpecificationService.findById(id);
-                if(goodsSpecification == null || !goodsSpecification.getGoodsId().equals(goodsId)){
-                    return ResponseUtil.badArgument();
-                }
-                if(goodsSpecificationValue == null){
-                    goodsSpecificationValue = goodsSpecification.getValue();
-                }
-                else {
-                    goodsSpecificationValue = goodsSpecificationValue + " " + goodsSpecification.getValue();
-                }
             }
 
             cart.setId(null);
             cart.setGoodsSn(goods.getGoodsSn());
             cart.setGoodsName((goods.getName()));
-            cart.setPicUrl(goods.getPrimaryPicUrl());
-            cart.setRetailPrice(product.getRetailPrice());
-            cart.setGoodsSpecificationIds(product.getGoodsSpecificationIds());
-            cart.setGoodsSpecificationValues(goodsSpecificationValue);
+            cart.setPicUrl(goods.getPicUrl());
+            cart.setPrice(product.getPrice());
+            cart.setSpecifications(product.getSpecifications());
             cart.setUserId(userId);
             cart.setChecked(true);
             cartService.add(cart);
@@ -248,7 +214,7 @@ public class WxCartController {
         else{
             //取得规格的信息,判断规格库存
             int num = number;
-            if(num >  product.getGoodsNumber()){
+            if(num >  product.getNumber()){
                 return ResponseUtil.fail(400, "库存不足");
             }
             existCart.setNumber((short)num);
@@ -307,7 +273,7 @@ public class WxCartController {
 
         //取得规格的信息,判断规格库存
         LitemallProduct product = productService.findById(productId);
-        if(product == null || product.getGoodsNumber() < number){
+        if(product == null || product.getNumber() < number){
             return ResponseUtil.fail(403, "库存不足");
         }
 
@@ -498,7 +464,7 @@ public class WxCartController {
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart cart : checkedGoodsList) {
-            checkedGoodsPrice = checkedGoodsPrice.add(cart.getRetailPrice().multiply(new BigDecimal(cart.getNumber())));
+            checkedGoodsPrice = checkedGoodsPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
         }
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；

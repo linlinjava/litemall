@@ -7,9 +7,9 @@
       </el-input>
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入跳转链接" v-model="listQuery.url">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -24,7 +24,7 @@
       <el-table-column align="center" min-width="300px" label="跳转链接" prop="url">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="是否热门" prop="isHot">
+      <el-table-column align="center" min-width="100px" label="是否推荐" prop="isHot">
         <template slot-scope="scope">
           <el-tag :type="scope.row.isHot ? 'success' : 'error' ">{{scope.row.isHot ? '是' : '否'}}</el-tag>
         </template>
@@ -35,12 +35,6 @@
           <el-tag :type="scope.row.isDefault ? 'success' : 'error' ">{{scope.row.isDefault ? '是' : '否'}}</el-tag>
         </template>
       </el-table-column>  
-
-      <el-table-column align="center" min-width="100px" label="是否显示" prop="isShow">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.isShow ? 'success' : 'error' ">{{scope.row.isShow ? '可显示' : '不显示'}}</el-tag>
-        </template>
-      </el-table-column>
 
       <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -66,11 +60,11 @@
         <el-form-item label="跳转链接" prop="url">
           <el-input v-model="dataForm.url"></el-input>
         </el-form-item>
-        <el-form-item label="是否热门" prop="isHot">
+        <el-form-item label="是否推荐" prop="isHot">
           <el-select v-model="dataForm.isHot" placeholder="请选择">
-            <el-option label="热门" :value="true">
+            <el-option label="推荐" :value="true">
             </el-option>
-            <el-option label="非热门" :value="false">
+            <el-option label="普通" :value="false">
             </el-option>
           </el-select>
         </el-form-item>  
@@ -82,14 +76,6 @@
             </el-option>
           </el-select>
         </el-form-item>          
-        <el-form-item label="是否显示" prop="isShow">
-          <el-select v-model="dataForm.isShow" placeholder="请选择">
-            <el-option label="显示" :value="true">
-            </el-option>
-            <el-option label="不显示" :value="false">
-            </el-option>
-          </el-select>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -101,29 +87,11 @@
   </div>
 </template>
 
-<style>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 200px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-  }
-</style>
-
 <script>
 import { listKeyword, createKeyword, updateKeyword, deleteKeyword } from '@/api/keyword'
-import waves from '@/directive/waves' // 水波纹指令
 
 export default {
   name: 'Keyword',
-  directives: {
-    waves
-  },
   data() {
     return {
       list: undefined,
@@ -134,15 +102,15 @@ export default {
         limit: 20,
         keyword: undefined,
         url: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,
         keyword: undefined,
         url: undefined,
-        isNew: undefined,
-        isDefault: undefined,
-        isShow: undefined
+        isHot: undefined,
+        isDefault: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -151,8 +119,7 @@ export default {
         create: '创建'
       },
       rules: {
-        keyword: [{ required: true, message: '关键词不能为空', trigger: 'blur' }],
-        url: [{ required: true, message: '跳转链接称不能为空', trigger: 'blur' }]
+        keyword: [{ required: true, message: '关键词不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -190,9 +157,8 @@ export default {
         id: undefined,
         keyword: undefined,
         url: undefined,
-        isNew: undefined,
-        isDefault: undefined,
-        isShow: undefined
+        isHot: undefined,
+        isDefault: undefined
       }
     },
     handleCreate() {
@@ -264,9 +230,9 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['关键词ID', '关键词', '跳转链接', '是否新上', '是否默认', '是否显示']
-        const filterVal = ['id', 'keyword', 'url', 'isNew', 'isDefault', 'isShow']
-        excel.export_json_to_excel2(tHeader, this.list, filterVal, '关键词信息')
+        const tHeader = ['关键词ID', '关键词', '跳转链接', '是否推荐', '是否默认']
+        const filterVal = ['id', 'keyword', 'url', 'isHot', 'isDefault']
+        excel.export_json_to_excel2(tHeader, this.list, filterVal, '关键词设置')
         this.downloadLoading = false
       })
     }

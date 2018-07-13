@@ -26,7 +26,7 @@
         </view>
       </view>
       <view class="load" wx:if="{{commentCount > 5}}">
-        <navigator url="/pages/topicComment/topicComment?valueId={{topic.id}}&typeId=1">查看更多</navigator>
+        <navigator url="/pages/topicComment/topicComment?valueId={{topic.id}}&type=1">查看更多</navigator>
       </view>
     </view> 
     <view class="no-comments" wx:if="{{commentList.length <= 0}}">
@@ -42,7 +42,7 @@
     </view>
     <view class="b">
       <navigator class="item" wx:for="{{topicList}}" wx:key="id" url="../topicDetail/topicDetail?id={{item.id}}">
-        <image class="img" src="{{item.scenePicUrl}}"></image>
+        <image class="img" src="{{item.picUrl}}"></image>
         <text class="title">{{item.title}}</text>
       </navigator>
     </view>

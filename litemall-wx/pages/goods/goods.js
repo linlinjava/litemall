@@ -40,7 +40,7 @@ Page({
 
             // 如果仅仅存在一种货品，那么商品价格应该和货品价格一致
             // 这里检测一下
-            let _productPrice = res.data.productList[0].retailPrice;
+            let _productPrice = res.data.productList[0].price;
             let _goodsPrice = res.data.info.retailPrice;
             if (_productPrice != _goodsPrice){
               console.error('商品数量价格和货品不一致');
@@ -75,7 +75,7 @@ Page({
           });
         }
 
-        WxParse.wxParse('goodsDetail', 'html', res.data.info.goodsDesc, that);
+        WxParse.wxParse('goodsDetail', 'html', res.data.info.desc, that);
 
         that.getGoodsRelated();
       }
@@ -161,7 +161,7 @@ Page({
   },
   getCheckedSpecKey: function () {
     let checkedValue = this.getCheckedSpecValue().map(function (v) {
-      return v.valueId;
+      return v.valueText;
     });
 
     return checkedValue;
@@ -206,9 +206,9 @@ Page({
       }
 
       let checkedProduct = checkedProductArray[0];
-      if (checkedProduct.goodsNumber > 0){
+      if (checkedProduct.number > 0){
         this.setData({
-          checkedSpecPrice: checkedProduct.retailPrice,
+          checkedSpecPrice: checkedProduct.price,
           soldout: false
         });
       }
@@ -231,7 +231,7 @@ Page({
   },
   getCheckedProductItem: function (key) {
     return this.data.productList.filter(function (v) {
-      if (v.goodsSpecificationIds.toString() == key.toString()) {
+      if (v.specifications.toString() == key.toString()) {
         return true;
       } else {
         return false;
@@ -293,7 +293,7 @@ Page({
       }
     } else {
       //添加或是取消收藏
-      util.request(api.CollectAddOrDelete, { typeId: 0, valueId: this.data.id }, "POST")
+      util.request(api.CollectAddOrDelete, { type: 0, valueId: this.data.id }, "POST")
         .then(function (res) {
           let _res = res;
           if (_res.errno == 0) {
@@ -354,7 +354,7 @@ Page({
 
       let checkedProduct = checkedProductArray[0];
       //验证库存
-      if (checkedProduct.goodsNumber <= 0) {
+      if (checkedProduct.number <= 0) {
         wx.showToast({
           image: '/static/images/icon_error.png',
           title: '没有库存'
@@ -420,7 +420,7 @@ Page({
 
       let checkedProduct = checkedProductArray[0];
       //验证库存
-      if (checkedProduct.goodsNumber <= 0) {
+      if (checkedProduct.number <= 0) {
         wx.showToast({
           image: '/static/images/icon_error.png',
           title: '没有库存'

@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <div class="title-container">
-        <h3 class="title">系统登录</h3>
+        <h3 class="title">管理员登录</h3>
       </div>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
@@ -27,26 +27,13 @@
         <span>管理员用户名 : admin123</span>
         <span>管理员密码 : admin123</span>
       </div>
-
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">第三方登录</el-button>
     </el-form>
-
-    <el-dialog title="第三方登录" :visible.sync="showDialog" append-to-body>
-      本地不能模拟，请结合自己业务进行模拟！！！
-      <br/>
-      <br/>
-      <br/>
-      <social-sign />
-    </el-dialog>
 
   </div>
 </template>
 
 <script>
-import SocialSign from './socialsignin'
-
 export default {
-  components: { SocialSign },
   name: 'login',
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -73,8 +60,7 @@ export default {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
-      loading: false,
-      showDialog: false
+      loading: false
     }
   },
   methods: {
@@ -99,31 +85,7 @@ export default {
           return false
         }
       })
-    },
-    afterQRScan() {
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
     }
-  },
-  created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
   }
 }
 </script>
@@ -210,12 +172,6 @@ $light_gray:#eee;
       text-align: center;
       font-weight: bold;
     }
-    .set-language {
-      color: #fff;
-      position: absolute;
-      top: 5px;
-      right: 0px;
-    }
   }
   .show-pwd {
     position: absolute;
@@ -225,11 +181,6 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
-  }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
   }
 }
 </style>

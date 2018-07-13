@@ -37,7 +37,8 @@ tar -zcvf ./deploy/litemall-admin/dist.tar -C ./litemall-admin/dist .
 
 # 复制数据库
 cp  -f ./litemall-db/sql/litemall_schema.sql ./deploy/litemall-db/litemall_schema.sql
-cp  -f ./litemall-db/sql/litemall.sql ./deploy/litemall-db/litemall.sql
+cp  -f ./litemall-db/sql/litemall_table.sql ./deploy/litemall-db/litemall_table.sql
+cp  -f ./litemall-db/sql/litemall_data.sql ./deploy/litemall-db/litemall_data.sql
 
 # 上传云主机
 scp -i $ID_RSA -r  ./deploy $REMOTE:/home/ubuntu/

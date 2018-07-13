@@ -60,3 +60,6 @@ export function deleteStorage(data) {
     data
   })
 }
+
+const uploadPath = process.env.OS_API + '/storage/create'
+export { uploadPath }

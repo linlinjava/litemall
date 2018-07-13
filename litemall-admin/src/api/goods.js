@@ -8,7 +8,15 @@ export function listGoods(query) {
   })
 }
 
-export function createGoods(data) {
+export function deleteGoods(data) {
+  return request({
+    url: '/goods/delete',
+    method: 'post',
+    data
+  })
+}
+
+export function publishGoods(data) {
   return request({
     url: '/goods/create',
     method: 'post',
@@ -16,15 +24,15 @@ export function createGoods(data) {
   })
 }
 
-export function readGoods(data) {
+export function detailGoods(id) {
   return request({
-    url: '/goods/read',
+    url: '/goods/detail',
     method: 'get',
-    data
+    params: { id }
   })
 }
 
-export function updateGoods(data) {
+export function editGoods(data) {
   return request({
     url: '/goods/update',
     method: 'post',
@@ -32,10 +40,9 @@ export function updateGoods(data) {
   })
 }
 
-export function deleteGoods(data) {
+export function listCatAndBrand() {
   return request({
-    url: '/goods/delete',
-    method: 'post',
-    data
+    url: '/goods/catAndBrand',
+    method: 'get'
   })
 }

@@ -8,33 +8,17 @@ export function listOrder(query) {
   })
 }
 
-export function createOrder(data) {
+export function shipOrder(data) {
   return request({
-    url: '/order/create',
+    url: '/order/ship',
     method: 'post',
     data
   })
 }
 
-export function readOrder(data) {
+export function refundOrder(data) {
   return request({
-    url: '/order/read',
-    method: 'get',
-    data
-  })
-}
-
-export function updateOrder(data) {
-  return request({
-    url: '/order/update',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteOrder(data) {
-  return request({
-    url: '/order/delete',
+    url: '/order/refund',
     method: 'post',
     data
   })

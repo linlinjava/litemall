@@ -7,32 +7,36 @@
       </el-input>
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入对象名称" v-model="listQuery.name">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary"  icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" :loading="downloadLoading" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" width="100px" label="存储ID" prop="id" sortable>
+
+      <el-table-column align="center" label="对象KEY" prop="key">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="对象KEY" prop="key">
-      </el-table-column>
-
-      <el-table-column align="center" min-width="100px" label="对象名称" prop="name">
+      <el-table-column align="center" label="对象名称" prop="name">
       </el-table-column>
       
-      <el-table-column align="center" min-width="100px" label="对象类型" prop="type">
+      <el-table-column align="center" label="对象类型" prop="type">
       </el-table-column>          
 
-      <el-table-column align="center" min-width="100px" label="对象大小" prop="size">
+      <el-table-column align="center" label="对象大小" prop="size">
       </el-table-column>   
 
-      <el-table-column align="center" min-width="100px" label="访问链接" prop="url">
-      </el-table-column>          
+      <el-table-column align="center" property="url" label="图片">
+        <template slot-scope="scope">
+          <img :src="scope.row.url" width="40"/>
+        </template>
+      </el-table-column>
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="图片链接" prop="url">
+      </el-table-column>
+
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
@@ -72,13 +76,9 @@
 
 <script>
 import { listStorage, createStorage, updateStorage, deleteStorage } from '@/api/storage'
-import waves from '@/directive/waves' // 水波纹指令
 
 export default {
   name: 'Storage',
-  directives: {
-    waves
-  },
   data() {
     return {
       list: null,
@@ -89,7 +89,8 @@ export default {
         limit: 20,
         key: undefined,
         name: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       createDialogVisible: false,
       dataForm: {

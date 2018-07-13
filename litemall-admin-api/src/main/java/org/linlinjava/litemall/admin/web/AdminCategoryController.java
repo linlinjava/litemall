@@ -3,12 +3,15 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.admin.util.CatVo;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,7 @@ public class AdminCategoryController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
+        category.setAddTime(LocalDateTime.now());
         categoryService.add(category);
         return ResponseUtil.ok();
     }
@@ -89,11 +93,13 @@ public class AdminCategoryController {
 
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
-        HashMap<Integer, String> data = new HashMap<>(l1CatList.size());
+        List<Map<String, Object>> data = new ArrayList<>(l1CatList.size());
         for(LitemallCategory category : l1CatList){
-            data.put(category.getId(), category.getName());
+            Map<String, Object> d = new HashMap<>(2);
+            d.put("value", category.getId());
+            d.put("label", category.getName());
+            data.add(d);
         }
         return ResponseUtil.ok(data);
     }
-
 }

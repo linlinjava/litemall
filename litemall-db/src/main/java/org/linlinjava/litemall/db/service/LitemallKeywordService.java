@@ -53,6 +53,10 @@ public class LitemallKeywordService {
         }
         criteria.andDeletedEqualTo(false);
 
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
         PageHelper.startPage(page, limit);
         return keywordsMapper.selectByExample(example);
     }

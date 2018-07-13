@@ -14,7 +14,7 @@ function hasPermission(roles, permissionRoles) {
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
-const whiteList = ['/login', '/authredirect']// no redirect whitelist
+const whiteList = ['/login']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
           })
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {
-            Message.error('Verification failed, please login again')
+            Message.error('验证失败，请输入正确的用户名和密码')
             next({ path: '/login' })
           })
         })

@@ -57,7 +57,7 @@ public class WxHomeController {
     public Object index() {
         Map<String, Object> data = new HashMap<>();
 
-        List<LitemallAd> banner = adService.queryByApid(1);
+        List<LitemallAd> banner = adService.queryIndex();
         data.put("banner", banner);
 
         List<LitemallCategory> channel = categoryService.queryChannel();
@@ -84,7 +84,14 @@ public class WxHomeController {
                 l2List.add(catL2.getId());
             }
 
-            List<LitemallGoods> categoryGoods = goodsService.queryByCategory(l2List, 0, 5);
+            List<LitemallGoods> categoryGoods = null;
+            if(l2List.size() == 0){
+                categoryGoods = new ArrayList<>();
+            }
+            else{
+                categoryGoods = goodsService.queryByCategory(l2List, 0, 5);
+            }
+
             Map catGoods = new HashMap();
             catGoods.put("id", catL1.getId());
             catGoods.put("name", catL1.getName());

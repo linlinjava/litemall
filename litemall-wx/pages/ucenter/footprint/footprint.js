@@ -41,7 +41,9 @@ Page({
   },
   deleteItem (event){
     let that = this;
-    let footprint = event.currentTarget.dataset.footprint;
+    let index = event.currentTarget.dataset.index;
+    let iindex = event.currentTarget.dataset.iindex;
+    let goodsId = this.data.footprintList[index][iindex].id;
     var touchTime = that.data.touchEnd - that.data.touchStart;
     console.log(touchTime);
     //如果按下时间大于350为长按  
@@ -51,15 +53,20 @@ Page({
         content: '要删除所选足迹？',
         success: function (res) {
           if (res.confirm) {
-            util.request(api.FootprintDelete, { footprintId: footprint.id }, 'POST').then(function (res) {
+            util.request(api.FootprintDelete, { footprintId: goodsId }, 'POST').then(function (res) {
               if (res.errno === 0) {
                 wx.showToast({
                   title: '删除成功',
                   icon: 'success',
                   duration: 2000
                 });
-                that.data.footprintList = [];
-                that.getFootprintList();
+                that.data.footprintList[index].splice(iindex, 1)
+                if (that.data.footprintList[index].length == 0){
+                  that.data.footprintList.splice(index, 1)
+                }
+                that.setData({
+                  footprintList: that.data.footprintList
+                });
               }
             });
           }
@@ -67,7 +74,7 @@ Page({
       });
     } else {
       wx.navigateTo({
-        url: '/pages/goods/goods?id=' + footprint.goodsId,
+        url: '/pages/goods/goods?id=' + goodsId,
       });
     }
     

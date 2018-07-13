@@ -52,13 +52,13 @@
 					"id": -1,
 					"name": "专题评论列表",
 					"pathName": "pages/topicComment/topicComment",
-					"query": "valueId=314&typeId=1"
+					"query": "valueId=314&type=1"
 				},
 				{
 					"id": -1,
 					"name": "专题评论添加",
 					"pathName": "pages/topicCommentPost/topicCommentPost",
-					"query": "valueId=314&typeId=1"
+					"query": "valueId=314&type=1"
 				},
 				{
 					"id": -1,
@@ -112,7 +112,7 @@
 					"id": -1,
 					"name": "商品评论列表",
 					"pathName": "pages/comment/comment",
-					"query": "valueId=1181000&typeId=0"
+					"query": "valueId=1181000&type=0"
 				},
 				{
 					"id": -1,
@@ -163,16 +163,16 @@
 					"query": "id=1"
 				},
 				{
-					"id": -1,
+					"id": 22,
 					"name": "待评价的订单详情",
 					"pathName": "pages/ucenter/orderDetail/orderDetail",
-					"query": "id=24"
+					"query": "id=1"
 				},
 				{
 					"id": -1,
 					"name": "购买商品评价",
 					"pathName": "pages/commentPost/commentPost",
-					"query": "orderId=2&typeId=0&valueId=1116011"
+					"query": "orderId=2&type=0&valueId=1116011"
 				},
 				{
 					"id": -1,

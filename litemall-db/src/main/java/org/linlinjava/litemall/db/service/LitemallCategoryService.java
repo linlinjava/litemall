@@ -37,7 +37,7 @@ public class LitemallCategoryService {
 
     public List<LitemallCategory> queryByPid(Integer pid) {
         LitemallCategoryExample example = new LitemallCategoryExample();
-        example.or().andParentIdEqualTo(pid).andDeletedEqualTo(false);
+        example.or().andPidEqualTo(pid).andDeletedEqualTo(false);
         return categoryMapper.selectByExample(example);
     }
 
@@ -62,6 +62,10 @@ public class LitemallCategoryService {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, size);
         return categoryMapper.selectByExample(example);

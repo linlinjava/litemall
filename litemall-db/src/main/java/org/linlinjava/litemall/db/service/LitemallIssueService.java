@@ -38,6 +38,10 @@ public class LitemallIssueService {
         }
         criteria.andDeletedEqualTo(false);
 
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
         PageHelper.startPage(page, size);
         return issueMapper.selectByExample(example);
     }

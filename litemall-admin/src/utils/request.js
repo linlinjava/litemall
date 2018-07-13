@@ -26,15 +26,10 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (res.errno === 502) {
-      MessageBox.alert('系统内部错误，请联系管理员维护', '错误', {
+
+    if (res.errno === 501) {
+      MessageBox.alert('系统未登录，请重新登录', '未登录', {
         confirmButtonText: '确定',
-        type: 'error'
-      })
-      return Promise.reject('error')
-    } else if (res.errno !== 0) {
-      MessageBox.alert('超时自动退出系统，请重新登录', '已退出', {
-        confirmButtonText: '重新登录',
         type: 'error'
       }).then(() => {
         store.dispatch('FedLogOut').then(() => {
@@ -42,6 +37,21 @@ service.interceptors.response.use(
         })
       })
       return Promise.reject('error')
+    } else if (res.errno === 502) {
+      MessageBox.alert('系统内部错误，请联系管理员维护', '错误', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+      return Promise.reject('error')
+    } else if (res.errno === 503) {
+      MessageBox.alert('请求业务目前未支持', '警告', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+      return Promise.reject('error')
+    } else if (res.errno !== 0) {
+      // 非5xx的错误属于业务错误，留给具体页面处理
+      return Promise.reject(response)
     } else {
       return response
     }

@@ -5,7 +5,7 @@ var app = getApp();
 
 Page({
   data: {
-    typeId: 0,
+    type: 0,
     collectList: [],
     page: 1,
     size: 10,
@@ -16,7 +16,7 @@ Page({
       title: '加载中...',
     });
     let that = this;
-    util.request(api.CollectList, { typeId: that.data.typeId, page: that.data.page, size: that.data.size }).then(function (res) {
+    util.request(api.CollectList, { type: that.data.type, page: that.data.page, size: that.data.size }).then(function (res) {
       if (res.errno === 0) {
         that.setData({
           collectList: that.data.collectList.concat(res.data.collectList),
@@ -60,7 +60,8 @@ Page({
   openGoods(event) {
     
     let that = this;
-    let goodsId = this.data.collectList[event.currentTarget.dataset.index].valueId;
+    let index = event.currentTarget.dataset.index;
+    let goodsId = this.data.collectList[index].valueId;
 
     //触摸时间距离页面打开的毫秒数  
     var touchTime = that.data.touchEnd - that.data.touchStart;
@@ -73,7 +74,7 @@ Page({
         success: function (res) {
           if (res.confirm) {
             
-            util.request(api.CollectAddOrDelete, { typeId: that.data.typeId, valueId: goodsId}, 'POST').then(function (res) {
+            util.request(api.CollectAddOrDelete, { type: that.data.type, valueId: goodsId}, 'POST').then(function (res) {
               if (res.errno === 0) {
                 console.log(res.data);
                 wx.showToast({
@@ -81,7 +82,10 @@ Page({
                   icon: 'success',
                   duration: 2000
                 });
-                that.getCollectList();
+                that.data.collectList.splice(index, 1)
+                that.setData({
+                  collectList: that.data.collectList
+                });
               }
             });
           }

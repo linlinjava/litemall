@@ -85,6 +85,22 @@ public class JacksonUtil {
         return null;
     }
 
+    public static Byte parseByte(String body, String field) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        try {
+            node = mapper.readTree(body);
+            JsonNode leaf = node.get(field);
+            if(leaf != null) {
+                Integer value = leaf.asInt();
+                return value.byteValue();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static <T> T parseObject(String body, String field, Class<T> clazz) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = null;
@@ -112,4 +128,5 @@ public class JacksonUtil {
 
         return null;
     }
+
 }

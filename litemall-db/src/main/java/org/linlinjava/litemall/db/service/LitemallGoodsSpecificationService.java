@@ -27,31 +27,6 @@ public class LitemallGoodsSpecificationService {
         return goodsSpecificationMapper.selectByPrimaryKey(id);
     }
 
-    public List<LitemallGoodsSpecification> querySelective(Integer goodsId, Integer page, Integer size, String sort, String order) {
-        LitemallGoodsSpecificationExample example = new LitemallGoodsSpecificationExample();
-        LitemallGoodsSpecificationExample.Criteria criteria = example.createCriteria();
-
-        if(goodsId != null){
-            criteria.andGoodsIdEqualTo(goodsId);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        PageHelper.startPage(page, size);
-        return goodsSpecificationMapper.selectByExample(example);
-    }
-
-    public int countSelective(Integer goodsId, Integer page, Integer size, String sort, String order) {
-        LitemallGoodsSpecificationExample example = new LitemallGoodsSpecificationExample();
-        LitemallGoodsSpecificationExample.Criteria criteria = example.createCriteria();
-
-        if(goodsId != null){
-            criteria.andGoodsIdEqualTo(goodsId);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int)goodsSpecificationMapper.countByExample(example);
-    }
-
     public void updateById(LitemallGoodsSpecification goodsSpecification) {
         goodsSpecificationMapper.updateByPrimaryKeySelective(goodsSpecification);
     }
@@ -60,17 +35,14 @@ public class LitemallGoodsSpecificationService {
         goodsSpecificationMapper.logicalDeleteByPrimaryKey(id);
     }
 
-    public void add(LitemallGoodsSpecification goodsSpecification) {
-        goodsSpecificationMapper.insertSelective(goodsSpecification);
+    public void deleteByGid(Integer gid) {
+        LitemallGoodsSpecificationExample example = new LitemallGoodsSpecificationExample();
+        example.or().andGoodsIdEqualTo(gid);
+        goodsSpecificationMapper.logicalDeleteByExample(example);
     }
 
-    public Integer[] queryIdsByGid(Integer goodsId) {
-        List<LitemallGoodsSpecification> goodsSpecificationList = queryByGid(goodsId);
-        Integer[] ids = new Integer[goodsSpecificationList.size()];
-        for(int i = 0; i < ids.length; i++){
-            ids[i] = goodsSpecificationList.get(i).getId();
-        }
-        return ids;
+    public void add(LitemallGoodsSpecification goodsSpecification) {
+        goodsSpecificationMapper.insertSelective(goodsSpecification);
     }
 
     private class VO {

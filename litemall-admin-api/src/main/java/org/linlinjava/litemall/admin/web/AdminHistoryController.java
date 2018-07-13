@@ -43,9 +43,9 @@ public class AdminHistoryController {
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
-        return ResponseUtil.fail501();
+        return ResponseUtil.unsupport();
     }
 
     @GetMapping("/read")

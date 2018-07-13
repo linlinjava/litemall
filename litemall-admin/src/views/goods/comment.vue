@@ -7,33 +7,33 @@
       </el-input>
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入商品ID" v-model="listQuery.valueId">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" width="150px" label="评论ID" prop="id" sortable>
+      <el-table-column align="center" label="用户ID" prop="userId">
       </el-table-column>
 
-      <el-table-column align="center" width="100px" label="用户ID" prop="userId">
+      <el-table-column align="center" label="商品ID" prop="valueId">
       </el-table-column>
 
-      <el-table-column align="center" width="100px" label="商品ID" prop="valueId">
+      <el-table-column align="center" label="评论内容" prop="content">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200px" label="评论内容" prop="content">
+      <el-table-column align="center" label="评论图片" prop="picUrls">
+        <template slot-scope="scope">
+          <img v-for="item in scope.row.picUrls" :key="item" :src="item" width="40"/>
+        </template>
       </el-table-column>
 
-      <el-table-column align="center" min-width="200px" label="评论图片" prop="picUrls">
+      <el-table-column align="center" label="时间" prop="addTime">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="时间" prop="addTime">
-      </el-table-column>
-
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
@@ -98,13 +98,9 @@
 <script>
 import { listComment, createComment, updateComment, deleteComment } from '@/api/comment'
 import { createStorage } from '@/api/storage'
-import waves from '@/directive/waves' // 水波纹指令
 
 export default {
   name: 'Comment',
-  directives: {
-    waves
-  },
   data() {
     return {
       list: undefined,
@@ -115,7 +111,8 @@ export default {
         limit: 20,
         userId: undefined,
         valueId: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       dataForm: {
         id: undefined,
@@ -123,8 +120,7 @@ export default {
         valueId: undefined,
         content: undefined,
         hasPicture: false,
-        picUrls: [],
-        addTime: undefined
+        picUrls: []
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -174,8 +170,7 @@ export default {
         userId: undefined,
         valueId: undefined,
         content: undefined,
-        picUrls: [],
-        addTime: undefined
+        picUrls: []
       }
     },
     handleCreate() {

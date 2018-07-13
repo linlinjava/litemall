@@ -39,7 +39,7 @@ Page({
   },
   getCommentList() {
     let that = this;
-    util.request(api.CommentList, { valueId: that.data.id, typeId: 1, showType: 0, page: 1, size: 5 }).then(function (res) {
+    util.request(api.CommentList, { valueId: that.data.id, type: 1, showType: 0, page: 1, size: 5 }).then(function (res) {
       if (res.errno === 0) {
 
         that.setData({
@@ -55,7 +55,7 @@ Page({
     }
     else {
       wx.navigateTo({
-        url: '/pages/topicCommentPost/topicCommentPost?valueId=' + this.data.id + '&typeId=1',
+        url: '/pages/topicCommentPost/topicCommentPost?valueId=' + this.data.id + '&type=1',
       })
     }
   },

@@ -21,6 +21,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,7 @@ public class AdminOrderController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         if(adminId == null){
-            return ResponseUtil.fail401();
+            return ResponseUtil.unlogin();
         }
         List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, page, limit, sort, order);
         int total = orderService.countSelective(userId, orderSn, page, limit, sort, order);
@@ -59,73 +60,6 @@ public class AdminOrderController {
 
         return ResponseUtil.ok(data);
     }
-
-    /*
-     * 目前的逻辑不支持管理员创建
-     */
-    @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallOrder order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        return ResponseUtil.unsupport();
-    }
-
-    @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
-
-        LitemallOrder order = orderService.findById(id);
-        return ResponseUtil.ok(order);
-    }
-
-    /*
-     * 目前仅仅支持管理员设置发货相关的信息
-     */
-    @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallOrder order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-
-        Integer orderId = order.getId();
-        if(orderId == null){
-            return ResponseUtil.badArgument();
-        }
-
-        LitemallOrder litemallOrder = orderService.findById(orderId);
-        if(litemallOrder == null){
-            return ResponseUtil.badArgumentValue();
-        }
-
-        if(OrderUtil.isPayStatus(litemallOrder) || OrderUtil.isShipStatus(litemallOrder)){
-            LitemallOrder newOrder = new LitemallOrder();
-            newOrder.setId(orderId);
-            newOrder.setShipChannel(order.getShipChannel());
-            newOrder.setShipSn(order.getOrderSn());
-            newOrder.setShipStartTime(order.getShipStartTime());
-            newOrder.setShipEndTime(order.getShipEndTime());
-            newOrder.setOrderStatus(OrderUtil.STATUS_SHIP);
-            orderService.update(newOrder);
-        }
-        else {
-            return ResponseUtil.badArgumentValue();
-        }
-
-        litemallOrder = orderService.findById(orderId);
-        return ResponseUtil.ok(litemallOrder);
-    }
-
-    @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallOrder order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        return ResponseUtil.unsupport();
-    }
-
 
     /**
      * 订单退款确认
@@ -139,12 +73,13 @@ public class AdminOrderController {
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
      */
-    @PostMapping("refundConfirm")
-    public Object refundConfirm(@LoginAdmin Integer adminId, @RequestBody String body) {
+    @PostMapping("refund")
+    public Object refund(@LoginAdmin Integer adminId, @RequestBody String body) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
+        Integer refundMoney = JacksonUtil.parseInteger(body, "refundMoney");
         if (orderId == null) {
             return ResponseUtil.badArgument();
         }
@@ -153,13 +88,14 @@ public class AdminOrderController {
         if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if (!order.getUserId().equals(adminId)) {
+
+        if(order.getActualPrice().compareTo(new BigDecimal(refundMoney)) != 0){
             return ResponseUtil.badArgumentValue();
         }
 
-        OrderHandleOption handleOption = OrderUtil.build(order);
-        if (!handleOption.isRefund()) {
-            return ResponseUtil.fail(403, "订单不能取消");
+        // 如果订单不是退款状态，则不能退款
+        if (!order.getOrderStatus().equals(OrderUtil.STATUS_REFUND)) {
+            return ResponseUtil.fail(403, "订单不能确认收货");
         }
 
         // 开启事务管理
@@ -176,8 +112,8 @@ public class AdminOrderController {
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
                 LitemallProduct product = productService.findById(productId);
-                Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                product.setGoodsNumber(number);
+                Integer number = product.getNumber() + orderGoods.getNumber();
+                product.setNumber(number);
                 productService.updateById(product);
             }
         } catch (Exception ex) {
@@ -217,9 +153,6 @@ public class AdminOrderController {
         if (order == null) {
             return ResponseUtil.badArgument();
         }
-        if (!order.getUserId().equals(adminId)) {
-            return ResponseUtil.badArgumentValue();
-        }
 
         // 如果订单不是已付款状态，则不能发货
         if (!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)) {
@@ -229,7 +162,7 @@ public class AdminOrderController {
         order.setOrderStatus(OrderUtil.STATUS_SHIP);
         order.setShipSn(shipSn);
         order.setShipChannel(shipChannel);
-        order.setShipStartTime(LocalDateTime.now());
+        order.setShipTime(LocalDateTime.now());
         orderService.update(order);
 
         return ResponseUtil.ok();
@@ -274,8 +207,8 @@ public class AdminOrderController {
                 for (LitemallOrderGoods orderGoods : orderGoodsList) {
                     Integer productId = orderGoods.getProductId();
                     LitemallProduct product = productService.findById(productId);
-                    Integer number = product.getGoodsNumber() + orderGoods.getNumber();
-                    product.setGoodsNumber(number);
+                    Integer number = product.getNumber() + orderGoods.getNumber();
+                    product.setNumber(number);
                     productService.updateById(product);
                 }
             } catch (Exception ex) {
@@ -298,7 +231,7 @@ public class AdminOrderController {
      * 早点清理未付款情况，这里八天再确认是可以的。
      *
      * TODO
-     * 目前自动确认是基于管理后台管理员所设置的商品快递到达时间，见orderService.queryUnconfirm。
+     * 目前自动确认是基于管理后台管理员所设置的商品快递时间，见orderService.queryUnconfirm。
      * 那么在实际业务上有可能存在商品寄出以后商品因为一些原因快递最终没有到达，
      * 也就是商品快递失败而shipEndTime一直是空的情况，因此这里业务可能需要扩展，以防止订单一直
      * 处于发货状态。
@@ -309,9 +242,9 @@ public class AdminOrderController {
 
         List<LitemallOrder> orderList = orderService.queryUnconfirm();
         for(LitemallOrder order : orderList){
-            LocalDateTime shipEnd = order.getShipEndTime();
+            LocalDateTime ship = order.getShipTime();
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expired = shipEnd.plusDays(7);
+            LocalDateTime expired = ship.plusDays(7);
             if(expired.isAfter(now)){
                 continue;
             }

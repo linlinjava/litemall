@@ -5,7 +5,7 @@ var api = require('../../config/api.js');
 Page({
   data: {
     orderId: 0,
-    typeId: 0,
+    type: 0,
     valueId: 0,
     orderGoods: {},
     content: '',
@@ -102,7 +102,7 @@ Page({
     var that = this;
     that.setData({
       orderId: options.orderId,
-      typeId: options.typeId,
+      type: options.type,
       valueId: options.valueId
     });
     this.getOrderComment();
@@ -131,7 +131,7 @@ Page({
     }
 
     util.request(api.CommentPost, {
-      typeId: that.data.typeId,
+      type: that.data.type,
       valueId: that.data.valueId,
       content: that.data.content,
       star: that.data.star,

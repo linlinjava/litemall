@@ -36,7 +36,7 @@ function request(url, data = {}, method = "GET") {
 
         if (res.statusCode == 200) {
 
-          if (res.data.errno == 401) {
+          if (res.data.errno == 501) {
             // 清除登录相关内容
             try {
               wx.removeStorageSync('userInfo');

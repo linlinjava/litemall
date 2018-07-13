@@ -46,7 +46,7 @@
     <view class="b">
       <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="id">
         <navigator url="../goods/goods?id={{item.id}}">
-          <image class="img" src="{{item.listPicUrl}}" background-size="cover"></image>
+          <image class="img" src="{{item.picUrl}}" background-size="cover"></image>
           <text class="name">{{item.name}}</text>
           <text class="price">￥{{item.retailPrice}}</text>
         </navigator>
@@ -64,11 +64,11 @@
     <view class="b">
       <view class="item" wx:for="{{hotGoods}}" wx:for-index="index" wx:for-item="item" wx:key="id">
         <navigator url="/pages/goods/goods?id={{item.id}}">
-          <image class="img" src="{{item.listPicUrl}}" background-size="cover"></image>
+          <image class="img" src="{{item.picUrl}}" background-size="cover"></image>
           <view class="right">
             <view class="text">
               <text class="name">{{item.name}}</text>
-              <text class="desc">{{item.goods_brief}}</text>
+              <text class="desc">{{item.brief}}</text>
               <text class="price">￥{{item.retailPrice}}</text>
             </view>
           </view>
@@ -88,10 +88,10 @@
       <scroll-view scroll-x class="list">
         <view class="item" wx:for="{{topics}}" wx:for-index="index" wx:for-item="item" wx:key="id">
           <navigator url="../topicDetail/topicDetail?id={{item.id}}">
-            <image class="img" src="{{item.scenePicUrl}}" background-size="cover"></image>
+            <image class="img" src="{{item.picUrl}}" background-size="cover"></image>
             <view class="np">
               <text class="name">{{item.title}}</text>
-              <text class="price">￥{{item.priceInfo}}元起</text>
+              <text class="price">￥{{item.price}}元起</text>
             </view>
             <text class="desc">{{item.subtitle}}</text>
           </navigator>
@@ -109,7 +109,7 @@
       <block wx:for="{{item.goodsList}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="id">
         <view class="item {{iindex % 2 == 0 ? '' : 'item-b'}}">
           <navigator url="../goods/goods?id={{iitem.id}}" class="a">
-            <image class="img" src="{{iitem.listPicUrl}}" background-size="cover"></image>
+            <image class="img" src="{{iitem.picUrl}}" background-size="cover"></image>
             <text class="name">{{iitem.name}}</text>
             <text class="price">￥{{iitem.retailPrice}}</text>
           </navigator>

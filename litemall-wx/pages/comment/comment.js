@@ -7,7 +7,7 @@ Page({
     comments: [],
     allCommentList: [],
     picCommentList: [],
-    typeId: 0,
+    type: 0,
     valueId: 0,
     showType: 0,
     allCount: 0,
@@ -18,7 +18,7 @@ Page({
   },
   getCommentCount: function () {
     let that = this;
-    util.request(api.CommentCount, { valueId: that.data.valueId, typeId: that.data.typeId}).then(function (res) {
+    util.request(api.CommentCount, { valueId: that.data.valueId, type: that.data.type}).then(function (res) {
       if (res.errno === 0) {
         that.setData({
           allCount: res.data.allCount,
@@ -31,7 +31,7 @@ Page({
     let that = this;
     util.request(api.CommentList, { 
       valueId: that.data.valueId, 
-      typeId: that.data.typeId, 
+      type: that.data.type,
       size: that.data.size,
       page: (that.data.showType == 0 ? that.data.allPage : that.data.picPage),
       showType: that.data.showType 
@@ -57,7 +57,7 @@ Page({
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     this.setData({
-      typeId: options.typeId,
+      type: options.type,
       valueId: options.valueId
     });
     this.getCommentCount();

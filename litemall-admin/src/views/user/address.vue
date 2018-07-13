@@ -7,9 +7,9 @@
       </el-input>
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入收货人名称" v-model="listQuery.name">
       </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" :loading="downloadLoading" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -104,13 +104,9 @@
 <script>
 import { listAddress, createAddress, updateAddress, deleteAddress } from '@/api/address'
 import { listSubRegion } from '@/api/region'
-import waves from '@/directive/waves' // 水波纹指令
 
 export default {
   name: 'UserAddress',
-  directives: {
-    waves
-  },
   data() {
     return {
       list: null,
@@ -121,7 +117,8 @@ export default {
         limit: 20,
         name: undefined,
         userId: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       provinces: {},
       cities: {},

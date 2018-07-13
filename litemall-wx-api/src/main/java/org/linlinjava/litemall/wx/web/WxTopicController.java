@@ -87,7 +87,7 @@ public class WxTopicController {
     @GetMapping("related")
     public Object related(Integer id) {
         if(id == null){
-            return ResponseUtil.fail402();
+            return ResponseUtil.badArgument();
         }
 
         List<LitemallTopic> topicRelatedList = topicService.queryRelatedList(id, 0, 4);
