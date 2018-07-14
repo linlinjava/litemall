@@ -9,8 +9,9 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.notify.LitemallNotifyService;
+import org.linlinjava.litemall.core.notify.NotifyUtils;
 import org.linlinjava.litemall.core.util.JacksonUtil;
-import org.linlinjava.litemall.core.util.MailUtils;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
@@ -79,6 +80,9 @@ public class WxOrderController {
 
     @Autowired
     private WxPayService wxPayService;
+
+    @Autowired
+    private LitemallNotifyService litemallNotifyService;
 
     public WxOrderController() {
     }
@@ -485,7 +489,7 @@ public class WxOrderController {
             orderRequest.setOutTradeNo(order.getOrderSn());
             orderRequest.setOpenid(openid);
             // TODO 更有意义的显示名称
-            orderRequest.setBody("litemall小商场-订单测试支付");
+            orderRequest.setBody("订单：" + order.getOrderSn());
             // 元转成分
             Integer fee = 0;
             // 这里演示仅支付1分
@@ -552,8 +556,9 @@ public class WxOrderController {
             order.setOrderStatus(OrderUtil.STATUS_PAY);
             orderService.updateById(order);
 
-            //TODO 发送邮件通知，这里最好才用异步发送
-            MailUtils.getMailUtils().sendEmail("订单通知", order.toString());
+            //TODO 发送邮件和短信通知，这里采用异步发送
+            litemallNotifyService.notifyMailMessage("订单通知", order.toString());
+            litemallNotifyService.notifySMSTemplate(order.getMobile(), new String[]{""}, NotifyUtils.NotifyType.PAY_COMPLATED);
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {
@@ -715,5 +720,4 @@ public class WxOrderController {
         LitemallOrderGoods orderGoods = orderGoodsList.get(0);
         return ResponseUtil.ok(orderGoods);
     }
-
 }
