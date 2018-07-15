@@ -7,14 +7,23 @@ import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.stream.Stream;
 
+import org.linlinjava.litemall.os.config.ObjectStorageConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-@Service
+/**
+ * 服务器本地文件存储
+ */
+@Service("localStorage")
 public class FileSystemStorageService implements StorageService {
 
+    @Autowired
+    private ObjectStorageConfig osConfig;
     private static final Path rootLocation = Paths.get("storage");
+
     static {
         try {
             Files.createDirectories(rootLocation);
@@ -24,12 +33,11 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(InputStream inputStream, String filename) {
+    public void store(MultipartFile file, String keyName) {
         try {
-            Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-        }
-        catch (IOException e) {
-            throw new RuntimeException ("Failed to store file " + filename, e);
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file " + keyName, e);
         }
     }
 
@@ -39,9 +47,8 @@ public class FileSystemStorageService implements StorageService {
             return Files.walk(this.rootLocation, 1)
                     .filter(path -> !path.equals(this.rootLocation))
                     .map(path -> this.rootLocation.relativize(path));
-        }
-        catch (IOException e) {
-            throw new RuntimeException ("Failed to read stored files", e);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read stored files", e);
         }
 
     }
@@ -58,12 +65,10 @@ public class FileSystemStorageService implements StorageService {
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
-            }
-            else {
+            } else {
                 return null;
             }
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
             return null;
         }
@@ -79,4 +84,12 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+    @Override
+    public String generateUrl(String keyName) {
+        String url = osConfig.getAddress() + ":" + osConfig.getPort() + "/os/storage/fetch/" + keyName;
+        if (!url.startsWith("http")) {
+            url = "http://" + url;
+        }
+        return url;
+    }
 }
