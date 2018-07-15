@@ -26,8 +26,8 @@ class ExecutorConfig {
     @Value("${spring.notify.queueCapacity}")
     private int queueCapacity;
 
-    @Bean(name = "nofityAsync")
-    public Executor nofityAsync() {
+    @Bean(name = "notifyAsync")
+    public Executor notifyAsync() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(corePoolSize);
         executor.setMaxPoolSize(maxPoolSize);

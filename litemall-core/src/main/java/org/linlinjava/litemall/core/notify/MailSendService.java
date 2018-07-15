@@ -27,7 +27,7 @@ class MailSendService {
      * @param setSubject 邮件标题
      * @param setText 邮件内容
      */
-    @Async("nofityAsync")
+    @Async("notifyAsync")
     public void sendEmail(String setSubject, String setText) {
         try {
             final MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -40,7 +40,7 @@ class MailSendService {
             mailSender.send(mimeMessage);
 
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
     }
 }
