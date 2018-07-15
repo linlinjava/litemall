@@ -293,7 +293,7 @@ public class WxOrderController {
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
         BigDecimal freightPrice = new BigDecimal(0.00);
         if (checkedGoodsPrice.compareTo(new BigDecimal(88.00)) < 0) {
-            freightPrice = new BigDecimal(0.00);
+            freightPrice = new BigDecimal(8.00);
         }
 
         // 可以使用的其他钱，例如用户积分
@@ -488,16 +488,12 @@ public class WxOrderController {
             WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
             orderRequest.setOutTradeNo(order.getOrderSn());
             orderRequest.setOpenid(openid);
-            // TODO 更有意义的显示名称
             orderRequest.setBody("订单：" + order.getOrderSn());
             // 元转成分
             Integer fee = 0;
-            // 这里演示仅支付1分
-            // 实际项目取消下面两行注释
             BigDecimal actualPrice = order.getActualPrice();
             fee = actualPrice.multiply(new BigDecimal(100)).intValue();
             orderRequest.setTotalFee(fee);
-            // TODO 用户IP地址
             orderRequest.setSpbillCreateIp(IpUtil.getIpAddr(request));
 
             result = wxPayService.createOrder(orderRequest);
@@ -546,7 +542,6 @@ public class WxOrderController {
             }
 
             // 检查支付订单金额
-            // TODO 这里1分钱需要改成实际订单金额
             if (!totalFee.equals(order.getActualPrice().toString())) {
                 throw new Exception(order.getOrderSn() + " : 支付金额不符合 totalFee=" + totalFee);
             }
@@ -557,6 +552,7 @@ public class WxOrderController {
             orderService.updateById(order);
 
             //TODO 发送邮件和短信通知，这里采用异步发送
+            // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
             litemallNotifyService.notifyMailMessage("订单通知", order.toString());
             litemallNotifyService.notifySMSTemplate(order.getMobile(), new String[]{""}, NotifyUtils.NotifyType.PAY_COMPLATED);
 
