@@ -553,8 +553,8 @@ public class WxOrderController {
 
             //TODO 发送邮件和短信通知，这里采用异步发送
             // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
-            litemallNotifyService.notifyMailMessage("订单通知", order.toString());
-            litemallNotifyService.notifySMSTemplate(order.getMobile(), new String[]{""}, NotifyUtils.NotifyType.PAY_COMPLATED);
+            litemallNotifyService.notifyMailMessage("新订单通知", order.toString());
+            litemallNotifyService.notifySMSTemplate(order.getMobile(), NotifyUtils.NotifyType.PAY_SUCCEED, new String[]{orderSn});
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {
