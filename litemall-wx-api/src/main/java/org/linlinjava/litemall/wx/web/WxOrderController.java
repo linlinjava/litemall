@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.notify.LitemallNotifyService;
-import org.linlinjava.litemall.core.notify.NotifyUtils;
+import org.linlinjava.litemall.core.notify.util.ConfigUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
@@ -554,7 +554,7 @@ public class WxOrderController {
             //TODO 发送邮件和短信通知，这里采用异步发送
             // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
             litemallNotifyService.notifyMailMessage("新订单通知", order.toString());
-            litemallNotifyService.notifySMSTemplate(order.getMobile(), NotifyUtils.NotifyType.PAY_SUCCEED, new String[]{orderSn});
+            litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.PAY_SUCCEED, new String[]{orderSn});
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {

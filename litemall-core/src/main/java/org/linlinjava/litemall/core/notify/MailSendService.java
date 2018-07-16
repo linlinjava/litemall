@@ -1,43 +1,47 @@
 package org.linlinjava.litemall.core.notify;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.linlinjava.litemall.core.notify.config.MailNotifyConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 
-@PropertySource(value = "classpath:notify.properties")
 @Service("mailSendService")
 class MailSendService {
-    @Resource
-    private JavaMailSender mailSender;
+    @Autowired
+    MailNotifyConfig config;
 
-    @Value("${spring.mail.username}")
-    private String from;
+    private JavaMailSenderImpl mailSender;
 
-    @Value("${spring.mail.sendto}")
-    private String sendto;
+    private JavaMailSenderImpl getMailSender() {
+        if (mailSender == null) {
+            mailSender = new JavaMailSenderImpl();
+            mailSender.setHost(config.getHost());
+            mailSender.setUsername(config.getUsername());
+            mailSender.setPassword(config.getPassword());
+        }
+
+        return mailSender;
+    }
 
     /**
-     * 异步发送邮件通知
+     * 发送邮件通知
+     *
      * @param setSubject 邮件标题
-     * @param setText 邮件内容
+     * @param setText    邮件内容
      */
-    @Async("notifyAsync")
     public void sendEmail(String setSubject, String setText) {
         try {
-            final MimeMessage mimeMessage = mailSender.createMimeMessage();
+            final MimeMessage mimeMessage = getMailSender().createMimeMessage();
             final MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
 
-            message.setFrom(from);
-            message.setTo(sendto);
+            message.setFrom(config.getUsername());
+            message.setTo(config.getSendto());
             message.setSubject(setSubject);
             message.setText(setText);
-            mailSender.send(mimeMessage);
+            getMailSender().send(mimeMessage);
 
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -19,11 +19,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableAsync
 class ExecutorConfig {
 
-    @Value("${spring.notify.corePoolSize}")
+    @Value("${NotifyPoolConfig.corePoolSize}")
     private int corePoolSize;
-    @Value("${spring.notify.maxPoolSize}")
+    @Value("${NotifyPoolConfig.maxPoolSize}")
     private int maxPoolSize;
-    @Value("${spring.notify.queueCapacity}")
+    @Value("${NotifyPoolConfig.queueCapacity}")
     private int queueCapacity;
 
     @Bean(name = "notifyAsync")

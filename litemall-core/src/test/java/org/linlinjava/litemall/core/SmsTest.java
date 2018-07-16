@@ -3,7 +3,7 @@ package org.linlinjava.litemall.core;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.linlinjava.litemall.core.notify.LitemallNotifyService;
-import org.linlinjava.litemall.core.notify.NotifyUtils;
+import org.linlinjava.litemall.core.notify.util.ConfigUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,7 +47,7 @@ public class SmsTest {
         String phone = "xxxxxxxxxxx";
         String[] params = new String[] {"123456"};
 
-        litemallNotifyService.notifySMSTemplate(phone, NotifyUtils.NotifyType.CAPTCHA, params);
+        litemallNotifyService.notifySMSTemplate(phone, ConfigUtil.NotifyType.CAPTCHA, params);
 
         try {
             Thread.sleep(5000);
@@ -61,7 +61,7 @@ public class SmsTest {
         String phone = "xxxxxxxxxxx";
         String[] params = new String[] {"123456"};
 
-        litemallNotifyService.notifySMSTemplate(phone, NotifyUtils.NotifyType.PAY_SUCCEED, params);
+        litemallNotifyService.notifySMSTemplate(phone, ConfigUtil.NotifyType.PAY_SUCCEED, params);
 
         try {
             Thread.sleep(5000);
