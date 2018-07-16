@@ -11,6 +11,7 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -154,6 +155,7 @@ public class WxAddressController {
 
         if (address.getId() == null || address.getId().equals(0)) {
             address.setId(null);
+            address.setAddTime(LocalDateTime.now());
             address.setUserId(userId);
             addressService.add(address);
         } else {
