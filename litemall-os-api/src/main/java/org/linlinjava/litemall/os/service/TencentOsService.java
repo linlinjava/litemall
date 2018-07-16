@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.os.tencent;
+package org.linlinjava.litemall.os.service;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
@@ -8,7 +8,6 @@ import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
-import org.linlinjava.litemall.os.service.StorageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
@@ -22,11 +21,13 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 /**
- * 腾讯对象存储服务类
+ * 腾讯对象存储服务
+ *
+ * 注意：虽然腾讯对象存储英文缩写是cos(cloud object storage)，但这里称之为tos(tencent object storage)
  */
 @PropertySource(value = "classpath:tencent.properties")
-@Service("tencent")
-public class TencentOSService implements StorageService {
+@Service("tos")
+public class TencentOsService implements ObjectStorageService {
 
     @Value("${tencent.os.secretId}")
     private String accessKey;
@@ -38,10 +39,6 @@ public class TencentOSService implements StorageService {
     private String bucketName;
 
     private COSClient cosClient;
-
-    public TencentOSService() {
-
-    }
 
     private COSClient getCOSClient() {
         if (cosClient == null) {
@@ -56,7 +53,6 @@ public class TencentOSService implements StorageService {
     }
 
     private String getBaseUrl() {
-        //https://litemall-1256968571.cos-website.ap-guangzhou.myqcloud.com
         return "https://" + bucketName + ".cos-website." + region + ".myqcloud.com/";
     }
 
@@ -71,7 +67,7 @@ public class TencentOSService implements StorageService {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, file.getInputStream(), objectMetadata);
             PutObjectResult putObjectResult = getCOSClient().putObject(putObjectRequest);
         } catch (Exception ex) {
-            System.console().printf(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

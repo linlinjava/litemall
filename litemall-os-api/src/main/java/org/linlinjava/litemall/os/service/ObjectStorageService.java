@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * 对象存储接口
  */
-public interface StorageService {
+public interface ObjectStorageService {
 
     /**
      * 存储一个文件对象
