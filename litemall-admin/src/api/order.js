@@ -8,6 +8,14 @@ export function listOrder(query) {
   })
 }
 
+export function detailOrder(id) {
+  return request({
+    url: '/order/detail',
+    method: 'get',
+    params: { id }
+  })
+}
+
 export function shipOrder(data) {
   return request({
     url: '/order/ship',

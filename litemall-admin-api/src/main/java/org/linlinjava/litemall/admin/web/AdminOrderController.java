@@ -4,12 +4,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.core.util.JacksonUtil;
-import org.linlinjava.litemall.db.domain.LitemallOrder;
-import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
-import org.linlinjava.litemall.db.domain.LitemallProduct;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.LitemallProductService;
+import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.util.OrderHandleOption;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -41,22 +40,41 @@ public class AdminOrderController {
     private LitemallOrderService orderService;
     @Autowired
     private LitemallProductService productService;
+    @Autowired
+    private LitemallUserService userService;
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String orderSn,
+                       Integer userId, String orderSn, @RequestParam(required = false, value = "orderStatusArray[]")List<Short> orderStatusArray,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, page, limit, sort, order);
-        int total = orderService.countSelective(userId, orderSn, page, limit, sort, order);
+        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn,orderStatusArray, page, limit, sort, order);
+        int total = orderService.countSelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
 
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", orderList);
+
+        return ResponseUtil.ok(data);
+    }
+
+    @GetMapping("/detail")
+    public Object detail(@LoginAdmin Integer adminId, Integer id) {
+        if(adminId == null){
+            return ResponseUtil.unlogin();
+        }
+
+        LitemallOrder order = orderService.findById(id);
+        List<LitemallOrderGoods> orderGoods = orderGoodsService.queryByOid(id);
+        UserVo user = userService.findUserVoById(order.getUserId());
+        Map<String, Object> data = new HashMap<>();
+        data.put("order", order);
+        data.put("orderGoods", orderGoods);
+        data.put("user", user);
 
         return ResponseUtil.ok(data);
     }
