@@ -2,7 +2,6 @@ package org.linlinjava.litemall.os.service;
 
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.stream.Stream;
@@ -15,10 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 服务器本地文件存储
+ * 服务器本地对象存储服务
+ *
+ * 缩写los(local object storage)
  */
-@Service("localStorage")
-public class FileSystemStorageService implements StorageService {
+@Service("los")
+public class LocalOsService implements ObjectStorageService {
 
     @Autowired
     private ObjectStorageConfig osConfig;
@@ -35,7 +36,7 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public void store(MultipartFile file, String keyName) {
         try {
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), LocalOsService.rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file " + keyName, e);
         }
@@ -44,9 +45,9 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public Stream<Path> loadAll() {
         try {
-            return Files.walk(this.rootLocation, 1)
-                    .filter(path -> !path.equals(this.rootLocation))
-                    .map(path -> this.rootLocation.relativize(path));
+            return Files.walk(LocalOsService.rootLocation, 1)
+                    .filter(path -> !path.equals(LocalOsService.rootLocation))
+                    .map(path -> LocalOsService.rootLocation.relativize(path));
         } catch (IOException e) {
             throw new RuntimeException("Failed to read stored files", e);
         }
