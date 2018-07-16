@@ -90,7 +90,7 @@ V 2.0.0 完成以下目标：
 
 1. 小商城能够完成基本的业务功能；
 2. 管理后台实现较好的业务操作和交互效果，而不是简单的CRUD；
-3. 管理后台实现统计功能、日志功能
+3. 管理后台实现统计功能、日志功能、权限功能
 
 V 3.0.0 完成以下目标：
 
@@ -114,7 +114,7 @@ V 3.0.0 完成以下目标：
 
 查看[更新日志](CHANGELOG.md)
 
-目前V0.6.0
+目前V0.7.0
 
 ## 警告
 
@@ -158,4 +158,4 @@ V 3.0.0 完成以下目标：
 
 ## 相关项目
 
-[HubertYoung](https://github.com/HubertYoung)正在开发Android端[Litemall-Android](https://github.com/HubertYoung/Litemall-Android)
+HubertYoung正在开发Android端[Litemall-Android](https://github.com/HubertYoung/Litemall-Android)
