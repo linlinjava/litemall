@@ -1,7 +1,8 @@
 package org.linlinjava.litemall.core.notify;
 
 import org.json.JSONObject;
-import org.springframework.context.annotation.PropertySource;
+import org.linlinjava.litemall.core.notify.config.WXNotifyConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.net.ssl.*;
@@ -16,11 +17,13 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 /**
- * 微信模版消息通知，未完成
+ * 微信模版消息通知
  */
-@PropertySource(value = "classpath:notify.properties")
 @Service("wxTemplateMsgSendService")
-public class WXTemplateMsgSendService {
+class WXTemplateSendService {
+    @Autowired
+    WXNotifyConfig config;
+
     /**
      * 发送微信消息(模板消息)
      *
@@ -29,19 +32,20 @@ public class WXTemplateMsgSendService {
      * @param formId    payId或者表单ID
      * @param clickurl  URL置空，则在发送后，点击模板消息会进入一个空白页面（ios），或无法点击（android）。
      * @param topcolor  标题颜色
-     * @param data      详细内容
+     * @param parms     详细内容
      * @return
      */
-    public String sendWechatMsgToUser(String token, String touser, String templatId, String formId, String clickurl, String topcolor, JSONObject data) {
-        String tmpurl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + token;
-        JSONObject json = new JSONObject();
-        json.put("touser", touser);
-        json.put("template_id", templatId);
-        json.put("form_id", formId);
-        json.put("url", clickurl);
-        json.put("topcolor", topcolor);
-        json.put("data", data);
+    public String sendWechatMsg(String token, String touser, String templatId, String formId, String clickurl, String topcolor, String[] parms) {
         try {
+            String tmpurl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + token;
+            JSONObject json = new JSONObject();
+            json.put("touser", touser);
+            json.put("template_id", templatId);
+            json.put("form_id", formId);
+            json.put("url", clickurl);
+            json.put("topcolor", topcolor);
+            json.put("data", createParmData(parms));
+
             JSONObject result = httpsRequest(tmpurl, "POST", json.toString());
 //            log.info("发送微信消息返回信息：" + resultJson.get("errcode"));
             String errmsg = (String) result.get("errmsg");
@@ -53,6 +57,23 @@ public class WXTemplateMsgSendService {
             return "error";
         }
         return "success";
+    }
+
+    /**
+     * 根据参数生成对应的 json 数据
+     * @param parms
+     * @return
+     */
+    private JSONObject createParmData(String[] parms) {
+        JSONObject json = new JSONObject();
+        for (int i = 1; i <= parms.length; i++) {
+            JSONObject json2 = new JSONObject();
+            json2.put("value", parms[i-1]);
+
+            json.put("keyword" + i, json2);
+        }
+
+        return json;
     }
 
     /**
@@ -125,7 +146,6 @@ public class WXTemplateMsgSendService {
 
         @Override
         public X509Certificate[] getAcceptedIssuers() {
-            //        return new X509Certificate[0];
             return null;
         }
     }

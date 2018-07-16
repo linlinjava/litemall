@@ -4,29 +4,21 @@ import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
 import com.github.qcloudsms.httpclient.HTTPException;
 import org.json.JSONException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.scheduling.annotation.Async;
+import org.linlinjava.litemall.core.notify.config.SMSNotifyConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@PropertySource(value = "classpath:notify.properties")
+
 @Service("smsSendService")
 class SMSSendService {
-    @Value("${spring.sms.appid}")
-    private int appid;
+    @Autowired
+    SMSNotifyConfig config;
 
-    @Value("${spring.sms.appkey}")
-    private String appkey;
-
-    @Value("${spring.sms.sign}")
-    private String smsSign;
-
-    @Async("notifyAsync")
     public void sendSMS(String phoneNumber, String content) {
         try {
-            SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+            SmsSingleSender ssender = new SmsSingleSender(config.getAppid(), config.getAppkey());
             SmsSingleSenderResult result = ssender.send(0, "86", phoneNumber,
                     content, "", "");
 
@@ -43,12 +35,17 @@ class SMSSendService {
         }
     }
 
-    @Async("notifyAsync")
+    /**
+     * 通过模版发送短信息
+     * @param phoneNumber
+     * @param templateId
+     * @param params
+     */
     public void sendSMSWithTemplate(String phoneNumber, int templateId, String[] params) {
         try {
-            SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+            SmsSingleSender ssender = new SmsSingleSender(config.getAppid(), config.getAppkey());
             SmsSingleSenderResult result = ssender.sendWithParam("86", phoneNumber,
-                    templateId, params, smsSign, "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
+                    templateId, params, config.getSign(), "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
 //            System.out.println(result);
         } catch (HTTPException e) {
             // HTTP响应码错误
