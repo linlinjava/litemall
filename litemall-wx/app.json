@@ -13,6 +13,7 @@
     "pages/ucenter/coupon/coupon",
     "pages/ucenter/collect/collect",
     "pages/auth/login/login",
+    "pages/auth/accountLogin/accountLogin",    
     "pages/auth/register/register",
     "pages/auth/reset/reset",
     "pages/payResult/payResult",

@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 32,
 			"list": [
 				{
 					"id": -1,
@@ -210,6 +210,12 @@
 					"pathName": "pages/auth/login/login",
 					"query": ""
 				},
+        {
+          "id": -1,
+          "name": "账号登录",
+          "pathName": "pages/auth/accountLogin/accountLogin",
+          "query": ""
+        },
 				{
 					"id": -1,
 					"name": "注册",
