@@ -2,7 +2,7 @@
   <view class="profile-info" bindtap="goLogin">
     <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
     <view class="info">
-       <text class="name">{{userInfo.nickName}}</text> 
+      <text class="name">{{userInfo.nickName}}</text>
     </view>
   </view>
 
@@ -27,13 +27,13 @@
     </view> -->
     <view class="item">
       <view class="a" bindtap="goCollect">
-        <text class="icon collect"></text>
+        <image class="user-menu .icon.collect" src="/static/images/icon_collect.png"></image>
         <text class="txt">我的收藏</text>
       </view>
     </view>
     <view class="item">
       <view class="a" bindtap="goFootprint">
-        <text class="icon security"></text>
+        <image class="user-menu .icon.collect" src="/static/images/foot.png"></image>
         <text class="txt">我的足迹</text>
       </view>
     </view>
@@ -55,19 +55,27 @@
         <text class="txt">账号安全</text>
       </view>
     </view> -->
-    <!-- <view class="item no-border">
+    <!-- 能力有限，此添加方式开发环境看不到效果，但是线上环境可以正常使用-->
+    <button class="item no-border" open-type="contact" size="20" session-from="weapp">
       <view class="a">
         <text class="icon kefu"></text>
         <text class="txt">联系客服</text>
       </view>
-    </view> -->
-    <!-- <view class="item item-bottom">
+    </button>
+    <button view class="item" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
       <view class="a">
-        <text class="icon help"></text>
-        <text class="txt">帮助中心</text>
+        <image class="user-menu .icon.phone" src="/static/images/mobile.png"></image>
+        <text class="txt">绑定手机号码</text>
       </view>
-    </view> -->
+    </button>
+    <view class="item">
+      <view class="a" bindtap="aboutUs">
+        <image class="user-menu .icon.collect" src="/static/images/about_us.png"></image>
+        <text class="txt">关于我们</text>
+      </view>
+    </view>
   </view>
+
 
   <!--<view class="logout" bindtap="exitLogin">退出登录</view>-->
 </view>

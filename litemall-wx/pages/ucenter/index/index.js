@@ -80,6 +80,23 @@ Page({
       wx.navigateTo({ url: "/pages/auth/login/login" });
     };
   },
+  aboutUs: function () {
+    // wx.navigateTo({
+    //   url: '/page/about/index',
+    // })
+    wx.navigateTo({
+      url: '../../about/index',//页面跳转相对路径要写清楚且准确
+      success: function (res) {
+        console.log('跳转到news页面成功')// success
+      },
+      fail: function () {
+        console.log('跳转到news页面失败')  // fail
+      },
+      complete: function () {
+        console.log('跳转到news页面完成') // complete
+      }
+    })
+  },
   exitLogin: function () {
     wx.showModal({
       title: '',

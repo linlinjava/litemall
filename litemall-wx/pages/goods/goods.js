@@ -42,7 +42,7 @@ Page({
             // 这里检测一下
             let _productPrice = res.data.productList[0].price;
             let _goodsPrice = res.data.info.retailPrice;
-            if (_productPrice != _goodsPrice){
+            if (_productPrice != _goodsPrice) {
               console.error('商品数量价格和货品不一致');
             }
 
@@ -206,21 +206,21 @@ Page({
       }
 
       let checkedProduct = checkedProductArray[0];
-      if (checkedProduct.number > 0){
+      if (checkedProduct.number > 0) {
         this.setData({
           checkedSpecPrice: checkedProduct.price,
           soldout: false
         });
       }
-      else{
+      else {
         this.setData({
           checkedSpecPrice: this.data.goods.retailPrice,
           soldout: true
-        }); 
+        });
       }
-      
+
     }
-    else{
+    else {
       this.setData({
         checkedSpecText: '规格数量选择',
         checkedSpecPrice: this.data.goods.retailPrice,
@@ -276,28 +276,33 @@ Page({
       });
     }
   },
-  closeAttrOrCollect: function () {
+  closeAttr: function () {
+    this.setData({
+      openAttr: false,
+    });
+  },
+  addCollectOrNot: function () {
     let that = this;
-    if (this.data.openAttr) {
-      this.setData({
-        openAttr: false,
-      });
-      if (that.data.userHasCollect == 1) {
-        that.setData({
-          collectBackImage: that.data.hasCollectImage
-        });
-      } else {
-        that.setData({
-          collectBackImage: that.data.noCollectImage
-        });
-      }
-    } else {
+    // if (this.data.openAttr) {
+    //   this.setData({
+    //     openAttr: false,
+    //   });
+    //   if (that.data.userHasCollect == 1) {
+    //     that.setData({
+    //       collectBackImage: that.data.hasCollectImage
+    //     });
+    //   } else {
+    //     that.setData({
+    //       collectBackImage: that.data.noCollectImage
+    //     });
+    //   }
+    // } else {
       //添加或是取消收藏
       util.request(api.CollectAddOrDelete, { type: 0, valueId: this.data.id }, "POST")
         .then(function (res) {
           let _res = res;
           if (_res.errno == 0) {
-            if ( _res.data.type == 'add') {
+            if (_res.data.type == 'add') {
               that.setData({
                 collectBackImage: that.data.hasCollectImage
               });
@@ -316,7 +321,6 @@ Page({
           }
 
         });
-    }
 
   },
   openCartPage: function () {
@@ -394,7 +398,7 @@ Page({
       //打开规格选择窗口
       this.setData({
         openAttr: !this.data.openAttr,
-        collectBackImage: '/static/images/detail_back.png'
+        // collectBackImage: '/static/images/detail_back.png'
       });
     } else {
 
