@@ -35,40 +35,41 @@
 	"pages/about/index"
   ],
   "window": {
+    "navigationBarTitleText": "litemall小程序商城",
+    "navigationBarTextStyle": "#FFFFFF",
+    "navigationBarBackgroundColor": "#696969",
+    "backgroundColor": "#FFFFFF",
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "仿网易严选",
-    "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": false
   },
   "tabBar": {
     "backgroundColor": "#fafafa",
     "borderStyle": "white",
-    "selectedColor": "#b4282d",
+    "selectedColor": "#AB956D",
     "color": "#666",
     "list": [
       {
         "pagePath": "pages/index/index",
         "iconPath": "static/images/ic_menu_choice_nor.png",
-        "selectedIconPath": "static/images/ic_menu_choice_pressed.png",
+        "selectedIconPath": "static/images/home@selected.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/catalog/catalog",
         "iconPath": "static/images/ic_menu_sort_nor.png",
-        "selectedIconPath": "static/images/ic_menu_sort_pressed.png",
+        "selectedIconPath": "static/images/category@selected.png",
         "text": "分类"
       },
       {
         "pagePath": "pages/cart/cart",
         "iconPath": "static/images/ic_menu_shoping_nor.png",
-        "selectedIconPath": "static/images/ic_menu_shoping_pressed.png",
+        "selectedIconPath": "static/images/cart@selected.png",
         "text": "购物车"
       },
       {
         "pagePath": "pages/ucenter/index/index",
         "iconPath": "static/images/ic_menu_me_nor.png",
-        "selectedIconPath": "static/images/ic_menu_me_pressed.png",
+        "selectedIconPath": "static/images/my@selected.png",
         "text": "个人"
       }
     ]
