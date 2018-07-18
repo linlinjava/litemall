@@ -23,4 +23,5 @@
     font-size: 30rpx;
     width: 100%;
     border-radius: 6rpx;
+    color: #fff
 }

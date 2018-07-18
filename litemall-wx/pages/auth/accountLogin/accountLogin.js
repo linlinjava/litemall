@@ -52,23 +52,23 @@ Page({
         'content-type': 'application/json'
       },
       success: function (res) {
-        if (res.data.errno == 0){
+        if (res.data.errno == 0) {
           that.setData({
             loginErrorCount: 0
           });
           app.globalData.hasLogin = true;
           wx.setStorageSync('userInfo', res.data.data.userInfo);
           wx.setStorage({
-            key:"token",
+            key: "token",
             data: res.data.data.token,
-            success: function(){
+            success: function () {
               wx.switchTab({
                 url: '/pages/ucenter/index/index'
               });
             }
           });
         }
-        else{
+        else {
           that.setData({
             loginErrorCount: that.data.loginErrorCount + 1
           });

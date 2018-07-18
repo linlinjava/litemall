@@ -1,29 +1,86 @@
-<view class="container">
-    <view class="form-box">
+.form-box{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    padding: 0 40rpx;
+    margin-top: 200rpx;
+    background: #fff;
+}
 
-    	<view class="form-item">
-    		<input class="username" value="{{username}}" bindinput="bindUsernameInput" placeholder="账号"/>
-    		<image wx:if="{{ username.length > 0 }}" id="clear-username" class="clear" src="/static/images/clear_input.png" catchtap="clearInput"></image>
-    	</view>
+.form-item{
+    position: relative;
+    background: #fff;
+    height: 96rpx;
+    border-bottom: 1px solid #d9d9d9;
+}
 
-    	<view class="form-item">
-    		<input class="password" value="{{password}}" password bindinput="bindPasswordInput" placeholder="密码"/>
-    		<image class="clear" id="clear-password" wx:if="{{ password.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
-    	</view>
+.form-item .username, .form-item .password, .form-item .code{
+    position: absolute;
+    top: 26rpx;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 44rpx;
+    background: #fff;
+    color: #333;
+    font-size: 30rpx;
+}
 
-		 <!-- <view class="form-item-code" wx-if="{{loginErrorCount >= 3}}">
-			<view class="form-item code-item">
-				<input class="code" value="{{code}}" bindinput="bindCodeInput" placeholder="验证码"/>
-				<image class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
-			</view>
-			<image class="code-img" src="https://dl.reg.163.com/cp?pd=yanxuan_web&pkid=SkeBZeG&random=1489903563234"></image>
-		</view>  -->
+.form-item-code{
+    margin-top:32rpx;
+    height: auto;
+    overflow: hidden;
+    width: 100%;
+}
 
-    <button type="primary" class="login-btn" bindtap="accountLogin">账号登录</button>
+.form-item-code .form-item{
+    float: left;
+    width: 350rpx;
+}
 
-     <view class="form-item-text">
-      <navigator url="/pages/auth/register/register" class="register">注册账号</navigator>
-			<navigator url="/pages/auth/reset/reset" class="reset">忘记密码</navigator>
-    </view> 
-    </view>
-</view>
+.form-item-code .code-img{
+    float: right;
+    margin-top: 4rpx;
+    height: 88rpx;
+    width: 236rpx;
+}
+
+.form-item .clear{
+    position: absolute;
+    top: 26rpx;
+    right: 18rpx;
+    z-index: 2;
+    display: block;
+    background: #fff;
+    height: 44rpx;
+    width: 44rpx;
+}
+
+.login-btn{
+    margin: 60rpx 0 40rpx 0;
+    height: 96rpx;
+    line-height: 96rpx;
+    font-size: 30rpx;
+    width: 100%;
+    background: #b4282d;
+    border-radius: 6rpx;
+}
+
+.form-item-text{
+    height: 35rpx;
+    width: 100%;
+}
+
+.form-item-text .register{
+    display: block;
+    height: 34rpx;
+    float: left;
+    font-size: 28rpx;
+}
+
+.form-item-text .reset{
+    display: block;
+    height: 34rpx;
+    float: right;
+    font-size: 28rpx;
+}
