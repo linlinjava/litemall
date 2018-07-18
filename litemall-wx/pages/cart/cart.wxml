@@ -2,8 +2,8 @@
   <view class="no-login" wx:if="{{!hasLogin}}">
     <view class="c">
       <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
-      <text>还没有登录</text>
-      <button type="primary" plain="true" bindtap="goLogin">去登录</button>
+      <text>未登录</text>
+        <button style="background-color:#A9A9A9"  bindtap="goLogin">去登录</button>
     </view>
   </view>
   <view class='login' wx:else>

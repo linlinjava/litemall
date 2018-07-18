@@ -1,18 +1,21 @@
-
 <!--index.wxml-->
 <view class="container">
   <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
     <swiper-item wx:for="{{banner}}" wx:key="id">
       <!-- <navigator url="{{item.link}}"> -->
-        <image src="{{item.url}}" background-size="cover"></image>
+      <image src="{{item.url}}" background-size="cover"></image>
       <!-- </navigator> -->
     </swiper-item>
   </swiper>
-  <view class="m-menu">
-    <navigator class="item" url="/pages/category/category?id={{item.id}}" wx:for="{{channel}}" wx:key="id">
-      <image src="{{item.iconUrl}}" background-size="cover"></image>
-      <text>{{item.name}}</text>
-    </navigator>
+  <view class="type-container">
+  <view class="page-section-spacing">
+    <view class="m-menu">
+      <navigator class="item" url="/pages/category/category?id={{item.id}}" wx:for="{{channel}}" wx:key="id">
+        <image src="{{item.iconUrl}}" background-size="cover"></image>
+        <text>{{item.name}}</text>
+      </navigator>
+    </view>
+    </view>
   </view>
   <view class="a-section a-brand">
     <view class="h">
@@ -79,8 +82,8 @@
   <view class="a-section a-topic" wx:if="topics.length > 0">
     <view class="h">
       <view>
-      <navigator url="/pages/topic/topic">
-        <text class="txt">专题精选</text>
+        <navigator url="/pages/topic/topic">
+          <text class="txt">专题精选</text>
         </navigator>
       </view>
     </view>
@@ -116,10 +119,10 @@
         </view>
       </block>
       <view class="item item-b item-more">
-          <navigator url="/pages/category/category?id={{item.id}}" class="more-a">
-            <view class="txt">{{'更多'+item.name+'好物'}}</view>
-            <image class="icon" src="../../static/images/icon_go_more.png" background-size="cover"></image>
-          </navigator>
+        <navigator url="/pages/category/category?id={{item.id}}" class="more-a">
+          <view class="txt">{{'更多'+item.name+'好物'}}</view>
+          <image class="icon" src="../../static/images/icon_go_more.png" background-size="cover"></image>
+        </navigator>
       </view>
     </view>
   </view>
