@@ -46,7 +46,7 @@
             {{item.content}}
           </view>
           <view class="imgs" wx:if="{{item.picList.length > 0}}">
-            <image class="img"  wx:for="{{item.picList}}" wx:key="*this"  wx:for-item="iitem" src="{{iitem}}"></image>
+            <image class="img" wx:for="{{item.picList}}" wx:key="*this" wx:for-item="iitem" src="{{iitem}}"></image>
           </view>
         </view>
       </view>
@@ -101,6 +101,9 @@
     </view>
   </view>
   <view wx:if="{{openAttr}}" class="attr-pop">
+    <view class="close" bindtap="closeAttr">
+      <image class="icon" src="/static/images/icon_close.png"></image>
+    </view>
     <view class="img-info">
       <image class="img" src="{{goods.picUrl}}"></image>
       <view class="info">
@@ -115,7 +118,7 @@
         <view class="name">{{item.name}}</view>
         <view class="values">
           <view class="value {{vitem.checked ? 'selected' : ''}}" bindtap="clickSkuValue" wx:for="{{item.valueList}}" wx:for-item="vitem" wx:key="id" data-value-id="{{vitem.id}}" data-name="{{vitem.specification}}">
-          {{vitem.value}}
+            {{vitem.value}}
           </view>
         </view>
       </view>
@@ -131,10 +134,23 @@
     </view>
   </view>
 </scroll-view>
+
+
+<!-- <navigator url='/static/images/ic_menu_shoping_nor.png' >购物车</navigator > -->
+<view class="contact">
+  <contact-button style="opacity:0;position:absolute;" type="default-dark" session-from="weapp" size="27">
+  </contact-button>
+  <!-- <view style='position:absolute;bottom:10rpx;'></view> -->
+
+</view>
+
 <view class="bottom-btn">
-  <view class="l l-collect {{ openAttr ? 'back' : ''}}" bindtap="closeAttrOrCollect">
-    <image class="icon" src="{{ collectBackImage }}"></image>
+  <view class="l l-collect" bindtap="closeAttrOrCollect">
+    <image class="icon" src="/static/images/icon_collect.png"></image>
   </view>
+  <!-- <view class="l l-collect {{ openAttr ? 'back' : ''}}" bindtap="closeAttrOrCollect">
+    <image class="icon" src="{{ collectBackImage }}"></image>
+  </view> -->
   <view class="l l-cart">
     <view class="box">
       <text class="cart-count">{{cartGoodsCount}}</text>

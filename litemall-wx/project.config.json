@@ -9,8 +9,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.93",
-	"appid": "wxa5b486c6b918ecfb",
-	"projectname": "litemall-wx",
+	"appid": "wx588d160cd38defd7",
+	"projectname": "litemall-wx2",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 32,
+			"current": 0,
 			"list": [
 				{
 					"id": -1,
@@ -210,12 +210,6 @@
 					"pathName": "pages/auth/login/login",
 					"query": ""
 				},
-        {
-          "id": -1,
-          "name": "账号登录",
-          "pathName": "pages/auth/accountLogin/accountLogin",
-          "query": ""
-        },
 				{
 					"id": -1,
 					"name": "注册",

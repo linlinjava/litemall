@@ -276,6 +276,11 @@ Page({
       });
     }
   },
+  closeAttr: function () {
+    this.setData({
+      openAttr: false,
+    });
+  },
   closeAttrOrCollect: function () {
     let that = this;
     if (this.data.openAttr) {

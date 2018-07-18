@@ -43,7 +43,7 @@ Page({
     let that = this;
     let index = event.currentTarget.dataset.index;
     let iindex = event.currentTarget.dataset.iindex;
-    let goodsId = this.data.footprintList[index][iindex].id;
+    let goodsId = this.data.footprintList[index][iindex].goodsId;
     var touchTime = that.data.touchEnd - that.data.touchStart;
     console.log(touchTime);
     //如果按下时间大于350为长按  

@@ -1,3 +1,8 @@
+.page-section-spacing {
+  margin-bottom: 40rpx;
+  background-color: white;
+ 
+}
 .banner {
   width: 750rpx;
   height: 417rpx;
@@ -10,7 +15,7 @@
 
 .m-menu {
   display: flex;
-  height: 181rpx;
+  height: 228rpx;
   width: 750rpx;
   flex-flow: row nowrap;
   align-items: center;
