@@ -31,7 +31,8 @@
     "pages/shopping/checkout/checkout",
     "pages/shopping/address/address",
     "pages/shopping/addressAdd/addressAdd",
-    "pages/goods/goods"
+    "pages/goods/goods",
+	"pages/about/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",
