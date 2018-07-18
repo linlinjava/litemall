@@ -9,23 +9,23 @@
 
   </view>
 
-  <view class="about-item" bindtap="showLocation">
+  <view class="about-item">
     <view class="item-left">
       <label>项目地址: </label>
        <text>{{shopInfo.address}}</text> 
     </view>
 
-    <view class="item-right">
+    <view class="item-right" bindtap="showLocation">
       <image src="/static/images/ico-addr.png" class="right-icon"></image>
     </view>
   </view>
 
-  <view class="about-item" bindtap="callPhone">
+  <view class="about-item">
     <view class="item-left">
       <label>电话号码:    </label>
        <text>{{shopInfo.linkPhone}}</text> 
     </view>
-    <view class="item-right">
+    <view class="item-right" bindtap="callPhone">
       <image src="/static/images/telephone.png" class="right-icon"></image>
     </view>
   </view>

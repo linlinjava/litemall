@@ -12,9 +12,8 @@ Page({
   data: {
     load_statue: true,
     shopInfo: {
-      // pic: res.data.data.pic,
       name: 'litemall',
-      address: 'https:\//github.com/linlinjava/litemall',
+      address: 'https://github.com/linlinjava/litemall',
       latitude: 22.60,
       longitude: 116.87,
       linkPhone: '0755-xxxx-xxxx',
