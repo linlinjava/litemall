@@ -55,14 +55,16 @@
         <text class="txt">账号安全</text>
       </view>
     </view> -->
-    <!-- 能力有限，此添加方式开发环境看不到效果，但是线上环境可以正常使用-->
-    <button class="item no-border" open-type="contact" size="20" session-from="weapp">
+    <!-- 开发环境看不到效果，但是线上环境可以正常使用-->
+    <!-- 开发者参考以下文档自行测试，建议直接采用文档中的网页版客服工具 -->
+    <!-- https://developers.weixin.qq.com/miniprogram/introduction/custom.html#功能介绍 -->
+    <button class="item" open-type="contact" size="20" session-from="weapp">
       <view class="a">
         <text class="icon kefu"></text>
         <text class="txt">联系客服</text>
       </view>
     </button>
-    <button view class="item" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+    <button class="item" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
       <view class="a">
         <image class="user-menu .icon.phone" src="/static/images/mobile.png"></image>
         <text class="txt">绑定手机号码</text>
