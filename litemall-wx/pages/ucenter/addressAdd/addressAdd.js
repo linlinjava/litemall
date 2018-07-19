@@ -311,7 +311,7 @@ Page({
         var pages = getCurrentPages();
         var prevPage = pages[pages.length - 2];
         console.log(prevPage);
-        if (prevPage.route == "pages/shopping/checkout/checkout") {
+        if (prevPage.route == "pages/checkout/checkout") {
           prevPage.setData({
             addressId: res.data
           })

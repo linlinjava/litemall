@@ -28,7 +28,7 @@
     "pages/search/search",
     "pages/category/category",
     "pages/cart/cart",
-    "pages/shopping/checkout/checkout",
+    "pages/checkout/checkout",
     "pages/goods/goods",
     "pages/about/about"
   ],

@@ -128,18 +128,6 @@
 				},
 				{
 					"id": -1,
-					"name": "下单地址",
-					"pathName": "pages/shopping/address/address",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "下单地址添加",
-					"pathName": "pages/shopping/addressAdd/addressAdd",
-					"query": ""
-				},
-				{
-					"id": -1,
 					"name": "支付结果",
 					"pathName": "pages/payResult/payResult",
 					"query": ""

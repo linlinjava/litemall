@@ -33,7 +33,7 @@ Page({
     var pages = getCurrentPages();
     var prevPage = pages[pages.length - 2];
 
-    if (prevPage.route == "pages/shopping/checkout/checkout") {
+    if (prevPage.route == "pages/checkout/checkout") {
       console.log(event.currentTarget.dataset.addressId);
       prevPage.setData({
         addressId: event.currentTarget.dataset.addressId
