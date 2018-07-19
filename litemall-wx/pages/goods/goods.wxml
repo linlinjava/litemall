@@ -111,7 +111,7 @@
       <view class="info">
         <view class="c">
           <view class="p">价格：￥{{checkedSpecPrice}}</view>
-          <view class="a" wx:if="{{productList.length>0}}">已选择：{{checkedSpecText}}</view>
+          <view class="a">{{tmpSpecText}}</view>
         </view>
       </view>
     </view>
@@ -119,7 +119,7 @@
       <view class="spec-item" wx:for="{{specificationList}}" wx:key="name">
         <view class="name">{{item.name}}</view>
         <view class="values">
-          <view class="value {{vitem.checked ? 'selected' : ''}}" bindtap="clickSkuValue" wx:for="{{item.valueList}}" wx:for-item="vitem" wx:key="{{vitem.id}}" data-value-id="{{vitem.id}}" data-name-id="{{vitem.specification}}">{{vitem.value}}</view>
+          <view class="value {{vitem.checked ? 'selected' : ''}}" bindtap="clickSkuValue" wx:for="{{item.valueList}}" wx:for-item="vitem" wx:key="{{vitem.id}}" data-value-id="{{vitem.id}}" data-name="{{vitem.specification}}">{{vitem.value}}</view>
         </view>
       </view>
 
@@ -140,7 +140,7 @@
 </view>
 <view class="bottom-btn">
   <view class="l l-collect" bindtap="addCollectOrNot">
-    <image class="icon" src="{{ collectBackImage }}"></image>
+    <image class="icon" src="{{ collectImage }}"></image>
   </view>
   <view class="l l-cart">
     <view class="box">

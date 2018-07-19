@@ -1,4 +1,4 @@
-// index.js
+// about.js
 var app = getApp()
 var util = require("../../utils/util.js");
 
@@ -14,9 +14,9 @@ Page({
     shopInfo: {
       name: 'litemall',
       address: 'https://github.com/linlinjava/litemall',
-      latitude: 22.60,
-      longitude: 116.87,
-      linkPhone: '0755-xxxx-xxxx',
+      latitude: 31.201900,
+      longitude: 121.587839,
+      linkPhone: '021-xxxx-xxxx',
       qqNumber: '738696120'
     },
   },

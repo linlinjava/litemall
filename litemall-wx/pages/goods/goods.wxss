@@ -524,9 +524,10 @@
   text-align: center;
   width: 90rpx;
 }
+
 .bottom-btn .l.l-kefu {
   position: relative;
-  height:54rpx;
+  height: 54rpx;
   width: 63rpx;
 }
 
@@ -534,7 +535,6 @@
   position: relative;
   height: 60rpx;
   width: 60rpx;
-  
 }
 
 .bottom-btn .l.l-cart .cart-count {
@@ -572,7 +572,8 @@
   line-height: 28rpx;
   border-radius: 50%;
 }
-.bottom-btn .l.l-kefu .icon{
+
+.bottom-btn .l.l-kefu .icon {
   position: absolute;
   top: 10rpx;
   left: 0;
@@ -584,36 +585,34 @@
   width: 44rpx;
 }
 
-.bottom-btn .c{
-    float: left;
-    background: #f48f18;
-    height: 100rpx;
-    line-height: 96rpx;
-    flex: 1;
-    text-align: center;
-    color: #fff;
-     /* border-top: 2px solid #f4f4f4; */
-    /* border-bottom: 2px solid #f4f4f4;  */
+.bottom-btn .c {
+  float: left;
+  background: #f48f18;
+  height: 100rpx;
+  line-height: 96rpx;
+  flex: 1;
+  text-align: center;
+  color: #fff;
+  /* border-top: 2px solid #f4f4f4; *//* border-bottom: 2px solid #f4f4f4;  */
 }
 
-.bottom-btn .r{
-    border:1px solid #b4282d;
-    background: #b4282d;
-    float: left;
-    height: 100rpx;
-    line-height: 96rpx;
-    flex: 1;
-    text-align: center;
-    color: #fff;
+.bottom-btn .r {
+  border: 1px solid #b4282d;
+  background: #b4282d;
+  float: left;
+  height: 100rpx;
+  line-height: 96rpx;
+  flex: 1;
+  text-align: center;
+  color: #fff;
 }
-
 @import "../../lib/wxParse/wxParse.wxss";
 
 .attr-pop-box {
   width: 100%;
   height: 100%;
   position: fixed;
-  background: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 8;
   bottom: 0;
   /* display: none; */
@@ -754,48 +753,32 @@
   line-height: 65rpx;
 }
 
-.contact{
-
-    height: 100rpx;
-
-    width: 100rpx;
-
-    background-color: #008000;
-
-    border-radius: 100%;
-
-    position: fixed;
-
-    bottom: 150rpx;
-
-    right: 20rpx;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    z-index: 9;
-
+.contact {
+  height: 100rpx;
+  width: 100rpx;
+  background-color: #008000;
+  border-radius: 100%;
+  position: fixed;
+  bottom: 150rpx;
+  right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
   flex-direction: column;
-
   /*line-height: 100rpx;
   text-align: center;
   padding-top: 26rpx;*/
   font-size: 20rpx;
   color: #008000;
   box-sizing: border-box;
-   background: url("https://litemall.oss-cn-shenzhen.aliyuncs.com/kefu.png") no-repeat center 21rpx; 
+  background: url("https://litemall.oss-cn-shenzhen.aliyuncs.com/kefu.png") no-repeat center 21rpx;
   background-size: 55rpx auto;
 }
 
-.contact .name{
-
-    font-size: 32rpx;
-
-    max-width: 80rpx;
-
-    color: #fff;
-    text-align: center;
+.contact .name {
+  font-size: 32rpx;
+  max-width: 80rpx;
+  color: #fff;
+  text-align: center;
 }

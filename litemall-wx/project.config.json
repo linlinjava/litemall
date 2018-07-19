@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 32,
+			"current": 33,
 			"list": [
 				{
 					"id": -1,
@@ -210,12 +210,12 @@
 					"pathName": "pages/auth/login/login",
 					"query": ""
 				},
-        {
-          "id": -1,
-          "name": "账号登录",
-          "pathName": "pages/auth/accountLogin/accountLogin",
-          "query": ""
-        },
+				{
+					"id": -1,
+					"name": "账号登录",
+					"pathName": "pages/auth/accountLogin/accountLogin",
+					"query": ""
+				},
 				{
 					"id": -1,
 					"name": "注册",
@@ -227,6 +227,11 @@
 					"name": "找回密码",
 					"pathName": "pages/auth/reset/reset",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "关于",
+					"pathName": "pages/about/about"
 				}
 			]
 		}

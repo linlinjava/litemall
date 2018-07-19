@@ -13,7 +13,7 @@
     "pages/ucenter/coupon/coupon",
     "pages/ucenter/collect/collect",
     "pages/auth/login/login",
-    "pages/auth/accountLogin/accountLogin",    
+    "pages/auth/accountLogin/accountLogin",
     "pages/auth/register/register",
     "pages/auth/reset/reset",
     "pages/payResult/payResult",
@@ -32,7 +32,7 @@
     "pages/shopping/address/address",
     "pages/shopping/addressAdd/addressAdd",
     "pages/goods/goods",
-	"pages/about/index"
+    "pages/about/about"
   ],
   "window": {
     "navigationBarTitleText": "litemall小程序商城",
