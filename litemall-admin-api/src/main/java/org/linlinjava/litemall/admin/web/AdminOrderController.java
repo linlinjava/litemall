@@ -3,6 +3,8 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.core.notify.LitemallNotifyService;
+import org.linlinjava.litemall.core.notify.util.ConfigUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
@@ -43,16 +45,19 @@ public class AdminOrderController {
     @Autowired
     private LitemallUserService userService;
 
+    @Autowired
+    private LitemallNotifyService litemallNotifyService;
+
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String orderSn, @RequestParam(required = false, value = "orderStatusArray[]")List<Short> orderStatusArray,
+                       Integer userId, String orderSn, @RequestParam(required = false, value = "orderStatusArray[]") List<Short> orderStatusArray,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                       String sort, String order){
-        if(adminId == null){
+                       String sort, String order) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn,orderStatusArray, page, limit, sort, order);
+        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
         int total = orderService.countSelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
 
         Map<String, Object> data = new HashMap<>();
@@ -64,7 +69,7 @@ public class AdminOrderController {
 
     @GetMapping("/detail")
     public Object detail(@LoginAdmin Integer adminId, Integer id) {
-        if(adminId == null){
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -86,7 +91,7 @@ public class AdminOrderController {
      * 3. 订单商品恢复
      *
      * @param adminId 管理员ID
-     * @param body   订单信息，{ orderId：xxx }
+     * @param body    订单信息，{ orderId：xxx }
      * @return 订单操作结果
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
@@ -97,7 +102,7 @@ public class AdminOrderController {
             return ResponseUtil.unlogin();
         }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
-        Integer refundMoney = JacksonUtil.parseInteger(body, "refundMoney");
+        String refundMoney = JacksonUtil.parseString(body, "refundMoney");
         if (orderId == null) {
             return ResponseUtil.badArgument();
         }
@@ -107,7 +112,7 @@ public class AdminOrderController {
             return ResponseUtil.badArgument();
         }
 
-        if(order.getActualPrice().compareTo(new BigDecimal(refundMoney)) != 0){
+        if (order.getActualPrice().compareTo(new BigDecimal(refundMoney)) != 0) {
             return ResponseUtil.badArgumentValue();
         }
 
@@ -139,6 +144,18 @@ public class AdminOrderController {
             logger.error("系统内部错误", ex);
             return ResponseUtil.fail(403, "订单退款失败");
         }
+
+        //TODO 发送邮件和短信通知，这里采用异步发送
+        // 退款成功通知用户
+        /**
+         *
+         * 您申请的订单退款 [ 单号:{1} ] 已成功，请耐心等待到账。
+         * 注意订单号只发后6位
+         *
+         */
+        litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.REFUND, new String[]{order.getOrderSn().substring(8, 14)});
+
+
         txManager.commit(status);
 
         return ResponseUtil.ok();
@@ -150,7 +167,7 @@ public class AdminOrderController {
      * 2. 设置订单发货状态
      *
      * @param adminId 管理员ID
-     * @param body   订单信息，{ orderId：xxx, shipSn: xxx, shipChannel: xxx }
+     * @param body    订单信息，{ orderId：xxx, shipSn: xxx, shipChannel: xxx }
      * @return 订单操作结果
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
@@ -183,29 +200,38 @@ public class AdminOrderController {
         order.setShipTime(LocalDateTime.now());
         orderService.update(order);
 
+        //TODO 发送邮件和短信通知，这里采用异步发送
+        // 发货会发送通知短信给用户
+        /**
+         *
+         * 您的订单已经发货，快递公司 {1}，快递单 {2} ，请注意查收
+         *
+         */
+        litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.SHIP, new String[]{shipChannel, shipSn});
+
         return ResponseUtil.ok();
     }
 
     /**
      * 自动取消订单
-     *
+     * <p>
      * 定时检查订单未付款情况，如果超时半个小时则自动取消订单
      * 定时时间是每次相隔半个小时。
-     *
+     * <p>
      * 注意，因为是相隔半小时检查，因此导致有订单是超时一个小时以后才设置取消状态。
      * TODO
      * 这里可以进一步地配合用户订单查询时订单未付款检查，如果订单超时半小时则取消。
      */
-    @Scheduled(fixedDelay = 30*60*1000)
+    @Scheduled(fixedDelay = 30 * 60 * 1000)
     public void checkOrderUnpaid() {
         logger.debug(LocalDateTime.now());
 
         List<LitemallOrder> orderList = orderService.queryUnpaid();
-        for(LitemallOrder order : orderList){
+        for (LitemallOrder order : orderList) {
             LocalDateTime add = order.getAddTime();
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime expired = add.plusMinutes(30);
-            if(expired.isAfter(now)){
+            if (expired.isAfter(now)) {
                 continue;
             }
 
@@ -239,15 +265,15 @@ public class AdminOrderController {
 
     /**
      * 自动确认订单
-     *
+     * <p>
      * 定时检查订单未确认情况，如果超时七天则自动确认订单
      * 定时时间是每天凌晨3点。
-     *
+     * <p>
      * 注意，因为是相隔一天检查，因此导致有订单是超时八天以后才设置自动确认。
      * 这里可以进一步地配合用户订单查询时订单未确认检查，如果订单超时7天则自动确认。
      * 但是，这里可能不是非常必要。相比订单未付款检查中存在商品资源有限所以应该
      * 早点清理未付款情况，这里八天再确认是可以的。
-     *
+     * <p>
      * TODO
      * 目前自动确认是基于管理后台管理员所设置的商品快递时间，见orderService.queryUnconfirm。
      * 那么在实际业务上有可能存在商品寄出以后商品因为一些原因快递最终没有到达，
@@ -259,11 +285,11 @@ public class AdminOrderController {
         logger.debug(LocalDateTime.now());
 
         List<LitemallOrder> orderList = orderService.queryUnconfirm();
-        for(LitemallOrder order : orderList){
+        for (LitemallOrder order : orderList) {
             LocalDateTime ship = order.getShipTime();
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime expired = ship.plusDays(7);
-            if(expired.isAfter(now)){
+            if (expired.isAfter(now)) {
                 continue;
             }
             // 设置订单已取消状态

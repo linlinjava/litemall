@@ -554,7 +554,11 @@ public class WxOrderController {
             //TODO 发送邮件和短信通知，这里采用异步发送
             // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
             litemallNotifyService.notifyMailMessage("新订单通知", order.toString());
-            litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.PAY_SUCCEED, new String[]{orderSn});
+            /**
+             * 这里微信的短信平台对参数长度有限制，所以将订单号只截取后6位
+             *
+             */
+            litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {
@@ -600,6 +604,10 @@ public class WxOrderController {
         // 设置订单申请退款状态
         order.setOrderStatus(OrderUtil.STATUS_REFUND);
         orderService.update(order);
+
+        //TODO 发送邮件和短信通知，这里采用异步发送
+        // 有用户申请退款，邮件通知运营人员
+        litemallNotifyService.notifyMailMessage("退款申请", order.toString());
 
         return ResponseUtil.ok();
     }

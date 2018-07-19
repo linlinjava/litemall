@@ -18,6 +18,11 @@ SMSNotifyConfig:
       templateId: 156349
     - name: captcha
       templateId: 156433
+    - name: ship
+      templateId: 158002
+    - name: refund
+      templateId: 159447
+
 
 # 微信模版通知配置
 # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 ConfigUtil 内枚举值
