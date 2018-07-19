@@ -1,11 +1,9 @@
 package org.linlinjava.litemall.admin.web;
 
-import io.swagger.models.auth.In;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.dao.GoodsAllinone;
-import org.linlinjava.litemall.admin.dao.Product;
 import org.linlinjava.litemall.admin.util.CatVo;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
