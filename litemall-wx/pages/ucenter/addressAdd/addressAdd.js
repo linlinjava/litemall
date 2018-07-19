@@ -307,6 +307,22 @@ Page({
       countyName: address.areaName
     }, 'POST').then(function (res) {
       if (res.errno === 0) {
+        //返回之前，先取出上一页对象，并设置addressId
+        var pages = getCurrentPages();
+        var prevPage = pages[pages.length - 2];
+        console.log(prevPage);
+        if (prevPage.route == "pages/shopping/checkout/checkout") {
+          prevPage.setData({
+            addressId: res.data
+          })
+
+          try {
+            wx.setStorageSync('addressId', res.data);
+          } catch (e) {
+
+          }
+          console.log("set address");
+        }
         wx.navigateBack();
       }
     });

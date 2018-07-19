@@ -44,12 +44,12 @@ Page({
   },
   selectAddress() {
     wx.navigateTo({
-      url: '/pages/shopping/address/address',
+      url: '/pages/ucenter/address/address',
     })
   },
   addAddress() {
     wx.navigateTo({
-      url: '/pages/shopping/addressAdd/addressAdd',
+      url: '/pages/ucenter/addressAdd/addressAdd',
     })
   },
   onReady: function () {
