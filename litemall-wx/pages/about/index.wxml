@@ -1,0 +1,43 @@
+<view class="container">
+
+  <view class="about-item">
+
+    <view class="item-left">
+      <label>项目名称: </label>
+       <text>{{shopInfo.name}}</text> 
+    </view>
+
+  </view>
+
+  <view class="about-item">
+    <view class="item-left">
+      <label>项目地址: </label>
+       <text>{{shopInfo.address}}</text> 
+    </view>
+
+    <view class="item-right" bindtap="showLocation">
+      <image src="/static/images/ico-addr.png" class="right-icon"></image>
+    </view>
+  </view>
+
+  <view class="about-item">
+    <view class="item-left">
+      <label>电话号码:    </label>
+       <text>{{shopInfo.linkPhone}}</text> 
+    </view>
+    <view class="item-right" bindtap="callPhone">
+      <image src="/static/images/telephone.png" class="right-icon"></image>
+    </view>
+  </view>
+
+  <view class="about-item">
+    <view class="item-left">
+      <label>litemall交流群: </label>
+       <text>{{shopInfo.qqNumber}}</text> 
+    </view>
+    <view class="item-right">
+      <image src="/static/images/mobile.png" class="right-icon"></image>
+    </view>
+  </view>
+
+</view>
