@@ -10,6 +10,7 @@ Page({
     helpKeyword: [],
     historyKeyword: [],
     categoryFilter: false,
+    currentSort: 'name',
     currentSortType: 'default',
     currentSortOrder: 'desc',
     filterCategory: [],
@@ -57,7 +58,9 @@ Page({
   },
   getHelpKeyword: function () {
     let that = this;
-    util.request(api.SearchHelper, { keyword: that.data.keyword }).then(function (res) {
+    util.request(api.SearchHelper, {
+      keyword: that.data.keyword
+    }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           helpKeyword: res.data
@@ -87,7 +90,14 @@ Page({
   },
   getGoodsList: function () {
     let that = this;
-    util.request(api.GoodsList, { keyword: that.data.keyword, page: that.data.page, size: that.data.size, sort: that.data.currentSortType, order: that.data.currentSortOrder, categoryId: that.data.categoryId }).then(function (res) {
+    util.request(api.GoodsList, {
+      keyword: that.data.keyword,
+      page: that.data.page,
+      size: that.data.size,
+      sort: that.data.currentSort,
+      order: that.data.currentSortOrder,
+      categoryId: that.data.categoryId
+    }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           searchStatus: true,
@@ -107,7 +117,7 @@ Page({
 
   },
   getSearchResult(keyword) {
-    if(keyword === ''){
+    if (keyword === '') {
       keyword = this.data.defaultKeyword.keyword;
     }
     this.setData({
@@ -119,13 +129,15 @@ Page({
 
     this.getGoodsList();
   },
-  openSortFilter: function (event) {
+  openSortFilter: function(event) {
     let currentId = event.currentTarget.id;
     switch (currentId) {
       case 'categoryFilter':
         this.setData({
           categoryFilter: !this.data.categoryFilter,
-          currentSortOrder: 'asc'
+          currentSortType: 'category',
+          currentSort: 'add_time',
+          currentSortOrder: 'desc'
         });
         break;
       case 'priceSort':
@@ -135,6 +147,7 @@ Page({
         }
         this.setData({
           currentSortType: 'price',
+          currentSort: 'retail_price',
           currentSortOrder: tmpSortOrder,
           categoryFilter: false
         });
@@ -145,13 +158,15 @@ Page({
         //综合排序
         this.setData({
           currentSortType: 'default',
+          currentSort: 'name',
           currentSortOrder: 'desc',
-          categoryFilter: false
+          categoryFilter: false,
+          categoryId: 0,
         });
         this.getGoodsList();
     }
   },
-  selectCategory: function (event) {
+  selectCategory: function(event) {
     let currentIndex = event.target.dataset.categoryIndex;
     let filterCategory = this.data.filterCategory;
     let currentCategory = null;

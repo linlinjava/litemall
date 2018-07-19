@@ -76,6 +76,10 @@ public class LitemallGoodsService {
         }
         if(!StringUtils.isEmpty(keyword)){
             criteria.andKeywordsLike("%" + keyword + "%");
+
+            LitemallGoodsExample.Criteria criteria2 = example.createCriteria();
+            criteria2.andNameLike("%" + keyword + "%");
+            example.or(criteria2);
         }
         criteria.andDeletedEqualTo(false);
 
