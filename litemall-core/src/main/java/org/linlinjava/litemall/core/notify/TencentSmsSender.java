@@ -5,11 +5,14 @@ import com.github.qcloudsms.SmsSingleSenderResult;
 import com.github.qcloudsms.httpclient.HTTPException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 
 /*
  * 腾讯云短信服务
  */
+@Service
 public class TencentSmsSender implements SmsSender {
     private final Log logger = LogFactory.getLog(TencentSmsSender.class);
 
@@ -24,22 +27,36 @@ public class TencentSmsSender implements SmsSender {
     }
 
     @Override
-    public void send(String phone, String content) {
+    public SmsResult send(String phone, String content) {
         try {
             SmsSingleSenderResult result = sender.send(0, "86", phone, content, "", "");
             logger.debug(result);
+
+            SmsResult smsResult = new SmsResult();
+            smsResult.setSuccessful(true);
+            smsResult.setResult(result);
+            return smsResult;
         } catch (HTTPException | IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override
-    public void sendWithTemplate(String phone, int templateId, String[] params) {
+    public SmsResult sendWithTemplate(String phone, int templateId, String[] params) {
         try {
             SmsSingleSenderResult result = sender.sendWithParam("86", phone, templateId, params, "", "", "");
             logger.debug(result);
+
+            SmsResult smsResult = new SmsResult();
+            smsResult.setSuccessful(true);
+            smsResult.setResult(result);
+            return smsResult;
         } catch (HTTPException | IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 }

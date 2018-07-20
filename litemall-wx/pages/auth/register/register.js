@@ -31,10 +31,32 @@ Page({
 
   },
   sendCode: function () {
-    wx.showModal({
-      title: '注意',
-      content: '由于目前不支持手机短信发送，因此验证码任意值都可以',
-      showCancel: false
+    let that = this;
+    wx.request({
+      url: api.AuthRegisterCaptcha,
+      data: {
+        mobile: that.data.mobile
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        if (res.data.errno == 0) {
+          wx.showModal({
+            title: '发送成功',
+            content: '验证码已发送',
+            showCancel: false
+          });
+        }
+        else {
+          wx.showModal({
+            title: '错误信息',
+            content: res.data.errmsg,
+            showCancel: false
+          });
+        }
+      }
     });
   },
   startRegister: function () {

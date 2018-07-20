@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.core.notify;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
@@ -52,6 +51,23 @@ public class NotifyService {
         int templateId = Integer.parseInt(getTemplateId(notifyType, smsTemplate));
 
         smsSender.sendWithTemplate(phoneNumber, templateId, params);
+    }
+
+    /**
+     * 以同步的方式发送短信模版消息通知
+     *
+     * @param phoneNumber 接收通知的电话号码
+     * @param notifyType  通知类别，通过该枚举值在配置文件中获取相应的模版ID
+     * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
+     * @return
+     */
+    public SmsResult notifySmsTemplateSync(String phoneNumber, NotifyType notifyType, String[] params) {
+        if (smsSender == null)
+            return null;
+
+        int templateId = Integer.parseInt(getTemplateId(notifyType, smsTemplate));
+
+        return smsSender.sendWithTemplate(phoneNumber, templateId, params);
     }
 
     /**
