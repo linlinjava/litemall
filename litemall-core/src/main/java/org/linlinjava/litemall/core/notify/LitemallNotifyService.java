@@ -17,7 +17,7 @@ public class LitemallNotifyService {
     @Autowired
     private WXTemplateSendService wxTemplateSendService;
 
-    @Async("notifyAsync")
+    @Async
     public void notifySMSMessage(String phoneNumber, String message) {
         if (!smsSendService.config.isEnable())
             return;
@@ -33,7 +33,7 @@ public class LitemallNotifyService {
      * @param notifyType    通知类别，通过该枚举值在配置文件中获取相应的模版ID
      * @param params        通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      */
-    @Async("notifyAsync")
+    @Async
     public void notifyWXTemplate(String token,String touser, String formId, ConfigUtil.NotifyType notifyType, String[] params) {
         if (!wxTemplateSendService.config.isEnable())
             return;
@@ -51,7 +51,7 @@ public class LitemallNotifyService {
      * @param notifyType  通知类别，通过该枚举值在配置文件中获取相应的模版ID
      * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      */
-    @Async("notifyAsync")
+    @Async
     public void notifySMSTemplate(String phoneNumber, ConfigUtil.NotifyType notifyType, String[] params) {
         if (!smsSendService.config.isEnable())
             return;
@@ -69,7 +69,7 @@ public class LitemallNotifyService {
      * @param templateId  模板ID
      * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      */
-    @Async("notifyAsync")
+    @Async
     public void notifySMSTemplate(String phoneNumber, int templateId, String[] params) {
         if (!smsSendService.config.isEnable())
             return;
@@ -83,7 +83,7 @@ public class LitemallNotifyService {
      * @param setSubject 邮件标题
      * @param setText    邮件内容
      */
-    @Async("notifyAsync")
+    @Async
     public void notifyMailMessage(String setSubject, String setText) {
         if (!mailSendService.config.isEnable())
             return;

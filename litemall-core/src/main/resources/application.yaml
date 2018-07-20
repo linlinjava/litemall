@@ -34,12 +34,6 @@ WXNotifyConfig:
     - name: captcha
       templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-# 发送线程池配置
-NotifyPoolConfig:
-  corePoolSize: 5
-  maxPoolSize: 100
-  queueCapacity: 50
-
 #快鸟物流查询配置
 express:
   appId: "XXXXXXXXX"
