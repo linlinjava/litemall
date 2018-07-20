@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @return 远程资源的响应结果
  */
-public class TinymallRequestUtil {
+public class HttpUtil {
     /**
      * 向指定 URL 发送POST方法的请求
      *
