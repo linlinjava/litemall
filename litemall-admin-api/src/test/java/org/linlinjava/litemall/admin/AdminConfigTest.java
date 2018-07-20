@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.os;
+package org.linlinjava.litemall.admin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,9 +11,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class OsTest {
+public class AdminConfigTest {
     @Autowired
-    Environment environment;
+    private Environment environment;
 
     @Test
     public void test() {
@@ -21,10 +21,10 @@ public class OsTest {
         System.out.println(environment.getProperty("express.appId"));
         // 测试获取application-db.yml配置信息
         System.out.println(environment.getProperty("spring.datasource.druid.url"));
-        // 测试获取application-os.yml配置信息
-        System.out.println(environment.getProperty("org.linlinjava.litemall.os.address"));
+        // 测试获取application-admin.yml配置信息
+        // System.out.println(environment.getProperty(""));
         // 测试获取application.yml配置信息
-        System.out.println(environment.getProperty("logging.level.org.linlinjava.litemall.os"));
+        System.out.println(environment.getProperty("logging.level.org.linlinjava.litemall.admin"));
     }
 
 }

@@ -12,7 +12,6 @@ import java.util.Map;
 
 @Component
 @Configuration
-@PropertySource(value = {"classpath:application.yaml"}, factory = YmlPropertyFactory.class)
 @ConfigurationProperties(prefix = "express")
 public class ExpressConfig {
     private String appId;
