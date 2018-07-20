@@ -33,9 +33,9 @@
     "pages/about/about"
   ],
   "window": {
+    "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "litemall小程序商城",
-    "navigationBarTextStyle": "#FFFFFF",
-    "navigationBarBackgroundColor": "#696969",
+    "navigationBarTextStyle": "black",
     "backgroundColor": "#FFFFFF",
     "backgroundTextStyle": "dark",
     "enablePullDownRefresh": false
