@@ -34,11 +34,6 @@ Page({
     var prevPage = pages[pages.length - 2];
 
     if (prevPage.route == "pages/checkout/checkout") {
-      console.log(event.currentTarget.dataset.addressId);
-      prevPage.setData({
-        addressId: event.currentTarget.dataset.addressId
-      })
-
       try {
         wx.setStorageSync('addressId', event.currentTarget.dataset.addressId);
       } catch (e) {
