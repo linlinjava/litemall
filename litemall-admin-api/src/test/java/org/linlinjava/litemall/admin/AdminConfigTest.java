@@ -18,7 +18,7 @@ public class AdminConfigTest {
     @Test
     public void test() {
         // 测试获取application-core.yml配置信息
-        System.out.println(environment.getProperty("express.appId"));
+        System.out.println(environment.getProperty("litemall.express.appId"));
         // 测试获取application-db.yml配置信息
         System.out.println(environment.getProperty("spring.datasource.druid.url"));
         // 测试获取application-admin.yml配置信息

@@ -8,5 +8,5 @@ activeStorage: los
 
 # 开发者应该设置成自己的域名，必须附带http或者https
 # 开发者可以查看OsStorageController.generateUrl
-org.linlinjava.litemall.os.address: http://127.0.0.1
-org.linlinjava.litemall.os.port: 8081
+litemall.os.address: http://127.0.0.1
+litemall.os.port: 8081

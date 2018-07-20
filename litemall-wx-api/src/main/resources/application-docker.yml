@@ -6,9 +6,10 @@ spring:
         password: ${MYSQL_PASSWORD}
         type: com.alibaba.druid.pool.DruidDataSource
 
-wx:
-  app-id: ${WX_APP_ID}
-  app-secret: ${WX_APP_SECRET}
-  mch-id: ${WX_MCH_ID}
-  mch-key: ${WX_MCH_KEY}
-  notify-url: ${WX_NOTIFY_URL}
+litemall:
+  wx:
+    app-id: ${WX_APP_ID}
+    app-secret: ${WX_APP_SECRET}
+    mch-id: ${WX_MCH_ID}
+    mch-key: ${WX_MCH_KEY}
+    notify-url: ${WX_NOTIFY_URL}

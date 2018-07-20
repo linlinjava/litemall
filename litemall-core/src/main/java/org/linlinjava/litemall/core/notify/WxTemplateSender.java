@@ -1,7 +1,6 @@
 package org.linlinjava.litemall.core.notify;
 
 import org.json.JSONObject;
-import org.linlinjava.litemall.core.notify.config.WXNotifyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +18,7 @@ import java.security.cert.X509Certificate;
 /**
  * 微信模版消息通知
  */
-@Service("wxTemplateMsgSendService")
-class WXTemplateSendService {
-    @Autowired
-    WXNotifyConfig config;
+public class WxTemplateSender {
 
     /**
      * 发送微信消息(模板消息)

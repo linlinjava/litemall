@@ -1,19 +1,23 @@
 package org.linlinjava.litemall.core.express.config;
 
-import org.linlinjava.litemall.core.util.YmlPropertyFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Component
-@Configuration
-@ConfigurationProperties(prefix = "express")
-public class ExpressConfig {
+@ConfigurationProperties(prefix = "litemall.express")
+public class ExpressProperties {
+    private boolean enable;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     private String appId;
     private String appKey;
 

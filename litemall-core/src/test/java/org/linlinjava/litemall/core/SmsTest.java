@@ -2,8 +2,8 @@ package org.linlinjava.litemall.core;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.linlinjava.litemall.core.notify.LitemallNotifyService;
-import org.linlinjava.litemall.core.notify.util.ConfigUtil;
+import org.linlinjava.litemall.core.notify.NotifyService;
+import org.linlinjava.litemall.core.notify.NotifyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,14 +26,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class SmsTest {
 
     @Autowired
-    private LitemallNotifyService litemallNotifyService;
+    private NotifyService notifyService;
 
-//    @Test
+    @Test
     public void testSingle() {
         String phone = "xxxxxxxxxxx";
         // 这里的短信签名必须在短信管理平台内设置正确并且相符合
         String msg = "【xxx】你的验证码为:123456，请与2分钟内填写，如非本人操作，请忽略本短信。";
-        litemallNotifyService.notifySMSMessage(phone, msg);
+        notifyService.notifySms(phone, msg);
 
         try {
             Thread.sleep(5000);
@@ -47,7 +47,7 @@ public class SmsTest {
         String phone = "xxxxxxxxxxx";
         String[] params = new String[] {"123456"};
 
-        litemallNotifyService.notifySMSTemplate(phone, ConfigUtil.NotifyType.CAPTCHA, params);
+        notifyService.notifySmsTemplate(phone, NotifyType.CAPTCHA, params);
 
         try {
             Thread.sleep(5000);
@@ -61,7 +61,7 @@ public class SmsTest {
         String phone = "xxxxxxxxxxx";
         String[] params = new String[] {"123456"};
 
-        litemallNotifyService.notifySMSTemplate(phone, ConfigUtil.NotifyType.PAY_SUCCEED, params);
+        notifyService.notifySmsTemplate(phone, NotifyType.PAY_SUCCEED, params);
 
         try {
             Thread.sleep(5000);

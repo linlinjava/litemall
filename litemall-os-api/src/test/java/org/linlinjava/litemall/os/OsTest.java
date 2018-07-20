@@ -18,11 +18,11 @@ public class OsTest {
     @Test
     public void test() {
         // 测试获取application-core.yml配置信息
-        System.out.println(environment.getProperty("express.appId"));
+        System.out.println(environment.getProperty("litemall.express.appId"));
         // 测试获取application-db.yml配置信息
         System.out.println(environment.getProperty("spring.datasource.druid.url"));
         // 测试获取application-os.yml配置信息
-        System.out.println(environment.getProperty("org.linlinjava.litemall.os.address"));
+        System.out.println(environment.getProperty("litemall.os.address"));
         // 测试获取application.yml配置信息
         System.out.println(environment.getProperty("logging.level.org.linlinjava.litemall.os"));
     }

@@ -9,8 +9,8 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.core.notify.LitemallNotifyService;
-import org.linlinjava.litemall.core.notify.util.ConfigUtil;
+import org.linlinjava.litemall.core.notify.NotifyService;
+import org.linlinjava.litemall.core.notify.NotifyType;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
@@ -82,7 +82,7 @@ public class WxOrderController {
     private WxPayService wxPayService;
 
     @Autowired
-    private LitemallNotifyService litemallNotifyService;
+    private NotifyService notifyService;
 
     public WxOrderController() {
     }
@@ -553,12 +553,12 @@ public class WxOrderController {
 
             //TODO 发送邮件和短信通知，这里采用异步发送
             // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
-            litemallNotifyService.notifyMailMessage("新订单通知", order.toString());
+            notifyService.notifyMail("新订单通知", order.toString());
             /**
              * 这里微信的短信平台对参数长度有限制，所以将订单号只截取后6位
              *
              */
-            litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
+            notifyService.notifySmsTemplate(order.getMobile(), NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {
@@ -607,7 +607,7 @@ public class WxOrderController {
 
         //TODO 发送邮件和短信通知，这里采用异步发送
         // 有用户申请退款，邮件通知运营人员
-        litemallNotifyService.notifyMailMessage("退款申请", order.toString());
+        notifyService.notifyMail("退款申请", order.toString());
 
         return ResponseUtil.ok();
     }

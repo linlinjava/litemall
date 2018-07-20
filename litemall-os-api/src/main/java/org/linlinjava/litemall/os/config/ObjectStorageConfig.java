@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "org.linlinjava.litemall.os")
+@ConfigurationProperties(prefix = "litemall.os")
 public class ObjectStorageConfig {
     private String address;
 

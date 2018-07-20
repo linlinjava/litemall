@@ -3,15 +3,14 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.core.notify.LitemallNotifyService;
-import org.linlinjava.litemall.core.notify.util.ConfigUtil;
+import org.linlinjava.litemall.core.notify.NotifyService;
+import org.linlinjava.litemall.core.notify.NotifyType;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.LitemallProductService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.util.OrderHandleOption;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ public class AdminOrderController {
     private LitemallUserService userService;
 
     @Autowired
-    private LitemallNotifyService litemallNotifyService;
+    private NotifyService notifyService;
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
@@ -153,7 +152,7 @@ public class AdminOrderController {
          * 注意订单号只发后6位
          *
          */
-        litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.REFUND, new String[]{order.getOrderSn().substring(8, 14)});
+        notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND, new String[]{order.getOrderSn().substring(8, 14)});
 
 
         txManager.commit(status);
@@ -207,7 +206,7 @@ public class AdminOrderController {
          * 您的订单已经发货，快递公司 {1}，快递单 {2} ，请注意查收
          *
          */
-        litemallNotifyService.notifySMSTemplate(order.getMobile(), ConfigUtil.NotifyType.SHIP, new String[]{shipChannel, shipSn});
+        notifyService.notifySmsTemplate(order.getMobile(), NotifyType.SHIP, new String[]{shipChannel, shipSn});
 
         return ResponseUtil.ok();
     }

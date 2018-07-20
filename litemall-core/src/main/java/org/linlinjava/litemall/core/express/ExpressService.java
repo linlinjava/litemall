@@ -1,12 +1,11 @@
 package org.linlinjava.litemall.core.express;
 
-import org.linlinjava.litemall.core.express.config.ExpressConfig;
+import org.linlinjava.litemall.core.express.config.ExpressProperties;
 import org.linlinjava.litemall.core.util.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.HashMap;
@@ -17,13 +16,19 @@ import java.util.Map;
  * <p>
  * 3831775044640 韵达快递(YD)
  */
-@Service
 public class ExpressService {
     //请求url
     private String ReqURL = "http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
 
-    @Autowired
-    ExpressConfig config;
+    private ExpressProperties properties;
+
+    public ExpressProperties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(ExpressProperties properties) {
+        this.properties = properties;
+    }
 
     /**
      * 获取物流供应商名
@@ -32,7 +37,7 @@ public class ExpressService {
      * @return
      */
     public String getVendorName(String vendooCode) {
-        for (Map<String, String> item : config.getVendors()) {
+        for (Map<String, String> item : properties.getVendors()) {
             if (item.get("code").equals(vendooCode))
                 return item.get("name");
         }
@@ -45,13 +50,17 @@ public class ExpressService {
      * @throws Exception
      */
     public String getOrderTracesByJson(String expCode, String expNo) throws Exception {
+        if(!properties.isEnable()){
+            return null;
+        }
+
         String requestData = "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("RequestData", URLEncoder.encode(requestData, "UTF-8"));
-        params.put("EBusinessID", config.getAppId());
+        params.put("EBusinessID", properties.getAppId());
         params.put("RequestType", "1002");
-        String dataSign = encrypt(requestData, config.getAppKey(), "UTF-8");
+        String dataSign = encrypt(requestData, properties.getAppKey(), "UTF-8");
         params.put("DataSign", URLEncoder.encode(dataSign, "UTF-8"));
         params.put("DataType", "2");
 
