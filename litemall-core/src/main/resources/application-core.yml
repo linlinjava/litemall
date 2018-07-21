@@ -71,3 +71,26 @@ litemall:
       name: "FEDEX联邦(国内件)"
     - code: "FEDEX_GJ"
       name: "FEDEX联邦(国际件)"
+
+  # 对象存储配置
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent
+    active: local
+    # 本地对象存储配置信息
+    local:
+      storagePath: storage
+      address: http://127.0.0.1
+      port: 8081
+    # 阿里云对象存储配置信息
+    aliyun:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      accessKeyId: 111111
+      accessKeySecret: xxxxxx
+      bucketName: xxxxxx
+    # 腾讯对象存储配置信息
+    # 请参考 https://cloud.tencent.com/document/product/436/6249
+    tencent:
+      secretId: 111111
+      secretKey: xxxxxx
+      region: xxxxxx
+      bucketName: xxxxxx
