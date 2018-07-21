@@ -7,6 +7,9 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.stream.Stream;
 
+/**
+ * 提供存储服务类，所有存储服务均由该类对外提供
+ */
 public class StorageService {
     private String active;
     private Storage storage;
@@ -31,8 +34,9 @@ public class StorageService {
 
     /**
      * 存储一个文件对象
-     * @param file      SpringBoot MultipartFile文件对象
-     * @param keyName   文件索引名
+     *
+     * @param file    SpringBoot MultipartFile文件对象
+     * @param keyName 文件索引名
      */
     public void store(MultipartFile file, String keyName) {
         storage.store(file, keyName);
@@ -46,11 +50,11 @@ public class StorageService {
         return storage.load(keyName);
     }
 
-    public Resource loadAsResource(String keyName){
+    public Resource loadAsResource(String keyName) {
         return storage.loadAsResource(keyName);
     }
 
-    public void delete(String keyName){
+    public void delete(String keyName) {
         storage.delete(keyName);
     }
 

@@ -79,6 +79,7 @@ public class LitemallGoodsService {
 
             LitemallGoodsExample.Criteria criteria2 = example.createCriteria();
             criteria2.andNameLike("%" + keyword + "%");
+            criteria2.andDeletedEqualTo(false);
             example.or(criteria2);
         }
         criteria.andDeletedEqualTo(false);

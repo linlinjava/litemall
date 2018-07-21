@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.core.storage.config;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.linlinjava.litemall.core.storage.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
