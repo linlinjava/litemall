@@ -1,10 +1,10 @@
 package org.linlinjava.litemall.os.web;
 
+import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.util.CharUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallStorage;
 import org.linlinjava.litemall.db.service.LitemallStorageService;
-import org.linlinjava.litemall.os.service.ObjectStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -24,8 +24,8 @@ import java.util.Map;
 @RequestMapping("/os/storage")
 public class OsStorageController {
 
-    @javax.annotation.Resource(name="${activeStorage}")
-    private ObjectStorageService storageService;
+    @Autowired
+    private StorageService storageService;
     @Autowired
     private LitemallStorageService litemallStorageService;
 
