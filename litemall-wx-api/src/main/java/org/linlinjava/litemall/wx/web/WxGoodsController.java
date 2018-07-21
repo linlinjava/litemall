@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.service.SystemConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,40 +48,39 @@ public class WxGoodsController {
     @Autowired
     private LitemallSearchHistoryService searchHistoryService;
     @Autowired
-    private LitemallCartService cartService;
-    @Autowired
     private LitemallGoodsSpecificationService goodsSpecificationService;
+
 
     /**
      * 商品详情
-     *
+     * <p>
      * 用户可以不登录。
      * 如果用户登录，则记录用户足迹以及返回用户收藏信息。
      *
      * @param userId 用户ID
-     * @param id 商品ID
+     * @param id     商品ID
      * @return 商品详情
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              info: xxx,
-     *              userHasCollect: xxx,
-     *              issue: xxx,
-     *              comment: xxx,
-     *              specificationList: xxx,
-     *              productList: xxx,
-     *              attribute: xxx,
-     *              brand: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * info: xxx,
+     * userHasCollect: xxx,
+     * issue: xxx,
+     * comment: xxx,
+     * specificationList: xxx,
+     * productList: xxx,
+     * attribute: xxx,
+     * brand: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, Integer id) {
-        if(id == null){
+        if (id == null) {
             return ResponseUtil.badArgument();
         }
 
@@ -107,7 +107,7 @@ public class WxGoodsController {
         List<LitemallComment> comments = commentService.queryGoodsByGid(id, 0, 2);
         List<Map<String, Object>> commentsVo = new ArrayList<>(comments.size());
         int commentCount = commentService.countGoodsByGid(id, 0, 2);
-        for(LitemallComment comment : comments){
+        for (LitemallComment comment : comments) {
             Map<String, Object> c = new HashMap<>();
             c.put("id", comment.getId());
             c.put("addTime", comment.getAddTime());
@@ -124,12 +124,12 @@ public class WxGoodsController {
 
         // 用户收藏
         int userHasCollect = 0;
-        if(userId != null) {
+        if (userId != null) {
             userHasCollect = collectService.count(userId, id);
         }
 
         // 记录用户的足迹
-        if(userId != null) {
+        if (userId != null) {
             LitemallFootprint footprint = new LitemallFootprint();
             footprint.setAddTime(LocalDateTime.now());
             footprint.setUserId(userId);
@@ -152,39 +152,38 @@ public class WxGoodsController {
 
     /**
      * 商品分类类目
-     *
+     * <p>
      * TODO 可能应该合并到WxCatalogController中
      *
      * @param id 分类类目ID
      * @return 商品分类类目
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              currentCategory: xxx,
-     *              parentCategory: xxx,
-     *              brotherCategory: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * currentCategory: xxx,
+     * parentCategory: xxx,
+     * brotherCategory: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("category")
     public Object category(Integer id) {
-        if(id == null){
+        if (id == null) {
             return ResponseUtil.badArgument();
         }
         LitemallCategory cur = categoryService.findById(id);
         LitemallCategory parent = null;
         List<LitemallCategory> children = null;
 
-        if(cur.getPid() == 0){
+        if (cur.getPid() == 0) {
             parent = cur;
             children = categoryService.queryByPid(cur.getId());
             cur = children.get(0);
-        }
-        else{
+        } else {
             parent = categoryService.findById(cur.getPid());
             children = categoryService.queryByPid(cur.getPid());
         }
@@ -197,33 +196,33 @@ public class WxGoodsController {
 
     /**
      * 根据条件搜素商品
-     *
+     * <p>
      * 1. 这里的前五个参数都是可选的，甚至都是空
      * 2. 用户是可选登录，如果登录，则记录用户的搜索关键字
      *
      * @param categoryId 分类类目ID
-     * @param brandId 品牌商ID
-     * @param keyword 关键字
-     * @param isNew 是否新品
-     * @param isHot 是否热买
-     * @param userId 用户ID
-     * @param page 分页页数
-     * @param size 分页大小
-     * @param sort 排序方式
-     * @param order 排序类型，顺序或者降序
+     * @param brandId    品牌商ID
+     * @param keyword    关键字
+     * @param isNew      是否新品
+     * @param isHot      是否热买
+     * @param userId     用户ID
+     * @param page       分页页数
+     * @param size       分页大小
+     * @param sort       排序方式
+     * @param order      排序类型，顺序或者降序
      * @return 根据条件搜素的商品详情
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              goodsList: xxx,
-     *              filterCategoryList: xxx,
-     *              count: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * goodsList: xxx,
+     * filterCategoryList: xxx,
+     * count: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(Integer categoryId, Integer brandId, String keyword, Boolean isNew, Boolean isHot,
@@ -249,7 +248,7 @@ public class WxGoodsController {
         // 查询商品所属类目列表。
         List<Integer> goodsCatIds = goodsService.getCatIds(brandId, keyword, isHot, isNew);
         List<LitemallCategory> categoryList = null;
-        if(goodsCatIds.size() != 0) {
+        if (goodsCatIds.size() != 0) {
             categoryList = categoryService.queryL2ByIds(goodsCatIds);
         }
 
@@ -262,27 +261,27 @@ public class WxGoodsController {
 
     /**
      * 新品首发页面的横幅数据
-     *
+     * <p>
      * TODO 其实可以删除
      *
      * @return 新品首发页面的栏目数据
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              bannerInfo: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * bannerInfo: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("new")
     public Object newGoods() {
         Map<String, String> bannerInfo = new HashMap<>();
         bannerInfo.put("url", "");
-        bannerInfo.put("name", "坚持初心，为你寻觅世间好物");
-        bannerInfo.put("imgUrl", "http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png");
+        bannerInfo.put("name", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_NEW, SystemConfig.BANNER_TITLE));
+        bannerInfo.put("imgUrl", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_NEW, SystemConfig.BANNER_IMAGE));
 
         Map<String, Object> data = new HashMap<>();
         data.put("bannerInfo", bannerInfo);
@@ -291,27 +290,27 @@ public class WxGoodsController {
 
     /**
      * 人气推荐页面的横幅数据
-     *
+     * <p>
      * TODO 其实可以删除
      *
      * @return 人气推荐页面的栏目数据
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              bannerInfo: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * bannerInfo: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("hot")
     public Object hotGoods() {
         Map<String, String> bannerInfo = new HashMap<>();
         bannerInfo.put("url", "");
-        bannerInfo.put("name", "大家都在买的严选好物");
-        bannerInfo.put("imgUrl", "http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png");
+        bannerInfo.put("name", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_HOT, SystemConfig.BANNER_TITLE));
+        bannerInfo.put("imgUrl", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_HOT, SystemConfig.BANNER_IMAGE));
         Map<String, Object> data = new HashMap<>();
         data.put("bannerInfo", bannerInfo);
         return ResponseUtil.ok(data);
@@ -321,25 +320,25 @@ public class WxGoodsController {
      * 商品页面推荐商品
      *
      * @return 商品页面推荐商品
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              goodsList: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * goodsList: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("related")
     public Object related(Integer id) {
-        if(id == null){
+        if (id == null) {
             return ResponseUtil.badArgument();
         }
 
         LitemallGoods goods = goodsService.findById(id);
-        if(goods == null){
+        if (goods == null) {
             return ResponseUtil.badArgumentValue();
         }
 
@@ -358,16 +357,16 @@ public class WxGoodsController {
      * 在售的商品总数
      *
      * @return 在售的商品总数
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              goodsCount: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * goodsCount: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("count")
     public Object count() {

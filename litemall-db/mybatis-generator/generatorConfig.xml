@@ -157,5 +157,8 @@
             <columnOverride javaType="java.time.LocalDateTime" column="last_login_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
+        <table tableName="litemall_system">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>
