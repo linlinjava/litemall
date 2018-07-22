@@ -35,10 +35,10 @@
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "litemall小程序商城",
+    "enablePullDownRefresh": true,
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FFFFFF",
-    "backgroundTextStyle": "dark",
-    "enablePullDownRefresh": false
+    "backgroundTextStyle": "dark"
   },
   "tabBar": {
     "backgroundColor": "#fafafa",

@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 33,
+			"current": 32,
 			"list": [
 				{
 					"id": -1,
@@ -219,7 +219,13 @@
 				{
 					"id": -1,
 					"name": "关于",
-					"pathName": "pages/about/about"
+					"pathName": "pages/about/about",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "测试更新",
+					"pathName": "pages/index/index"
 				}
 			]
 		}

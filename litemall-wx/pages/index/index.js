@@ -14,7 +14,7 @@ Page({
     banner: [],
     channel: []
   },
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     return {
       title: 'litemall小程序商场',
       desc: '开源微信小程序商城',
@@ -22,9 +22,16 @@ Page({
     }
   },
 
-  getIndexData: function () {
+  onPullDownRefresh() {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    this.getIndexData();
+    wx.hideNavigationBarLoading() //完成停止加载
+    wx.stopPullDownRefresh() //停止下拉刷新
+  },
+
+  getIndexData: function() {
     let that = this;
-    util.request(api.IndexUrl).then(function (res) {
+    util.request(api.IndexUrl).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           newGoods: res.data.newGoodsList,
@@ -38,19 +45,19 @@ Page({
       }
     });
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.getIndexData();
   },
-  onReady: function () {
+  onReady: function() {
     // 页面渲染完成
   },
-  onShow: function () {
+  onShow: function() {
     // 页面显示
   },
-  onHide: function () {
+  onHide: function() {
     // 页面隐藏
   },
-  onUnload: function () {
+  onUnload: function() {
     // 页面关闭
   },
 })

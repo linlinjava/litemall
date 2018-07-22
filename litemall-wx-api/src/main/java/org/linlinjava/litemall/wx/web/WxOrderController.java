@@ -559,7 +559,7 @@ public class WxOrderController {
              * 这里微信的短信平台对参数长度有限制，所以将订单号只截取后6位
              *
              */
-            notifyService.notifySmsTemplate(order.getMobile(), NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
+            notifyService.notifySmsTemplateSync(order.getMobile(), NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {
