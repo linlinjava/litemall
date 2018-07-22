@@ -6,7 +6,8 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
 上架实例
 
-![](./doc/pic/1.png)    
+![](./doc/pic/demo.png)    
+
 
 ## 项目代码
 
@@ -14,7 +15,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * [GitHub](https://github.com/linlinjava/litemall)
 
 ## 项目架构
-![](./doc/pic/demo.png)    
+![](./doc/pic/1.png)    
 
 ## 技术栈
 
