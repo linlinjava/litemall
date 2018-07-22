@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.core.system;
+package org.linlinjava.litemall.core.util;
 
 import java.util.Map;
 
@@ -21,6 +21,9 @@ public class SystemInfoPrinter {
 
     private static void setMaxSize(Map<String, String> infos) {
         for (Map.Entry<String, String> entry : infos.entrySet()) {
+            if (entry.getValue() == null)
+                continue;
+
             int size = entry.getKey().length() + entry.getValue().length();
 
             if (size > maxSize)
@@ -52,6 +55,9 @@ public class SystemInfoPrinter {
     }
 
     private static void printLine(String head, String line) {
+        if (line == null)
+            return;
+
         if (head.startsWith(CREATE_PART_COPPER)) {
             System.out.println("");
             System.out.println("    [[  " + line + "  ]]");

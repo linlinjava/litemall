@@ -1,26 +1,28 @@
-package org.linlinjava.litemall.wx.service;
+package org.linlinjava.litemall.core.system;
 
-import org.linlinjava.litemall.core.system.SystemInfoPrinter;
+import org.linlinjava.litemall.core.util.SystemInfoPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * 系统启动服务，用于检查系统状态及打印系统信息
+ */
 @Component
-public class SystemInistService {
+class SystemInistService {
     private SystemInistService systemInistService;
     @Autowired
     private Environment environment;
 
     @PostConstruct
-    public void inist() {
+    private void inist() {
         systemInistService = this;
 
-        SystemInfoPrinter.printInfo("WX-API 初始化信息", getSystemInfo());
+        SystemInfoPrinter.printInfo("Litemall 初始化信息", getSystemInfo());
     }
 
     private Map<String, String> getSystemInfo() {
