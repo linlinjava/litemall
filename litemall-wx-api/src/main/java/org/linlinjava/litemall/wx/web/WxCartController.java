@@ -8,6 +8,7 @@ import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.service.SystemConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -469,8 +470,8 @@ public class WxCartController {
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
         BigDecimal freightPrice = new BigDecimal(0.00);
-        if(checkedGoodsPrice.compareTo(new BigDecimal(88.00)) == -1){
-            freightPrice = new BigDecimal(8.00);
+        if (checkedGoodsPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
+            freightPrice = SystemConfig.getFreight();
         }
 
         // 可以使用的其他钱，例如用户积分
