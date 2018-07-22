@@ -3,9 +3,8 @@ package org.linlinjava.litemall.core.system;
 import java.math.BigDecimal;
 
 /**
- * 系统设置
+ * 系统设置,其他配置请参考该类的实现
  */
-
 public class SystemConfig extends BaseConfig {
     public static final String PRE_FIX = "litemall.system.";
 

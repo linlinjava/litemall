@@ -33,6 +33,11 @@ class ConfigService {
         systemConfigService.inistConfigs();
     }
 
+    /**
+     * 根据 prefix 重置该 prefix 下所有设置
+     *
+     * @param prefix
+     */
     public void reloadConfig(String prefix) {
         List<LitemallSystem> list = litemallSystemConfigService.queryAll();
         for (LitemallSystem item : list) {
