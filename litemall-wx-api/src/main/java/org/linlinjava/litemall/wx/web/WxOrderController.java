@@ -18,7 +18,7 @@ import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderHandleOption;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
-import org.linlinjava.litemall.wx.service.SystemConfig;
+import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.wx.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;

@@ -66,6 +66,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.linlinjava</groupId>
+            <artifactId>litemall-db</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
