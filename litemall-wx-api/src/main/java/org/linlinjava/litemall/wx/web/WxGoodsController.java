@@ -3,9 +3,9 @@ package org.linlinjava.litemall.wx.web;
 import com.mysql.jdbc.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.SystemConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -280,8 +280,8 @@ public class WxGoodsController {
     public Object newGoods() {
         Map<String, String> bannerInfo = new HashMap<>();
         bannerInfo.put("url", "");
-        bannerInfo.put("name", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_NEW, SystemConfig.BANNER_TITLE));
-        bannerInfo.put("imgUrl", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_NEW, SystemConfig.BANNER_IMAGE));
+        bannerInfo.put("name", SystemConfig.getNewBannerTitle());
+        bannerInfo.put("imgUrl", SystemConfig.getNewImageUrl());
 
         Map<String, Object> data = new HashMap<>();
         data.put("bannerInfo", bannerInfo);
@@ -309,8 +309,8 @@ public class WxGoodsController {
     public Object hotGoods() {
         Map<String, String> bannerInfo = new HashMap<>();
         bannerInfo.put("url", "");
-        bannerInfo.put("name", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_HOT, SystemConfig.BANNER_TITLE));
-        bannerInfo.put("imgUrl", SystemConfig.getSystemConfig().getBannerInfo(SystemConfig.BANNER_HOT, SystemConfig.BANNER_IMAGE));
+        bannerInfo.put("name", SystemConfig.getHotBannerTitle());
+        bannerInfo.put("imgUrl", SystemConfig.getHotImageUrl());
         Map<String, Object> data = new HashMap<>();
         data.put("bannerInfo", bannerInfo);
         return ResponseUtil.ok(data);

@@ -2,9 +2,9 @@ package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.service.SystemConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,20 +62,20 @@ public class WxHomeController {
         List<LitemallCategory> channel = categoryService.queryChannel();
         data.put("channel", channel);
 
-        List<LitemallGoods> newGoods = goodsService.queryByNew(0, SystemConfig.getSystemConfig().getIndexLimit(SystemConfig.LIMIT_NEW));
+        List<LitemallGoods> newGoods = goodsService.queryByNew(0, SystemConfig.getNewLimit());
         data.put("newGoodsList", newGoods);
 
-        List<LitemallGoods> hotGoods = goodsService.queryByHot(0, SystemConfig.getSystemConfig().getIndexLimit(SystemConfig.LIMIT_HOT));
+        List<LitemallGoods> hotGoods = goodsService.queryByHot(0, SystemConfig.getHotLimit());
         data.put("hotGoodsList", hotGoods);
 
-        List<LitemallBrand> brandList = brandService.query(0, SystemConfig.getSystemConfig().getIndexLimit(SystemConfig.LIMIT_BRAND));
+        List<LitemallBrand> brandList = brandService.query(0, SystemConfig.getBrandLimit());
         data.put("brandList", brandList);
 
-        List<LitemallTopic> topicList = topicService.queryList(0, SystemConfig.getSystemConfig().getIndexLimit(SystemConfig.LIMIT_TOPIC));
+        List<LitemallTopic> topicList = topicService.queryList(0, SystemConfig.getTopicLimit());
         data.put("topicList", topicList);
 
         List<Map> categoryList = new ArrayList<>();
-        List<LitemallCategory> catL1List = categoryService.queryL1WithoutRecommend(0, SystemConfig.getSystemConfig().getIndexLimit(SystemConfig.LIMIT_CALLIST));
+        List<LitemallCategory> catL1List = categoryService.queryL1WithoutRecommend(0, SystemConfig.getCatlogListLimit());
         for (LitemallCategory catL1 : catL1List) {
             List<LitemallCategory> catL2List = categoryService.queryByPid(catL1.getId());
             List<Integer> l2List = new ArrayList<>();
@@ -87,7 +87,7 @@ public class WxHomeController {
             if (l2List.size() == 0) {
                 categoryGoods = new ArrayList<>();
             } else {
-                categoryGoods = goodsService.queryByCategory(l2List, 0, SystemConfig.getSystemConfig().getIndexLimit(SystemConfig.LIMIT_CALGOOD));
+                categoryGoods = goodsService.queryByCategory(l2List, 0, SystemConfig.getCatlogMoreLimit());
             }
 
             Map catGoods = new HashMap();
