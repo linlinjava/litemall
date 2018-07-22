@@ -22,12 +22,21 @@ public class StorageAutoConfiguration {
     public StorageService storageService() {
         StorageService storageService = new StorageService();
         Map<String, Storage> supportedStorage = new HashMap<String, Storage>(3);
-        supportedStorage.put("local", localStorage());
-        supportedStorage.put("aliyun", aliyunStorage());
-        supportedStorage.put("tencent", tencentStorage());
-        storageService.setSupportedStorage(supportedStorage);
         String active = this.properties.getActive();
         storageService.setActive(active);
+        if(active.equals("local")){
+            storageService.setStorage(localStorage());
+        }
+        else if(active.equals("aliyun")){
+            storageService.setStorage(aliyunStorage());
+        }
+        else if(active.equals("tencent")){
+            storageService.setStorage(tencentStorage());
+        }
+        else{
+            throw  new RuntimeException("当前存储模式 " + active + " 不支持");
+        }
+
         return storageService;
     }
 

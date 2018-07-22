@@ -4,7 +4,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -13,7 +12,6 @@ import java.util.stream.Stream;
 public class StorageService {
     private String active;
     private Storage storage;
-    private Map<String, Storage> supportedStorage;
 
     public String getActive() {
         return active;
@@ -21,15 +19,14 @@ public class StorageService {
 
     public void setActive(String active) {
         this.active = active;
-        this.storage = this.supportedStorage.get(active);
     }
 
-    public Map<String, Storage> getSupportedStorage() {
-        return supportedStorage;
+    public Storage getStorage() {
+        return storage;
     }
 
-    public void setSupportedStorage(Map<String, Storage> supportedStorage) {
-        this.supportedStorage = supportedStorage;
+    public void setStorage(Storage storage) {
+        this.storage = storage;
     }
 
     /**
