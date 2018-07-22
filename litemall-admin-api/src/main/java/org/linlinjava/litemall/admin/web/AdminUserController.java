@@ -89,6 +89,12 @@ public class AdminUserController {
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallUser user){
         logger.debug(user);
 
+        // 用户密码加密存储
+        String password = user.getPassword();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(password);
+        user.setPassword(encodedPassword);
+
         userService.update(user);
         return ResponseUtil.ok(user);
     }
