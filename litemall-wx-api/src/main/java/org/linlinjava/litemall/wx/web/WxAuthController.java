@@ -326,7 +326,6 @@ public class WxAuthController {
             user = userList.get(0);
         }
 
-        // TODO 重新生成的密码无法登陆
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(password);
         user.setPassword(encodedPassword);
