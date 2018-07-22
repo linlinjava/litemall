@@ -12,7 +12,6 @@ import java.io.IOException;
 /*
  * 腾讯云短信服务
  */
-@Service
 public class TencentSmsSender implements SmsSender {
     private final Log logger = LogFactory.getLog(TencentSmsSender.class);
 
