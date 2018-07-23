@@ -210,6 +210,16 @@ LOCK TABLES `litemall_storage` WRITE;
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `litemall_system`
+--
+
+LOCK TABLES `litemall_system` WRITE;
+/*!40000 ALTER TABLE `litemall_system` DISABLE KEYS */;
+INSERT INTO `litemall_system` VALUES (1,'litemall.system.banner.new.title','大家都在买的严选好物'),(2,'litemall.system.banner.new.imageurl','http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png'),(3,'litemall.system.banner.hot.title','大家都在买的严选好物'),(4,'litemall.system.banner.hot.imageurl','http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png'),(5,'litemall.system.freight.value','0'),(6,'litemall.system.freight.limit','88'),(7,'litemall.system.indexlimit.new','4'),(8,'litemall.system.indexlimit.hot','4'),(9,'litemall.system.indexlimit.brand','4'),(10,'litemall.system.indexlimit.topic','4'),(11,'litemall.system.indexlimit.catloglist','4'),(12,'litemall.system.indexlimit.catloggood','4');
+/*!40000 ALTER TABLE `litemall_system` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `litemall_topic`
 --
 
@@ -238,4 +248,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-17 17:02:56
+-- Dump completed on 2018-07-23 19:48:48
