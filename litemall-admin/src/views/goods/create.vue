@@ -81,7 +81,7 @@
         </el-form-item> 
             
         <el-form-item label="商品详细介绍">
-          <editor :init="editorInit" v-model="goods.desc"></editor>
+          <editor :init="editorInit" v-model="goods.detail"></editor>
         </el-form-item>    
     </el-form>
   </el-card>

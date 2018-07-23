@@ -85,7 +85,7 @@ Page({
      });
     }
 
-    WxParse.wxParse('goodsDetail', 'html', res.data.info.desc, that);
+    WxParse.wxParse('goodsDetail', 'html', res.data.info.detail, that);
 
     that.getGoodsRelated();
    }
