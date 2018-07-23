@@ -1,8 +1,10 @@
 package org.linlinjava.litemall.core.notify;
 
+import cn.binarywang.wx.miniapp.api.WxMaService;
 import org.json.JSONObject;
+import org.linlinjava.litemall.db.domain.LitemallUserFormid;
+import org.linlinjava.litemall.db.service.LitemallUserFormIdService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.net.ssl.*;
 import java.io.BufferedReader;
@@ -19,6 +21,27 @@ import java.security.cert.X509Certificate;
  * 微信模版消息通知
  */
 public class WxTemplateSender {
+    @Autowired
+    WxMaService wxMaService;
+
+    @Autowired
+    LitemallUserFormIdService formIdService;
+
+    /**
+     * 发送微信消息(模板消息)
+     *
+     * @param touser    用户 OpenID
+     * @param templatId 模板消息ID
+     * @param parms     详细内容
+     */
+    public void sendWechatMsg(String touser, String templatId, String[] parms) {
+        LitemallUserFormid userFormid = formIdService.queryByOpenId(touser);
+        if (userFormid == null)
+            return;
+        sendWechatMsg(touser, templatId, userFormid.getFormid(), "", "", parms);
+
+        formIdService.delUserFormid(userFormid.getId());
+    }
 
     /**
      * 发送微信消息(模板消息)
@@ -31,9 +54,9 @@ public class WxTemplateSender {
      * @param parms     详细内容
      * @return
      */
-    public String sendWechatMsg(String token, String touser, String templatId, String formId, String clickurl, String topcolor, String[] parms) {
+    public String sendWechatMsg(String touser, String templatId, String formId, String clickurl, String topcolor, String[] parms) {
         try {
-            String tmpurl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + token;
+            String tmpurl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + wxMaService.getAccessToken();
             JSONObject json = new JSONObject();
             json.put("touser", touser);
             json.put("template_id", templatId);
@@ -57,6 +80,7 @@ public class WxTemplateSender {
 
     /**
      * 根据参数生成对应的 json 数据
+     *
      * @param parms
      * @return
      */
@@ -64,7 +88,7 @@ public class WxTemplateSender {
         JSONObject json = new JSONObject();
         for (int i = 1; i <= parms.length; i++) {
             JSONObject json2 = new JSONObject();
-            json2.put("value", parms[i-1]);
+            json2.put("value", parms[i - 1]);
 
             json.put("keyword" + i, json2);
         }
