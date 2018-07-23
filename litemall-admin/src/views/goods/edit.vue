@@ -433,7 +433,7 @@ export default {
       this.specForm.picUrl = response.data.url
     },
     handleSpecificationShow() {
-      this.specForm = {}
+      this.specForm = { specification: '', value: '', picUrl: '' }
       this.specVisiable = true
     },
     handleSpecificationAdd() {
