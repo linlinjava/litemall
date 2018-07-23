@@ -45,7 +45,7 @@ public class NotifyService {
      */
     @Async
     public void notifySmsTemplate(String phoneNumber, NotifyType notifyType, String[] params) {
-        if (wxTemplateSender == null)
+        if (smsSender == null)
             return;
 
         int templateId = Integer.parseInt(getTemplateId(notifyType, smsTemplate));
