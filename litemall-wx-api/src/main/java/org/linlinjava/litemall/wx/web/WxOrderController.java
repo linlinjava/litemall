@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
+import org.linlinjava.litemall.core.util.DateTimeUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
@@ -584,10 +585,10 @@ public class WxOrderController {
             String[] parms = new String[]{
                     order.getOrderSn(),
                     order.getOrderPrice().toString(),
-                    order.getAddTime().toString(),
+                    DateTimeUtil.getDateTimeDisplayString(order.getAddTime()),
+                    order.getConsignee(),
                     order.getMobile(),
-                    order.getAddress(),
-                    order.getConsignee()
+                    order.getAddress()
             };
 
             notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "/pages/index/index?orderId=" + order.getId());
