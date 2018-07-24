@@ -40,6 +40,7 @@ public class WxUserFormId {
         userFormid.setUseamount(1);
         userFormid.setExpireTime(LocalDateTime.now().plusDays(7));
         formIdService.addUserFormid(userFormid);
+
         return ResponseUtil.ok();
     }
 }

@@ -22,9 +22,8 @@ public class WxTemplateTest {
     @Test
     public void testPaySucceed() {
         String touser = "xx";
-        String formId = "";
         String[] params = new String[]{"xxx"};
-        notifyService.notifyWxTemplate(touser, formId, NotifyType.PAY_SUCCEED, params);
+        notifyService.notifyWxTemplate(touser, NotifyType.PAY_SUCCEED, params);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

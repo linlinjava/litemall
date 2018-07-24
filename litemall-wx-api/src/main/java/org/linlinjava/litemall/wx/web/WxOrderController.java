@@ -85,6 +85,9 @@ public class WxOrderController {
     @Autowired
     private NotifyService notifyService;
 
+    @Autowired
+    LitemallUserFormIdService formIdService;
+
     public WxOrderController() {
     }
 
@@ -500,6 +503,18 @@ public class WxOrderController {
             orderRequest.setSpbillCreateIp(IpUtil.getIpAddr(request));
 
             result = wxPayService.createOrder(orderRequest);
+
+            //缓存prepayID用于后续模版通知
+            String prepayId = result.getPackageValue();
+            prepayId = prepayId.replace("prepay_id=", "");
+            LitemallUserFormid userFormid = new LitemallUserFormid();
+            userFormid.setOpenid(user.getWeixinOpenid());
+            userFormid.setFormid(prepayId);
+            userFormid.setIsprepay(true);
+            userFormid.setUseamount(3);
+            userFormid.setExpireTime(LocalDateTime.now().plusDays(7));
+            formIdService.addUserFormid(userFormid);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.fail(403, "订单不能支付");
@@ -562,6 +577,20 @@ public class WxOrderController {
              *
              */
             notifyService.notifySmsTemplateSync(order.getMobile(), NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
+
+            /**
+             * 请依据自己的模版消息配置更改参数
+             */
+            String[] parms = new String[]{
+                    order.getOrderSn(),
+                    order.getOrderPrice().toString(),
+                    order.getAddTime().toString(),
+                    order.getMobile(),
+                    order.getAddress(),
+                    order.getConsignee()
+            };
+
+            notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "/pages/index/index?orderId=" + order.getId());
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {

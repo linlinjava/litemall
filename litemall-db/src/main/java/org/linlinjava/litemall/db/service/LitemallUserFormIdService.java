@@ -27,20 +27,26 @@ public class LitemallUserFormIdService {
     }
 
     /**
+     * 更新或删除FormId
+     *
+     * @param userFormid
+     */
+    public void updateUserFormId(LitemallUserFormid userFormid) {
+        //更新或者删除缓存
+        if (userFormid.getIsprepay() && userFormid.getUseamount() > 1) {
+            userFormid.setUseamount(userFormid.getUseamount() - 1);
+            formidMapper.updateByPrimaryKey(userFormid);
+        } else {
+            formidMapper.deleteByPrimaryKey(userFormid.getId());
+        }
+    }
+
+    /**
      * 添加一个 FormId
      *
      * @param userFormid
      */
     public void addUserFormid(LitemallUserFormid userFormid) {
         formidMapper.insertSelective(userFormid);
-    }
-
-    /**
-     * 删除一个 FormId
-     *
-     * @param userFormidId
-     */
-    public void delUserFormid(Integer userFormidId) {
-        formidMapper.deleteByPrimaryKey(userFormidId);
     }
 }

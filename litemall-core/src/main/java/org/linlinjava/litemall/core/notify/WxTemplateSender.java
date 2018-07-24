@@ -1,21 +1,14 @@
 package org.linlinjava.litemall.core.notify;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
-import org.json.JSONObject;
+import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import org.linlinjava.litemall.db.domain.LitemallUserFormid;
 import org.linlinjava.litemall.db.service.LitemallUserFormIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.net.ssl.*;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.ConnectException;
-import java.net.URL;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 微信模版消息通知
@@ -28,145 +21,57 @@ public class WxTemplateSender {
     LitemallUserFormIdService formIdService;
 
     /**
-     * 发送微信消息(模板消息)
+     * 发送微信消息(模板消息),不带跳转
      *
      * @param touser    用户 OpenID
      * @param templatId 模板消息ID
      * @param parms     详细内容
      */
     public void sendWechatMsg(String touser, String templatId, String[] parms) {
-        LitemallUserFormid userFormid = formIdService.queryByOpenId(touser);
-        if (userFormid == null)
-            return;
-        sendWechatMsg(touser, templatId, userFormid.getFormid(), "", "", parms);
-
-        formIdService.delUserFormid(userFormid.getId());
+        sendMsg(touser, templatId, parms, "", "", "");
     }
 
     /**
-     * 发送微信消息(模板消息)
+     * 发送微信消息(模板消息),带跳转
      *
      * @param touser    用户 OpenID
      * @param templatId 模板消息ID
-     * @param formId    payId或者表单ID
-     * @param clickurl  URL置空，则在发送后，点击模板消息会进入一个空白页面（ios），或无法点击（android）。
-     * @param topcolor  标题颜色
      * @param parms     详细内容
-     * @return
+     * @param page      跳转页面
      */
-    public String sendWechatMsg(String touser, String templatId, String formId, String clickurl, String topcolor, String[] parms) {
-        try {
-            String tmpurl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + wxMaService.getAccessToken();
-            JSONObject json = new JSONObject();
-            json.put("touser", touser);
-            json.put("template_id", templatId);
-            json.put("form_id", formId);
-            json.put("url", clickurl);
-            json.put("topcolor", topcolor);
-            json.put("data", createParmData(parms));
+    public void sendWechatMsg(String touser, String templatId, String[] parms, String page) {
+        sendMsg(touser, templatId, parms, page, "", "");
+    }
 
-            JSONObject result = httpsRequest(tmpurl, "POST", json.toString());
-//            log.info("发送微信消息返回信息：" + resultJson.get("errcode"));
-            String errmsg = (String) result.get("errmsg");
-            if (!"ok".equals(errmsg)) {  //如果为errmsg为ok，则代表发送成功，公众号推送信息给用户了。
-                return "error";
-            }
-        } catch (Exception e) {
+    private void sendMsg(String touser, String templatId, String[] parms, String page, String color, String emphasisKeyword) {
+        LitemallUserFormid userFormid = formIdService.queryByOpenId(touser);
+        if (userFormid == null)
+            return;
+
+
+        WxMaTemplateMessage msg = new WxMaTemplateMessage();
+        msg.setTemplateId(templatId);
+        msg.setToUser(touser);
+        msg.setFormId(userFormid.getFormid());
+        msg.setPage(page);
+        msg.setColor(color);
+        msg.setEmphasisKeyword(emphasisKeyword);
+        msg.setData(createMsgData(parms));
+
+        try {
+            wxMaService.getMsgService().sendTemplateMsg(msg);
+            formIdService.updateUserFormId(userFormid);
+        } catch (WxErrorException e) {
             e.printStackTrace();
-            return "error";
         }
-        return "success";
     }
 
-    /**
-     * 根据参数生成对应的 json 数据
-     *
-     * @param parms
-     * @return
-     */
-    private JSONObject createParmData(String[] parms) {
-        JSONObject json = new JSONObject();
+    private List<WxMaTemplateMessage.Data> createMsgData(String[] parms) {
+        List<WxMaTemplateMessage.Data> dataList = new ArrayList<>();
         for (int i = 1; i <= parms.length; i++) {
-            JSONObject json2 = new JSONObject();
-            json2.put("value", parms[i - 1]);
-
-            json.put("keyword" + i, json2);
+            dataList.add(new WxMaTemplateMessage.Data("keyword" + i, parms[i - 1]));
         }
 
-        return json;
-    }
-
-    /**
-     * 发送https请求
-     *
-     * @param requestUrl    请求地址
-     * @param requestMethod 请求方式（GET、POST）
-     * @param outputStr     提交的数据
-     * @return JSONObject(通过JSONObject.get ( key)的方式获取json对象的属性值)
-     */
-    private JSONObject httpsRequest(String requestUrl, String requestMethod, String outputStr) {
-        JSONObject jsonObject = null;
-        try {
-            // 创建SSLContext对象，并使用我们指定的信任管理器初始化
-            TrustManager[] tm = {new MyX509TrustManager()};
-            SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
-            sslContext.init(null, tm, new SecureRandom());
-            // 从上述SSLContext对象中得到SSLSocketFactory对象
-            SSLSocketFactory ssf = sslContext.getSocketFactory();
-            URL url = new URL(requestUrl);
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setSSLSocketFactory(ssf);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setUseCaches(false);
-            // 设置请求方式（GET/POST）
-            conn.setRequestMethod(requestMethod);
-            // 当outputStr不为null时向输出流写数据
-            if (null != outputStr) {
-                OutputStream outputStream = conn.getOutputStream();
-                // 注意编码格式
-                outputStream.write(outputStr.getBytes("UTF-8"));
-                outputStream.close();
-            }
-            // 从输入流读取返回内容
-            InputStream inputStream = conn.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String str = null;
-            StringBuffer buffer = new StringBuffer();
-            while ((str = bufferedReader.readLine()) != null) {
-                buffer.append(str);
-            }
-            // 释放资源
-            bufferedReader.close();
-            inputStreamReader.close();
-            inputStream.close();
-            inputStream = null;
-            conn.disconnect();
-            jsonObject = new JSONObject(buffer.toString());
-        } catch (ConnectException ce) {
-//            log.error("连接超时：{}", ce);
-        } catch (Exception e) {
-//            log.error("https请求异常：{}", e);
-        }
-        return jsonObject;
-    }
-
-    /**
-     * 微信请求 - 信任管理器
-     */
-    private class MyX509TrustManager implements X509TrustManager {
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
+        return dataList;
     }
 }
