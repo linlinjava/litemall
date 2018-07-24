@@ -34,6 +34,7 @@ CREATE TABLE `litemall_ad` (
   `enabled` tinyint(1) DEFAULT '0' COMMENT '是否启动',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `enabled` (`enabled`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='广告表';
@@ -58,6 +59,7 @@ CREATE TABLE `litemall_address` (
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认地址',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='收货地址表';
@@ -79,6 +81,7 @@ CREATE TABLE `litemall_admin` (
   `avatar` varchar(255) DEFAULT '''' COMMENT '头像图片',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='管理员表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -99,6 +102,7 @@ CREATE TABLE `litemall_brand` (
   `floor_price` decimal(10,2) DEFAULT '0.00' COMMENT '品牌商的商品低价，仅用于页面展示',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1046001 DEFAULT CHARSET=utf8mb4 COMMENT='品牌商表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -124,6 +128,7 @@ CREATE TABLE `litemall_cart` (
   `pic_url` varchar(255) DEFAULT NULL COMMENT '商品图片或者商品货品图片',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='购物车商品表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -147,6 +152,7 @@ CREATE TABLE `litemall_category` (
   `sort_order` tinyint(3) DEFAULT '50' COMMENT '排序',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `parent_id` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1036005 DEFAULT CHARSET=utf8mb4 COMMENT='类目表';
@@ -166,6 +172,7 @@ CREATE TABLE `litemall_collect` (
   `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '收藏类型，如果type=0，则是商品ID；如果type=1，则是专题ID',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `goods_id` (`value_id`)
@@ -190,6 +197,7 @@ CREATE TABLE `litemall_comment` (
   `star` smallint(6) DEFAULT '1' COMMENT '评分， 1-5',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `id_value` (`value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8 COMMENT='评论表';
@@ -208,6 +216,7 @@ CREATE TABLE `litemall_footprint` (
   `goods_id` int(11) NOT NULL DEFAULT '0' COMMENT '浏览商品ID',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户浏览足迹表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -239,6 +248,7 @@ CREATE TABLE `litemall_goods` (
   `detail` text COMMENT '商品详细介绍，是富文本格式',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `goods_sn` (`goods_sn`),
   KEY `cat_id` (`category_id`),
@@ -261,6 +271,7 @@ CREATE TABLE `litemall_goods_attribute` (
   `value` varchar(255) NOT NULL COMMENT '商品参数值',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=874 DEFAULT CHARSET=utf8mb4 COMMENT='商品参数表';
@@ -281,6 +292,7 @@ CREATE TABLE `litemall_goods_specification` (
   `pic_url` varchar(255) NOT NULL DEFAULT '' COMMENT '商品规格图片',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=utf8mb4 COMMENT='商品规格表';
@@ -299,6 +311,7 @@ CREATE TABLE `litemall_issue` (
   `answer` varchar(255) DEFAULT NULL COMMENT '问题答案',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='常见问题表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -319,6 +332,7 @@ CREATE TABLE `litemall_keyword` (
   `sort_order` int(11) NOT NULL DEFAULT '100' COMMENT '排序',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='关键字表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -353,6 +367,7 @@ CREATE TABLE `litemall_order` (
   `end_time` datetime DEFAULT NULL COMMENT '订单关闭时间',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -377,6 +392,7 @@ CREATE TABLE `litemall_order_goods` (
   `pic_url` varchar(255) NOT NULL DEFAULT '' COMMENT '商品货品图片或者商品图片',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `goods_id` (`goods_id`)
@@ -399,6 +415,7 @@ CREATE TABLE `litemall_product` (
   `url` varchar(125) DEFAULT NULL COMMENT '商品货品图片',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8mb4 COMMENT='商品货品表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -437,6 +454,7 @@ CREATE TABLE `litemall_search_history` (
   `from` varchar(63) NOT NULL DEFAULT '' COMMENT '搜索来源，如pc、wx、app',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='搜索历史表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -458,8 +476,9 @@ CREATE TABLE `litemall_storage` (
   `url` varchar(255) DEFAULT NULL COMMENT '文件访问链接',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件存储表';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='文件存储表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,6 +492,8 @@ CREATE TABLE `litemall_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `key_name` varchar(255) NOT NULL COMMENT '系统配置名',
   `key_value` varchar(255) NOT NULL COMMENT '系统配置值',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -496,6 +517,7 @@ CREATE TABLE `litemall_topic` (
   `goods` varchar(1023) DEFAULT '' COMMENT '专题相关商品，采用JSON数组格式',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `topic_id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8mb4 COMMENT='专题表';
@@ -524,9 +546,29 @@ CREATE TABLE `litemall_user` (
   `status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '0 可用, 1 禁用, 2 注销',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_user_formid`
+--
+
+DROP TABLE IF EXISTS `litemall_user_formid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_user_formid` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `formId` varchar(63) NOT NULL COMMENT '缓存的FormId',
+  `isprepay` tinyint(1) NOT NULL COMMENT '是FormId还是prepayId',
+  `useAmount` int(2) NOT NULL COMMENT '可用次数，fromId为1，prepay为3，用1次减1',
+  `expire_time` datetime NOT NULL COMMENT '过期时间，腾讯规定为7天',
+  `openId` varchar(63) NOT NULL COMMENT '微信登录openid',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -538,4 +580,4 @@ CREATE TABLE `litemall_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-23 19:49:07
+-- Dump completed on 2018-07-24 23:42:36
