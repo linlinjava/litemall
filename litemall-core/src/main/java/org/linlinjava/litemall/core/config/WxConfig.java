@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.wx.config;
+package org.linlinjava.litemall.core.config;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;

@@ -1,7 +1,5 @@
-package org.linlinjava.litemall.wx.config;
+package org.linlinjava.litemall.core.config;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

@@ -22,6 +22,10 @@
             <artifactId>litemall-db</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

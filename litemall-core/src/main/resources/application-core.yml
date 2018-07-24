@@ -1,4 +1,12 @@
 litemall:
+  # 开发者应该设置成自己的wx相关信息
+  wx:
+    app-id: wxa5b486c6b918ecfb
+    app-secret: e04004829d4c383b4db7769d88dfbca1
+    mch-id: 111111
+    mch-key: xxxxxx
+    notify-url: http://www.example.com/wx/order/pay-notify
+
   notify:
     mail:
       # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员

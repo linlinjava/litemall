@@ -76,6 +76,11 @@
             <groupId>org.linlinjava</groupId>
             <artifactId>litemall-db</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-pay</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
