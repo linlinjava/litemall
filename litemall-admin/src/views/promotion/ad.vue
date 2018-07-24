@@ -16,31 +16,34 @@
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
 
-      <el-table-column align="center" width="100px" label="广告ID" prop="id" sortable>
+      <el-table-column align="center" label="广告ID" prop="id" sortable>
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="广告标题" prop="name">
+      <el-table-column align="center" label="广告标题" prop="name">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200px" label="广告内容" prop="content">
+      <el-table-column align="center" label="广告内容" prop="content">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200px" label="广告图片" prop="url">
+      <el-table-column align="center" label="广告图片" prop="url">
+        <template slot-scope="scope">
+          <img :src="scope.row.url" width="80" v-if="scope.row.url"/>
+        </template>
       </el-table-column>
 
-      <el-table-column align="center" min-width="50px" label="广告位置" prop="position">
+      <el-table-column align="center" label="广告位置" prop="position">
       </el-table-column>
 
-      <el-table-column align="center" min-width="200px" label="活动链接" prop="link">
+      <el-table-column align="center" label="活动链接" prop="link">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="是否启用" prop="enabled">
+      <el-table-column align="center" label="是否启用" prop="enabled">
         <template slot-scope="scope">
           <el-tag :type="scope.row.enabled ? 'success' : 'error' ">{{ scope.row.enabled ? '启用' : '不启用' }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
@@ -65,9 +68,9 @@
           <el-input v-model="dataForm.content"></el-input>
         </el-form-item>
         <el-form-item label="广告图片" prop="url">
-          <el-input v-model="dataForm.url"></el-input>
-          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="uploadUrl">
-            <el-button size="small" type="primary">点击上传</el-button>
+          <el-upload class="avatar-uploader" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadUrl">
+			      <img v-if="dataForm.url" :src="dataForm.url" class="avatar">
+						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="广告位置" prop="position">
@@ -99,27 +102,40 @@
 </template>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 200px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-  }
+  .avatar-uploader .el-upload {
+	  border: 1px dashed #d9d9d9;
+	  border-radius: 6px;
+	  cursor: pointer;
+	  position: relative;
+	  overflow: hidden;
+	}
+	.avatar-uploader .el-upload:hover {
+	  border-color: #20a0ff;
+	}
+	.avatar-uploader-icon {
+	    font-size: 28px;
+	    color: #8c939d;
+	    width: 120px;
+	    height: 120px;
+	    line-height: 120px;
+	    text-align: center;
+	}
+	.avatar {
+	    width: 120px;
+	    height: 120px;
+	    display: block;
+	}
 </style>
 
 <script>
 import { listAd, createAd, updateAd, deleteAd } from '@/api/ad'
-import { createStorage } from '@/api/storage'
+import { uploadPath } from '@/api/storage'
 
 export default {
   name: 'Ad',
   data() {
     return {
+      uploadPath,
       list: undefined,
       total: undefined,
       listLoading: true,
@@ -201,14 +217,8 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    uploadUrl(item) {
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(res => {
-        this.dataForm.url = res.data.data.url
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
+    uploadUrl: function(response) {
+      this.dataForm.url = response.data.url
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {

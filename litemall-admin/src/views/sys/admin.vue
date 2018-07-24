@@ -12,16 +12,19 @@
 
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" width="100px" label="管理员ID" prop="id" sortable>
+      <el-table-column align="center" label="管理员ID" prop="id" sortable>
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="管理员名称" prop="username">
+      <el-table-column align="center" label="管理员名称" prop="username">
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="管理员头像" prop="avatar">
+      <el-table-column align="center" label="管理员头像" prop="avatar">
+        <template slot-scope="scope">
+          <img :src="scope.row.avatar" width="40" v-if="scope.row.avatar"/>
+        </template>
       </el-table-column>        
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
@@ -49,9 +52,9 @@
           <el-input type="password" v-model="dataForm.checkPassword" auto-complete="off"></el-input>
         </el-form-item>                
         <el-form-item label="管理员头像" prop="avatar">
-          <el-input v-model="dataForm.avatar"></el-input>          
-          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="uploadAvatar">
-            <el-button size="small" type="primary">点击上传</el-button>
+          <el-upload class="avatar-uploader" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadAvatar">
+			      <img v-if="dataForm.avatar" :src="dataForm.avatar" class="avatar">
+						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -65,9 +68,35 @@
   </div>
 </template>
 
+<style>
+  .avatar-uploader .el-upload {
+	  border: 1px dashed #d9d9d9;
+	  border-radius: 6px;
+	  cursor: pointer;
+	  position: relative;
+	  overflow: hidden;
+	}
+	.avatar-uploader .el-upload:hover {
+	  border-color: #20a0ff;
+	}
+	.avatar-uploader-icon {
+	    font-size: 28px;
+	    color: #8c939d;
+	    width: 120px;
+	    height: 120px;
+	    line-height: 120px;
+	    text-align: center;
+	}
+	.avatar {
+	    width: 120px;
+	    height: 120px;
+	    display: block;
+	}
+</style>
+
 <script>
 import { listAdmin, createAdmin, updateAdmin, deleteAdmin } from '@/api/admin'
-import { createStorage } from '@/api/storage'
+import { uploadPath } from '@/api/storage'
 
 export default {
   name: 'Admin',
@@ -92,6 +121,7 @@ export default {
       }
     }
     return {
+      uploadPath,
       list: null,
       total: null,
       listLoading: true,
@@ -166,14 +196,8 @@ export default {
         avatar: undefined
       }
     },
-    uploadAvatar(item) {
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(res => {
-        this.dataForm.avatar = res.data.data.url
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
+    uploadAvatar: function(response) {
+      this.dataForm.avatar = response.data.url
     },
     handleCreate() {
       this.resetForm()

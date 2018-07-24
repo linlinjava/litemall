@@ -24,7 +24,7 @@
     substr(add_time,1, 10) as day,
     count(distinct order_id) as orders,
     sum(number)		as products,
-    sum(number*retail_price) as amount
+    sum(number*price) as amount
     from litemall_order_goods
     group by substr(add_time,1, 10)
   </select>

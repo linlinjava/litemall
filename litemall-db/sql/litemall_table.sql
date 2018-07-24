@@ -236,7 +236,7 @@ CREATE TABLE `litemall_goods` (
   `unit` varchar(31) DEFAULT '’件‘' COMMENT '商品单位，例如件、盒',
   `counter_price` decimal(10,2) DEFAULT '0.00' COMMENT '专柜价格',
   `retail_price` decimal(10,2) DEFAULT '100000.00' COMMENT '零售价格',
-  `desc` text COMMENT '商品详细介绍，是富文本格式',
+  `detail` text COMMENT '商品详细介绍，是富文本格式',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`),
@@ -463,6 +463,21 @@ CREATE TABLE `litemall_storage` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `litemall_system`
+--
+
+DROP TABLE IF EXISTS `litemall_system`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_system` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `key_name` varchar(255) NOT NULL COMMENT '系统配置名',
+  `key_value` varchar(255) NOT NULL COMMENT '系统配置值',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `litemall_topic`
 --
 
@@ -472,13 +487,13 @@ DROP TABLE IF EXISTS `litemall_topic`;
 CREATE TABLE `litemall_topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '''' COMMENT '专题标题',
-  `subtitle` varchar(255) NOT NULL DEFAULT '''' COMMENT '专题子标题',
-  `content` text NOT NULL COMMENT '专题内容，富文本格式',
-  `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '专题相关商品最低价',
-  `read_count` varchar(255) NOT NULL DEFAULT '1k' COMMENT '专题阅读量',
-  `pic_url` varchar(255) NOT NULL DEFAULT '' COMMENT '专题图片',
-  `sort_order` int(11) NOT NULL DEFAULT '100' COMMENT '排序',
-  `goods` varchar(1023) DEFAULT NULL COMMENT '专题相关商品，采用JSON数组格式',
+  `subtitle` varchar(255) DEFAULT '''' COMMENT '专题子标题',
+  `content` text COMMENT '专题内容，富文本格式',
+  `price` decimal(10,2) DEFAULT '0.00' COMMENT '专题相关商品最低价',
+  `read_count` varchar(255) DEFAULT '1k' COMMENT '专题阅读量',
+  `pic_url` varchar(255) DEFAULT '' COMMENT '专题图片',
+  `sort_order` int(11) DEFAULT '100' COMMENT '排序',
+  `goods` varchar(1023) DEFAULT '' COMMENT '专题相关商品，采用JSON数组格式',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`),
@@ -523,4 +538,4 @@ CREATE TABLE `litemall_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-05 22:36:57
+-- Dump completed on 2018-07-23 19:49:07

@@ -6,6 +6,8 @@ Page({
     orderId: 0,
     orderInfo: {},
     orderGoods: [],
+    expressInfo: {},
+    flag: false,
     handleOption: {}
   },
   onLoad: function (options) {
@@ -14,6 +16,27 @@ Page({
       orderId: options.id
     });
     this.getOrderDetail();
+  },
+  getOrderExpress: function() {
+    let that = this;
+    util.request(api.ExpressQuery, {
+      expCode: that.data.orderInfo.expCode,
+      expNo: that.data.orderInfo.expNo
+    }, 'POST').then(function(res) {
+      if (res.errno === 0) {
+        that.setData({
+          expressInfo: res.data
+        });
+
+        console.log(that.data.expressInfo);
+      }
+    });
+  },
+  expandDetail: function() {
+    let that = this;
+    this.setData({
+      flag: !that.data.flag
+    })
   },
   getOrderDetail: function () {
     let that = this;
@@ -27,6 +50,11 @@ Page({
           orderGoods: res.data.orderGoods,
           handleOption: res.data.orderInfo.handleOption
         });
+
+        // 请求物流信息,仅当订单状态为发货时才请求
+        if (that.data.handleOption.confirm) {
+          that.getOrderExpress();
+        }
       }
     });
   },

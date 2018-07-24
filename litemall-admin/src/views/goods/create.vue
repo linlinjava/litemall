@@ -81,7 +81,7 @@
         </el-form-item> 
             
         <el-form-item label="商品详细介绍">
-          <editor :init="editorInit" v-model="goods.desc"></editor>
+          <editor :init="editorInit" v-model="goods.detail"></editor>
         </el-form-item>    
     </el-form>
   </el-card>
@@ -289,7 +289,7 @@ export default {
       keywords: [],
       categoryList: [],
       brandList: [],
-      goods: { gallery: [] },
+      goods: { picUrl: '', gallery: [] },
       specVisiable: false,
       specForm: { specification: '', value: '', picUrl: '' },
       multipleSpec: false,
@@ -422,7 +422,7 @@ export default {
       this.specForm.picUrl = response.data.url
     },
     handleSpecificationShow() {
-      this.specForm = {}
+      this.specForm = { specification: '', value: '', picUrl: '' }
       this.specVisiable = true
     },
     handleSpecificationAdd() {

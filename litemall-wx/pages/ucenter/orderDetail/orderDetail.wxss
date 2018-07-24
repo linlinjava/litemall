@@ -271,3 +271,64 @@ page{
     width: 140rpx;
     color: #b4282d;
 }
+
+.order-express {
+  margin-top: 20rpx;
+  padding-left: 31.25rpx;
+  height: auto;
+}
+
+.order-express .title {
+  width: 750rpx;
+  height: 108rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.order-express .title.t {
+  float: left;
+  width: 600rpx;
+  height: 108rpx;
+  line-height: 108rpx;
+  font-size: 29rpx;
+  margin-left: 31.25rpx;
+
+}
+
+.order-express .title.b {
+  float: left;
+  width: 600rpx;
+  height: 108rpx;
+  line-height: 108rpx;
+  font-size: 29rpx;
+  margin-left: 31.25rpx;
+}
+
+.order-express .traces {
+  height: auto;
+  padding-bottom: 17.5rpx;
+  padding-top: 17.5rpx;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.order-express .traces.trace {
+  height: 180rpx;
+  padding-bottom: 17.5rpx;
+  padding-top: 17.5rpx;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.order-express .traces.trace.acceptTime {
+  display: inline-block;
+  height: 35rpx;
+  width: 140rpx;
+  line-height: 35rpx;
+  font-size: 24rpx;
+}
+
+.order-express .traces.trace.acceptStation {
+  display: inline-block;
+  height: 35rpx;
+  line-height: 35rpx;
+  font-size: 24rpx;
+}

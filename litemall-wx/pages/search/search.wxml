@@ -39,7 +39,7 @@
       <view class="item by-price {{currentSortType == 'price' ? 'active' : ''}} {{currentSortOrder == 'asc'  ? 'asc' : 'desc'}}" bindtap="openSortFilter" id="priceSort">
         <text class="txt">价格</text>
       </view>
-      <view class="item {{currentSortType == 'category' ? 'active' : ''}}" bindtap="openSortFilter" id="categoryFilter">
+      <view class="item {{currentSortType == 'category' ? 'active' : ''}}" id="categoryFilter">
         <text class="txt">分类</text>
       </view>
     </view>
@@ -50,7 +50,7 @@
   <view class="cate-item">
     <view class="b">
       <navigator class="item {{(iindex + 1) % 2 == 0 ? 'item-b' : ''}}" url="/pages/goods/goods?id={{iitem.id}}" wx:for="{{goodsList}}" wx:key="id" wx:for-item="iitem" wx:for-index="iindex">
-        <image class="img" src="{{iitem.listPicUrl}}" background-size="cover"></image>
+        <image class="img" src="{{iitem.picUrl}}" background-size="cover"></image>
         <text class="name">{{iitem.name}}</text>
         <text class="price">￥{{iitem.retailPrice}}</text>
       </navigator>

@@ -1,11 +1,10 @@
 package org.linlinjava.litemall.os.web;
 
+import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.util.CharUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallStorage;
 import org.linlinjava.litemall.db.service.LitemallStorageService;
-import org.linlinjava.litemall.os.service.StorageService;
-import org.linlinjava.litemall.os.config.ObjectStorageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -29,13 +28,6 @@ public class OsStorageController {
     private StorageService storageService;
     @Autowired
     private LitemallStorageService litemallStorageService;
-
-    @Autowired
-    private ObjectStorageConfig osConfig;
-
-    private String generateUrl(String key){
-        return "http://" + osConfig.getAddress() + ":" + osConfig.getPort() + "/os/storage/fetch/" + key;
-    }
 
     private String generateKey(String originalFilename){
         int index = originalFilename.lastIndexOf('.');
@@ -78,9 +70,9 @@ public class OsStorageController {
             return ResponseUtil.badArgumentValue();
         }
         String key = generateKey(originalFilename);
-        storageService.store(inputStream, key);
+        storageService.store(file, key);
 
-        String url = generateUrl(key);
+        String url = storageService.generateUrl(key);
         LitemallStorage storageInfo = new LitemallStorage();
         storageInfo.setName(originalFilename);
         storageInfo.setSize((int)file.getSize());
