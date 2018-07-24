@@ -7,6 +7,7 @@ litemall:
     mch-key: xxxxxx
     notify-url: http://www.example.com/wx/order/pay-notify
 
+  #通知相关配置
   notify:
     mail:
       # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员
