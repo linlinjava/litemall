@@ -28,6 +28,7 @@
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="version" jdbcType="INTEGER" property="version" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -102,7 +103,7 @@
     -->
     id, user_id, order_sn, order_status, consignee, mobile, address, goods_price, freight_price, 
     coupon_price, integral_price, order_price, actual_price, pay_id, pay_time, ship_sn, 
-    ship_channel, ship_time, confirm_time, end_time, add_time, deleted
+    ship_channel, ship_time, confirm_time, end_time, add_time, deleted, version
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallOrderExample" resultMap="BaseResultMap">
     <!--
@@ -141,7 +142,7 @@
       <otherwise>
         id, user_id, order_sn, order_status, consignee, mobile, address, goods_price, freight_price, 
           coupon_price, integral_price, order_price, actual_price, pay_id, pay_time, ship_sn, 
-          ship_channel, ship_time, confirm_time, end_time, add_time, deleted
+          ship_channel, ship_time, confirm_time, end_time, add_time, deleted, version
       </otherwise>
     </choose>
     from litemall_order
@@ -202,7 +203,7 @@
       <otherwise>
         id, user_id, order_sn, order_status, consignee, mobile, address, goods_price, freight_price, 
           coupon_price, integral_price, order_price, actual_price, pay_id, pay_time, ship_sn, 
-          ship_channel, ship_time, confirm_time, end_time, add_time, deleted
+          ship_channel, ship_time, confirm_time, end_time, add_time, deleted, version
       </otherwise>
     </choose>
     from litemall_order
@@ -240,16 +241,16 @@
       integral_price, order_price, actual_price, 
       pay_id, pay_time, ship_sn, 
       ship_channel, ship_time, confirm_time, 
-      end_time, add_time, deleted
-      )
+      end_time, add_time, deleted, 
+      version)
     values (#{userId,jdbcType=INTEGER}, #{orderSn,jdbcType=VARCHAR}, #{orderStatus,jdbcType=SMALLINT}, 
       #{consignee,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{goodsPrice,jdbcType=DECIMAL}, #{freightPrice,jdbcType=DECIMAL}, #{couponPrice,jdbcType=DECIMAL}, 
       #{integralPrice,jdbcType=DECIMAL}, #{orderPrice,jdbcType=DECIMAL}, #{actualPrice,jdbcType=DECIMAL}, 
       #{payId,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{shipSn,jdbcType=VARCHAR}, 
       #{shipChannel,jdbcType=VARCHAR}, #{shipTime,jdbcType=TIMESTAMP}, #{confirmTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
-      )
+      #{endTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
+      #{version,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallOrder">
     <!--
@@ -324,6 +325,9 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="version != null">
+        version,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -388,6 +392,9 @@
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -474,6 +481,9 @@
       <if test="record.deleted != null">
         deleted = #{record.deleted,jdbcType=BIT},
       </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -506,7 +516,8 @@
       confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
       end_time = #{record.endTime,jdbcType=TIMESTAMP},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      deleted = #{record.deleted,jdbcType=BIT}
+      deleted = #{record.deleted,jdbcType=BIT},
+      version = #{record.version,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -581,6 +592,9 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=BIT},
       </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -610,7 +624,8 @@
       confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
       add_time = #{addTime,jdbcType=TIMESTAMP},
-      deleted = #{deleted,jdbcType=BIT}
+      deleted = #{deleted,jdbcType=BIT},
+      version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallOrderExample" resultMap="BaseResultMap">
@@ -646,7 +661,7 @@
       <otherwise>
         id, user_id, order_sn, order_status, consignee, mobile, address, goods_price, freight_price, 
           coupon_price, integral_price, order_price, actual_price, pay_id, pay_time, ship_sn, 
-          ship_channel, ship_time, confirm_time, end_time, add_time, deleted
+          ship_channel, ship_time, confirm_time, end_time, add_time, deleted, version
       </otherwise>
     </choose>
     from litemall_order

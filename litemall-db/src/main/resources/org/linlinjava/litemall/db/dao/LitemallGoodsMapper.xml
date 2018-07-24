@@ -24,6 +24,7 @@
     <result column="retail_price" jdbcType="DECIMAL" property="retailPrice" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="version" jdbcType="INTEGER" property="version" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.LitemallGoods">
     <!--
@@ -143,7 +144,7 @@
     -->
     id, goods_sn, `name`, category_id, brand_id, gallery, keywords, brief, is_on_sale, 
     sort_order, pic_url, is_new, is_hot, unit, counter_price, retail_price, add_time, 
-    deleted
+    deleted, version
   </sql>
   <sql id="Blob_Column_List">
     <!--
@@ -209,7 +210,7 @@
       <otherwise>
         id, goods_sn, `name`, category_id, brand_id, gallery, keywords, brief, is_on_sale, 
           sort_order, pic_url, is_new, is_hot, unit, counter_price, retail_price, add_time, 
-          deleted, detail
+          deleted, version, detail
       </otherwise>
     </choose>
     from litemall_goods
@@ -274,7 +275,7 @@
       <otherwise>
         id, goods_sn, `name`, category_id, brand_id, gallery, keywords, brief, is_on_sale, 
           sort_order, pic_url, is_new, is_hot, unit, counter_price, retail_price, add_time, 
-          deleted, detail
+          deleted, version, detail
       </otherwise>
     </choose>
     from litemall_goods
@@ -312,14 +313,14 @@
       sort_order, pic_url, is_new, 
       is_hot, unit, counter_price, 
       retail_price, add_time, deleted, 
-      detail)
+      version, detail)
     values (#{goodsSn,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, 
       #{brandId,jdbcType=INTEGER}, #{gallery,jdbcType=VARCHAR,typeHandler=org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler}, 
       #{keywords,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, #{isOnSale,jdbcType=BIT}, 
       #{sortOrder,jdbcType=SMALLINT}, #{picUrl,jdbcType=VARCHAR}, #{isNew,jdbcType=BIT}, 
       #{isHot,jdbcType=BIT}, #{unit,jdbcType=VARCHAR}, #{counterPrice,jdbcType=DECIMAL}, 
       #{retailPrice,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
-      #{detail,jdbcType=LONGVARCHAR})
+      #{version,jdbcType=INTEGER}, #{detail,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods">
     <!--
@@ -382,6 +383,9 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="version != null">
+        version,
+      </if>
       <if test="detail != null">
         detail,
       </if>
@@ -437,6 +441,9 @@
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=BIT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
       </if>
       <if test="detail != null">
         #{detail,jdbcType=LONGVARCHAR},
@@ -514,6 +521,9 @@
       <if test="record.deleted != null">
         deleted = #{record.deleted,jdbcType=BIT},
       </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
       <if test="record.detail != null">
         detail = #{record.detail,jdbcType=LONGVARCHAR},
       </if>
@@ -546,6 +556,7 @@
       retail_price = #{record.retailPrice,jdbcType=DECIMAL},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT},
+      version = #{record.version,jdbcType=INTEGER},
       detail = #{record.detail,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -574,7 +585,8 @@
       counter_price = #{record.counterPrice,jdbcType=DECIMAL},
       retail_price = #{record.retailPrice,jdbcType=DECIMAL},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      deleted = #{record.deleted,jdbcType=BIT}
+      deleted = #{record.deleted,jdbcType=BIT},
+      version = #{record.version,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -637,6 +649,9 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=BIT},
       </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
       <if test="detail != null">
         detail = #{detail,jdbcType=LONGVARCHAR},
       </if>
@@ -666,6 +681,7 @@
       retail_price = #{retailPrice,jdbcType=DECIMAL},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT},
+      version = #{version,jdbcType=INTEGER},
       detail = #{detail,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -691,7 +707,8 @@
       counter_price = #{counterPrice,jdbcType=DECIMAL},
       retail_price = #{retailPrice,jdbcType=DECIMAL},
       add_time = #{addTime,jdbcType=TIMESTAMP},
-      deleted = #{deleted,jdbcType=BIT}
+      deleted = #{deleted,jdbcType=BIT},
+      version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallGoodsExample" resultMap="BaseResultMap">
@@ -746,7 +763,7 @@
       <otherwise>
         id, goods_sn, `name`, category_id, brand_id, gallery, keywords, brief, is_on_sale, 
           sort_order, pic_url, is_new, is_hot, unit, counter_price, retail_price, add_time, 
-          deleted, detail
+          deleted, version, detail
       </otherwise>
     </choose>
     from litemall_goods
