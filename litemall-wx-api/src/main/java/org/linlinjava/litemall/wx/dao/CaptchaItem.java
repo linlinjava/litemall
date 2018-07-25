@@ -2,6 +2,9 @@ package org.linlinjava.litemall.wx.dao;
 
 import java.time.LocalDateTime;
 
+/**
+ * 验证码实体类，用于缓存验证码发送
+ */
 public class CaptchaItem {
     private String phoneNumber;
     private String code;

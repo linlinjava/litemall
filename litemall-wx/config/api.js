@@ -4,9 +4,9 @@
 // 局域网测试使用
 // var WxApiRoot = 'http://192.168.0.101:8082/wx/';
 // 云平台部署时使用
-var WxApiRoot = 'http://122.152.206.172:8082/wx/';
+// var WxApiRoot = 'http://122.152.206.172:8082/wx/';
 // 云平台上线时使用
-// var WxApiRoot = 'https://www.menethil.com.cn/wx/';
+var WxApiRoot = 'https://www.menethil.com.cn/wx/';
 
 // 以下是图片存储服务器API地址
 // 本机开发时使用
@@ -14,9 +14,9 @@ var WxApiRoot = 'http://122.152.206.172:8082/wx/';
 // 局域网测试时使用
 // var StorageApi = 'http://192.168.0.101:8081/os/storage/create';
 // 云平台部署时使用
-var StorageApi = 'http://122.152.206.172:8081/os/storage/create';
+// var StorageApi = 'http://122.152.206.172:8081/os/storage/create';
 // 云平台上线时使用
-// var StorageApi = 'https://www.menethil.com.cn/os/storage/create';
+var StorageApi = 'https://www.menethil.com.cn/os/storage/create';
 
 module.exports = {
  IndexUrl: WxApiRoot + 'home/index', //首页数据接口
@@ -86,6 +86,8 @@ module.exports = {
 
  FootprintList: WxApiRoot + 'footprint/list', //足迹列表
  FootprintDelete: WxApiRoot + 'footprint/delete', //删除足迹
+
+ UserFormIdCreate: WxApiRoot + 'formid/create', //用户FromId，用于发送模版消息
 
  StorageUpload: StorageApi, //图片上传
 };

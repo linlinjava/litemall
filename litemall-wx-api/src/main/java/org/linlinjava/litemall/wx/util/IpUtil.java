@@ -4,6 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * IP地址相关工具类
+ */
 public class IpUtil {
     public static String client(HttpServletRequest request) {
         String xff = request.getHeader("x-forwarded-for");
@@ -44,7 +47,7 @@ public class IpUtil {
                 }
             }
         } catch (Exception e) {
-            ipAddress="";
+            ipAddress = "";
         }
         // ipAddress = this.getRequest().getRemoteAddr();
 

@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 维护用户token
+ */
 public class UserTokenManager {
     private static Map<String, UserToken> tokenMap = new HashMap<>();
     private static Map<Integer, UserToken> idMap = new HashMap<>();
@@ -15,11 +18,11 @@ public class UserTokenManager {
 
 
         UserToken userToken = tokenMap.get(token);
-        if(userToken == null){
+        if (userToken == null) {
             return null;
         }
 
-        if(userToken.getExpireTime().isBefore(LocalDateTime.now())){
+        if (userToken.getExpireTime().isBefore(LocalDateTime.now())) {
             tokenMap.remove(token);
             idMap.remove(userToken.getUserId());
             return null;
@@ -29,7 +32,7 @@ public class UserTokenManager {
     }
 
 
-    public static UserToken generateToken(Integer id){
+    public static UserToken generateToken(Integer id) {
         UserToken userToken = null;
 
 //        userToken = idMap.get(id);
