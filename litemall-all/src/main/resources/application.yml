@@ -15,4 +15,4 @@ logging:
     org.linlinjava.litemall.admin:  DEBUG
     org.linlinjava.litemall.os:  DEBUG
     org.linlinjava.litemall.wx:  DEBUG
-    org.linlinjava.litemall:  ERROR
+    org.linlinjava.litemall:  DEBUG
