@@ -591,7 +591,7 @@ public class WxOrderController {
                     order.getAddress()
             };
 
-            notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "/pages/index/index?orderId=" + order.getId());
+            notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "pages/index/index?orderId=" + order.getId());
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {
