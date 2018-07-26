@@ -1,0 +1,73 @@
+litemall:
+  notify:
+    mail:
+      # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员
+      enable: true
+      host: smtp.exmail.qq.com
+      username: ex@ex.com.cn
+      password: XXXXXXXXXXXXX
+      sendfrom: ex@ex.com.cn
+      sendto: ex@qq.com
+
+    # 短消息模版通知配置
+    # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    sms:
+      enable: true
+      appid: 111111111
+      appkey: xxxxxxxxxxxxxx
+      template:
+      - name: paySucceed
+        templateId: 156349
+      - name: captcha
+        templateId: 156433
+      - name: ship
+        templateId: 158002
+      - name: refund
+        templateId: 159447
+
+    # 微信模版通知配置
+    # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    wx:
+      enable: true
+      template:
+      - name: paySucceed
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: captcha
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: ship
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: refund
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  # 快鸟物流查询配置
+  express:
+    enable: true
+    appId: "XXXXXXXXX"
+    appKey: "XXXXXXXXXXXXXXXXXXXXXXXXX"
+    vendors:
+    - code: "ZTO"
+      name: "中通快递"
+    - code: "YTO"
+      name: "圆通速递"
+    - code: "YD"
+      name: "韵达速递"
+    - code: "YZPY"
+      name: "邮政快递包裹"
+    - code: "EMS"
+      name: "EMS"
+    - code: "DBL"
+      name: "德邦快递"
+    - code: "FAST"
+      name: "快捷快递"
+    - code: "ZJS"
+      name: "宅急送"
+    - code: "TNT"
+      name: "TNT快递"
+    - code: "UPS"
+      name: "UPS"
+    - code: "DHL"
+      name: "DHL"
+    - code: "FEDEX"
+      name: "FEDEX联邦(国内件)"
+    - code: "FEDEX_GJ"
+      name: "FEDEX联邦(国际件)"

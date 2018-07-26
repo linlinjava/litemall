@@ -1,10 +1,11 @@
 
 1. 项目进一步打包到deploy文件夹中：
-   * litemall-os-api模块编译得到的litemall-os-api-0.1.0-exec.jar 保存到deploy的litemall-os-api文件夹中，同时重命名成litemall-os-api.jar
-   * litemall-wx-api模块编译得到的litemall-wx-api-0.1.0-exec.jar 保存到deploy的litemall-wx-api文件夹中，同时重命名成litemall-wx-api.jar
-   * litemall-admin-api模块编译得到的litemall-admin-api-0.1.0-exec.jar 保存到deploy的litemall-admin-api文件夹中，同时重命名成litemall-admin-api.jar
+   * litemall-os-api模块编译得到的litemall-os-api-0.1.0-exec.jar 保存到deploy的litemall-api文件夹中，同时重命名成litemall-os-api.jar
+   * litemall-wx-api模块编译得到的litemall-wx-api-0.1.0-exec.jar 保存到deploy的litemall-api文件夹中，同时重命名成litemall-wx-api.jar
+   * litemall-admin-api模块编译得到的litemall-admin-api-0.1.0-exec.jar 保存到deploy的litemall-api文件夹中，同时重命名成litemall-admin-api.jar
    * litemall-admin模块编译以后，把dist文件夹压缩，然后放到deploy的litemall-admin文件夹中。
-   
+   * litemall-db模块的sql文件拷贝到deploy的litemall-db文件夹中。
+
 2. 使用FileZilla把deploy整个文件夹上传到云主机的/home/ubuntu文件夹中
 
 3. 使用PuTTY登录云主机
@@ -14,8 +15,9 @@
     ```bash
     cd deploy
     mysql -h localhost -u root -p123456 
-    source ./litemall-db/litemall_schema.sql 
-    source ./litemall-db/litemall.sql 
+    source ./litemall-db/litemall_schema.sql
+    source ./litemall-db/litemall_table.sql
+    source ./litemall-db/litemall_data.sql
     ```
     注意，123456是开发者所设置的MySQL管理员密码
     警告：
@@ -41,10 +43,10 @@
 
 7. 部署脚本
 
-    为了简化步骤1和步骤2，完成了deploy/util/upload.sh上传脚本和deploy/util/lazy.sh部署脚本，
+    为了简化步骤1和步骤2，完成了deploy/util/package.sh上传脚本和deploy/util/lazy.sh部署脚本，
     
     注意：
-    > * 开发者需要在deploy/util/upload.sh和deploy/util/lazy.sh中设置相应的云主机登录账号和密钥文件路径。
+    > * 开发者需要在deploy/util/package.sh和deploy/util/lazy.sh中设置相应的云主机登录账号和密钥文件路径。
     > * 开发者需要在deploy/util/reset.sh设置云主机的MySQL的root登录账户。
     > * 请先执行上述1-6步骤，确保部署环境成功。
     
