@@ -104,6 +104,11 @@ public class AdminAdminController {
             return ResponseUtil.fail(403, "超级管理员不能修改");
         }
 
+        String rawPassword = admin.getPassword();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(rawPassword);
+        admin.setPassword(encodedPassword);
+
         adminService.updateById(admin);
         return ResponseUtil.ok(admin);
     }
