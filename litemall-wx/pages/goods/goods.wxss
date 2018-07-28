@@ -12,7 +12,7 @@
   height: 750rpx;
 }
 
-.service-policy {
+/* .service-policy {
   width: 750rpx;
   height: 73rpx;
   background: #f4f4f4;
@@ -31,7 +31,7 @@
   align-items: center;
   font-size: 25rpx;
   color: #666;
-}
+} */
 
 .goods-info {
   width: 750rpx;
@@ -781,4 +781,46 @@
   max-width: 80rpx;
   color: #fff;
   text-align: center;
+}
+
+.service-policy {
+ width: 100%;
+ height: 96rpx;
+ /* background: #d3b676; */
+ border: 2px solid #fff;
+ /* align-items: center; */
+}
+
+.service-policy .sharebtn {
+ width: 49.5%;
+ float: right;
+ border: none;
+ height: 80rpx;
+ font-size: 32rpx;
+ background: #d3b676;
+ text-align: center;
+ color: #fff;
+ border-radius:0%;
+}
+
+.service-policy .sharebtn::after {
+ border: none;
+ border-radius:0%;
+}
+
+.service-policy .savesharebtn {
+ width: 49.5%;
+ float: left;
+ border: none;
+ height: 80rpx;
+ font-size: 32rpx;
+ background: #d3b676;
+ text-align: center;
+ color: #fff;
+ border-radius:0%;
+}
+
+.service-policy .savesharebtn::after {
+ border: none;
+ border-radius:0%;
 }

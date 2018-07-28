@@ -4,11 +4,10 @@
       <image src="{{item}}" background-size="cover"></image>
     </swiper-item>
   </swiper>
-  <view class="service-policy">
-    <view class="item">30天无忧退货</view>
-    <view class="item">48小时快速退款</view>
-    <view class="item">满88元免邮费</view>
-  </view>
+ <view class="service-policy">
+  <button class="savesharebtn" bindtap="saveShare">分享朋友圈</button>
+  <button class="sharebtn" open-type="share">分享给朋友</button>
+ </view>
   <view class="goods-info">
     <view class="c">
       <text class="name">{{goods.name}}</text>

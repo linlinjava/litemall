@@ -25,6 +25,7 @@ Page({
   noCollectImage: '/static/images/icon_collect.png',
   hasCollectImage: '/static/images/icon_collect_checked.png',
   collectImage: '/static/images/icon_collect.png',
+  shareImage: '',
   soldout: false
  },
 
@@ -33,6 +34,39 @@ Page({
   this.getGoodsInfo();
   wx.hideNavigationBarLoading() //完成停止加载
   wx.stopPullDownRefresh() //停止下拉刷新
+ },
+
+ saveShare: function() {
+  let that = this;
+  wx.downloadFile({
+   url: that.data.shareImage,
+   success: function(res) {
+    console.log(res)
+    wx.saveImageToPhotosAlbum({
+     filePath: res.tempFilePath,
+     success: function(res) {
+      wx.showModal({
+       title: '存图成功',
+       content: '图片成功保存到相册了，可以分享到朋友圈了',
+       showCancel: false,
+       confirmText: '好的',
+       confirmColor: '#a78845',
+       success: function(res) {
+        if (res.confirm) {
+         console.log('用户点击确定');
+        }
+       }
+      })
+     },
+     fail: function(res) {
+      console.log('fail')
+     }
+    })
+   },
+   fail: function() {
+    console.log('fail')
+   }
+  })
  },
 
  getGoodsInfo: function() {
@@ -72,6 +106,7 @@ Page({
      specificationList: res.data.specificationList,
      productList: res.data.productList,
      userHasCollect: res.data.userHasCollect,
+     shareImage: res.data.shareImage,
      checkedSpecPrice: res.data.info.retailPrice
     });
 
