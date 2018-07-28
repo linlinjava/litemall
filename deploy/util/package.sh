@@ -31,6 +31,5 @@ tar -zcvf ./deploy/litemall-admin/dist.tar -C ./litemall-admin/dist .
 # 这里我们需要的是可执行jar
 mvn clean
 mvn package
-cp  -f ./litemall-os-api/target/litemall-os-api-*-exec.jar ./deploy/litemall-api/litemall-os-api.jar
 cp  -f ./litemall-wx-api/target/litemall-wx-api-*-exec.jar ./deploy/litemall-api/litemall-wx-api.jar
 cp  -f ./litemall-admin-api/target/litemall-admin-api-*-exec.jar ./deploy/litemall-api/litemall-admin-api.jar

@@ -110,10 +110,7 @@ public class LocalStorage implements Storage {
 
     @Override
     public String generateUrl(String keyName) {
-        String url = address + ":" + port + "/os/storage/fetch/" + keyName;
-        if (!url.startsWith("http")) {
-            url = "http://" + url;
-        }
+        String url = address + keyName;
         return url;
     }
 }

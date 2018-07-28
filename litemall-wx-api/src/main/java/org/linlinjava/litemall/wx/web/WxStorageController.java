@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.os.web;
+package org.linlinjava.litemall.wx.web;
 
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.util.CharUtil;
@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/os/storage")
-public class OsStorageController {
+@RequestMapping("/wx/storage")
+public class WxStorageController {
 
     @Autowired
     private StorageService storageService;
@@ -45,22 +45,8 @@ public class OsStorageController {
         return key;
     }
 
-    @GetMapping("/list")
-    public Object list(String key, String name,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                       String sort, String order){
-        List<LitemallStorage> storageList = litemallStorageService.querySelective(key, name, page, limit, sort, order);
-        int total = litemallStorageService.countSelective(key, name, page, limit, sort, order);
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", storageList);
-
-        return ResponseUtil.ok(data);
-    }
-
-    @PostMapping("/create")
-    public Object create(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/upload")
+    public Object upload(@RequestParam("file") MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
         InputStream inputStream = null;
         try {
@@ -83,32 +69,6 @@ public class OsStorageController {
         storageInfo.setUrl(url);
         litemallStorageService.add(storageInfo);
         return ResponseUtil.ok(storageInfo);
-    }
-
-    @PostMapping("/read")
-    public Object read(Integer id) {
-        if(id == null){
-            return ResponseUtil.badArgument();
-        }
-        LitemallStorage storageInfo = litemallStorageService.findById(id);
-        if(storageInfo == null){
-            return ResponseUtil.badArgumentValue();
-        }
-        return ResponseUtil.ok(storageInfo);
-    }
-
-    @PostMapping("/update")
-    public Object update(@RequestBody LitemallStorage litemallStorage) {
-
-        litemallStorageService.update(litemallStorage);
-        return ResponseUtil.ok(litemallStorage);
-    }
-
-    @PostMapping("/delete")
-    public Object delete(@RequestBody LitemallStorage litemallStorage) {
-        litemallStorageService.deleteByKey(litemallStorage.getKey());
-        storageService.delete(litemallStorage.getKey());
-        return ResponseUtil.ok();
     }
 
     @GetMapping("/fetch/{key:.+}")

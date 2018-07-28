@@ -88,7 +88,7 @@ litemall:
     # 本地对象存储配置信息
     local:
       storagePath: storage
-      address: http://127.0.0.1
+      address: http://localhost:8082/wx/storage/fetch/
       port: 8081
     # 阿里云对象存储配置信息
     aliyun:

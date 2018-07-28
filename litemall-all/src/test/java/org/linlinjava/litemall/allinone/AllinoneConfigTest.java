@@ -25,10 +25,7 @@ public class AllinoneConfigTest {
         System.out.println(environment.getProperty("litemall.wx.app-id"));
         // 测试获取application-admin.yml配置信息
 //        System.out.println(environment.getProperty(""));
-        // 测试获取application-os.yml配置信息
-//        System.out.println(environment.getProperty(""));
         // 测试获取application.yml配置信息
-        System.out.println(environment.getProperty("logging.level.org.linlinjava.litemall.os"));
         System.out.println(environment.getProperty("logging.level.org.linlinjava.litemall.wx"));
         System.out.println(environment.getProperty("logging.level.org.linlinjava.litemall.admin"));
         System.out.println(environment.getProperty("logging.level.org.linlinjava.litemall"));
