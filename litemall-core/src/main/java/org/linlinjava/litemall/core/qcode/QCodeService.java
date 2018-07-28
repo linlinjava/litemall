@@ -46,6 +46,8 @@ public class QCodeService {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (FontFormatException e) {
+            e.printStackTrace();
         }
     }
 
@@ -66,7 +68,7 @@ public class QCodeService {
      * @return
      * @throws IOException
      */
-    private byte[] drawPicture(InputStream qrCodeImg, String goodPicUrl, String goodName) throws IOException {
+    private byte[] drawPicture(InputStream qrCodeImg, String goodPicUrl, String goodName) throws IOException, FontFormatException {
         //底图
         ClassPathResource redResource = new ClassPathResource("back.jpg");
         BufferedImage red = ImageIO.read(redResource.getInputStream());
@@ -111,10 +113,12 @@ public class QCodeService {
         return bs.toByteArray();
     }
 
-    private void drawTextInImg(BufferedImage baseImage, String textToWrite, int x, int y) {
+    private void drawTextInImg(BufferedImage baseImage, String textToWrite, int x, int y) throws IOException, FontFormatException {
         Graphics2D g2D = (Graphics2D) baseImage.getGraphics();
         g2D.setColor(new Color(167, 136, 69));
-        g2D.setFont(new Font("黑体", Font.PLAIN, 42));
+
+        //TODO 注意，这里的字体必须安装在服务器上
+        g2D.setFont(new Font("Microsoft YaHei", Font.PLAIN, 42));
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2D.drawString(textToWrite, x, y);
