@@ -2,7 +2,6 @@ package org.linlinjava.litemall.core.notify;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import org.linlinjava.litemall.db.domain.LitemallUserFormid;
 import org.linlinjava.litemall.db.service.LitemallUserFormIdService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class WxTemplateSender {
         try {
             wxMaService.getMsgService().sendTemplateMsg(msg);
             formIdService.updateUserFormId(userFormid);
-        } catch (WxErrorException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

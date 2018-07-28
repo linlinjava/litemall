@@ -548,7 +548,7 @@ public class WxOrderController {
             String orderSn = result.getOutTradeNo();
             String payId = result.getTransactionId();
             // 分转化成元
-            String totalFee = BaseWxPayResult.feeToYuan(result.getTotalFee());
+            String totalFee = BaseWxPayResult.fenToYuan(result.getTotalFee());
 
             LitemallOrder order = orderService.findBySn(orderSn);
             if (order == null) {

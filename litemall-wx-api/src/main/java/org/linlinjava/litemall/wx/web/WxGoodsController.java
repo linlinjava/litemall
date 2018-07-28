@@ -3,6 +3,7 @@ package org.linlinjava.litemall.wx.web;
 import com.mysql.jdbc.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.qcode.QCodeService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
@@ -49,6 +50,8 @@ public class WxGoodsController {
     private LitemallSearchHistoryService searchHistoryService;
     @Autowired
     private LitemallGoodsSpecificationService goodsSpecificationService;
+    @Autowired
+    private QCodeService qCodeService;
 
 
     /**
@@ -146,6 +149,9 @@ public class WxGoodsController {
         data.put("productList", productList);
         data.put("attribute", goodsAttributeList);
         data.put("brand", brand);
+
+        //商品分享图片地址
+        data.put("shareImage", qCodeService.getShareImageUrl(info.getId().toString()));
 
         return ResponseUtil.ok(data);
     }
