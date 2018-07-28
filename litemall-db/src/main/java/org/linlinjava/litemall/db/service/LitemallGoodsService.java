@@ -21,6 +21,7 @@ public class LitemallGoodsService {
     public List<LitemallGoods> queryByHot(int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andIsHotEqualTo(true).andDeletedEqualTo(false);
+        example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
         return goodsMapper.selectByExample(example);
     }
@@ -28,6 +29,7 @@ public class LitemallGoodsService {
     public List<LitemallGoods> queryByNew(int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andIsNewEqualTo(true).andDeletedEqualTo(false);
+        example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
         return goodsMapper.selectByExample(example);
     }
@@ -35,6 +37,7 @@ public class LitemallGoodsService {
     public List<LitemallGoods> queryByCategory(List<Integer> catList, int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andCategoryIdIn(catList).andDeletedEqualTo(false);
+        example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
         return goodsMapper.selectByExample(example);
     }
@@ -48,6 +51,7 @@ public class LitemallGoodsService {
     public List<LitemallGoods> queryByCategory(Integer catId, int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andCategoryIdEqualTo(catId).andDeletedEqualTo(false);
+        example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
         return goodsMapper.selectByExample(example);
     }
