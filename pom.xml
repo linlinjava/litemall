@@ -22,7 +22,6 @@
     <modules>
         <module>litemall-core</module>
         <module>litemall-db</module>
-        <module>litemall-os-api</module>
         <module>litemall-wx-api</module>
         <module>litemall-admin-api</module>
         <module>litemall-all</module>
@@ -38,11 +37,6 @@
             <dependency>
                 <groupId>org.linlinjava</groupId>
                 <artifactId>litemall-db</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.linlinjava</groupId>
-                <artifactId>litemall-os-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

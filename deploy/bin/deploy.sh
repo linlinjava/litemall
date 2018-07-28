@@ -18,12 +18,10 @@ sudo service litemall-wx-api stop
 sudo service litemall-admin-api stop
 
 #部署Spring Boot应用成服务
-sudo ln -f -s /home/ubuntu/deploy/litemall-api/litemall-os-api.jar /etc/init.d/litemall-os-api
 sudo ln -f -s /home/ubuntu/deploy/litemall-api/litemall-wx-api.jar /etc/init.d/litemall-wx-api
 sudo ln -f -s /home/ubuntu/deploy/litemall-api/litemall-admin-api.jar /etc/init.d/litemall-admin-api
 
 #启动服务
-sudo service litemall-os-api restart
 sudo service litemall-wx-api restart
 sudo service litemall-admin-api restart
 
