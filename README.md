@@ -4,10 +4,13 @@
 
 litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
-上架实例
+* [文档](https://linlinjava.gitbook.io/litemall)
+* [贡献](https://linlinjava.gitbook.io/litemall/contribute)
+* [FAQ](https://linlinjava.gitbook.io/litemall/7)
+
+## 上架实例
 
 ![](./doc/pic/demo.png)    
-
 
 ## 项目代码
 
@@ -25,11 +28,9 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
 ![](doc/pic/2.png)    
 
-## 效果
+## 功能
 
-### 小商城效果
-
-![](doc/pic/3.png)    
+### 小商城功能
 
 * 首页
 * 专题列表、专题详情
@@ -46,9 +47,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * 地址列表、地址添加、地址删除
 * 收藏、足迹
 
-### 管理平台效果
-
-![](doc/pic/4.png)    
+### 管理平台功能
 
 * 会员管理
 * 商城管理
@@ -68,18 +67,15 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 4. 也可以点击“预览”，然后手机扫描登录。
    注意，手机需要打开调试功能。
 
-![](doc/pic/5.gif)    
+![](./doc/pic/3.png)    
+
 
 ### 管理平台演示访问
 
 1. 浏览器打开，输入以下网址[http://122.152.206.172:8080/#/login](http://122.152.206.172:8080/#/login)
 2. 管理员名称`admin123`，管理员密码`admin123`
 
-## 文档
-
-[在线文档](https://linlinjava.gitbook.io/litemall/)
-
-文档采用 [署名-禁止演绎 4.0 国际协议许可](https://creativecommons.org/licenses/by-nd/4.0/deed.zh)
+![](doc/pic/4.png)    
 
 ## 开发计划
 
@@ -93,52 +89,37 @@ V 1.0.0 完成以下目标：
 
 V 2.0.0 完成以下目标：
 
-1. 小商城能够完成基本的业务功能；
-2. 管理后台实现较好的业务操作和交互效果，而不是简单的CRUD；
+1. 小商城和管理后台完成所有基本业务；
+2. 第二套小商城前端；
 3. 管理后台实现统计功能、日志功能、权限功能
 
 V 3.0.0 完成以下目标：
 
 1. 管理后台一些辅助功能
 2. 后台服务加强安全功能、配置功能
-3. 项目代码重构和清理
-4. 其他配套服务，如代码文档
-
-项目结束，已经是一个真正可工作的项目，此时进入维护阶段。
-
-如果真的坚持到维护阶段，那么存在三种可能性：
-
-1. 或者开发 V 4.0.0，实现web商场子系统；
-2. 或者重新开发一个新的独立项目，引入企业级功能，如缓存、权限、对象存储云服务等；
-3. 或者结束，不再开发，仅仅维护。
+3. 缓存功能以及优化一些性能
 
 警告：
-> ** 以上仅仅是个人规划的开发计划，实际可能出现任何情况，例如能力有限而放弃开发。**
-
-## 开发进度
-
-查看[更新日志](CHANGELOG.md)
-
-目前V0.7.0
+> **以上仅仅是个人规划的开发计划，实际可能出现任何情况，例如能力有限而放弃开发。**
 
 ## 警告
 
 > 1. 本项目仅用于学习练习
-> 2. 数据库数据来自nideshop
-> 3. 项目代码目前还不完善，仍处在开发中
-> 4. 项目开源（MIT），但不承担任何使用后果
+> 2. 项目目前还不完善，仍处在开发中，不承担任何使用后果
+> 3. 项目代码开源[MIT](./LICENSE)，项目文档采用 [署名-禁止演绎 4.0 国际协议许可](https://creativecommons.org/licenses/by-nd/4.0/deed.zh)
 
 ## 致谢
 
 本项目基于或参考以下项目：
 > 1. [nideshop-mini-program](https://github.com/tumobi/nideshop-mini-program)
-> 如果后端希望采用nodejs，开发者可以访问nideshop项目
+> 如果后端希望采用nodejs，开发者可以访问nideshop项目；
+> 此外，数据库原始数据也是来自nideshop项目。
 > 2. [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 > 一个基于Vue和Element的后台集成方案
 
-本项目所依赖的其他开源项目见相关章节
-
 ## 问题
+
+![](doc/pic/qq.png)
 
 开发者有问题或者好的建议可以用Issues反馈交流，请给出详细信息，本人会尽可能解决。
  * 如果问题是共性问题（如代码bug或文档不全），本人会及时解决。
@@ -149,18 +130,13 @@ V 3.0.0 完成以下目标：
     * 请百度或谷歌相关技术；
     * 请查看相关技术的官方文档，例如微信小程序的官方文档；
     * 请提问前尽可能做一些DEBUG或者思考分析，然后提问时给出详细的错误相关信息以及个人对问题的理解。
-     
-## 贡献
-
-任何形式的贡献都欢迎，查看[贡献指南](CONTRIBUTE.md)
-
-![](doc/pic/qq.png)
-
-注意:
-> * 如果开发者开发使用中有问题，建议采用Issue来报告问题和解决问题。
-> * 在开发交流群中应讨论开发、业务和合作问题。
-> * 交流结果如果是共识性的则在文档中记录，如果是开放性的则会在Issue中记录。
+ * 在开发交流群中应讨论开发、业务和合作问题。
 
 ## 相关项目
 
 HubertYoung正在开发Android端[Litemall-Android](https://github.com/HubertYoung/Litemall-Android)
+
+## License
+
+[MIT](https://github.com/linlinjava/litemall/blob/master/LICENSE)
+Copyright (c) 2018-present linlinjava

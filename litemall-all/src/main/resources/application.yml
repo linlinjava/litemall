@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: db, core, admin, wx, os
+    active: db, core, admin, wx
   message:
     encoding: UTF-8
 
@@ -13,6 +13,5 @@ logging:
     org.springframework:  ERROR
     org.mybatis:  ERROR
     org.linlinjava.litemall.admin:  DEBUG
-    org.linlinjava.litemall.os:  DEBUG
     org.linlinjava.litemall.wx:  DEBUG
     org.linlinjava.litemall:  DEBUG

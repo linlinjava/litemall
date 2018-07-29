@@ -13,7 +13,6 @@ tar -zxvf dist.tar -C dist
 
 #部署三个Spring Boot应用
 #如果服务已经启动，则尝试停止
-sudo service litemall-os-api stop
 sudo service litemall-wx-api stop
 sudo service litemall-admin-api stop
 

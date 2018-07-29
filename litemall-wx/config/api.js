@@ -4,9 +4,9 @@
 // 局域网测试使用
 // var WxApiRoot = 'http://192.168.0.101:8082/wx/';
 // 云平台部署时使用
-// var WxApiRoot = 'http://122.152.206.172:8082/wx/';
+var WxApiRoot = 'http://122.152.206.172:8082/wx/';
 // 云平台上线时使用
-var WxApiRoot = 'https://www.menethil.com.cn/wx/';
+// var WxApiRoot = 'https://www.menethil.com.cn/wx/';
 
 module.exports = {
  IndexUrl: WxApiRoot + 'home/index', //首页数据接口
