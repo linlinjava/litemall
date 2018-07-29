@@ -1,8 +1,17 @@
 litemall:
+  # 开发者应该设置成自己的wx相关信息
+  wx:
+    app-id: wxa5b486c6b918ecfb
+    app-secret: e04004829d4c383b4db7769d88dfbca1
+    mch-id: 111111
+    mch-key: xxxxxx
+    notify-url: http://www.example.com/wx/order/pay-notify
+
+  #通知相关配置
   notify:
     mail:
       # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员
-      enable: true
+      enable: false
       host: smtp.exmail.qq.com
       username: ex@ex.com.cn
       password: XXXXXXXXXXXXX
@@ -12,7 +21,7 @@ litemall:
     # 短消息模版通知配置
     # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
     sms:
-      enable: true
+      enable: false
       appid: 111111111
       appkey: xxxxxxxxxxxxxx
       template:
@@ -28,7 +37,7 @@ litemall:
     # 微信模版通知配置
     # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
     wx:
-      enable: true
+      enable: false
       template:
       - name: paySucceed
         templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -41,7 +50,7 @@ litemall:
 
   # 快鸟物流查询配置
   express:
-    enable: true
+    enable: false
     appId: "XXXXXXXXX"
     appKey: "XXXXXXXXXXXXXXXXXXXXXXXXX"
     vendors:
@@ -71,3 +80,26 @@ litemall:
       name: "FEDEX联邦(国内件)"
     - code: "FEDEX_GJ"
       name: "FEDEX联邦(国际件)"
+
+  # 对象存储配置
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent
+    active: local
+    # 本地对象存储配置信息
+    local:
+      storagePath: storage
+      address: http://localhost:8082/wx/storage/fetch/
+      port: 8081
+    # 阿里云对象存储配置信息
+    aliyun:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      accessKeyId: 111111
+      accessKeySecret: xxxxxx
+      bucketName: xxxxxx
+    # 腾讯对象存储配置信息
+    # 请参考 https://cloud.tencent.com/document/product/436/6249
+    tencent:
+      secretId: 111111
+      secretKey: xxxxxx
+      region: xxxxxx
+      bucketName: xxxxxx
