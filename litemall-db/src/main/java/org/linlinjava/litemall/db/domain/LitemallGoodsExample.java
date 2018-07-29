@@ -981,6 +981,76 @@ public class LitemallGoodsExample {
             return (Criteria) this;
         }
 
+        public Criteria andShareUrlIsNull() {
+            addCriterion("share_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlIsNotNull() {
+            addCriterion("share_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlEqualTo(String value) {
+            addCriterion("share_url =", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotEqualTo(String value) {
+            addCriterion("share_url <>", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlGreaterThan(String value) {
+            addCriterion("share_url >", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("share_url >=", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlLessThan(String value) {
+            addCriterion("share_url <", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlLessThanOrEqualTo(String value) {
+            addCriterion("share_url <=", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlLike(String value) {
+            addCriterion("share_url like", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotLike(String value) {
+            addCriterion("share_url not like", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlIn(List<String> values) {
+            addCriterion("share_url in", values, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotIn(List<String> values) {
+            addCriterion("share_url not in", values, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlBetween(String value1, String value2) {
+            addCriterion("share_url between", value1, value2, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotBetween(String value1, String value2) {
+            addCriterion("share_url not between", value1, value2, "shareUrl");
+            return (Criteria) this;
+        }
+
         public Criteria andIsNewIsNull() {
             addCriterion("is_new is null");
             return (Criteria) this;

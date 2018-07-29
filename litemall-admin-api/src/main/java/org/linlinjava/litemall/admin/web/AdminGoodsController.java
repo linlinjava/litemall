@@ -90,6 +90,10 @@ public class AdminGoodsController {
         TransactionStatus status = txManager.getTransaction(def);
         try {
 
+            //将生成的分享图片地址写入数据库
+            qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
+            goods.setShareUrl(qCodeService.getShareImageUrl(goods.getId().toString()));
+
             // 商品基本信息表litemall_goods
             goodsService.updateById(goods);
 
@@ -180,6 +184,11 @@ public class AdminGoodsController {
 
             // 商品基本信息表litemall_goods
             goods.setAddTime(LocalDateTime.now());
+
+            //将生成的分享图片地址写入数据库
+            qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
+            goods.setShareUrl(qCodeService.getShareImageUrl(goods.getId().toString()));
+
             goodsService.add(goods);
 
             // 商品规格表litemall_goods_specification
@@ -209,9 +218,6 @@ public class AdminGoodsController {
             logger.error("系统内部错误", ex);
         }
         txManager.commit(status);
-
-
-        qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
 
         return ResponseUtil.ok();
     }

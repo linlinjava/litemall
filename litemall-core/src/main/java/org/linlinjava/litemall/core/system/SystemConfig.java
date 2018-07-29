@@ -61,7 +61,7 @@ public class SystemConfig extends BaseConfig {
     }
 
     public static boolean isAutoCreateShareImage() {
-        int autoCreate = getConfigInt("shareimage.autocreate");
+        int autoCreate = getConfigInt(PRE_FIX + "shareimage.autocreate");
         return autoCreate == 0 ? false : true;
     }
 
