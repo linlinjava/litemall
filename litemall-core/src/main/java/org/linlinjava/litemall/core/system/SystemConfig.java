@@ -56,6 +56,10 @@ public class SystemConfig extends BaseConfig {
         return getConfigBigDec(PRE_FIX + "freight.limit");
     }
 
+    public static String getMallName() {
+        return getConfig(PRE_FIX + "mallname");
+    }
+
     @Override
     public String getPrefix() {
         return PRE_FIX;
