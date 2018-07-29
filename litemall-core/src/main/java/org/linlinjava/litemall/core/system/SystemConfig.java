@@ -60,6 +60,11 @@ public class SystemConfig extends BaseConfig {
         return getConfig(PRE_FIX + "mallname");
     }
 
+    public static boolean isAutoCreateShareImage() {
+        int autoCreate = getConfigInt("shareimage.autocreate");
+        return autoCreate == 0 ? false : true;
+    }
+
     @Override
     public String getPrefix() {
         return PRE_FIX;

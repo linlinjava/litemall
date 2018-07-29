@@ -32,6 +32,9 @@ public class QCodeService {
      * @param goodName
      */
     public void createGoodShareImage(String goodId, String goodPicUrl, String goodName) {
+        if (!SystemConfig.isAutoCreateShareImage())
+            return;
+
         try {
             //创建该商品的二维码
             File file = wxMaService.getQrcodeService().createWxaCodeUnlimit(goodId, "pages/index/index");
