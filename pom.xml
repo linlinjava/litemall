@@ -49,6 +49,11 @@
                 <artifactId>litemall-admin-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.linlinjava</groupId>
+                <artifactId>litemall-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>

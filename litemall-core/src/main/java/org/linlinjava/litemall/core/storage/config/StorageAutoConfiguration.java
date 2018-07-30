@@ -45,7 +45,6 @@ public class StorageAutoConfiguration {
         LocalStorage localStorage = new LocalStorage();
         StorageProperties.Local local = this.properties.getLocal();
         localStorage.setAddress(local.getAddress());
-        localStorage.setPort(local.getPort());
         localStorage.setStoragePath(local.getStoragePath());
         return localStorage;
     }

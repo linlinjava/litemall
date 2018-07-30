@@ -1,58 +1,104 @@
+## deploy
 
-1. 项目进一步打包到deploy文件夹中：
-   * litemall-wx-api模块编译得到的litemall-wx-api-0.1.0-exec.jar 保存到deploy的litemall-api文件夹中，同时重命名成litemall-wx-api.jar
-   * litemall-admin-api模块编译得到的litemall-admin-api-0.1.0-exec.jar 保存到deploy的litemall-api文件夹中，同时重命名成litemall-admin-api.jar
-   * litemall-admin模块编译以后，把dist文件夹压缩，然后放到deploy的litemall-admin文件夹中。
-   * litemall-db模块的sql文件拷贝到deploy的litemall-db文件夹中。
+### 项目打包
 
-2. 使用FileZilla把deploy整个文件夹上传到云主机的/home/ubuntu文件夹中
+1. 在主机或者开发机打包项目到deploy；
+    ```
+    cd litemall
+    cat ./litemall-db/sql/litemall_schema.sql > ./deploy/db/litemall.sql
+    cat ./litemall-db/sql/litemall_table.sql >> ./deploy/db/litemall.sql
+    cat ./litemall-db/sql/litemall_data.sql >> ./deploy/db/litemall.sql
+    
+    cd ./litemall-admin
+    cnpm install
+    cnpm run build:dep
+    
+    cd ..
+    mvn clean package
+    cp -f ./litemall-all/target/litemall-all-*-exec.jar ./deploy/litemall/litemall.jar
+    ```
+    这里的工作是：
+    1. 把数据库文件拷贝到deploy/db文件夹
+    2. 编译litemall-admin项目
+    3. 编译litemall-all模块，同时把litemall-admin编译得到的静态文件拷贝到
+       litemall-all模块的static目录
+       
+2. 修改litemall文件夹下面的*.yml外部配置文件，当litemall-all模块启动时会
+    加载外部配置文件，而覆盖默认jar包内部的配置文件。
+    例如，配置文件中一些地方需要设置成远程主机的IP地址
+    
+此时deploy部署包结构如下：
 
-3. 使用PuTTY登录云主机
+* bin
 
-4. 如果开发者没有部署litemall数据库，可以运行以下命令：
+存放远程主机运行的脚本，包括deploy.sh脚本和reset.sh脚本
 
+* db
+
+存放litemall数据库文件
+
+* litemall
+
+存放远程主机运行的代码，包括litemall-all二进制可执行包和litemall外部配置文件
+
+* util
+存放开发主机运行的脚本，包括package.sh脚本和lazy.sh脚本。
+由于是本地开发主机运行，因此开发者可以不用上传到远程主机。
+
+### 项目部署
+
+1. 远程主机环境（MySQL和JDK1.8）已经安装好，请确保云主机的安全组已经允许相应的端口。
+2. 导入db/litemall.sql
     ```bash
-    cd deploy
-    mysql -h localhost -u root -p123456 
-    source ./litemall-db/litemall_schema.sql
-    use litemall;
-    source ./litemall-db/litemall_table.sql
-    source ./litemall-db/litemall_data.sql
+    cd /home/ubuntu/deploy/db
+    mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
     ```
-    注意，123456是开发者所设置的MySQL管理员密码
-    警告：
-    > litemall_schema.sql会尝试删除litemall数据库然后重建一个新的数据。
-
-5. 运行脚本部署运行
-
+3. 启动服务
     ```bash
-    sudo ./deploy/bin/deploy.sh
+    sudo service litemall stop
+    sudo ln -f -s /home/ubuntu/deploy/litemall/litemall.jar /etc/init.d/litemall
+    sudo service litemall start
     ```
-
-6. 测试部署是否成功
-  
-    请确保云主机的安全组已经允许相应的端口（见1.5.3.1）；
-    然后测试是否部署成功(xxx.xxx.xxx.xxx是云主机IP）：
-
+4. 测试是否部署成功(xxx.xxx.xxx.xxx是云主机IP）：
     ```
-    http://xxx.xxx.xxx.xxx:8082/wx/index/index
-    http://xxx.xxx.xxx.xxx:8083/admin/index/index
+    http://xxx.xxx.xxx.xxx:8080/wx/index/index
+    http://xxx.xxx.xxx.xxx:8080/admin/index/index
     http://xxx.xxx.xxx.xxx:8080/#/login
     ```
 
-7. 部署脚本
+### 项目辅助脚本
 
-    为了简化步骤1和步骤2，完成了deploy/util/package.sh上传脚本和deploy/util/lazy.sh部署脚本，
+在前面的项目打包和项目部署中都是采用手动命令来部署。
+这里可以写一些脚本简化：
+
+* util/packet.sh
+
+在开发主机运行可以自动项目打包
+
+* util/lazy.sh
+
+在开发主机运行可以自动项目打包、项目上传远程主机、自动登录系统执行项目部署脚本。
     
-    注意：
-    > 1. 开发者需要在deploy/util/package.sh和deploy/util/lazy.sh中设置相应的云主机登录账号和密钥文件路径。
-    > 2. 开发者需要在deploy/bin/reset.sh设置云主机的MySQL的root登录账户。
-    > 3. 请先执行1.5.1中上述步骤，确保部署环境成功。
+注意：
+> 1. 开发者需要在util/lazy.sh中设置相应的远程主机登录账号和密钥文件路径。
+> 2. 开发者需要在bin/reset.sh设置远程主机的MySQL的root登录账户。
     
-    * package.sh
-    
-    该脚本会自动把当前项目Spring Boot项目打包和Vue项目打包工作，然后复制到deploy文件夹中。
-   
-    * lazy.sh
-    
-    该脚本会调用package.sh打包项目，然后上传deploy文件夹到云主机，最后ssh登录远程主机执行bin下面的deploy.sh脚本。
+* bin/deploy.sh
+
+在远程主机运行可以自动部署服务
+
+* bin/reset.sh
+
+在远程主机运行可以自动项目导入数据、删除本地上传图片、再执行bin/deploy.sh部署服务。
+
+注意：
+> 开发者需要在bin/reset.sh设置远程主机的MySQL的root登录账户。
+
+总结，当开发者设置好配置信息以后，可以在本地运行lazy.sh脚本自动一键部署:
+```bash
+cd litemall
+./deploy/util/lazy.sh
+```
+
+不过由于需要设置的信息会包含敏感安全信息，强烈建议开发者参考这里的deploy文件夹，
+然后实现自己的deploy文件夹，妥善处置外部配置文件和脚本中的敏感安全信息!!!
