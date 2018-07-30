@@ -200,7 +200,7 @@ CREATE TABLE `litemall_comment` (
   `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `id_value` (`value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8 COMMENT='评论表';
+) ENGINE=InnoDB AUTO_INCREMENT=1004 DEFAULT CHARSET=utf8 COMMENT='评论表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,6 +240,7 @@ CREATE TABLE `litemall_goods` (
   `is_on_sale` tinyint(1) DEFAULT '1' COMMENT '是否上架',
   `sort_order` smallint(4) DEFAULT '100',
   `pic_url` varchar(255) DEFAULT NULL COMMENT '商品页面商品图片',
+  `share_url` varchar(255) DEFAULT NULL COMMENT '商品分享朋友圈图片',
   `is_new` tinyint(1) DEFAULT '0' COMMENT '是否新品首发，如果设置则可以在新品首发页面展示',
   `is_hot` tinyint(1) DEFAULT '0' COMMENT '是否人气推荐，如果设置则可以在人气推荐页面展示',
   `unit` varchar(31) DEFAULT '’件‘' COMMENT '商品单位，例如件、盒',
@@ -478,7 +479,7 @@ CREATE TABLE `litemall_storage` (
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='文件存储表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件存储表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -495,7 +496,7 @@ CREATE TABLE `litemall_system` (
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -580,4 +581,4 @@ CREATE TABLE `litemall_user_formid` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-24 23:42:36
+-- Dump completed on 2018-07-30 11:34:15
