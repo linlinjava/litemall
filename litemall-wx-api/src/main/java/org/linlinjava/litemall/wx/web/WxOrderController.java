@@ -9,8 +9,9 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.core.notify.LitemallNotifyService;
-import org.linlinjava.litemall.core.notify.NotifyUtils;
+import org.linlinjava.litemall.core.notify.NotifyService;
+import org.linlinjava.litemall.core.notify.NotifyType;
+import org.linlinjava.litemall.core.util.DateTimeUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
@@ -18,6 +19,7 @@ import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderHandleOption;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.wx.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -82,7 +84,10 @@ public class WxOrderController {
     private WxPayService wxPayService;
 
     @Autowired
-    private LitemallNotifyService litemallNotifyService;
+    private NotifyService notifyService;
+
+    @Autowired
+    LitemallUserFormIdService formIdService;
 
     public WxOrderController() {
     }
@@ -215,6 +220,8 @@ public class WxOrderController {
         orderVo.put("actualPrice", order.getActualPrice());
         orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
         orderVo.put("handleOption", OrderUtil.build(order));
+        orderVo.put("expCode", order.getShipChannel());
+        orderVo.put("expNo", order.getShipSn());
 
         List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
         List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
@@ -292,8 +299,8 @@ public class WxOrderController {
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
         BigDecimal freightPrice = new BigDecimal(0.00);
-        if (checkedGoodsPrice.compareTo(new BigDecimal(88.00)) < 0) {
-            freightPrice = new BigDecimal(8.00);
+        if (checkedGoodsPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
+            freightPrice = SystemConfig.getFreight();
         }
 
         // 可以使用的其他钱，例如用户积分
@@ -497,6 +504,18 @@ public class WxOrderController {
             orderRequest.setSpbillCreateIp(IpUtil.getIpAddr(request));
 
             result = wxPayService.createOrder(orderRequest);
+
+            //缓存prepayID用于后续模版通知
+            String prepayId = result.getPackageValue();
+            prepayId = prepayId.replace("prepay_id=", "");
+            LitemallUserFormid userFormid = new LitemallUserFormid();
+            userFormid.setOpenid(user.getWeixinOpenid());
+            userFormid.setFormid(prepayId);
+            userFormid.setIsprepay(true);
+            userFormid.setUseamount(3);
+            userFormid.setExpireTime(LocalDateTime.now().plusDays(7));
+            formIdService.addUserFormid(userFormid);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.fail(403, "订单不能支付");
@@ -529,7 +548,7 @@ public class WxOrderController {
             String orderSn = result.getOutTradeNo();
             String payId = result.getTransactionId();
             // 分转化成元
-            String totalFee = BaseWxPayResult.feeToYuan(result.getTotalFee());
+            String totalFee = BaseWxPayResult.fenToYuan(result.getTotalFee());
 
             LitemallOrder order = orderService.findBySn(orderSn);
             if (order == null) {
@@ -553,8 +572,26 @@ public class WxOrderController {
 
             //TODO 发送邮件和短信通知，这里采用异步发送
             // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
-            litemallNotifyService.notifyMailMessage("新订单通知", order.toString());
-            litemallNotifyService.notifySMSTemplate(order.getMobile(), NotifyUtils.NotifyType.PAY_SUCCEED, new String[]{orderSn});
+            notifyService.notifyMail("新订单通知", order.toString());
+            /**
+             * 这里微信的短信平台对参数长度有限制，所以将订单号只截取后6位
+             *
+             */
+            notifyService.notifySmsTemplateSync(order.getMobile(), NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
+
+            /**
+             * 请依据自己的模版消息配置更改参数
+             */
+            String[] parms = new String[]{
+                    order.getOrderSn(),
+                    order.getOrderPrice().toString(),
+                    DateTimeUtil.getDateTimeDisplayString(order.getAddTime()),
+                    order.getConsignee(),
+                    order.getMobile(),
+                    order.getAddress()
+            };
+
+            notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "pages/index/index?orderId=" + order.getId());
 
             return WxPayNotifyResponse.success("处理成功!");
         } catch (Exception e) {
@@ -600,6 +637,10 @@ public class WxOrderController {
         // 设置订单申请退款状态
         order.setOrderStatus(OrderUtil.STATUS_REFUND);
         orderService.update(order);
+
+        //TODO 发送邮件和短信通知，这里采用异步发送
+        // 有用户申请退款，邮件通知运营人员
+        notifyService.notifyMail("退款申请", order.toString());
 
         return ResponseUtil.ok();
     }

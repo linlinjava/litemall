@@ -26,7 +26,7 @@ mysql -h localhost -u $ROOT -p$PASSWORD < db.sql
 rm db.sql
 
 # 删除storage文件夹内文件
-cd /home/ubuntu/deploy/litemall-os-api/storage
+cd /home/ubuntu/deploy/litemall-api/storage
 rm -f ./**
 
 # 重新部署服务

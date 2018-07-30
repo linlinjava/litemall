@@ -10,7 +10,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
         "org.linlinjava.litemall",
         "org.linlinjava.litemall.core",
         "org.linlinjava.litemall.db",
-        "org.linlinjava.litemall.os",
         "org.linlinjava.litemall.wx",
         "org.linlinjava.litemall.admin"})
 @MapperScan("org.linlinjava.litemall.db.dao")

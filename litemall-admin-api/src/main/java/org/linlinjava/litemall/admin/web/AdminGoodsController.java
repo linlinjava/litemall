@@ -1,12 +1,11 @@
 package org.linlinjava.litemall.admin.web;
 
-import io.swagger.models.auth.In;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.dao.GoodsAllinone;
-import org.linlinjava.litemall.admin.dao.Product;
 import org.linlinjava.litemall.admin.util.CatVo;
+import org.linlinjava.litemall.core.qcode.QCodeService;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -17,7 +16,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -42,13 +40,16 @@ public class AdminGoodsController {
     @Autowired
     private LitemallBrandService brandService;
 
+    @Autowired
+    private QCodeService qCodeService;
+
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
                        String goodsSn, String name,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                       String sort, String order){
-        if(adminId == null){
+                       String sort, String order) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -73,8 +74,8 @@ public class AdminGoodsController {
      * 因此这里只能删除所有旧的数据，然后添加新的数据
      */
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone){
-        if(adminId == null){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -89,6 +90,10 @@ public class AdminGoodsController {
         TransactionStatus status = txManager.getTransaction(def);
         try {
 
+            //将生成的分享图片地址写入数据库
+            qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
+            goods.setShareUrl(qCodeService.getShareImageUrl(goods.getId().toString()));
+
             // 商品基本信息表litemall_goods
             goodsService.updateById(goods);
 
@@ -99,7 +104,7 @@ public class AdminGoodsController {
 
             // 商品规格表litemall_goods_specification
             Map<String, Integer> specIds = new HashMap<>();
-            for(LitemallGoodsSpecification specification : specifications){
+            for (LitemallGoodsSpecification specification : specifications) {
                 specification.setGoodsId(goods.getId());
                 specification.setAddTime(LocalDateTime.now());
                 specificationService.add(specification);
@@ -107,14 +112,14 @@ public class AdminGoodsController {
             }
 
             // 商品参数表litemall_goods_attribute
-            for(LitemallGoodsAttribute attribute : attributes){
+            for (LitemallGoodsAttribute attribute : attributes) {
                 attribute.setGoodsId(goods.getId());
                 attribute.setAddTime(LocalDateTime.now());
                 attributeService.add(attribute);
             }
 
             // 商品货品表litemall_product
-            for(LitemallProduct product : products){
+            for (LitemallProduct product : products) {
                 product.setGoodsId(goods.getId());
                 product.setAddTime(LocalDateTime.now());
                 productService.add(product);
@@ -125,12 +130,14 @@ public class AdminGoodsController {
         }
         txManager.commit(status);
 
+        qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
+
         return ResponseUtil.ok();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods){
-        if(adminId == null){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -154,8 +161,8 @@ public class AdminGoodsController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone){
-        if(adminId == null){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -165,7 +172,7 @@ public class AdminGoodsController {
         LitemallProduct[] products = goodsAllinone.getProducts();
 
         String name = goods.getName();
-        if(goodsService.checkExistByName(name)){
+        if (goodsService.checkExistByName(name)) {
             return ResponseUtil.fail(403, "商品名已经存在");
         }
 
@@ -177,11 +184,16 @@ public class AdminGoodsController {
 
             // 商品基本信息表litemall_goods
             goods.setAddTime(LocalDateTime.now());
+
+            //将生成的分享图片地址写入数据库
+            qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
+            goods.setShareUrl(qCodeService.getShareImageUrl(goods.getId().toString()));
+
             goodsService.add(goods);
 
             // 商品规格表litemall_goods_specification
             Map<String, Integer> specIds = new HashMap<>();
-            for(LitemallGoodsSpecification specification : specifications){
+            for (LitemallGoodsSpecification specification : specifications) {
                 specification.setGoodsId(goods.getId());
                 specification.setAddTime(LocalDateTime.now());
                 specificationService.add(specification);
@@ -189,14 +201,14 @@ public class AdminGoodsController {
             }
 
             // 商品参数表litemall_goods_attribute
-            for(LitemallGoodsAttribute attribute : attributes){
+            for (LitemallGoodsAttribute attribute : attributes) {
                 attribute.setGoodsId(goods.getId());
                 attribute.setAddTime(LocalDateTime.now());
                 attributeService.add(attribute);
             }
 
             // 商品货品表litemall_product
-            for(LitemallProduct product : products){
+            for (LitemallProduct product : products) {
                 product.setGoodsId(goods.getId());
                 product.setAddTime(LocalDateTime.now());
                 productService.add(product);
@@ -211,7 +223,6 @@ public class AdminGoodsController {
     }
 
 
-
     @GetMapping("/catAndBrand")
     public Object list2(@LoginAdmin Integer adminId) {
         if (adminId == null) {
@@ -223,14 +234,14 @@ public class AdminGoodsController {
         List<LitemallCategory> l1CatList = categoryService.queryL1();
         List<CatVo> categoryList = new ArrayList<>(l1CatList.size());
 
-        for(LitemallCategory l1 : l1CatList){
+        for (LitemallCategory l1 : l1CatList) {
             CatVo l1CatVo = new CatVo();
             l1CatVo.setValue(l1.getId());
             l1CatVo.setLabel(l1.getName());
 
             List<LitemallCategory> l2CatList = categoryService.queryByPid(l1.getId());
             List<CatVo> children = new ArrayList<>(l2CatList.size());
-            for(LitemallCategory l2 : l2CatList) {
+            for (LitemallCategory l2 : l2CatList) {
                 CatVo l2CatVo = new CatVo();
                 l2CatVo.setValue(l2.getId());
                 l2CatVo.setLabel(l2.getName());
@@ -245,7 +256,7 @@ public class AdminGoodsController {
         // 管理员设置“所属品牌商”
         List<LitemallBrand> list = brandService.all();
         List<Map<String, Object>> brandList = new ArrayList<>(l1CatList.size());
-        for(LitemallBrand brand : list){
+        for (LitemallBrand brand : list) {
             Map<String, Object> b = new HashMap<>(2);
             b.put("value", brand.getId());
             b.put("label", brand.getName());
@@ -253,7 +264,7 @@ public class AdminGoodsController {
         }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("categoryList" ,categoryList);
+        data.put("categoryList", categoryList);
         data.put("brandList", brandList);
         return ResponseUtil.ok(data);
     }
@@ -278,11 +289,11 @@ public class AdminGoodsController {
         Integer[] categoryIds = new Integer[]{};
         if (category != null) {
             Integer parentCategoryId = category.getPid();
-            categoryIds = new Integer[] {parentCategoryId, categoryId};
+            categoryIds = new Integer[]{parentCategoryId, categoryId};
         }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("goods" ,goods);
+        data.put("goods", goods);
         data.put("specifications", specifications);
         data.put("products", products);
         data.put("attributes", attributes);

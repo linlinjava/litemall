@@ -52,12 +52,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="详情" prop="desc">
+      <el-table-column align="center" label="详情" prop="detail">
         <template slot-scope="scope">
-          <el-dialog title="商品详情" :visible.sync="descDialogVisible">
-            <div v-html="descDetail"></div>
+          <el-dialog title="商品详情" :visible.sync="detailDialogVisible">
+            <div v-html="goodsDetail"></div>
           </el-dialog>
-          <el-button type="primary" size="mini" @click="showDesc(scope.row.desc)">查看</el-button>
+          <el-button type="primary" size="mini" @click="showDetail(scope.row.detail)">查看</el-button>
         </template>
       </el-table-column>
 
@@ -145,8 +145,8 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
-      descDetail: '',
-      descDialogVisible: false,
+      goodsDetail: '',
+      detailDialogVisible: false,
       downloadLoading: false
     }
   },
@@ -184,9 +184,9 @@ export default {
     handleUpdate(row) {
       this.$router.push({ path: '/goods/edit', query: { id: row.id }})
     },
-    showDesc(desc) {
-      this.descDetail = desc
-      this.descDialogVisible = true
+    showDetail(detail) {
+      this.goodsDetail = detail
+      this.detailDialogVisible = true
     },
     handleDelete(row) {
       deleteGoods(row).then(response => {
@@ -204,7 +204,7 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['商品ID', '商品编号', '名称', '专柜价格', '当前价格', '是否新品', '是否热品', '是否在售', '首页主图', '宣传图片列表', '商品介绍', '详细介绍', '商品图片', '商品单位', '关键字', '类目ID', '品牌商ID']
-        const filterVal = ['id', 'goodsSn', 'name', 'counterPrice', 'retailPrice', 'isNew', 'isHot', 'isOnSale', 'listPicUrl', 'gallery', 'brief', 'desc', 'picUrl', 'goodsUnit', 'keywords', 'categoryId', 'brandId']
+        const filterVal = ['id', 'goodsSn', 'name', 'counterPrice', 'retailPrice', 'isNew', 'isHot', 'isOnSale', 'listPicUrl', 'gallery', 'brief', 'detail', 'picUrl', 'goodsUnit', 'keywords', 'categoryId', 'brandId']
         excel.export_json_to_excel2(tHeader, this.list, filterVal, '商品信息')
         this.downloadLoading = false
       })

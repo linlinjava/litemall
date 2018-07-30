@@ -2,7 +2,7 @@ package org.linlinjava.litemall.core;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.linlinjava.litemall.core.notify.LitemallNotifyService;
+import org.linlinjava.litemall.core.notify.NotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,11 +24,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class MailTest {
 
     @Autowired
-    private LitemallNotifyService litemallNotifyService;
+    private NotifyService notifyService;
 
     @Test
     public void testMail() {
-        litemallNotifyService.notifyMailMessage("订单信息", "订单1111111已付款，请发货");
+        notifyService.notifyMail("订单信息", "订单1111111已付款，请发货");
 
         try {
             Thread.sleep(5000);

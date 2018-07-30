@@ -981,6 +981,76 @@ public class LitemallGoodsExample {
             return (Criteria) this;
         }
 
+        public Criteria andShareUrlIsNull() {
+            addCriterion("share_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlIsNotNull() {
+            addCriterion("share_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlEqualTo(String value) {
+            addCriterion("share_url =", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotEqualTo(String value) {
+            addCriterion("share_url <>", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlGreaterThan(String value) {
+            addCriterion("share_url >", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("share_url >=", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlLessThan(String value) {
+            addCriterion("share_url <", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlLessThanOrEqualTo(String value) {
+            addCriterion("share_url <=", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlLike(String value) {
+            addCriterion("share_url like", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotLike(String value) {
+            addCriterion("share_url not like", value, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlIn(List<String> values) {
+            addCriterion("share_url in", values, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotIn(List<String> values) {
+            addCriterion("share_url not in", values, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlBetween(String value1, String value2) {
+            addCriterion("share_url between", value1, value2, "shareUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andShareUrlNotBetween(String value1, String value2) {
+            addCriterion("share_url not between", value1, value2, "shareUrl");
+            return (Criteria) this;
+        }
+
         public Criteria andIsNewIsNull() {
             addCriterion("is_new is null");
             return (Criteria) this;
@@ -1408,6 +1478,66 @@ public class LitemallGoodsExample {
 
         public Criteria andDeletedNotBetween(Boolean value1, Boolean value2) {
             addCriterion("deleted not between", value1, value2, "deleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNull() {
+            addCriterion("version is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNotNull() {
+            addCriterion("version is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionEqualTo(Integer value) {
+            addCriterion("version =", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotEqualTo(Integer value) {
+            addCriterion("version <>", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThan(Integer value) {
+            addCriterion("version >", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("version >=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThan(Integer value) {
+            addCriterion("version <", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThanOrEqualTo(Integer value) {
+            addCriterion("version <=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIn(List<Integer> values) {
+            addCriterion("version in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotIn(List<Integer> values) {
+            addCriterion("version not in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionBetween(Integer value1, Integer value2) {
+            addCriterion("version between", value1, value2, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotBetween(Integer value1, Integer value2) {
+            addCriterion("version not between", value1, value2, "version");
             return (Criteria) this;
         }
     }

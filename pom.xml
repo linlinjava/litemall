@@ -22,7 +22,6 @@
     <modules>
         <module>litemall-core</module>
         <module>litemall-db</module>
-        <module>litemall-os-api</module>
         <module>litemall-wx-api</module>
         <module>litemall-admin-api</module>
         <module>litemall-all</module>
@@ -38,11 +37,6 @@
             <dependency>
                 <groupId>org.linlinjava</groupId>
                 <artifactId>litemall-db</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.linlinjava</groupId>
-                <artifactId>litemall-os-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -92,25 +86,13 @@
             <dependency>
                 <groupId>com.github.binarywang</groupId>
                 <artifactId>weixin-java-pay</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.binarywang</groupId>
                 <artifactId>weixin-java-miniapp</artifactId>
-                <version>3.0.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>2.8.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>2.8.0</version>
+                <version>3.1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -129,6 +111,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin.external.google</groupId>
+                    <artifactId>android-json</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
