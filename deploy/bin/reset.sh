@@ -18,15 +18,12 @@ then
   exit -1
 fi
 
-cd /home/ubuntu/deploy/litemall-db
-cat litemall_schema.sql > db.sql
-cat litemall_table.sql >> db.sql
-cat litemall_data.sql >> db.sql
-mysql -h localhost -u $ROOT -p$PASSWORD < db.sql
-rm db.sql
+# 导入数据
+cd /home/ubuntu/deploy/db
+mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
 
 # 删除storage文件夹内文件
-cd /home/ubuntu/deploy/litemall-api/storage
+cd /home/ubuntu/deploy/litemall/storage
 rm -f ./**
 
 # 重新部署服务
