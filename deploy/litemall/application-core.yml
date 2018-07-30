@@ -89,7 +89,6 @@ litemall:
     local:
       storagePath: storage
       address: http://122.152.206.172:8080/wx/storage/fetch/
-      port: 8081
     # 阿里云对象存储配置信息
     aliyun:
       endpoint: oss-cn-shenzhen.aliyuncs.com

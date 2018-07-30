@@ -20,7 +20,6 @@ public class LocalStorage implements Storage {
 
     private String storagePath;
     private String address;
-    private String port;
 
     private Path rootLocation;
 
@@ -46,15 +45,6 @@ public class LocalStorage implements Storage {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public String getPort() {
-        return port;
-    }
-
-    public void setPort(String port) {
-        this.port = port;
-    }
-
 
     @Override
     public void store(MultipartFile file, String keyName) {

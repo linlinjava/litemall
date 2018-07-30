@@ -43,7 +43,6 @@ public class StorageProperties {
 
     public static class Local {
         private String address;
-        private String port;
         private String storagePath;
 
         public String getAddress() {
@@ -52,14 +51,6 @@ public class StorageProperties {
 
         public void setAddress(String address) {
             this.address = address;
-        }
-
-        public String getPort() {
-            return port;
-        }
-
-        public void setPort(String port) {
-            this.port = port;
         }
 
         public String getStoragePath() {

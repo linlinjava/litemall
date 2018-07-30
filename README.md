@@ -77,7 +77,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
 ![](doc/pic/4.png)
 
-### 快速启动
+## 快速启动
 
 1. 配置最小开发环境：
     * [MySQL](https://dev.mysql.com/downloads/mysql/)

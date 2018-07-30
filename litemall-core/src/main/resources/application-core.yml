@@ -88,8 +88,8 @@ litemall:
     # 本地对象存储配置信息
     local:
       storagePath: storage
-      address: http://localhost:8082/wx/storage/fetch/
-      port: 8081
+      # 这个地方应该是wx模块的WxStorageController的fetch方法对应的地址
+      address: http://localhost:8080/wx/storage/fetch/
     # 阿里云对象存储配置信息
     aliyun:
       endpoint: oss-cn-shenzhen.aliyuncs.com
