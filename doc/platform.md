@@ -7,8 +7,6 @@
 * litemall-db模块
 * litemall-all模块
 
-实际上，litemall**真正的基础系统**是litemall-core模块和litemall-db模块。
-
 litemall-all模块则只是一个包裹模块，几乎没有任何代码。该模块的作用是融合两个spring boot模块
 和litemall-admin模块静态文件到一个单独spring boot应用中，并最终打包成war格式的项目安装包。
 

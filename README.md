@@ -75,7 +75,49 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 1. 浏览器打开，输入以下网址[http://122.152.206.172:8080/#/login](http://122.152.206.172:8080/#/login)
 2. 管理员名称`admin123`，管理员密码`admin123`
 
-![](doc/pic/4.png)    
+![](doc/pic/4.png)
+
+### 快速启动
+
+1. 配置最小开发环境：
+    * [MySQL](https://dev.mysql.com/downloads/mysql/)
+    * [JDK1.8或以上](http://www.oracle.com/technetwork/java/javase/overview/index.html)
+    * [Maven](https://maven.apache.org/download.cgi)
+    * [Nodejs](https://nodejs.org/en/download/)
+    * [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
+    
+2. 数据库依次导入litemall-db/sql下的数据库文件
+    * litemall_schema.sql
+    * litemall_table.sql
+    * litemall_data.sql
+
+3. 启动小商场和管理后台的后台服务
+
+    打开命令行，输入以下命令
+    ```bash
+    cd litemall
+    mvn install
+    mvn package
+    cd ./litemall-all
+    mvn spring-boot:run
+    ```
+    
+4. 启动管理后台前端
+
+    打开命令行，输入以下命令
+    ```bash
+    cd litemall/litemall-admin
+    cnpm install
+    cnpm run dev
+    ```
+    此时，浏览器打开，输入网址`http://localhost:9527`, 此时进入管理后台登录页面。
+    
+5. 启动小商城前端
+   
+   打开微信开发者工具，导入litemall-wx模块,点击`编译`即可，此时可以预览小商场效果。
+
+注意：
+> 这里只是最简启动方式，而且小商场的微信登录会失败，更详细方案请参考文档。
 
 ## 开发计划
 
@@ -99,9 +141,6 @@ V 3.0.0 完成以下目标：
 2. 后台服务加强安全功能、配置功能
 3. 缓存功能以及优化一些性能
 
-警告：
-> **以上仅仅是个人规划的开发计划，实际可能出现任何情况，例如能力有限而放弃开发。**
-
 ## 警告
 
 > 1. 本项目仅用于学习练习
@@ -121,16 +160,14 @@ V 3.0.0 完成以下目标：
 
 ![](doc/pic/qq.png)
 
-开发者有问题或者好的建议可以用Issues反馈交流，请给出详细信息，本人会尽可能解决。
- * 如果问题是共性问题（如代码bug或文档不全），本人会及时解决。
- * 如果问题是个人问题（如开发者了解不深入或者没有相关技术），请见谅（本人也是百度和谷歌）。
+ * 开发者有问题或者好的建议可以用Issues反馈交流，请给出详细信息
+ * 在开发交流群中应讨论开发、业务和合作问题
  * 如果真的需要QQ群里提问，请在提问前先完成以下过程：
-    * 请仔细阅读本项目文档，特别是是[**FAQ**](./doc/7.md)，查看能否解决；
+    * 请仔细阅读本项目文档，特别是是[**FAQ**](./doc/FAQ.md)，查看能否解决；
     * 请阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md)；
     * 请百度或谷歌相关技术；
     * 请查看相关技术的官方文档，例如微信小程序的官方文档；
     * 请提问前尽可能做一些DEBUG或者思考分析，然后提问时给出详细的错误相关信息以及个人对问题的理解。
- * 在开发交流群中应讨论开发、业务和合作问题。
 
 ## 相关项目
 
