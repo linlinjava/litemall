@@ -4,13 +4,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.core.util.RegexUtil;
+import org.linlinjava.litemall.core.validator.Order;
+import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallAddress;
 import org.linlinjava.litemall.db.service.LitemallAddressService;
 import org.linlinjava.litemall.db.service.LitemallRegionService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/address")
+@Validated
 public class AdminAddressController {
     private final Log logger = LogFactory.getLog(AdminAddressController.class);
 
@@ -50,9 +55,10 @@ public class AdminAddressController {
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
                        Integer userId, String name,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                       String sort, String order){
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer limit,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
@@ -92,12 +98,12 @@ public class AdminAddressController {
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer addressId){
+    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
 
-        LitemallAddress address = addressService.findById(addressId);
+        LitemallAddress address = addressService.findById(id);
         Map<String, Object> addressVo = toVo(address);
         return ResponseUtil.ok(addressVo);
     }

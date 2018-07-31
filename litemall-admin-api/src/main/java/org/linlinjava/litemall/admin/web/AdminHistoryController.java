@@ -3,6 +3,8 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.core.validator.Order;
+import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallSearchHistory;
 import org.linlinjava.litemall.db.service.LitemallSearchHistoryService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -24,9 +26,10 @@ public class AdminHistoryController {
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
                        String userId, String keyword,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                       String sort, String order){
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer limit,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }

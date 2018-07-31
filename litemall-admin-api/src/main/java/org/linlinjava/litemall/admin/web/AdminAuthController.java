@@ -2,6 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.linlinjava.litemall.admin.dao.AdminToken;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.service.AdminTokenManager;
@@ -13,15 +14,18 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
 @RequestMapping("/admin/login")
+@Validated
 public class AdminAuthController {
     private final Log logger = LogFactory.getLog(AdminAuthController.class);
 
