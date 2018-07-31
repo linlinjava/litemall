@@ -66,7 +66,7 @@
         </el-form-item>
         <el-form-item label="评论图片" prop="picUrls">
           <!-- <el-input v-model="dataForm.picUrls"></el-input>           -->
-          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="5" :http-request="uploadPicUrls">
+          <el-upload action="#" list-type="picture" :headers="headers" :show-file-list="false" :limit="5" :http-request="uploadPicUrls">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
@@ -98,9 +98,17 @@
 <script>
 import { listComment, createComment, updateComment, deleteComment } from '@/api/comment'
 import { createStorage } from '@/api/storage'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Comment',
+  computed: {
+    headers() {
+      return {
+        'Admin-Token': getToken()
+      }
+    }
+  },
   data() {
     return {
       list: undefined,

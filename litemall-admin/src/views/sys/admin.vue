@@ -22,7 +22,7 @@
         <template slot-scope="scope">
           <img :src="scope.row.avatar" width="40" v-if="scope.row.avatar"/>
         </template>
-      </el-table-column>        
+      </el-table-column>
 
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -50,9 +50,9 @@
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPassword">
           <el-input type="password" v-model="dataForm.checkPassword" auto-complete="off"></el-input>
-        </el-form-item>                
+        </el-form-item>
         <el-form-item label="管理员头像" prop="avatar">
-          <el-upload class="avatar-uploader" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadAvatar">
+          <el-upload class="avatar-uploader" :headers="headers" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadAvatar">
 			      <img v-if="dataForm.avatar" :src="dataForm.avatar" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -97,9 +97,17 @@
 <script>
 import { listAdmin, createAdmin, updateAdmin, deleteAdmin } from '@/api/admin'
 import { uploadPath } from '@/api/storage'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Admin',
+  computed: {
+    headers() {
+      return {
+        'Admin-Token': getToken()
+      }
+    }
+  },
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {

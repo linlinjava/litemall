@@ -68,7 +68,7 @@
           <el-input v-model="dataForm.content"></el-input>
         </el-form-item>
         <el-form-item label="广告图片" prop="url">
-          <el-upload class="avatar-uploader" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadUrl">
+          <el-upload class="avatar-uploader" :headers="headers" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadUrl">
 			      <img v-if="dataForm.url" :src="dataForm.url" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -78,7 +78,7 @@
             <el-option label="首页" :value="1">
             </el-option>
           </el-select>
-        </el-form-item>        
+        </el-form-item>
         <el-form-item label="活动链接" prop="link">
           <el-input v-model="dataForm.link"></el-input>
         </el-form-item>
@@ -130,9 +130,17 @@
 <script>
 import { listAd, createAd, updateAd, deleteAd } from '@/api/ad'
 import { uploadPath } from '@/api/storage'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Ad',
+  computed: {
+    headers() {
+      return {
+        'Admin-Token': getToken()
+      }
+    }
+  },
   data() {
     return {
       uploadPath,
