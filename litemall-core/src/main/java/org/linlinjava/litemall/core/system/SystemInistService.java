@@ -31,6 +31,7 @@ class SystemInistService {
 
         infos.put(SystemInfoPrinter.CREATE_PART_COPPER + 0, "系统信息");
         // 测试获取application-db.yml配置信息
+        infos.put("服务器端口", environment.getProperty("server.port"));
         infos.put("数据库USER", environment.getProperty("spring.datasource.druid.username"));
         infos.put("数据库地址", environment.getProperty("spring.datasource.druid.url"));
         infos.put("调试级别", environment.getProperty("logging.level.org.linlinjava.litemall.wx"));
