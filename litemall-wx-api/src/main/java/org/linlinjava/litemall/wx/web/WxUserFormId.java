@@ -7,29 +7,28 @@ import org.linlinjava.litemall.db.service.LitemallUserFormIdService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/wx/formid")
+@Validated
 public class WxUserFormId {
     @Autowired
-    LitemallUserService userService;
+    private LitemallUserService userService;
 
     @Autowired
-    LitemallUserFormIdService formIdService;
+    private LitemallUserFormIdService formIdService;
 
     @GetMapping("create")
-    public Object create(@LoginUser Integer userId, String formId) {
+    public Object create(@LoginUser Integer userId, @NotNull String formId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
-        }
-
-        if (formId == null) {
-            return ResponseUtil.badArgument();
         }
 
         LitemallUser user = userService.findById(userId);

@@ -6,14 +6,17 @@ import org.linlinjava.litemall.db.domain.LitemallRegion;
 import org.linlinjava.litemall.db.service.LitemallRegionService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
 @RequestMapping("/wx/region")
+@Validated
 public class WxRegionController {
     private final Log logger = LogFactory.getLog(WxRegionController.class);
 
@@ -37,14 +40,8 @@ public class WxRegionController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
-    public Object list(Integer pid) {
-        if(pid == null){
-            return ResponseUtil.badArgument();
-        }
-
+    public Object list(@NotNull Integer pid) {
         List<LitemallRegion> regionList = regionService.queryByPid(pid);
         return ResponseUtil.ok(regionList);
     }
-
-
 }

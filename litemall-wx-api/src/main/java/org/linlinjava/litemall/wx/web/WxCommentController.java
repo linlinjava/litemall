@@ -9,8 +9,10 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.linlinjava.litemall.wx.dao.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/comment")
+@Validated
 public class WxCommentController {
     @Autowired
     private LitemallCommentService commentService;
@@ -79,10 +82,10 @@ public class WxCommentController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("count")
-    public Object count(Byte type, Integer valueId) {
+    public Object count(@NotNull Byte type, @NotNull Integer valueId) {
         int allCount = commentService.count(type, valueId, 0, 0, 0);
         int hasPicCount = commentService.count(type, valueId, 1, 0, 0);
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("allCount", allCount);
         data.put("hasPicCount", hasPicCount);
         return ResponseUtil.ok(data);
@@ -111,13 +114,11 @@ public class WxCommentController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
-    public Object list(Byte type, Integer valueId, Integer showType,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        if(!ObjectUtils.allNotNull(type, valueId, showType)){
-            return ResponseUtil.badArgument();
-        }
-
+    public Object list(@NotNull Byte type,
+                       @NotNull Integer valueId,
+                       @NotNull Integer showType,
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size) {
         List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, size);
         int count = commentService.count(type, valueId, showType, page, size);
 
@@ -132,7 +133,7 @@ public class WxCommentController {
 
             commentVoList.add(commentVo);
         }
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("data", commentVoList);
         data.put("count", count);
         data.put("currentPage", page);

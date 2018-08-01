@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.linlinjava.litemall.db.domain.LitemallKeyword;
 import org.linlinjava.litemall.db.domain.LitemallSearchHistory;
 import org.linlinjava.litemall.db.service.LitemallKeywordService;
@@ -7,10 +8,8 @@ import org.linlinjava.litemall.db.service.LitemallSearchHistoryService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/search")
+@Validated
 public class WxSearchController {
     @Autowired
     private LitemallKeywordService keywordsService;
@@ -80,13 +80,9 @@ public class WxSearchController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("helper")
-    public Object helper(String keyword) {
-        if(keyword == null){
-            return ResponseUtil.badArgument();
-        }
-
-        Integer page = 1;
-        Integer size = 10;
+    public Object helper(@NotEmpty String keyword,
+                         @RequestParam(defaultValue = "1") Integer page,
+                         @RequestParam(defaultValue = "10") Integer size) {
         List<LitemallKeyword> keywordsList = keywordsService.queryByKeyword(keyword, page, size);
         String[] keys = new String[keywordsList.size()];
         int index = 0;

@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/home")
+@Validated
 public class WxHomeController {
     @Autowired
     private LitemallAdService adService;
@@ -86,7 +88,7 @@ public class WxHomeController {
                 categoryGoods = goodsService.queryByCategory(l2List, 0, SystemConfig.getCatlogMoreLimit());
             }
 
-            Map catGoods = new HashMap();
+            Map<String, Object> catGoods = new HashMap<String, Object>();
             catGoods.put("id", catL1.getId());
             catGoods.put("name", catL1.getName());
             catGoods.put("goodsList", categoryGoods);

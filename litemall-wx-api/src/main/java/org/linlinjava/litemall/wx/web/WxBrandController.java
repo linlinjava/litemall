@@ -6,17 +6,20 @@ import org.linlinjava.litemall.db.domain.LitemallBrand;
 import org.linlinjava.litemall.db.service.LitemallBrandService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/brand")
+@Validated
 public class WxBrandController {
     private final Log logger = LogFactory.getLog(WxBrandController.class);
 
@@ -42,14 +45,14 @@ public class WxBrandController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
-    public Object list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public Object list(@RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size) {
 
         List<LitemallBrand> brandList = brandService.query(page, size);
         int total = brandService.queryTotalCount();
         int totalPages = (int) Math.ceil((double) total / size);
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("brandList", brandList);
         data.put("totalPages", totalPages);
         return ResponseUtil.ok(data);
@@ -72,17 +75,13 @@ public class WxBrandController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
-    public Object detail(Integer id) {
-        if(id == null){
-            return ResponseUtil.badArgument();
-        }
-
+    public Object detail(@NotNull Integer id) {
         LitemallBrand entity = brandService.findById(id);
         if(entity == null){
             return ResponseUtil.badArgumentValue();
         }
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("brand",entity);
         return ResponseUtil.ok(data);
     }

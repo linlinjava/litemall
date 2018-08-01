@@ -8,6 +8,7 @@ import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,11 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/wx/express")
+@Validated
 public class WxExpressController {
 
     @Autowired
-    ExpressService expressService;
+    private ExpressService expressService;
 
     @PostMapping("query")
     public Object query(@LoginUser Integer userId, @RequestBody String body) {

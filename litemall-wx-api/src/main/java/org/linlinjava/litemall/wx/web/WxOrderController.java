@@ -27,10 +27,12 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,6 +61,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/wx/order")
+@Validated
 public class WxOrderController {
     private final Log logger = LogFactory.getLog(WxOrderController.class);
 
@@ -87,7 +90,7 @@ public class WxOrderController {
     private NotifyService notifyService;
 
     @Autowired
-    LitemallUserFormIdService formIdService;
+    private LitemallUserFormIdService formIdService;
 
     public WxOrderController() {
     }
@@ -129,14 +132,12 @@ public class WxOrderController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @RequestMapping("list")
-    public Object list(@LoginUser Integer userId, Integer showType,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public Object list(@LoginUser Integer userId,
+                       @RequestParam(defaultValue = "0") Integer showType,
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size) {
         if (userId == null) {
             return ResponseUtil.unlogin();
-        }
-        if (showType == null) {
-            showType = 0;
         }
 
         List<Short> orderStatus = OrderUtil.orderStatus(showType);
@@ -192,12 +193,9 @@ public class WxOrderController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
-    public Object detail(@LoginUser Integer userId, Integer orderId) {
+    public Object detail(@LoginUser Integer userId, @NotNull Integer orderId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
-        }
-        if (orderId == null) {
-            return ResponseUtil.badArgument();
         }
 
         // 订单信息
@@ -737,12 +735,11 @@ public class WxOrderController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("comment")
-    public Object comment(@LoginUser Integer userId, Integer orderId, Integer goodsId) {
+    public Object comment(@LoginUser Integer userId,
+                          @NotNull Integer orderId,
+                          @NotNull Integer goodsId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
-        }
-        if (orderId == null) {
-            return ResponseUtil.badArgument();
         }
 
         List<LitemallOrderGoods> orderGoodsList = orderGoodsService.findByOidAndGid(orderId, goodsId);

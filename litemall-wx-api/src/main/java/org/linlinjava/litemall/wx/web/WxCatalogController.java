@@ -4,17 +4,20 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/catalog")
+@Validated
 public class WxCatalogController {
     @Autowired
     private LitemallCategoryService categoryService;
@@ -43,8 +46,8 @@ public class WxCatalogController {
      */
     @GetMapping("index")
     public Object index(Integer id,
-                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+                        @RequestParam(defaultValue = "1") Integer page,
+                        @RequestParam(defaultValue = "10") Integer size) {
 
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
@@ -63,7 +66,7 @@ public class WxCatalogController {
             currentSubCategory = categoryService.queryByPid(currentCategory.getId());
         }
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("categoryList", l1CatList);
         data.put("currentCategory", currentCategory);
         data.put("currentSubCategory", currentSubCategory);
@@ -97,7 +100,7 @@ public class WxCatalogController {
             currentSubCategory = categoryService.queryByPid(currentCategory.getId());
         }
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("categoryList", l1CatList);
         data.put("allList", allList);
         data.put("currentCategory", currentCategory);
@@ -123,16 +126,12 @@ public class WxCatalogController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("current")
-    public Object current(Integer id) {
-        if (id == null) {
-            return ResponseUtil.badArgument();
-        }
-
+    public Object current(@NotNull Integer id) {
         // 当前分类
         LitemallCategory currentCategory = categoryService.findById(id);
         List<LitemallCategory> currentSubCategory = categoryService.queryByPid(currentCategory.getId());
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("currentCategory", currentCategory);
         data.put("currentSubCategory", currentSubCategory);
         return ResponseUtil.ok(data);

@@ -10,6 +10,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/cart")
+@Validated
 public class WxCartController {
     private final Log logger = LogFactory.getLog(WxCartController.class);
 
@@ -316,7 +318,7 @@ public class WxCartController {
         if(checkValue == null){
             return ResponseUtil.badArgument();
         }
-        Boolean isChecked = ((checkValue.intValue()) == 1);
+        Boolean isChecked = (checkValue == 1);
 
         cartService.updateCheck(userId, productIds, isChecked);
         return index(userId);
@@ -369,7 +371,7 @@ public class WxCartController {
      *  }
      *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("goodscount")
+    @GetMapping("goodscount")
     public Object goodscount(@LoginUser Integer userId) {
         if(userId == null){
             return ResponseUtil.ok(0);

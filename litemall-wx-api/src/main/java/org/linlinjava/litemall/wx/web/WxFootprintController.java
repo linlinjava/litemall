@@ -8,6 +8,7 @@ import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/footprint")
+@Validated
 public class WxFootprintController {
     @Autowired
     private LitemallFootprintService footprintService;
@@ -78,8 +80,8 @@ public class WxFootprintController {
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size) {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -90,7 +92,7 @@ public class WxFootprintController {
 
         List<Object> footprintVoList = new ArrayList<>(footprintList.size());
         for(LitemallFootprint footprint : footprintList){
-            Map<String, Object> c = new HashMap();
+            Map<String, Object> c = new HashMap<String, Object>();
             c.put("id", footprint.getId());
             c.put("goodsId", footprint.getGoodsId());
             c.put("addTime", footprint.getAddTime());

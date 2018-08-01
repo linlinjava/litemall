@@ -9,8 +9,10 @@ import org.linlinjava.litemall.db.service.LitemallRegionService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/address")
+@Validated
 public class WxAddressController {
     private final Log logger = LogFactory.getLog(WxAddressController.class);
 
@@ -93,12 +96,9 @@ public class WxAddressController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
-    public Object detail(@LoginUser Integer userId, Integer id) {
+    public Object detail(@LoginUser Integer userId, @NotNull Integer id) {
         if(userId == null){
             return ResponseUtil.unlogin();
-        }
-        if(id == null){
-            return ResponseUtil.badArgument();
         }
 
         LitemallAddress address = addressService.findById(id);

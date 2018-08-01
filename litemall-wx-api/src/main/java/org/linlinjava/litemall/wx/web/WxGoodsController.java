@@ -5,15 +5,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.core.util.ResponseUtil;
+import org.linlinjava.litemall.core.validator.Order;
+import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/goods")
+@Validated
 public class WxGoodsController {
     private final Log logger = LogFactory.getLog(WxGoodsController.class);
 
@@ -79,11 +84,7 @@ public class WxGoodsController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
-    public Object detail(@LoginUser Integer userId, Integer id) {
-        if (id == null) {
-            return ResponseUtil.badArgument();
-        }
-
+    public Object detail(@LoginUser Integer userId, @NotNull Integer id) {
         // 商品信息
         LitemallGoods info = goodsService.findById(id);
 
@@ -174,10 +175,7 @@ public class WxGoodsController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("category")
-    public Object category(Integer id) {
-        if (id == null) {
-            return ResponseUtil.badArgument();
-        }
+    public Object category(@NotNull Integer id) {
         LitemallCategory cur = categoryService.findById(id);
         LitemallCategory parent = null;
         List<LitemallCategory> children = null;
@@ -230,9 +228,9 @@ public class WxGoodsController {
     @GetMapping("list")
     public Object list(Integer categoryId, Integer brandId, String keyword, Boolean isNew, Boolean isHot,
                        @LoginUser Integer userId,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size,
-                       String sort, String order) {
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size,
+                       @Sort String sort, @Order String order) {
 
         //添加到搜索历史
         if (userId != null && !StringUtils.isNullOrEmpty(keyword)) {
@@ -335,11 +333,7 @@ public class WxGoodsController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("related")
-    public Object related(Integer id) {
-        if (id == null) {
-            return ResponseUtil.badArgument();
-        }
-
+    public Object related(@NotNull Integer id) {
         LitemallGoods goods = goodsService.findById(id);
         if (goods == null) {
             return ResponseUtil.badArgumentValue();
