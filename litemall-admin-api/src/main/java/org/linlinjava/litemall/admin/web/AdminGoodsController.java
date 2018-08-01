@@ -193,6 +193,11 @@ public class AdminGoodsController {
 
             goodsService.add(goods);
 
+            //将生成的分享图片地址写入数据库
+            qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
+            goods.setShareUrl(qCodeService.getShareImageUrl(goods.getId().toString()));
+            goodsService.updateById(goods);
+
             // 商品规格表litemall_goods_specification
             Map<String, Integer> specIds = new HashMap<>();
             for (LitemallGoodsSpecification specification : specifications) {
