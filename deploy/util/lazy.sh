@@ -3,7 +3,7 @@
 # 本脚本的作用是
 # 1. 项目打包
 # 2. 上传云主机
-# 3. 远程登录云主机并执行deploy脚本
+# 3. 远程登录云主机并执行reset脚本
 
 # 请设置云主机的IP地址和账户
 # 例如 ubuntu@122.152.206.172
@@ -34,10 +34,12 @@ cd $LITEMALL_HOME
 ./deploy/util/package.sh
 
 # 上传云主机
+cd $LITEMALL_HOME
 scp -i $ID_RSA -r  ./deploy $REMOTE:/home/ubuntu/
 
-# 远程登录云主机并执行deploy脚本
+# 远程登录云主机并执行reset脚本
 ssh $REMOTE -i $ID_RSA << eeooff
-sudo ./deploy/bin/deploy.sh
+cd /home/ubuntu
+sudo ./deploy/bin/reset.sh
 exit
 eeooff

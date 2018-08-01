@@ -187,7 +187,7 @@ public class WxAuthController {
         String phoneNumber = JacksonUtil.parseString(body, "mobile");
         String code = CharUtil.getRandomNum(6);
 
-        notifyService.notifySmsTemplateSync(phoneNumber, NotifyType.CAPTCHA, new String[]{code});
+        notifyService.notifySmsTemplate(phoneNumber, NotifyType.CAPTCHA, new String[]{code});
 
         boolean successful = CaptchaCodeManager.addToCache(phoneNumber, code);
         return successful ? ResponseUtil.ok() : ResponseUtil.badArgument();

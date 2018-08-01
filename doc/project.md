@@ -9,9 +9,9 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 
 项目的架构是三个系统和六个模块：
 
-* 基础系统子系统(core)
+* 基础系统子系统(platform)
 
-  由数据库、litemall-cre模块、litemall-db模块和litemall-all模块组成;
+  由数据库、litemall-core模块、litemall-db模块和litemall-all模块组成;
 
 * 小商场子系统(wxmall)
 
@@ -29,8 +29,8 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 
 * Spring Boot技术栈
 
-  采用IDEA开发工具，开发litemall-core、litemall-db、litemall-all、
-  litemall-admin-api和litemall-wx-api共六个个模块；
+  采用IDEA开发工具，开发litemall-core、litemall-db、litemall-admin-api、
+  litemall-wx-api和litemall-all共五个模块；
   
 * miniprogram（微信小程序）技术栈
 
@@ -115,7 +115,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 * 安全方面，仅采用最基本的代码，提供简单基本的安全服务;
 * 性能方面，没有涉及内存数据库缓存功能，而是完全依赖MySQL;
 * 对象存储服务方面，支持本地存储和第三方云存储方案。
-* 消息提醒方面，支持邮件提醒、第三方云短信提醒和微信模板提醒；
+* 消息通知方面，支持邮件通知、第三方云短信通知和微信模板通知；
 * 部署方便，支持多服务部署和一键部署脚本；
 * 文档全面，虽然还在开发中，但是规划中文档和代码注释一定会完成，帮助开发者理解项目。
 
@@ -163,20 +163,6 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 先不开发和测试这样业务功能，等其他功能开发完毕和部署测试成功以后，再来开发这些线上环境才能
 运行的功能，此时会有一个好的基础。
 
-注意：
-> 以上三种阶段基于个人理解，有可能有误或不当的地方。
-
-讨论：
-> 对于内网IP，例如"192.168.0.1"，是应该认为属于开发阶段的配置，还是应该认为属于部署阶段的配置？
-> 本人认为，这里可能不一定，看开发者的实际需要，不过更倾向于开发阶段。
->
-> 场景1，开发者本机是"192.168.0.1"，那么此时litemall-wx模块的api.js中，如果采用localhost，那么
-> 本机的微信开发者工具可以访问，但是局域网内手机测试则不能访问；而如果采用本机的IP地址，那么
-> 本机微信开发者工具可以访问，同时局域网内手机测试也能访问。此时，设置IP地址应该属于开发阶段。
->
-> 场景2，局域网内管理后台代码部署到局域网服务器中，用户基于局域网的内网IP来访问管理平台，
-> 此时，设置IP地址应该属于部署阶段（甚至可以认为是“上线阶段”）。
-
 ## 1.4 开发方案
 
 ![](pic1/1-2.png)
@@ -184,15 +170,15 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 如图所示，当前开发阶段的方案：
 
 * MySQL数据访问地址`jdbc:mysql://localhost:3306/litemall`
-* litemall-wx-api后台服务地址`http://localhost:8082`，数据则来自MySQL
-* litemall-admin-api后台服务地址`http://localhost:8083`,数据则来自MySQL
+* litemall-wx-api后台服务地址`http://localhost:8080/wx`，数据则来自MySQL
+* litemall-admin-api后台服务地址`http://localhost:8080/admin`,数据则来自MySQL
 * litemall-admin前端访问地址`http://localhost:9527`, 数据来自litemall-admin-api
 * litemall-wx没有前端访问地址，而是直接在微信小程序工具上编译测试开发，最终会部署到微信官方平台（即不需要自己部署web服务器），而数据则来自litemall-wx-api
 
 
 ### 1.4.1 数据库
 
-按照开发环境前，需要先在本地配置好数据库：
+数据库环境设置过程如下：
 
 1. 安装MySQL
 
@@ -236,61 +222,39 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
    
    如果采用IDEA也可以跳过当前步骤，直接步骤8（因为运行时会自动编译再运行）。
    
-8. 采用Maven命令运行本项目的litemall-wx-api模块。
+8. 采用Maven命令运行本项目的litemall-all
 
    例如：
    ```
-   cd litemall/litemall-wx-api
+   cd litemall/litemall-all
    mvn spring-boot:run
    ```
    
-   如果采用IDEA，则litemall-wx-api模块的Application类
+   如果采用IDEA，则litemall-all模块的Application类
    右键` Run Application.main()`方式运行该模块,
    
    ![](pic1/1-9.png)
    
    打开浏览器，输入
     ```
-    http://localhost:8082/wx/index/index
+    http://localhost:8080/wx/index/index
+    http://localhost:8080/admin/index/index
     ```
-    如果出现JSON数据，则litemall-wx-api模块运行正常。
+    如果出现JSON数据，则litemall-all模块运行正常。
     
-9. 采用Maven命令运行本项目的litemall-admin-api模块。
-
-   例如：
-   ```
-   cd litemall/litemall-admin-api
-   mvn spring-boot:run
-   ```
-   
-   如果采用IDEA，则litemall-admin-api模块的Application类
-   右键` Run Application.main()`方式运行该模块,
-   
-   打开浏览器，输入
-   ```
-    http://localhost:8083/admin/index/index
-    ```
-    如果出现JSON数据，则litemall-admin-api模块运行正常。
-
 注意：
-> 1. 由于设置不同的端口，因此开发时，IDEA可以同时运行litemall-wx-api和litemall-admin-api两个Spring Boot程序。
-> 2. 有些开发者可能会运行litemall-all模块来运行整个项目，这里并不反对，但是开发者需要
->    清楚地明白当前小程序前端依赖后台服务litemall-wx-api的默认端口是8082，管理后台前端
->    依赖后台服务litemall-admin-api的默认端口是8083；而包裹两个后台服务的litemall-all模块
->    的端口则是8080，因此这里开发者需要对前端进行调整才能对接成功。
-> 3. 在上述开发步骤中，既介绍了Maven命令方式，也介绍了IDEA方式，但是仍然建议
+> 1. 在上述开发步骤中，既介绍了Maven命令方式，也介绍了IDEA方式，但是仍然建议
 >    开发时采用IDEA即可。
-> 4. 以上是本人开发过程中采用的一些步骤，开发者可不拘泥于这些步骤。
-
-有的时候，开发者使用IDEA导入项目或者运行项目的时候会出现软件卡顿的现象，这通常是litemall-admin的
-node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当IDEA尝试索引该文件夹内的大量文件时
-则出现IDEA卡顿的现象，具体解决方式可以参见[FAQ](./7.md)
+> 2. 以上是本人开发过程中采用的一些步骤，开发者可不拘泥于这些步骤。
+> 3. 开发者使用IDEA导入项目或者运行项目的时候会出现软件卡顿的现象，这通常是litemall-admin的
+>    node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当IDEA尝试索引该文件夹内的大量文件时
+>    则出现IDEA卡顿的现象，具体解决方式可以参见[FAQ](./FAQ.md)
 
 ### 1.4.3 微信小程序开发环境
 
 1. 安装微信小程序开发工具
 2. 导入本项目的litemall-wx模块文件夹
-3. 编译前，请确定litemall-wx-api模块已经运行，而litemall-wx模块的config文件夹中的api.js已经设置正确的后台数据服务地址；
+3. 编译前，请确定litemall-all模块已经运行，而litemall-wx模块的config文件夹中的api.js已经设置正确的后台数据服务地址；
 4. 点击`编译`，如果出现数据和图片，则运行正常
 
 注意：
@@ -299,23 +263,22 @@ node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当
 >    因此微信登录导致后台服务向微信服务器交互时会失败。
 > 2. 有的开发者可能认为把litemall-wx模块的appid设置成开发者自己的appid就可以，
 >    但是由于小商场的云主机后台服务的appid仍然是本人appid，因此微信登录时仍然会失败。
-> 3. 开发者可以在litemall-wx和litemall-wx-api中设置自己的appid，以及部署自己的后台服务，
+> 3. 开发者可以在litemall-wx和litemall-core模块中设置自己的appid，以及部署自己的后台服务，
 >    相关内容请阅读章节3。或者，开发者可以采用账号登录方式登录，然后体验商品购买下单的方式。
 > 4. 由于没有设置商户支付信息，因此开发者在付款时会失败。相关内容阅读章节3。
 
 ### 1.4.4 Vue开发环境
 
 1. 安装[nodejs](https://nodejs.org/en/)
-2. 安装VSC（Visual Studio Code）
-3. 导入本项目的litemall-admin模块文件夹
-4. 安装依赖库
+2. 安装依赖库
     
     ```
+    cd litemall/litemall-admin
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     cnpm install
     ```
     
-5. 编译并运行
+3. 编译并运行
     
     ```
     cnpm run dev
@@ -323,7 +286,9 @@ node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当
     然后，打开浏览器，输入`http://localhost:9527`。
     如果出现管理后台登录页面，则表明管理后台的前端运行正常；
     
-6. 请确定litemall-admin-api模块已经运行，然后点击`登录`，如果能够成功登录，则表明管理后台的前端和后端对接成功，运行正常。
+4. 请确定litemall-all模块已经运行，然后点击`登录`，如果能够成功登录，则表明管理后台的前端和后端对接成功，运行正常。
+
+目前本人采用VSC（Visual Studio Code）来开发litemall-admin项目，开发者也可以采用其他熟悉的IDE。
 
 ## 1.5 部署方案
  
@@ -335,22 +300,22 @@ node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当
   
   * litemall-wx-api模块会包含litemall-core模块和litemall-db模块，部署在服务器中
   * litemall-admin-api模块会包含litemall-core模块和litemall-db模块，部署在服务器中
+  * litemall-all模块则会包装litemall-wx-api模块和litemall-admin-api模块；
   * litemall-wx模块部署在微信开发者工具中，此外数据API地址指向litemall-wx-api所在服务qi地址
   * litemall-admin编译出的静态文件放在web服务器或者tomcat服务器，此外服务器地址设置指向3中litemall-admin-api所在地址
   
 最后，**如果项目部署云主机，则根据开发者的部署环境在以下文件中或代码中修改相应的配置。**
 
 1. MySQL数据库设置合适的用户名和密码信息；
-2. 后台服务模块设置合适的配置信息，建议开发者参考deploy/litemall-api/config方式，即在后台服务模块外部设置部署配置文件，
-   这样可以避免开发者对模块内部的开发配置文件造成修改；
+2. 后台服务模块设置合适的配置信息；
 3. 小商场前端litemall-wx模块`config/api.js`的`WxApiRoot`设置小商场后台服务的服务地址；
 4. 管理后台前端litemall-admin模块`config/dep.env.js`中的`BASE_API`设置管理后台后台服务的服务地址。
 
 实际上，最终的部署方案是灵活的：
 
+* 可以是同一云主机中安装一个Spring Boot服务，同时提供litemall-admin、litemall-admin-api和litemall-wx-api三种服务
 * 可以单一云主机中仅安装一个tomcat/nginx服务器部署litemall-admin静态页面分发服务，
   然后部署两个Spring Boot的后台服务；
-* 也可以是同一云主机中安装一个Spring Boot服务，同时提供litemall-admin、litemall-admin-api和litemall-wx-api三种服务
 * 也可以把litemall-admin静态页面托管第三方cdn，然后开发者部署两个后台服务
 * 当然，甚至多个服务器，采用集群式并发提供服务。
 
@@ -360,15 +325,14 @@ node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当
 
 以下简单列举几种方案。
 
-### 1.5.1 单机云部署方案
+### 1.5.1 单机单服务部署方案
 
-本节介绍基于腾讯云的单机云部署方案，面向的是服务器数据和应用部署在云主机单机中用于演示的场景。
+本节介绍基于腾讯云的单机单服务部署方案，面向的是服务器数据和应用部署在云主机单机中用于演示的场景。
 其他云应该也是可行的。
 
-主要流程是：创建云主机，安装ubuntu操作系统，按照JDK和MySQL应用运行环境，部署两个Spring Boot微服务后台应用，
-以及部署管理后台静态文件到tomcat。
+主要流程是：创建云主机，安装ubuntu操作系统，按照JDK和MySQL应用运行环境，部署单一Spring Boot服务。
 
-![](pic1/1-3.png)
+![](pic1/1-11.png)
 
 #### 1.5.1.1 主机
 
@@ -385,6 +349,9 @@ node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当
     ![](pic1/1-4.png)
 
     目前允许的端口：8081，8082，8083，8080，80，443，22，3306
+    
+    注意：
+    这里其实只需要8080端口，允许其他端口只是方面开发阶段的测试和调试。
     
 4. 设置SSH密钥（可选）
 
@@ -419,232 +386,109 @@ sudo apt-get update
 sudo apt-get install mysql-server
 sudo apt-get install mysql-client
 ```
-
-下面是可选地设置root账号远程访问MySQL
-
-1. MySQL默认不支持远程访问，因此需要修改配置文件
-    ```
-    sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
-    ``` 
-    添加'#'注释掉其中的`bind-address`,
-    ```
-    #bind-address= 127.0.0.1`;
-    ```
-
-2. 设置root账号远程访问权限
-    ```
-    mysql -u root -p
-    GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
-    FLUSH PRIVILEGES;
-    quit;
-    ```
-3. 登录腾讯云，设置云主机的`安全组`，允许`3306`端口访问，然后重启云主机，使得这些配置生效。
-
-警告
-> 1. 因为安全的原因，MySQL不应该设置远程访问，
-> 这里仅仅用于方便数据导入操作。
-> 2. MySQL应该部署在专门的服务器中，
-> 这里仅仅用于演示远程部署MySQL。
-
-#### 1.5.1.4 litemall数据
-
-这里可以采用命令行式，也可以采用MySQL自带的Workbench导入。
-
-* 命令行导入
-
-  1. 采用FileZilla把本项目的数据库文件上传到云主机
-  2. 使用PuTTY登录云主机
-  3. 进入MySQL，输入上节所设置的MySQL的root密码
-  4. 创建数据库、 创建用户并分配访问权限
-  5. 导入数据
-  6. 退出
-
-* MySQL Workbench导入
-
-  1. 先确认已经在1.4.3节中设置了root可以远程访问；
-  2. 创建一个新的连接，设置`Hostname` 、`Username` 和`Password`，
-     然后点击`Test Connection`测试是否能够连接到云主机；
-     如果测试成功，则进入；
-     ![](pic1/1-5.png)
-  3. 开发者自行学习文档，完成`创建数据库`、`创建用户`和`分配权限`三个操作；
-  4. 利用Workbench的`Server`菜单下的`Data Import`完成数据导入。
-
-* 命令脚本
     
-    ```bash
-    cd deploy
-    mysql -h localhost -u root -p123456 
-    source ./litemall-db/litemall_schema.sql
-    use litemall;
-    source ./litemall-db/litemall_table.sql
-    source ./litemall-db/litemall_data.sql
-    ```
+### 1.5.1.4 项目打包
 
-    其中123456是开发者所设置的MySQL的管理员密码。
-
-#### 1.5.1.5 Tomcat/Nginx
-
-本项目中采用二进制jar包方式来部署Spring Boot后端应用，因此可以不需要部署在tomcat中。
-但是，litemall-admin前端项目最终会编译出静态文件，需要部署在服务器中，
-因此这里需要安装tomcat或者nginx(或者其他服务器)。
-
-这里可能有点绕：
-
-1. 开发方案，无需tomcat/nginx，直接用VSC即可；
-2. 部署方案，采用tomcat，这里是因为80端口可能需要云主机备案因此采用tomcat使用8080端口；
-3. 上线方案. 采用nginx，通过反向代理访问后台服务。
-
-因此目前这里采用tomcat部署静态文件，通过8080端口访问管理后台。
-当然，这里没有严格限制，开发者也可以直接配置好nginx，在部署方案就使用nginx来
-部署静态文件服务，通过web端口80访问管理后台。
-
-* Tomcat部署静态文件
-
-  1. 安装tomcat
-    ```bash
-    sudo apt-get install tomcat8
-    ```
-
-  2. 配置tomcat指向`delpoy/litemall-admin/dist`目录
-  
-    ```bash
-    sudo vi /var/lib/tomcat8/conf/server.xml
-    ```
-    在其中添加一行新的内容
-    ```
-    <Host>
-    ...
-    <Context path="/" docBase="/home/ubuntu/deploy/litemall-admin/dist" reloadable="true" />
-    ...
-    </Host>
-    ```
-    
-    注意：这里假定litemall-admin静态文件是上传在`/home/ubuntu/deploy/litemall-admin/dist`文件夹中，开发者可以自行调整。
-    
-  3. 运行/重启tomcat
-
-    ```
-    sudo service tomcat8 stop
-    sudo service tomcat8 start
-    sudo service tomcat8 restart
-    ```
-
-* Nginx部署静态文件
-
-  这里可以参考http://www.nginx.cn/4723.html
-  
-  1. 安装nginx
-  
-    ```bash
-      sudo apt-get update
-      sudo apt-get install nginx
-    ```
-  
-  2. 配置nginx指向`delpoy/litemall-admin/dist`目录
-     注意：这里假定litemall-admin静态文件是上传在`/home/ubuntu/deploy/litemall-admin/dist`文件夹中，开发者可以自行调整。
-
-  3. 运行/重启nginx
-      ```
-      sudo service nginx stop
-      sudo service nginx start
-      sudo service nginx restart
-      ```
-    
-#### 1.5.1.6 项目打包
-
-这里项目打两个Spring Boot模块的打包和Vue项目的编译打包两种：
-
-1. Spring Boot打包
-
-    采用如下命令进行项目打包
-
+1. 在主机或者开发机打包项目到deploy；
     ```
     cd litemall
-    mvn clean
-    mvn package
-    ```
-
-    此时，在litemall-wx-api项目的target文件夹中看到litemall-wx-xxx-exec.jar；
-    在litemall-admin-api项目的target文件夹中看到litemall-admin-xxx-exec.jar。
-
-2. Vue项目打包
-
-    采用如下命令进行项目打包
-
-    ````bash
-    cd litemall/litemall-admin
+    cat ./litemall-db/sql/litemall_schema.sql > ./deploy/db/litemall.sql
+    cat ./litemall-db/sql/litemall_table.sql >> ./deploy/db/litemall.sql
+    cat ./litemall-db/sql/litemall_data.sql >> ./deploy/db/litemall.sql
+    
+    cd ./litemall-admin
+    cnpm install
     cnpm run build:dep
-    ````
+    
+    cd ..
+    mvn clean package
+    cp -f ./litemall-all/target/litemall-all-*-exec.jar ./deploy/litemall/litemall.jar
+    ```
+    这里的工作是：
+    1. 把数据库文件拷贝到deploy/db文件夹
+    2. 编译litemall-admin项目
+    3. 编译litemall-all模块，同时把litemall-admin编译得到的静态文件拷贝到
+       litemall-all模块的static目录
+       
+2. 修改litemall文件夹下面的*.yml外部配置文件，当litemall-all模块启动时会
+    加载外部配置文件，而覆盖默认jar包内部的配置文件。
+    例如，配置文件中一些地方需要设置成远程主机的IP地址
+    
+此时deploy部署包结构如下：
 
-    此时，litemall-admin模块的dist文件夹中就是最终部署时的代码，可以先压缩，上传到云主机，再解压缩。
+* bin
+存放远程主机运行的脚本，包括deploy.sh脚本和reset.sh脚本
 
-#### 1.5.1.7 项目部署运行
+* db
+存放litemall数据库文件
 
-https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#deployment-service
+* litemall
+存放远程主机运行的代码，包括litemall-all二进制可执行包和litemall外部配置文件
 
-1. 项目进一步打包到deploy文件夹中：
-   * litemall-wx-api模块编译得到的litemall-wx-api-xxx-exec.jar 保存到deploy的litemall-wx-api文件夹中，同时重命名成litemall-wx-api.jar
-   * litemall-admin-api模块编译得到的litemall-admin-api-xxx-exec.jar 保存到deploy的litemall-admin-api文件夹中，同时重命名成litemall-admin-api.jar
-   * litemall-admin模块编译以后，把dist文件夹压缩，然后放到deploy的litemall-admin文件夹中。
-   * litemall-db模块的sql文件拷贝到deploy的litemall-db文件夹中。
+* util
+存放开发主机运行的脚本，包括package.sh脚本和lazy.sh脚本。
+由于是本地开发主机运行，因此开发者可以不用上传到远程主机。
 
-2. 使用FileZilla把deploy整个文件夹上传到云主机的/home/ubuntu文件夹中
+### 1.5.1.5 项目部署
 
-3. 使用PuTTY登录云主机
-
-4. 如果开发者没有部署litemall数据库，可以运行以下命令：
-
+1. 远程主机环境（MySQL和JDK1.8）已经安装好，请确保云主机的安全组已经允许相应的端口。
+2. 导入db/litemall.sql
     ```bash
-    cd deploy
-    mysql -h localhost -u root -p123456 
-    source ./litemall-db/litemall_schema.sql
-    use litemall;
-    source ./litemall-db/litemall_table.sql 
-    source ./litemall-db/litemall_data.sql 
+    cd /home/ubuntu/deploy/db
+    mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
     ```
-    注意，123456是开发者所设置的MySQL管理员密码
-    警告：
-    > litemall_schema.sql会尝试删除litemall数据库然后重建新的数据库。
-
-5. 运行脚本部署运行
-
+3. 启动服务
     ```bash
-    sudo ./deploy/bin/deploy.sh
+    sudo service litemall stop
+    sudo ln -f -s /home/ubuntu/deploy/litemall/litemall.jar /etc/init.d/litemall
+    sudo service litemall start
     ```
-
-    ![](pic1/1-6.png)
-
-6. 测试部署是否成功
-  
-    请确保云主机的安全组已经允许相应的端口（见1.5.3.1）；
-    然后测试是否部署成功(xxx.xxx.xxx.xxx是云主机IP）：
-
+4. 测试是否部署成功(xxx.xxx.xxx.xxx是云主机IP）：
     ```
-    http://xxx.xxx.xxx.xxx:8082/wx/index/index
-    http://xxx.xxx.xxx.xxx:8083/admin/index/index
+    http://xxx.xxx.xxx.xxx:8080/wx/index/index
+    http://xxx.xxx.xxx.xxx:8080/admin/index/index
     http://xxx.xxx.xxx.xxx:8080/#/login
     ```
 
-#### 1.5.1.8 部署脚本
+### 1.5.1.6 项目辅助脚本
 
-为了简化步骤1和步骤2，完成了deploy/util/lazy.sh上传脚本和deploy/util/package.sh部署脚本，
+在前面的项目打包和项目部署中都是采用手动命令来部署。
+这里可以写一些脚本简化：
+
+* util/packet.sh
+
+在开发主机运行可以自动项目打包
+
+* util/lazy.sh
+
+在开发主机运行可以自动项目打包、项目上传远程主机、自动登录系统执行项目部署脚本。
     
 注意：
-> 1. 开发者需要在deploy/util/package.sh和deploy/util/lazy.sh中设置相应的云主机登录账号和密钥文件路径。
-> 2. 开发者需要在deploy/bin/reset.sh设置云主机的MySQL的root登录账户。
-> 3. 请先执行1.5.1中上述步骤，确保部署环境成功。
+> 1. 开发者需要在util/lazy.sh中设置相应的远程主机登录账号和密钥文件路径。
+> 2. 开发者需要在bin/reset.sh设置远程主机的MySQL的root登录账户。
     
-* package.sh
-    
-该脚本会自动把当前项目Spring Boot项目打包和Vue项目打包工作，然后复制到deploy文件夹中。
-   
-* lazy.sh
-    
-该脚本会调用package.sh打包项目，然后上传deploy文件夹到云主机，最后ssh登录远程主机执行bin下面的deploy.sh脚本。
-  
+* bin/deploy.sh
+
+在远程主机运行可以自动部署服务
+
+* bin/reset.sh
+
+在远程主机运行可以自动项目导入数据、删除本地上传图片、再执行bin/deploy.sh部署服务。
+
 注意：
-> 本项目的deploy文件夹以及其中的部署相关脚本只能适用于本节部署方式。
-> 目前灵活性较差，开发者可以参考实现自己的相关脚本，简化开发工作。
+> 开发者需要在bin/reset.sh设置远程主机的MySQL的root登录账户。
+
+总结，当开发者设置好配置信息以后，可以在本地运行lazy.sh脚本自动一键部署:
+```bash
+cd litemall
+./deploy/util/lazy.sh
+```
+
+不过由于需要设置的信息会包含敏感安全信息，强烈建议开发者参考这里的deploy文件夹，
+然后实现自己的deploy文件夹，妥善处置外部配置文件和脚本中的敏感安全信息!!!
+
+### 1.5.2 单机多服务部署方案
+
 
 ### 1.5.2 集群式云部署方案
 
@@ -657,37 +501,11 @@ https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#dep
 5. 一台或多台云主机部署小商场的后台服务
 
 虽然由于环境原因没有正式测试过，但是这种简单的集群式场景应该是可行的。
-在1.5.1节中所演示的三个服务是独立的，因此延伸到这里分布式是非常容易的。
+在1.5.2节中所演示的三个服务是独立的，因此延伸到这里分布式是非常容易的。
 
 但是，如果需要实现互联网式分布式云部署，目前的项目架构和方案不支持。
 至少每个功能模块应该是独立服务系统。此外，需要引入单点登录系统、集群、缓存
 和消息队列等多种技术。因此如果开发者需要这种形式的分布式方案，请参考其他项目。
-
-### 1.5.3 war部署方案
-
-这里介绍另外一种单主机单服务的war部署方案，即三个服务打包成一个war格式的项目部署包。
-
-![](pic1/1-11.png)
-
-和1.5.1节相比，采用这样方案的原因是：
-
-1. 安装方便，是传统的web项目安装方式，在tomcat里面部署一个war项目包，即可完成安装；
-2. 内存消耗少。在1.5.1节中三个独立的java环境消耗的内存大概900M多，而这里部署以后
-只需要一个java环境，因此消耗内存只有1.5.3节方案的三分之一，适合1G云主机部署。
-3. 只存在一个域名和端口，没有多个服务之间依赖关系。
-
-具体的打包部署方案是；
-
-1. litemall-admin首先需要先编译得到静态文件；
-2. 采用`mvn package`命令，litemall-all模块自动生成war格式的安装包，里面
-   包含了三个后台服务和静态文件；
-3. 把这个安装包手动或采用其他方式部署云主机的tomcat服务器。
-
-更多细节阅读2.5节litemall-all模块。
-
-注意：
-> 虽然这里介绍了这种方案，但是本项目的开发、测试和部署是基于1.5.1方案，
-> 因此开发者可能需要做一些配置方面的调整，例如后台服务地址调整。
 
 ## 1.6 上线方案
 
@@ -701,7 +519,15 @@ https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#dep
 注意
 > `www.example.com`仅作为实例，不是真实环境下的域名。
 
-这里列举一种可行的单机上线方案，开发者可以基于自身业务采用其他上线方案。
+这里列举一种基于1.5.2的单机多服务上线方案，即：
+* 一个litemall-admin-api服务，独立提供管理后台前端的后台数据；
+* 一个litemall-wx-api服务，独立提供小商城前端的后台数据；
+* 一个nginx，对外出来litemall-admin的静态文件。
+
+![](pic1/1-12.png)
+
+
+开发者可以基于自身业务采用其他上线方案。
 
 ### 1.6.1 域名
 
@@ -889,7 +715,7 @@ http://www.example.com
 管理后台服务上线，则开发者需要自己的线上环境在以下文件中或代码中修改相应的配置。
 
 1. MySQL数据库设置合适的用户名和密码信息；
-2. 后台服务模块设置合适的配置信息，建议开发者参考deploy/litemall-api/config方式，即在后台服务模块外部设置部署配置文件，
+2. 后台服务模块设置合适的配置信息，建议开发者参考deploy/litemall的外部配置文件，
    这样可以避免开发者对模块内部的开发配置文件造成修改；
 3. 小商场前端litemall-wx模块`config/api.js`的`WxApiRoot`设置小商场后台服务的服务地址；
 4. 管理后台前端litemall-admin模块`config/prod.env.js`中的`BASE_API`设置管理后台后台服务的服务地址。
@@ -961,8 +787,8 @@ litemall-admin编译得到的前端文件在第一次加载时相当耗时，这
 
 流程如下：
 1. util脚本是当前开发主机运行，用来打包项目和上传腾讯云主机；
-2. 打包项目时，会编译打包项目相关模块到litemall-admin、litemall-api和litemall-db文件夹中；
-3. bin脚本是云主机运行，用来安装数据库、导入数据、启动静态文件服务和Spring Boot后台服务。
+2. 打包项目时，会编译打包项目相关模块到litemall和db文件夹中；
+3. bin脚本是云主机运行，用来安装数据库、导入数据、启动项目服务。
 
 这里deploy部署方式比较简单不灵活，开发者可以参考开发自己的项目脚本。
 

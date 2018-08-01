@@ -9,7 +9,7 @@
         </el-form-item>
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="goods.name"></el-input>
-        </el-form-item>        
+        </el-form-item>
         <el-form-item label="专柜价格" prop="counterPrice">
           <el-input v-model="goods.counterPrice" placeholder="0.00">
             <template slot="append">元</template>
@@ -19,7 +19,7 @@
           <el-input v-model="goods.retailPrice" placeholder="0.00">
             <template slot="append">元</template>
           </el-input>
-        </el-form-item>                
+        </el-form-item>
         <el-form-item label="是否新品" prop="isNew">
           <el-radio-group v-model="goods.isNew">
             <el-radio :label="true">新品</el-radio>
@@ -31,31 +31,31 @@
             <el-radio :label="false">普通</el-radio>
             <el-radio :label="true">热卖</el-radio>
           </el-radio-group>
-        </el-form-item>                
+        </el-form-item>
         <el-form-item label="是否在售" prop="isOnSale">
           <el-radio-group v-model="goods.isOnSale">
             <el-radio :label="true">在售</el-radio>
             <el-radio :label="false">未售</el-radio>
           </el-radio-group>
         </el-form-item>
-            
+
         <el-form-item label="商品图片">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
+          <el-upload class="avatar-uploader" :headers="headers" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
 			      <img v-if="goods.picUrl" :src="goods.picUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        
+
         <el-form-item label="宣传画廊">
-          <el-upload :action='uploadPath' :limit='5' multiple accept=".jpg,.jpeg,.png,.gif" :file-list="galleryFileList" list-type="picture-card" :on-exceed='uploadOverrun' :on-success="handleGalleryUrl" :on-remove="handleRemove">
+          <el-upload :action='uploadPath' :headers="headers" :limit='5' multiple accept=".jpg,.jpeg,.png,.gif" :file-list="galleryFileList" list-type="picture-card" :on-exceed='uploadOverrun' :on-success="handleGalleryUrl" :on-remove="handleRemove">
              <i class="el-icon-plus"></i>
           </el-upload>
-        </el-form-item>        
-            
+        </el-form-item>
+
         <el-form-item label="商品单位">
           <el-input v-model="goods.unit" placeholder="件 / 个 / 盒"></el-input>
         </el-form-item>
-            
+
         <el-form-item label="关键字">
           <el-tag :key="tag" v-for="tag in keywords" closable type="primary" @close="handleClose(tag)">
             {{tag}}
@@ -64,11 +64,11 @@
           </el-input>
           <el-button v-else class="button-new-keyword" size="small" type="primary" @click="showInput">+ 增加</el-button>
         </el-form-item>
-            
+
         <el-form-item label="所属分类">
           <el-cascader expand-trigger="hover" :options="categoryList" v-model="categoryIds" @change="handleCategoryChange"></el-cascader>
         </el-form-item>
-        
+
         <el-form-item label="所属品牌商">
           <el-select v-model="goods.brandId">
             <el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value">
@@ -78,11 +78,11 @@
 
         <el-form-item label="商品简介">
           <el-input v-model="goods.brief"></el-input>
-        </el-form-item> 
-            
+        </el-form-item>
+
         <el-form-item label="商品详细介绍">
           <editor :init="editorInit" v-model="goods.detail"></editor>
-        </el-form-item>    
+        </el-form-item>
     </el-form>
   </el-card>
 
@@ -120,11 +120,11 @@
           <el-input v-model="specForm.value"></el-input>
         </el-form-item>
         <el-form-item label="规格图片" prop="picUrl">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadSpecPicUrl">
+          <el-upload class="avatar-uploader" :headers="headers" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadSpecPicUrl">
 			      <img v-if="specForm.picUrl" :src="specForm.picUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-        </el-form-item>        
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="specVisiable = false">取消</el-button>
@@ -132,7 +132,7 @@
       </div>
       </el-dialog>
     </el-card>
-    
+
     <el-card class="box-card">
       <h3>商品库存</h3>
        <el-table :data="products">
@@ -173,11 +173,11 @@
           <el-input v-model="productForm.number"></el-input>
         </el-form-item>
         <el-form-item label="货品图片" prop="url">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadProductUrl">
+          <el-upload class="avatar-uploader" :headers="headers" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadProductUrl">
 			      <img v-if="productForm.url" :src="productForm.url" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-        </el-form-item>        
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="productVisiable = false">取消</el-button>
@@ -208,7 +208,7 @@
         </el-form-item>
         <el-form-item label="商品参数值" prop="value">
           <el-input v-model="attributeForm.value"></el-input>
-        </el-form-item>      
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="attributeVisiable = false">取消</el-button>
@@ -267,10 +267,18 @@ import { detailGoods, editGoods, listCatAndBrand } from '@/api/goods'
 import { createStorage, uploadPath } from '@/api/storage'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'GoodsEdit',
   components: { Editor },
+  computed: {
+    headers() {
+      return {
+        'Admin-Token': getToken()
+      }
+    }
+  },
   data() {
     return {
       uploadPath,

@@ -1,6 +1,6 @@
 <template>
 	<div class="upload-container">
-		<el-upload class="image-uploader" :data="dataObj" drag :multiple="false" :show-file-list="false" action="https://httpbin.org/post"
+		<el-upload class="image-uploader" :data="dataObj" :headers="headers" drag :multiple="false" :show-file-list="false" action="https://httpbin.org/post"
 		  :on-success="handleImageScucess">
 			<i class="el-icon-upload"></i>
 			<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -35,6 +35,11 @@ export default {
   computed: {
     imageUrl() {
       return this.value
+    },
+    headers() {
+      return {
+        'Admin-Token': getToken()
+      }
     }
   },
   data() {

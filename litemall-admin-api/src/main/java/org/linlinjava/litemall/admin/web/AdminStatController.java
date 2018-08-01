@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.dao.StatMapper;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.service.StatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/stat")
+@Validated
 public class AdminStatController {
     private final Log logger = LogFactory.getLog(AdminStatController.class);
 
