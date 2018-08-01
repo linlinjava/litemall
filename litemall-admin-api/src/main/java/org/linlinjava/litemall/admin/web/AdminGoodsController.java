@@ -54,7 +54,7 @@ public class AdminGoodsController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
@@ -191,10 +191,6 @@ public class AdminGoodsController {
             // 商品基本信息表litemall_goods
             goods.setAddTime(LocalDateTime.now());
 
-            //将生成的分享图片地址写入数据库
-            qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
-            goods.setShareUrl(qCodeService.getShareImageUrl(goods.getId().toString()));
-
             goodsService.add(goods);
 
             // 商品规格表litemall_goods_specification
@@ -276,7 +272,7 @@ public class AdminGoodsController {
     }
 
     @GetMapping("/detail")
-    public Object detail(@LoginAdmin Integer adminId,  @NotNull Integer id){
+    public Object detail(@LoginAdmin Integer adminId, @NotNull Integer id) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
