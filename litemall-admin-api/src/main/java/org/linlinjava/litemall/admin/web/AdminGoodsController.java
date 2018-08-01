@@ -6,6 +6,8 @@ import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.dao.GoodsAllinone;
 import org.linlinjava.litemall.admin.util.CatVo;
 import org.linlinjava.litemall.core.qcode.QCodeService;
+import org.linlinjava.litemall.core.validator.Order;
+import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -14,13 +16,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
 @RequestMapping("/admin/goods")
+@Validated
 public class AdminGoodsController {
     private final Log logger = LogFactory.getLog(AdminGoodsController.class);
 
@@ -46,9 +51,10 @@ public class AdminGoodsController {
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
                        String goodsSn, String name,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                       String sort, String order) {
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer limit,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order){
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
@@ -270,13 +276,9 @@ public class AdminGoodsController {
     }
 
     @GetMapping("/detail")
-    public Object detail(@LoginAdmin Integer adminId, Integer id) {
+    public Object detail(@LoginAdmin Integer adminId,  @NotNull Integer id){
         if (adminId == null) {
             return ResponseUtil.unlogin();
-        }
-
-        if (id == null) {
-            return ResponseUtil.badArgument();
         }
 
         LitemallGoods goods = goodsService.findById(id);

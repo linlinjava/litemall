@@ -35,7 +35,7 @@
 
       <el-table-column align="center" label="关键字" prop="keyword">
       </el-table-column>
-      
+
       <el-table-column align="center" min-width="100" label="简介" prop="desc">
       </el-table-column>
 
@@ -44,10 +44,10 @@
         <template slot-scope="scope">
           <el-tag :type="scope.row.level === 'L1' ? 'primary' : 'info' ">{{scope.row.level === 'L1' ? '一级类目' : '二级类目'}}</el-tag>
         </template>
-      </el-table-column>   
+      </el-table-column>
 
       <el-table-column align="center" label="父类目ID" prop="pid">
-      </el-table-column> 
+      </el-table-column>
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -88,20 +88,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="类目图标" prop="iconUrl">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadIconUrl">
+          <el-upload class="avatar-uploader" :headers="headers" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadIconUrl">
 			      <img v-if="dataForm.iconUrl" :src="dataForm.iconUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="类目图片" prop="picUrl">
-          <el-upload class="avatar-uploader" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
+          <el-upload class="avatar-uploader" :headers="headers" :action='uploadPath' list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
 			      <img v-if="dataForm.picUrl" :src="dataForm.picUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-        </el-form-item>        
+        </el-form-item>
         <el-form-item label="类目简介" prop="desc">
           <el-input v-model="dataForm.desc"></el-input>
-        </el-form-item>      
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -142,9 +142,17 @@
 <script>
 import { listCategory, listCatL1, createCategory, updateCategory, deleteCategory } from '@/api/category'
 import { uploadPath } from '@/api/storage'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Category',
+  computed: {
+    headers() {
+      return {
+        'Admin-Token': getToken()
+      }
+    }
+  },
   data() {
     return {
       uploadPath,

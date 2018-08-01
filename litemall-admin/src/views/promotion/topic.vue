@@ -59,7 +59,7 @@
     <el-tooltip placement="top" content="返回顶部">
       <back-to-top :visibilityHeight="100" ></back-to-top>
     </el-tooltip>
-    
+
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
@@ -70,14 +70,14 @@
           <el-input v-model="dataForm.subtitle"></el-input>
         </el-form-item>
         <el-form-item label="专题图片" prop="picUrl">
-          <el-upload class="avatar-uploader" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
+          <el-upload class="avatar-uploader" :headers="headers" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadPicUrl">
 			      <img v-if="dataForm.picUrl" :src="dataForm.picUrl" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item style="width: 700px;" label="专题内容">
           <editor :init="editorInit" v-model="dataForm.content"></editor>
-        </el-form-item>        
+        </el-form-item>
         <el-form-item label="商品低价" prop="price">
           <el-input v-model="dataForm.price"></el-input>
         </el-form-item>
@@ -129,10 +129,18 @@ import { listTopic, createTopic, updateTopic, deleteTopic } from '@/api/topic'
 import { createStorage, uploadPath } from '@/api/storage'
 import BackToTop from '@/components/BackToTop'
 import Editor from '@tinymce/tinymce-vue'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'Topic',
   components: { BackToTop, Editor },
+  computed: {
+    headers() {
+      return {
+        'Admin-Token': getToken()
+      }
+    }
+  },
   data() {
     return {
       uploadPath,

@@ -1,5 +1,23 @@
 # 更新日志
 
+## V 0.8.0
+ 
+*2018-07-30*，删除os模块，小程序完善
+ 
+  * `小商场`支持商品分享
+  * `小商场`物流显示
+  * `小商场`优化商品购买样式，感谢[usgeek](https://github.com/linlinjava/litemall/pull/31) 
+  * `小商场`支持客服、关于页面、手机绑定，感谢[usgeek](https://github.com/linlinjava/litemall/pull/31) 
+  * `小商场`支持账号注册和密码找回时短信验证码
+  * `管理后台`页面查询时默认基于创建时间排序
+  * `基础系统`支持物流追踪  
+  * `基础系统`支持阿里云存储，感谢[usgeek](https://github.com/linlinjava/litemall/pull/31)  
+  * `项目`删除os模块，相关功能迁移至wx-api模块和admin-api模块
+  * `项目`从默认单机多服务方案调整至默认单机单服务方案
+  * `项目`暂时取消docker支持和.gitlab-ci.yml支持
+  * `项目`数据库添加litemall_system表，存储系统配置信息
+  * `项目`取消swagger支持
+
 ## V 0.7.0
  
 *2018-07-16*，数据库再次简化，同时支持短信提醒、邮件提醒、腾讯对象存储服务
