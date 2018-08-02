@@ -9,6 +9,7 @@ import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,7 +76,19 @@ public class AdminAdminController {
             return ResponseUtil.unlogin();
         }
 
+        String username = admin.getUsername();
+        if(username == null){
+            return ResponseUtil.badArgument();
+        }
+        List<LitemallAdmin> adminList = adminService.findAdmin(username);
+        if(adminList.size() > 0){
+            return ResponseUtil.fail(402, "管理员已经存在");
+        }
+
         String rawPassword = admin.getPassword();
+        if(rawPassword == null || rawPassword.length() < 6){
+            return ResponseUtil.fail(402, "管理员密码长度不能小于6");
+        }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(rawPassword);
         admin.setPassword(encodedPassword);
@@ -102,7 +115,7 @@ public class AdminAdminController {
         }
 
         Integer anotherAdminId = admin.getId();
-        if(anotherAdminId.intValue() == 1){
+        if(anotherAdminId == 1){
             return ResponseUtil.fail(403, "超级管理员不能修改");
         }
 
@@ -122,7 +135,7 @@ public class AdminAdminController {
         }
 
         Integer anotherAdminId = admin.getId();
-        if(anotherAdminId.intValue() == 1){
+        if(anotherAdminId == 1){
             return ResponseUtil.fail(403, "超级管理员不能删除");
         }
         adminService.deleteById(anotherAdminId);
