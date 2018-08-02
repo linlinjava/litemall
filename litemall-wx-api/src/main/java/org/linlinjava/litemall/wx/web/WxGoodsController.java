@@ -230,7 +230,8 @@ public class WxGoodsController {
                        @LoginUser Integer userId,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size,
-                       @Sort String sort, @Order String order) {
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order){
 
         //添加到搜索历史
         if (userId != null && !StringUtils.isNullOrEmpty(keyword)) {
