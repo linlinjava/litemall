@@ -927,6 +927,66 @@ public class LitemallOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andGrouponPriceIsNull() {
+            addCriterion("groupon_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceIsNotNull() {
+            addCriterion("groupon_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceEqualTo(BigDecimal value) {
+            addCriterion("groupon_price =", value, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceNotEqualTo(BigDecimal value) {
+            addCriterion("groupon_price <>", value, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceGreaterThan(BigDecimal value) {
+            addCriterion("groupon_price >", value, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("groupon_price >=", value, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceLessThan(BigDecimal value) {
+            addCriterion("groupon_price <", value, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("groupon_price <=", value, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceIn(List<BigDecimal> values) {
+            addCriterion("groupon_price in", values, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceNotIn(List<BigDecimal> values) {
+            addCriterion("groupon_price not in", values, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("groupon_price between", value1, value2, "grouponPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andGrouponPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("groupon_price not between", value1, value2, "grouponPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderPriceIsNull() {
             addCriterion("order_price is null");
             return (Criteria) this;

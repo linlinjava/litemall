@@ -4,6 +4,7 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.system.SystemConfig;
+import org.linlinjava.litemall.db.domain.LitemallGroupon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
@@ -24,6 +25,29 @@ public class QCodeService {
     @Autowired
     private StorageService storageService;
 
+
+    public void createGrouponShareImage(String goodName, String goodPicUrl, LitemallGroupon groupon) {
+        try {
+            //创建该商品的二维码
+            File file = wxMaService.getQrcodeService().createWxaCodeUnlimit("groupon," + groupon.getId(), "pages/index/index");
+            FileInputStream inputStream = new FileInputStream(file);
+            //将商品图片，商品名字,商城名字画到模版图中
+            byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
+            MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "image/jpeg", imageData);
+            //存储分享图
+            storageService.store(multipartFile, getKeyName(groupon.getId().toString()));
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * 创建商品分享图
      *
@@ -37,7 +61,7 @@ public class QCodeService {
 
         try {
             //创建该商品的二维码
-            File file = wxMaService.getQrcodeService().createWxaCodeUnlimit(goodId, "pages/index/index");
+            File file = wxMaService.getQrcodeService().createWxaCodeUnlimit("goods," + goodId, "pages/index/index");
             FileInputStream inputStream = new FileInputStream(file);
             //将商品图片，商品名字,商城名字画到模版图中
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
@@ -103,7 +127,7 @@ public class QCodeService {
         drawTextInImg(baseImage, goodName, 112, 955);
 
         //写上商城名称
-        drawTextInImgCenter(baseImage, shopName, 112, 98);
+        drawTextInImgCenter(baseImage, shopName, 98);
 
 
         //转jpg
@@ -117,7 +141,7 @@ public class QCodeService {
         return bs.toByteArray();
     }
 
-    private void drawTextInImgCenter(BufferedImage baseImage, String textToWrite, int x, int y) {
+    private void drawTextInImgCenter(BufferedImage baseImage, String textToWrite, int y) {
         Graphics2D g2D = (Graphics2D) baseImage.getGraphics();
         g2D.setColor(new Color(167, 136, 69));
 
@@ -133,12 +157,12 @@ public class QCodeService {
         int widthX = (baseImage.getWidth() - textWidth) / 2;
         // 表示这段文字在图片上的位置(x,y) .第一个是你设置的内容。
 
-        g2D.drawString(textToWrite, widthX, 100);
+        g2D.drawString(textToWrite, widthX, y);
         // 释放对象
         g2D.dispose();
     }
 
-    private void drawTextInImg(BufferedImage baseImage, String textToWrite, int x, int y) throws IOException, FontFormatException {
+    private void drawTextInImg(BufferedImage baseImage, String textToWrite, int x, int y) {
         Graphics2D g2D = (Graphics2D) baseImage.getGraphics();
         g2D.setColor(new Color(167, 136, 69));
 

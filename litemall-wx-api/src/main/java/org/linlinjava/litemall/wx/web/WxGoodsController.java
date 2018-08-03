@@ -54,6 +54,8 @@ public class WxGoodsController {
     private LitemallSearchHistoryService searchHistoryService;
     @Autowired
     private LitemallGoodsSpecificationService goodsSpecificationService;
+    @Autowired
+    private LitemallGrouponRulesService rulesService;
 
 
     /**
@@ -123,6 +125,9 @@ public class WxGoodsController {
         commentList.put("count", commentCount);
         commentList.put("data", commentsVo);
 
+        //团购信息
+        List<LitemallGrouponRules> rules = rulesService.queryByGoodsId(id);
+
         // 用户收藏
         int userHasCollect = 0;
         if (userId != null) {
@@ -147,6 +152,7 @@ public class WxGoodsController {
         data.put("productList", productList);
         data.put("attribute", goodsAttributeList);
         data.put("brand", brand);
+        data.put("groupon", rules);
 
         //商品分享图片地址
         data.put("shareImage", info.getShareUrl());
@@ -231,7 +237,7 @@ public class WxGoodsController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
 
         //添加到搜索历史
         if (userId != null && !StringUtils.isNullOrEmpty(keyword)) {
