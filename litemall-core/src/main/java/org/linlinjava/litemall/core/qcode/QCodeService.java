@@ -6,9 +6,7 @@ import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -41,9 +39,9 @@ public class QCodeService {
             FileInputStream inputStream = new FileInputStream(file);
             //将商品图片，商品名字,商城名字画到模版图中
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
-            MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "image/jpeg", imageData);
+            ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            storageService.store(multipartFile, getKeyName(goodId));
+            storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
         } catch (WxErrorException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

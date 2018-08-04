@@ -3,9 +3,9 @@ package org.linlinjava.litemall.core.storage;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,9 +47,9 @@ public class LocalStorage implements Storage {
     }
 
     @Override
-    public void store(MultipartFile file, String keyName) {
+    public void store(InputStream inputStream, long contentLength, String contentType, String keyName) {
         try {
-            Files.copy(file.getInputStream(), rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(inputStream, rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file " + keyName, e);
         }

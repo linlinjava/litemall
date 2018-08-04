@@ -6,11 +6,9 @@ import org.linlinjava.litemall.core.storage.LocalStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.util.FileCopyUtils;
-
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -24,9 +22,8 @@ public class LocalStorageTest {
     @Test
     public void test() throws IOException {
         String test = getClass().getClassLoader().getResource("litemall.png").getFile();
-        byte[] content =  (byte[])FileCopyUtils.copyToByteArray(new FileInputStream(test));
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("litemall.png", "litemall.png", "image/jpeg", content);
-        localStorage.store(mockMultipartFile, "litemall.png");
+        File testFile = new File(test);
+        localStorage.store(new FileInputStream(test), testFile.length(), "image/png", "litemall.png");
         Resource resource = localStorage.loadAsResource("litemall.png");
         String url = localStorage.generateUrl("litemall.png");
         System.out.println("test file " + test);

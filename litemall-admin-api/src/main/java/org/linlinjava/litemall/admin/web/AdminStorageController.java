@@ -68,7 +68,7 @@ public class AdminStorageController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestParam("file") MultipartFile file) {
+    public Object create(@LoginAdmin Integer adminId, @RequestParam("file") MultipartFile file) throws IOException {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
@@ -81,7 +81,7 @@ public class AdminStorageController {
             return ResponseUtil.badArgumentValue();
         }
         String key = generateKey(originalFilename);
-        storageService.store(file, key);
+        storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), key);
 
         String url = storageService.generateUrl(key);
         LitemallStorage storageInfo = new LitemallStorage();
