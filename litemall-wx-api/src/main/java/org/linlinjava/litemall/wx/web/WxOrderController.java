@@ -401,10 +401,11 @@ public class WxOrderController {
 
                 //参与者
                 if (grouponLinkId != null && grouponLinkId > 0) {
-                    groupon.setUserType(false);
+                    LitemallGroupon baseGroupon = grouponService.queryById(grouponLinkId);
+                    groupon.setCreatorUserId(baseGroupon.getCreatorUserId());
                     groupon.setGrouponId(grouponLinkId);
                 } else {
-                    groupon.setUserType(true);
+                    groupon.setCreatorUserId(userId);
                     groupon.setGrouponId(0);
                 }
 

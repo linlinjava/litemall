@@ -1,24 +1,19 @@
 package org.linlinjava.litemall.wx.web;
 
-import org.linlinjava.litemall.core.qcode.QCodeService;
-import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.db.domain.LitemallGoods;
-import org.linlinjava.litemall.db.domain.LitemallGroupon;
-import org.linlinjava.litemall.db.domain.LitemallGrouponRules;
-import org.linlinjava.litemall.db.service.LitemallGoodsService;
-import org.linlinjava.litemall.db.service.LitemallGrouponRulesService;
-import org.linlinjava.litemall.db.service.LitemallGrouponService;
+import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +29,11 @@ public class WxGrouponController {
     @Autowired
     private LitemallGoodsService goodsService;
     @Autowired
-    private QCodeService qCodeService;
+    private LitemallOrderService orderService;
+    @Autowired
+    private LitemallOrderGoodsService orderGoodsService;
+    @Autowired
+    private LitemallUserService userService;
 
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, @NotNull Integer grouponId) {
@@ -65,6 +64,65 @@ public class WxGrouponController {
         return ResponseUtil.ok(groupInfo);
     }
 
+    @GetMapping("my")
+    public Object my(@LoginUser Integer userId, @RequestParam(defaultValue = "0") Integer showType) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+
+        List<LitemallGroupon> myGroupons;
+        if (showType == 0) {
+            myGroupons = grouponService.queryMyGroupon(userId);
+        } else {
+            myGroupons = grouponService.queryMyJoinGroupon(userId);
+        }
+
+        List<Map<String, Object>> grouponVoList = new ArrayList<>(myGroupons.size());
+
+        LitemallOrder order;
+        LitemallGrouponRules rules;
+        LitemallUser creator;
+        for (LitemallGroupon groupon : myGroupons) {
+            order = orderService.findById(groupon.getOrderId());
+            rules = rulesService.queryById(groupon.getRulesId());
+            creator = userService.findById(groupon.getCreatorUserId());
+
+            Map<String, Object> grouponVo = new HashMap<>();
+            //填充团购信息
+            grouponVo.put("id", groupon.getId());
+            grouponVo.put("groupon", groupon);
+            grouponVo.put("rules", rules);
+            grouponVo.put("creator", creator.getNickname());
+            grouponVo.put("isCreator", creator.getId() == userId && groupon.getGrouponId() == 0);
+
+            //填充订单信息
+            grouponVo.put("orderId", order.getId());
+            grouponVo.put("orderSn", order.getOrderSn());
+            grouponVo.put("actualPrice", order.getActualPrice());
+            grouponVo.put("orderStatusText", OrderUtil.orderStatusText(order));
+            grouponVo.put("handleOption", OrderUtil.build(order));
+
+            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
+            List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
+                Map<String, Object> orderGoodsVo = new HashMap<>();
+                orderGoodsVo.put("id", orderGoods.getId());
+                orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
+                orderGoodsVo.put("number", orderGoods.getNumber());
+                orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
+                orderGoodsVoList.add(orderGoodsVo);
+            }
+            grouponVo.put("goodsList", orderGoodsVoList);
+            grouponVoList.add(grouponVo);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("count", grouponVoList.size());
+        result.put("data", grouponVoList);
+
+        return ResponseUtil.ok(result);
+    }
+
     @GetMapping("query")
     public Object query(@NotNull Integer goodsId) {
         LitemallGoods goods = goodsService.findById(goodsId);
@@ -75,73 +133,6 @@ public class WxGrouponController {
         List<LitemallGrouponRules> rules = rulesService.queryByGoodsId(goodsId);
 
         return ResponseUtil.ok(rules);
-    }
-
-    @RequestMapping("join")
-    public Object join(@LoginUser Integer userId, @RequestBody String body) {
-        if (userId == null) {
-            return ResponseUtil.unlogin();
-        }
-
-        Integer rulesId = JacksonUtil.parseInteger(body, "rulesId");
-        LitemallGrouponRules rules = rulesService.queryById(rulesId);
-        if (rules == null) {
-            return ResponseUtil.fail(-1, "未找到对应的团购规则");
-        }
-
-        Integer grouponId = JacksonUtil.parseInteger(body, "grouponId");
-        LitemallGroupon groupon = grouponService.queryById(grouponId);
-        if (groupon == null) {
-            return ResponseUtil.fail(-1, "未找到对应的团购活动");
-        }
-
-        LitemallGroupon groupon2 = new LitemallGroupon();
-        groupon2.setUserId(userId);
-        groupon2.setRulesId(rulesId);
-        groupon2.setShareUrl("");
-        //参与者
-        groupon2.setUserType(false);
-        groupon2.setGrouponId(grouponId);
-
-        groupon2.setAddTime(LocalDateTime.now());
-        //过期时间与创建一致
-        groupon2.setExpireTime(groupon.getExpireTime());
-
-        grouponService.createGroupon(groupon);
-
-        return ResponseUtil.ok();
-    }
-
-
-    @GetMapping("create")
-    public Object create(@LoginUser Integer userId, @NotNull Integer rulesId) {
-        if (userId == null) {
-            return ResponseUtil.unlogin();
-        }
-
-        LitemallGrouponRules rules = rulesService.queryById(rulesId);
-        if (rules == null) {
-            return ResponseUtil.fail(-1, "未找到对应的团购规则");
-        }
-
-        LitemallGroupon groupon = new LitemallGroupon();
-        groupon.setUserId(userId);
-        groupon.setRulesId(rulesId);
-        //发起者
-        groupon.setUserType(true);
-        groupon.setGrouponId(0);
-
-        groupon.setAddTime(LocalDateTime.now());
-        groupon.setExpireTime(LocalDateTime.now().plusDays(2));
-
-        grouponService.createGroupon(groupon);
-
-        qCodeService.createGrouponShareImage(rules.getGoodsName(), rules.getPicUrl(), groupon);
-        groupon.setShareUrl(qCodeService.getShareImageUrl(groupon.getId().toString()));
-        grouponService.update(groupon);
-
-
-        return ResponseUtil.ok();
     }
 
     @RequestMapping("list")

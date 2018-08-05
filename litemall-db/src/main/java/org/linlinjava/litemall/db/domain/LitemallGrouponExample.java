@@ -526,63 +526,63 @@ public class LitemallGrouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeIsNull() {
-            addCriterion("user_type is null");
+        public Criteria andCreatorUserIdIsNull() {
+            addCriterion("creator_user_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeIsNotNull() {
-            addCriterion("user_type is not null");
+        public Criteria andCreatorUserIdIsNotNull() {
+            addCriterion("creator_user_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeEqualTo(Boolean value) {
-            addCriterion("user_type =", value, "userType");
+        public Criteria andCreatorUserIdEqualTo(Integer value) {
+            addCriterion("creator_user_id =", value, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeNotEqualTo(Boolean value) {
-            addCriterion("user_type <>", value, "userType");
+        public Criteria andCreatorUserIdNotEqualTo(Integer value) {
+            addCriterion("creator_user_id <>", value, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeGreaterThan(Boolean value) {
-            addCriterion("user_type >", value, "userType");
+        public Criteria andCreatorUserIdGreaterThan(Integer value) {
+            addCriterion("creator_user_id >", value, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("user_type >=", value, "userType");
+        public Criteria andCreatorUserIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("creator_user_id >=", value, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeLessThan(Boolean value) {
-            addCriterion("user_type <", value, "userType");
+        public Criteria andCreatorUserIdLessThan(Integer value) {
+            addCriterion("creator_user_id <", value, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeLessThanOrEqualTo(Boolean value) {
-            addCriterion("user_type <=", value, "userType");
+        public Criteria andCreatorUserIdLessThanOrEqualTo(Integer value) {
+            addCriterion("creator_user_id <=", value, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeIn(List<Boolean> values) {
-            addCriterion("user_type in", values, "userType");
+        public Criteria andCreatorUserIdIn(List<Integer> values) {
+            addCriterion("creator_user_id in", values, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeNotIn(List<Boolean> values) {
-            addCriterion("user_type not in", values, "userType");
+        public Criteria andCreatorUserIdNotIn(List<Integer> values) {
+            addCriterion("creator_user_id not in", values, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeBetween(Boolean value1, Boolean value2) {
-            addCriterion("user_type between", value1, value2, "userType");
+        public Criteria andCreatorUserIdBetween(Integer value1, Integer value2) {
+            addCriterion("creator_user_id between", value1, value2, "creatorUserId");
             return (Criteria) this;
         }
 
-        public Criteria andUserTypeNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("user_type not between", value1, value2, "userType");
+        public Criteria andCreatorUserIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("creator_user_id not between", value1, value2, "creatorUserId");
             return (Criteria) this;
         }
 

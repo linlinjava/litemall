@@ -31,9 +31,9 @@ public class QCodeService {
             FileInputStream inputStream = new FileInputStream(file);
             //将商品图片，商品名字,商城名字画到模版图中
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
-            MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "image/jpeg", imageData);
+            ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            storageService.store(multipartFile, getKeyName(groupon.getId().toString()));
+            storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(groupon.getId().toString()));
         } catch (WxErrorException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
