@@ -44,7 +44,7 @@ public class AdminRegionController {
                        String name, Integer code,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
-                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Sort (accepts={"id"}) @RequestParam(defaultValue = "id") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order){
         if(adminId == null){
             return ResponseUtil.unlogin();

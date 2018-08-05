@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.FileCopyUtils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -24,9 +25,8 @@ public class AliyunStorageTest {
     @Test
     public void test() throws IOException {
         String test = getClass().getClassLoader().getResource("litemall.png").getFile();
-        byte[] content =  (byte[])FileCopyUtils.copyToByteArray(new FileInputStream(test));
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("litemall.png", "litemall.png", "image/png", content);
-        aliyunStorage.store(mockMultipartFile, "litemall.png");
+        File testFile = new File(test);
+        aliyunStorage.store(new FileInputStream(test), testFile.length(), "image/png", "litemall.png");
         Resource resource = aliyunStorage.loadAsResource("litemall.png");
         String url = aliyunStorage.generateUrl("litemall.png");
         System.out.println("test file " + test);

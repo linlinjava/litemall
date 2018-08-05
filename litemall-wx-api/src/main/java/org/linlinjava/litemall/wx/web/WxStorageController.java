@@ -48,7 +48,7 @@ public class WxStorageController {
     }
 
     @PostMapping("/upload")
-    public Object upload(@RequestParam("file") MultipartFile file) {
+    public Object upload(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         InputStream inputStream = null;
         try {
@@ -58,7 +58,7 @@ public class WxStorageController {
             return ResponseUtil.badArgumentValue();
         }
         String key = generateKey(originalFilename);
-        storageService.store(file, key);
+        storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), key);
 
         String url = storageService.generateUrl(key);
         LitemallStorage storageInfo = new LitemallStorage();

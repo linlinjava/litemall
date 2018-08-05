@@ -6,8 +6,8 @@ import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -74,14 +74,14 @@ public class AliyunStorage implements Storage {
      * 阿里云OSS对象存储简单上传实现
      */
     @Override
-    public void store(MultipartFile file, String keyName) {
+    public void store(InputStream inputStream, long contentLength, String contentType, String keyName) {
         try {
             // 简单文件上传, 最大支持 5 GB, 适用于小文件上传, 建议 20M以下的文件使用该接口
             ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
+            objectMetadata.setContentLength(contentLength);
+            objectMetadata.setContentType(contentType);
             // 对象键（Key）是对象在存储桶中的唯一标识。
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, file.getInputStream(), objectMetadata);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata);
             PutObjectResult putObjectResult = getOSSClient().putObject(putObjectRequest);
         } catch (Exception ex) {
             ex.printStackTrace();
