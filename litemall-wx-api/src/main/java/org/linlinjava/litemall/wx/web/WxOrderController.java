@@ -628,8 +628,8 @@ public class WxOrderController {
 
                 //仅当发起者才创建分享图片
                 if (groupon.getGrouponId() == 0) {
-                    qCodeService.createGrouponShareImage(grouponRules.getGoodsName(), grouponRules.getPicUrl(), groupon);
-                    groupon.setShareUrl(qCodeService.getShareImageUrl(groupon.getId().toString()));
+                    String url = qCodeService.createGrouponShareImage(grouponRules.getGoodsName(), grouponRules.getPicUrl(), groupon);
+                    groupon.setShareUrl(url);
                 }
                 groupon.setPayed(true);
                 grouponService.update(groupon);

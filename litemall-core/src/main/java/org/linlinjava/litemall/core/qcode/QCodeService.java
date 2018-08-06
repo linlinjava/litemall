@@ -24,7 +24,7 @@ public class QCodeService {
     private StorageService storageService;
 
 
-    public void createGrouponShareImage(String goodName, String goodPicUrl, LitemallGroupon groupon) {
+    public String createGrouponShareImage(String goodName, String goodPicUrl, LitemallGroupon groupon) {
         try {
             //创建该商品的二维码
             File file = wxMaService.getQrcodeService().createWxaCodeUnlimit("groupon," + groupon.getId(), "pages/index/index");
@@ -33,7 +33,9 @@ public class QCodeService {
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(groupon.getId().toString()));
+            String url = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(groupon.getId().toString()));
+
+            return url;
         } catch (WxErrorException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -43,6 +45,8 @@ public class QCodeService {
         } catch (FontFormatException e) {
             e.printStackTrace();
         }
+
+        return "";
     }
 
 
@@ -53,9 +57,9 @@ public class QCodeService {
      * @param goodPicUrl
      * @param goodName
      */
-    public void createGoodShareImage(String goodId, String goodPicUrl, String goodName) {
+    public String createGoodShareImage(String goodId, String goodPicUrl, String goodName) {
         if (!SystemConfig.isAutoCreateShareImage())
-            return;
+            return "";
 
         try {
             //创建该商品的二维码
@@ -65,7 +69,9 @@ public class QCodeService {
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
+            String url = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
+
+            return url;
         } catch (WxErrorException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -75,10 +81,8 @@ public class QCodeService {
         } catch (FontFormatException e) {
             e.printStackTrace();
         }
-    }
 
-    public String getShareImageUrl(String goodId) {
-        return storageService.generateUrl(getKeyName(goodId));
+        return "";
     }
 
     private String getKeyName(String goodId) {
