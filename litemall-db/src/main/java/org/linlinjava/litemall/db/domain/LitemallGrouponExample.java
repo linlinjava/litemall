@@ -646,66 +646,6 @@ public class LitemallGrouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andExpireTimeIsNull() {
-            addCriterion("expire_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeIsNotNull() {
-            addCriterion("expire_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeEqualTo(LocalDateTime value) {
-            addCriterion("expire_time =", value, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeNotEqualTo(LocalDateTime value) {
-            addCriterion("expire_time <>", value, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeGreaterThan(LocalDateTime value) {
-            addCriterion("expire_time >", value, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeGreaterThanOrEqualTo(LocalDateTime value) {
-            addCriterion("expire_time >=", value, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeLessThan(LocalDateTime value) {
-            addCriterion("expire_time <", value, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeLessThanOrEqualTo(LocalDateTime value) {
-            addCriterion("expire_time <=", value, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeIn(List<LocalDateTime> values) {
-            addCriterion("expire_time in", values, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeNotIn(List<LocalDateTime> values) {
-            addCriterion("expire_time not in", values, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeBetween(LocalDateTime value1, LocalDateTime value2) {
-            addCriterion("expire_time between", value1, value2, "expireTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpireTimeNotBetween(LocalDateTime value1, LocalDateTime value2) {
-            addCriterion("expire_time not between", value1, value2, "expireTime");
-            return (Criteria) this;
-        }
-
         public Criteria andShareUrlIsNull() {
             addCriterion("share_url is null");
             return (Criteria) this;

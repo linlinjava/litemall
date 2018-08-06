@@ -157,6 +157,13 @@ public class WxOrderController {
             orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
             orderVo.put("handleOption", OrderUtil.build(order));
 
+            LitemallGroupon groupon = grouponService.queryByOrderId(order.getId());
+            if (groupon != null) {
+                orderVo.put("isGroupin", true);
+            } else {
+                orderVo.put("isGroupin", false);
+            }
+
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
             List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
@@ -171,6 +178,7 @@ public class WxOrderController {
 
             orderVoList.add(orderVo);
         }
+
         Map<String, Object> result = new HashMap<>();
         result.put("count", count);
         result.put("data", orderVoList);
@@ -410,7 +418,6 @@ public class WxOrderController {
                 }
 
                 groupon.setAddTime(LocalDateTime.now());
-                groupon.setExpireTime(LocalDateTime.now().plusDays(2));
 
                 grouponService.createGroupon(groupon);
             }

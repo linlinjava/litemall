@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,17 +52,97 @@ public class WxGrouponController {
             return ResponseUtil.badArgumentValue();
         }
 
+        // 订单信息
+        LitemallOrder order = orderService.findById(groupon.getOrderId());
+        if (null == order) {
+            return ResponseUtil.fail(403, "订单不存在");
+        }
+        if (!order.getUserId().equals(userId)) {
+            return ResponseUtil.fail(403, "不是当前用户的订单");
+        }
+        Map<String, Object> orderVo = new HashMap<String, Object>();
+        orderVo.put("id", order.getId());
+        orderVo.put("orderSn", order.getOrderSn());
+        orderVo.put("addTime", LocalDate.now());
+        orderVo.put("consignee", order.getConsignee());
+        orderVo.put("mobile", order.getMobile());
+        orderVo.put("address", order.getAddress());
+        orderVo.put("goodsPrice", order.getGoodsPrice());
+        orderVo.put("freightPrice", order.getFreightPrice());
+        orderVo.put("actualPrice", order.getActualPrice());
+        orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
+        orderVo.put("handleOption", OrderUtil.build(order));
+        orderVo.put("expCode", order.getShipChannel());
+        orderVo.put("expNo", order.getShipSn());
+
+        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
+        List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
+        for (LitemallOrderGoods orderGoods : orderGoodsList) {
+            Map<String, Object> orderGoodsVo = new HashMap<>();
+            orderGoodsVo.put("id", orderGoods.getId());
+            orderGoodsVo.put("orderId", orderGoods.getOrderId());
+            orderGoodsVo.put("goodsId", orderGoods.getGoodsId());
+            orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
+            orderGoodsVo.put("number", orderGoods.getNumber());
+            orderGoodsVo.put("retailPrice", orderGoods.getPrice());
+            orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
+            orderGoodsVo.put("goodsSpecificationValues", orderGoods.getSpecifications());
+            orderGoodsVoList.add(orderGoodsVo);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("orderInfo", orderVo);
+        result.put("orderGoods", orderGoodsVoList);
+
+        UserVo creator = userService.findUserVoById(groupon.getCreatorUserId());
+        List<UserVo> joiners = new ArrayList<>();
+        joiners.add(creator);
+        int linkGrouponId;
+        // 这是一个团购发起记录
+        if (groupon.getGrouponId() == 0) {
+            linkGrouponId = groupon.getId();
+        } else {
+            linkGrouponId = groupon.getGrouponId();
+
+        }
+        List<LitemallGroupon> groupons = grouponService.queryJoiners(linkGrouponId);
+
+        UserVo joiner;
+        for (LitemallGroupon grouponItem : groupons) {
+            joiner = userService.findUserVoById(grouponItem.getUserId());
+            joiners.add(joiner);
+        }
+
+        result.put("linkGrouponId", linkGrouponId);
+        result.put("creator", creator);
+        result.put("joiners", joiners);
+        result.put("groupon", groupon);
+        result.put("rules", rules);
+        return ResponseUtil.ok(result);
+    }
+
+    @GetMapping("join")
+    public Object join(@NotNull Integer grouponId) {
+        LitemallGroupon groupon = grouponService.queryById(grouponId);
+        if (groupon == null) {
+            return ResponseUtil.badArgumentValue();
+        }
+
+        LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
+        if (rules == null) {
+            return ResponseUtil.badArgumentValue();
+        }
+
         LitemallGoods goods = goodsService.findById(rules.getGoodsId());
+        if (goods == null) {
+            return ResponseUtil.badArgumentValue();
+        }
 
-        int count = grouponService.countGroupon(grouponId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("groupon", groupon);
+        result.put("goods", goods);
 
-        Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupon", groupon);
-        groupInfo.put("rules", rules);
-        groupInfo.put("goods", goods);
-        groupInfo.put("count", count);
-
-        return ResponseUtil.ok(groupInfo);
+        return ResponseUtil.ok(result);
     }
 
     @GetMapping("my")
@@ -93,7 +174,18 @@ public class WxGrouponController {
             grouponVo.put("groupon", groupon);
             grouponVo.put("rules", rules);
             grouponVo.put("creator", creator.getNickname());
-            grouponVo.put("isCreator", creator.getId() == userId && groupon.getGrouponId() == 0);
+
+            int linkGrouponId;
+            // 这是一个团购发起记录
+            if (groupon.getGrouponId() == 0) {
+                linkGrouponId = groupon.getId();
+                grouponVo.put("isCreator", creator.getId() == userId);
+            } else {
+                linkGrouponId = groupon.getGrouponId();
+                grouponVo.put("isCreator", false);
+            }
+            int joinerCount = grouponService.countGroupon(linkGrouponId);
+            grouponVo.put("joinerCount", joinerCount + 1);
 
             //填充订单信息
             grouponVo.put("orderId", order.getId());
@@ -133,16 +225,5 @@ public class WxGrouponController {
         List<LitemallGrouponRules> rules = rulesService.queryByGoodsId(goodsId);
 
         return ResponseUtil.ok(rules);
-    }
-
-    @RequestMapping("list")
-    public Object list(@LoginUser Integer userId) {
-        if (userId == null) {
-            return ResponseUtil.unlogin();
-        }
-
-        List<LitemallGroupon> myGroupOn = grouponService.queryByUserId(userId);
-
-        return ResponseUtil.ok(myGroupOn);
     }
 }

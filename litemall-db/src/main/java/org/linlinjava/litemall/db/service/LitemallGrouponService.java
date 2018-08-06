@@ -28,12 +28,14 @@ public class LitemallGrouponService {
     public List<LitemallGroupon> queryMyGroupon(Integer userId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andUserIdEqualTo(userId).andCreatorUserIdEqualTo(userId).andGrouponIdEqualTo(0).andDeletedEqualTo(false);
+        example.orderBy("add_time desc");
         return mapper.selectByExample(example);
     }
 
     public List<LitemallGroupon> queryMyJoinGroupon(Integer userId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andUserIdEqualTo(userId).andGrouponIdNotEqualTo(0).andDeletedEqualTo(false);
+        example.orderBy("add_time desc");
         return mapper.selectByExample(example);
     }
 
@@ -41,6 +43,13 @@ public class LitemallGrouponService {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
         return mapper.selectOneByExample(example);
+    }
+
+    public List<LitemallGroupon> queryJoiners(Integer id) {
+        LitemallGrouponExample example = new LitemallGrouponExample();
+        example.or().andGrouponIdEqualTo(id).andDeletedEqualTo(false);
+        example.orderBy("add_time desc");
+        return mapper.selectByExample(example);
     }
 
     /**

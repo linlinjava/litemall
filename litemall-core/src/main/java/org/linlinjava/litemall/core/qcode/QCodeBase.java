@@ -4,15 +4,12 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public abstract class QCodeBase {
@@ -51,9 +48,9 @@ public abstract class QCodeBase {
     }
 
     protected void saveImage(String id, byte[] imageData) {
-        MultipartFile multipartFile = new MockMultipartFile(getKeyName(id), getKeyName(id), "image/jpeg", imageData);
-        //存储分享图
-        storageService.store(multipartFile, getKeyName(id));
+//        MultipartFile multipartFile = new MockMultipartFile(getKeyName(id), getKeyName(id), "image/jpeg", imageData);
+//        //存储分享图
+//        storageService.store(multipartFile, getKeyName(id));
     }
 
     /**

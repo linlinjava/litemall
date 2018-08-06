@@ -176,11 +176,11 @@
         <table tableName="litemall_groupon_rules">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
+            <columnOverride javaType="java.time.LocalDateTime" column="expire_time"/>
         </table>
         <table tableName="litemall_groupon">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
-            <columnOverride javaType="java.time.LocalDateTime" column="expire_time"/>
         </table>
     </context>
 </generatorConfiguration>
