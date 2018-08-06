@@ -30,7 +30,7 @@ public class QCodeService {
             File file = wxMaService.getQrcodeService().createWxaCodeUnlimit("groupon," + groupon.getId(), "pages/index/index");
             FileInputStream inputStream = new FileInputStream(file);
             //将商品图片，商品名字,商城名字画到模版图中
-            byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
+            byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName);
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
             String url = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(groupon.getId().toString()));
@@ -41,8 +41,6 @@ public class QCodeService {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FontFormatException e) {
             e.printStackTrace();
         }
 
@@ -66,7 +64,7 @@ public class QCodeService {
             File file = wxMaService.getQrcodeService().createWxaCodeUnlimit("goods," + goodId, "pages/index/index");
             FileInputStream inputStream = new FileInputStream(file);
             //将商品图片，商品名字,商城名字画到模版图中
-            byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName, SystemConfig.getMallName());
+            byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName);
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
             String url = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
@@ -77,8 +75,6 @@ public class QCodeService {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FontFormatException e) {
             e.printStackTrace();
         }
 
@@ -98,9 +94,9 @@ public class QCodeService {
      * @return
      * @throws IOException
      */
-    private byte[] drawPicture(InputStream qrCodeImg, String goodPicUrl, String goodName, String shopName) throws IOException, FontFormatException {
+    private byte[] drawPicture(InputStream qrCodeImg, String goodPicUrl, String goodName) throws IOException {
         //底图
-        ClassPathResource redResource = new ClassPathResource("back.jpg");
+        ClassPathResource redResource = new ClassPathResource("back.png");
         BufferedImage red = ImageIO.read(redResource.getInputStream());
 
 
@@ -120,16 +116,16 @@ public class QCodeService {
         drawImgInImg(baseImage, red, 0, 0, red.getWidth(), red.getHeight());
 
         //画上商品图片
-        drawImgInImg(baseImage, goodImage, 56, 135, 720, 720);
+        drawImgInImg(baseImage, goodImage, 71, 69, 660, 660);
 
         //画上小程序二维码
-        drawImgInImg(baseImage, qrCodeImage, 442, 1006, 340, 340);
+        drawImgInImg(baseImage, qrCodeImage, 448, 767, 300, 300);
 
         //写上商品名称
-        drawTextInImg(baseImage, goodName, 112, 955);
+        drawTextInImg(baseImage, goodName, 65, 867);
 
         //写上商城名称
-        drawTextInImgCenter(baseImage, shopName, 98);
+//        drawTextInImgCenter(baseImage, shopName, 98);
 
 
         //转jpg
@@ -149,7 +145,7 @@ public class QCodeService {
 
         String fontName = "Microsoft YaHei";
 
-        Font f = new Font(fontName, Font.PLAIN, 42);
+        Font f = new Font(fontName, Font.PLAIN, 28);
         g2D.setFont(f);
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -169,7 +165,7 @@ public class QCodeService {
         g2D.setColor(new Color(167, 136, 69));
 
         //TODO 注意，这里的字体必须安装在服务器上
-        g2D.setFont(new Font("Microsoft YaHei", Font.PLAIN, 42));
+        g2D.setFont(new Font("Microsoft YaHei", Font.PLAIN, 28));
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2D.drawString(textToWrite, x, y);

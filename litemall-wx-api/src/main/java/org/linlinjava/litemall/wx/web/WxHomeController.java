@@ -29,6 +29,8 @@ public class WxHomeController {
     private LitemallTopicService topicService;
     @Autowired
     private LitemallCategoryService categoryService;
+    @Autowired
+    private LitemallGrouponRulesService grouponRulesService;
 
     /**
      * app首页
@@ -71,6 +73,17 @@ public class WxHomeController {
 
         List<LitemallTopic> topicList = topicService.queryList(0, SystemConfig.getTopicLimit());
         data.put("topicList", topicList);
+
+        //优惠专区
+        List<LitemallGrouponRules> grouponRules = grouponRulesService.queryByIndex(0, 4);
+        List<LitemallGoods> grouponGoods = new ArrayList<>();
+        for (LitemallGrouponRules rule : grouponRules) {
+            LitemallGoods goods = goodsService.findById(rule.getGoodsId());
+            if (!grouponGoods.contains(goods)) {
+                grouponGoods.add(goods);
+            }
+        }
+        data.put("grouponList", grouponGoods);
 
         List<Map> categoryList = new ArrayList<>();
         List<LitemallCategory> catL1List = categoryService.queryL1WithoutRecommend(0, SystemConfig.getCatlogListLimit());

@@ -22,7 +22,11 @@ class SystemInistService {
     private void inist() {
         systemInistService = this;
 
-        SystemInfoPrinter.printInfo("Litemall 初始化信息", getSystemInfo());
+        try {
+            SystemInfoPrinter.printInfo("Litemall 初始化信息", getSystemInfo());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Map<String, String> getSystemInfo() {

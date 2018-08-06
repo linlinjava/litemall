@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallGrouponRulesMapper;
 import org.linlinjava.litemall.db.domain.LitemallGrouponRules;
 import org.linlinjava.litemall.db.domain.LitemallGrouponRulesExample;
@@ -30,6 +31,14 @@ public class LitemallGrouponRulesService {
     public List<LitemallGrouponRules> queryByGoodsId(Integer goodsId) {
         LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
         example.or().andGoodsIdEqualTo(goodsId).andDeletedEqualTo(false);
+        return mapper.selectByExample(example);
+    }
+
+    public List<LitemallGrouponRules> queryByIndex(int offset, int limit) {
+        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
+        example.or().andDeletedEqualTo(false);
+        example.orderBy("add_time desc");
+        PageHelper.startPage(offset, limit);
         return mapper.selectByExample(example);
     }
 }
