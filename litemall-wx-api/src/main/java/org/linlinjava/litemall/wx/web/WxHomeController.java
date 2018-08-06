@@ -4,12 +4,14 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.core.system.SystemConfig;
+import org.linlinjava.litemall.wx.service.HomeCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +33,22 @@ public class WxHomeController {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallGrouponRulesService grouponRulesService;
+
+
+    @GetMapping("/cache")
+    public Object cache(@NotNull Integer key) {
+        if (!key.equals("litemall_cache")) {
+            return ResponseUtil.fail();
+        }
+
+        // 清除缓存
+        HomeCacheManager.clear();
+        if (!HomeCacheManager.hasData()) {
+            return ResponseUtil.ok();
+        } else {
+            return ResponseUtil.fail();
+        }
+    }
 
     /**
      * app首页
@@ -54,6 +72,12 @@ public class WxHomeController {
      */
     @GetMapping("/index")
     public Object index() {
+        //优先从缓存中读取
+        if (HomeCacheManager.hasData()) {
+            return ResponseUtil.ok(HomeCacheManager.getCacheData());
+        }
+
+
         Map<String, Object> data = new HashMap<>();
 
         List<LitemallAd> banner = adService.queryIndex();
@@ -109,6 +133,8 @@ public class WxHomeController {
         }
         data.put("floorGoodsList", categoryList);
 
+        //缓存数据
+        HomeCacheManager.loadData(data);
         return ResponseUtil.ok(data);
     }
 }
