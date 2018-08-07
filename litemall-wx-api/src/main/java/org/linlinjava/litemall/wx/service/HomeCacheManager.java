@@ -14,6 +14,7 @@ public class HomeCacheManager {
      * @param data
      */
     public static void loadData(Map<String, Object> data) {
+        data.put("isCache", "true");
         cacheData = data;
     }
 

@@ -106,6 +106,21 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/groupon',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'grouponManage',
+    meta: {
+      title: '团购管理',
+      icon: 'chart'
+    },
+    children: [
+      { path: 'list', component: _import('groupon/list'), name: 'list', meta: { title: '团购规则', noCache: true }},
+      { path: 'record', component: _import('groupon/record'), name: 'record', meta: { title: '团购活动', noCache: true }}
+    ]
+  },
+
+  {
     path: '/promotion',
     component: Layout,
     redirect: 'noredirect',

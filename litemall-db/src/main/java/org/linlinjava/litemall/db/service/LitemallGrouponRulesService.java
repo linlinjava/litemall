@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.db.service;
 
+import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallGrouponRulesMapper;
 import org.linlinjava.litemall.db.domain.LitemallGrouponRules;
@@ -40,5 +41,38 @@ public class LitemallGrouponRulesService {
         example.orderBy("add_time desc");
         PageHelper.startPage(offset, limit);
         return mapper.selectByExample(example);
+    }
+
+    public List<LitemallGrouponRules> querySelective(String goodsId, Integer page, Integer size, String sort, String order) {
+        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
+        LitemallGrouponRulesExample.Criteria criteria = example.createCriteria();
+
+        if (!StringUtils.isEmpty(goodsId)) {
+            criteria.andGoodsIdEqualTo(Integer.parseInt(goodsId));
+        }
+        criteria.andDeletedEqualTo(false);
+
+        PageHelper.startPage(page, size);
+        return mapper.selectByExample(example);
+    }
+
+    public int countSelective(String goodsId, Integer page, Integer limit, String sort, String order) {
+        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
+        LitemallGrouponRulesExample.Criteria criteria = example.createCriteria();
+
+        if (!StringUtils.isEmpty(goodsId)) {
+            criteria.andGoodsIdEqualTo(Integer.parseInt(goodsId));
+        }
+        criteria.andDeletedEqualTo(false);
+
+        return (int) mapper.countByExample(example);
+    }
+
+    public void delete(Integer id) {
+        mapper.deleteByPrimaryKey(id);
+    }
+
+    public void update(LitemallGrouponRules grouponRules) {
+        mapper.updateByPrimaryKeySelective(grouponRules);
     }
 }
