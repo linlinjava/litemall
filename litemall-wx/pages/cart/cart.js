@@ -251,7 +251,7 @@ Page({
   try {
    wx.setStorageSync('cartId', 0);
    wx.navigateTo({
-    url: '../shopping/checkout/checkout'
+     url: '/pages/checkout/checkout'
    })
   } catch (e) {}
 
