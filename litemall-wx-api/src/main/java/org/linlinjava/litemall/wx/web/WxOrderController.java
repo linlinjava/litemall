@@ -279,7 +279,7 @@ public class WxOrderController {
         Integer cartId = JacksonUtil.parseInteger(body, "cartId");
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
         Integer couponId = JacksonUtil.parseInteger(body, "couponId");
-        Integer grouponId = JacksonUtil.parseInteger(body, "grouponId");
+        Integer grouponRulesId = JacksonUtil.parseInteger(body, "grouponRulesId");
         Integer grouponLinkId = JacksonUtil.parseInteger(body, "grouponLinkId");
 
         if (cartId == null || addressId == null || couponId == null) {
@@ -292,6 +292,13 @@ public class WxOrderController {
         // 获取可用的优惠券信息
         // 使用优惠券减免的金额
         BigDecimal couponPrice = new BigDecimal(0.00);
+
+        // 团购优惠
+        BigDecimal grouponPrice = new BigDecimal(0.00);
+        LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponRulesId);
+        if (grouponRules != null) {
+            grouponPrice = grouponRules.getDiscount();
+        }
 
         // 货品价格
         List<LitemallCart> checkedGoodsList = null;
@@ -307,7 +314,12 @@ public class WxOrderController {
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart checkGoods : checkedGoodsList) {
-            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().multiply(new BigDecimal(checkGoods.getNumber())));
+            //  只有当团购规格商品ID符合才进行团购优惠
+            if (grouponRules != null && grouponRules.getGoodsId().equals(checkGoods.getGoodsId())) {
+                checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().subtract(grouponPrice).multiply(new BigDecimal(checkGoods.getNumber())));
+            } else {
+                checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().multiply(new BigDecimal(checkGoods.getNumber())));
+            }
         }
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
@@ -319,15 +331,8 @@ public class WxOrderController {
         // 可以使用的其他钱，例如用户积分
         BigDecimal integralPrice = new BigDecimal(0.00);
 
-        // 团购优惠
-        BigDecimal grouponPrice = new BigDecimal(0.00);
-        LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponId);
-        if (grouponRules != null) {
-            grouponPrice = grouponRules.getDiscount();
-        }
-
         // 订单费用
-        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice).subtract(grouponPrice);
+        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
         // 开启事务管理
@@ -400,18 +405,19 @@ public class WxOrderController {
             }
 
             //如果是团购项目，添加团购信息
-            if (grouponId != null && grouponId > 0) {
+            if (grouponRulesId != null && grouponRulesId > 0) {
                 LitemallGroupon groupon = new LitemallGroupon();
                 groupon.setOrderId(orderId);
                 groupon.setPayed(false);
                 groupon.setUserId(userId);
-                groupon.setRulesId(grouponId);
+                groupon.setRulesId(grouponRulesId);
 
                 //参与者
                 if (grouponLinkId != null && grouponLinkId > 0) {
                     LitemallGroupon baseGroupon = grouponService.queryById(grouponLinkId);
                     groupon.setCreatorUserId(baseGroupon.getCreatorUserId());
                     groupon.setGrouponId(grouponLinkId);
+                    groupon.setShareUrl(baseGroupon.getShareUrl());
                 } else {
                     groupon.setCreatorUserId(userId);
                     groupon.setGrouponId(0);

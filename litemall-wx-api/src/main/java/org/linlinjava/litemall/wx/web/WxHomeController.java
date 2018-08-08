@@ -101,13 +101,22 @@ public class WxHomeController {
         //优惠专区
         List<LitemallGrouponRules> grouponRules = grouponRulesService.queryByIndex(0, 4);
         List<LitemallGoods> grouponGoods = new ArrayList<>();
+        List<Map<String, Object>> grouponList = new ArrayList<>();
         for (LitemallGrouponRules rule : grouponRules) {
             LitemallGoods goods = goodsService.findById(rule.getGoodsId());
+            if (goods == null)
+                continue;
+
             if (!grouponGoods.contains(goods)) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("goods", goods);
+                item.put("groupon_price", goods.getRetailPrice().subtract(rule.getDiscount()));
+                item.put("groupon_member", rule.getDiscountMember());
+                grouponList.add(item);
                 grouponGoods.add(goods);
             }
         }
-        data.put("grouponList", grouponGoods);
+        data.put("grouponList", grouponList);
 
         List<Map> categoryList = new ArrayList<>();
         List<LitemallCategory> catL1List = categoryService.queryL1WithoutRecommend(0, SystemConfig.getCatlogListLimit());

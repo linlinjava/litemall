@@ -52,6 +52,7 @@ class SystemInistService {
         infos.put("本地对象访问地址", environment.getProperty("litemall.storage.local.address"));
         infos.put("本地对象访问端口", environment.getProperty("litemall.storage.local.port"));
 
+        // 微信相关信息
         infos.put(SystemInfoPrinter.CREATE_PART_COPPER + 2, "微信相关");
         infos.put("微信APP KEY", environment.getProperty("litemall.wx.app-id"));
         infos.put("微信APP-SECRET", environment.getProperty("litemall.wx.app-secret"));

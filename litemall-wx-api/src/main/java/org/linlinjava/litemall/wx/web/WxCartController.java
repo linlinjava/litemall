@@ -417,7 +417,7 @@ public class WxCartController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("checkout")
-    public Object checkout(@LoginUser Integer userId, Integer cartId, Integer addressId, Integer couponId, Integer grouponId) {
+    public Object checkout(@LoginUser Integer userId, Integer cartId, Integer addressId, Integer couponId, Integer grouponRulesId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
@@ -448,6 +448,13 @@ public class WxCartController {
         // 使用优惠券减免的金额
         BigDecimal couponPrice = new BigDecimal(0.00);
 
+        // 团购优惠
+        BigDecimal grouponPrice = new BigDecimal(0.00);
+        LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponRulesId);
+        if (grouponRules != null) {
+            grouponPrice = grouponRules.getDiscount();
+        }
+
         // 商品价格
         List<LitemallCart> checkedGoodsList = null;
         if (cartId == null || cartId.equals(0)) {
@@ -462,7 +469,12 @@ public class WxCartController {
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart cart : checkedGoodsList) {
-            checkedGoodsPrice = checkedGoodsPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+            //  只有当团购规格商品ID符合才进行团购优惠
+            if (grouponRules != null && grouponRules.getGoodsId().equals(cart.getGoodsId())) {
+                checkedGoodsPrice = checkedGoodsPrice.add(cart.getPrice().subtract(grouponPrice).multiply(new BigDecimal(cart.getNumber())));
+            } else {
+                checkedGoodsPrice = checkedGoodsPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+            }
         }
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
@@ -474,20 +486,13 @@ public class WxCartController {
         // 可以使用的其他钱，例如用户积分
         BigDecimal integralPrice = new BigDecimal(0.00);
 
-        // 团购优惠
-        BigDecimal grouponPrice = new BigDecimal(0.00);
-        LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponId);
-        if (grouponRules != null) {
-            grouponPrice = grouponRules.getDiscount();
-        }
-
         // 订单费用
-        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice).subtract(grouponPrice);
+        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
         Map<String, Object> data = new HashMap<>();
         data.put("addressId", addressId);
-        data.put("grouponId", grouponId);
+        data.put("grouponRulesId", grouponRulesId);
         data.put("checkedAddress", checkedAddress);
         data.put("couponId", couponId);
         data.put("checkedCoupon", 0);
@@ -495,7 +500,6 @@ public class WxCartController {
         data.put("goodsTotalPrice", checkedGoodsPrice);
         data.put("freightPrice", freightPrice);
         data.put("couponPrice", couponPrice);
-        data.put("grouponPrice", grouponPrice);
         data.put("orderTotalPrice", orderTotalPrice);
         data.put("actualPrice", actualPrice);
         data.put("checkedGoodsList", checkedGoodsList);
