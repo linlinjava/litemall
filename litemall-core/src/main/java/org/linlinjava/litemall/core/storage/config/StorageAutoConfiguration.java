@@ -21,7 +21,6 @@ public class StorageAutoConfiguration {
     @Bean
     public StorageService storageService() {
         StorageService storageService = new StorageService();
-        Map<String, Storage> supportedStorage = new HashMap<String, Storage>(3);
         String active = this.properties.getActive();
         storageService.setActive(active);
         if(active.equals("local")){
@@ -34,7 +33,7 @@ public class StorageAutoConfiguration {
             storageService.setStorage(tencentStorage());
         }
         else if(active.equals("qiniu")){
-            storageService.setStorage(tencentStorage());
+            storageService.setStorage(qiniuStorage());
         }
         else{
             throw  new RuntimeException("当前存储模式 " + active + " 不支持");
