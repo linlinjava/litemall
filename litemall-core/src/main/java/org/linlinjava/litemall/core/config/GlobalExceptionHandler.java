@@ -18,31 +18,37 @@ import java.util.Set;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public Object badArgumentHandler(IllegalArgumentException e){
+        e.printStackTrace();
+        return ResponseUtil.badArgumentValue();
+    }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
-    public Object argumentHandler(MethodArgumentTypeMismatchException e){
+    public Object badArgumentHandler(MethodArgumentTypeMismatchException e){
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseBody
-    public Object argumentHandler(MissingServletRequestParameterException e){
+    public Object badArgumentHandler(MissingServletRequestParameterException e){
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
-    public Object httpMessageNotReadableHandler(HttpMessageNotReadableException e){
+    public Object badArgumentHandler(HttpMessageNotReadableException e){
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(ValidationException.class)
     @ResponseBody
-    public Object handle(ValidationException e) {
+    public Object badArgumentHandler(ValidationException e) {
         e.printStackTrace();
         if(e instanceof ConstraintViolationException){
             ConstraintViolationException exs = (ConstraintViolationException) e;
@@ -57,7 +63,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public Object exceptionHandler(Exception e){
+    public Object seriousHandler(Exception e){
         e.printStackTrace();
         return ResponseUtil.serious();
     }
