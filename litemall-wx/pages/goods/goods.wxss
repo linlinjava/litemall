@@ -71,10 +71,23 @@
 }
 
 .goods-info .price {
-  height: 35rpx;
-  font-size: 35rpx;
-  line-height: 35rpx;
-  color: #b4282d;
+ height: 70rpx;
+ align-content: center;
+}
+
+.goods-info .counterPrice {
+ float: left;
+ padding-left: 120rpx;
+ text-decoration: line-through;
+ font-size: 30rpx;
+ color: #999;
+}
+
+.goods-info .retailPrice {
+ /* float: right; */
+ padding-left: 60rpx;
+ font-size: 30rpx;
+ color: #a78845;
 }
 
 .goods-info .brand {
@@ -418,6 +431,7 @@
   width: 750rpx;
   height: auto;
   overflow: hidden;
+ padding-bottom: 80rpx;
 }
 
 .related-goods .h {

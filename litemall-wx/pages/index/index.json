@@ -1,1 +1,7 @@
-{}
+{
+ "navigationBarTitleText": "",
+ 
+ "usingComponents": {
+  "zan-capsule": "../../dist/capsule/index"
+ }
+}

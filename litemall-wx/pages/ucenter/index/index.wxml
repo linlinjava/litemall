@@ -19,12 +19,12 @@
         <text class="txt">优惠券</text>
       </view>
     </view>
-    <!-- <view class="item no-border">
+    <view class="item no-border" bindtap="goGroupon">
       <view class="a">
         <text class="icon gift"></text>
-        <text class="txt">礼品卡</text>
+        <text class="txt">团购</text>
       </view>
-    </view> -->
+    </view>
     <view class="item">
       <view class="a" bindtap="goCollect">
         <image class="user-menu .icon.collect" src="/static/images/icon_collect.png"></image>

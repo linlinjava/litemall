@@ -62,61 +62,66 @@ Page({
         url: "/pages/auth/login/login"
       });
     };
-
-  },
-  goCollect() {
-    if (app.globalData.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/collect/collect"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
-  goFootprint() {
-    if (app.globalData.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/footprint/footprint"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
-  goAddress() {
-    if (app.globalData.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/ucenter/address/address"
-      });
-    } else {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    };
-  },
-  aboutUs: function() {
-    wx.navigateTo({
-      url: '/pages/about/about'
-    });
-  },
-  exitLogin: function() {
-    wx.showModal({
-      title: '',
-      confirmColor: '#b4282d',
-      content: '退出登录？',
-      success: function(res) {
-        if (res.confirm) {
-          wx.removeStorageSync('token');
-          wx.removeStorageSync('userInfo');
-          wx.switchTab({
-            url: '/pages/index/index'
-          });
-        }
-      }
-    })
+ },
+ goGroupon() {
+  if (app.globalData.hasLogin) {
+   wx.navigateTo({
+    url: "/pages/groupon/myGroupon/myGroupon"
+   });
+  } else {
+   wx.navigateTo({
+    url: "/pages/auth/login/login"
+   });
+  };
+ },
+ goCollect() {
+  if (app.globalData.hasLogin) {
+   wx.navigateTo({
+    url: "/pages/ucenter/collect/collect"
+   });
+  } else {
+   wx.navigateTo({
+    url: "/pages/auth/login/login"
+   });
+  };
+ },
+ goFootprint() {
+  if (app.globalData.hasLogin) {
+   wx.navigateTo({
+    url: "/pages/ucenter/footprint/footprint"
+   });
+  } else {
+   wx.navigateTo({
+    url: "/pages/auth/login/login"
+   });
+  };
+ },
+ goAddress() {
+  if (app.globalData.hasLogin) {
+   wx.navigateTo({
+    url: "/pages/ucenter/address/address"
+   });
+  } else {
+   wx.navigateTo({
+    url: "/pages/auth/login/login"
+   });
+  };
+ },
+ exitLogin: function() {
+  wx.showModal({
+   title: '',
+   confirmColor: '#b4282d',
+   content: '退出登录？',
+   success: function(res) {
+    if (res.confirm) {
+     wx.removeStorageSync('token');
+     wx.removeStorageSync('userInfo');
+     wx.switchTab({
+      url: '/pages/index/index'
+     });
+    }
+   }
+  })
 
   }
 })
