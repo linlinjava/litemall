@@ -58,7 +58,7 @@ public class QiniuStorage implements Storage {
     }
 
     /**
-     * 阿里云OSS对象存储简单上传实现
+     * 七牛云OSS对象存储简单上传实现
      */
     @Override
     public void store(InputStream inputStream, long contentLength, String contentType, String keyName) {
