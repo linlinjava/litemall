@@ -10,6 +10,7 @@ import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.service.HomeCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -156,7 +157,6 @@ public class WxGoodsController {
 
         //商品分享图片地址
         data.put("shareImage", info.getShareUrl());
-
         return ResponseUtil.ok(data);
     }
 
@@ -237,7 +237,7 @@ public class WxGoodsController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size,
                        @Sort(accepts = {"add_time", "retail_price"}) @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
 
         //添加到搜索历史
         if (userId != null && !StringUtils.isNullOrEmpty(keyword)) {

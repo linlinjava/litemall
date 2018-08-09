@@ -3,6 +3,7 @@ package org.linlinjava.litemall.wx.web;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
+import org.linlinjava.litemall.wx.service.HomeCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,6 +81,12 @@ public class WxCatalogController {
      */
     @GetMapping("all")
     public Object queryAll() {
+        //优先从缓存中读取
+        if (HomeCacheManager.hasData(HomeCacheManager.CATALOG)) {
+            return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.CATALOG));
+        }
+
+
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
 
@@ -105,6 +112,9 @@ public class WxCatalogController {
         data.put("allList", allList);
         data.put("currentCategory", currentCategory);
         data.put("currentSubCategory", currentSubCategory);
+
+        //缓存数据
+        HomeCacheManager.loadData(HomeCacheManager.CATALOG, data);
         return ResponseUtil.ok(data);
     }
 

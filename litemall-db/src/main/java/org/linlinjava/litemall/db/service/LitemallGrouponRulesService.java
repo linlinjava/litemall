@@ -69,7 +69,7 @@ public class LitemallGrouponRulesService {
     }
 
     public void delete(Integer id) {
-        mapper.deleteByPrimaryKey(id);
+        mapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void update(LitemallGrouponRules grouponRules) {

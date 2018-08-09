@@ -36,18 +36,14 @@ public class WxHomeController {
 
 
     @GetMapping("/cache")
-    public Object cache(@NotNull Integer key) {
+    public Object cache(@NotNull String key) {
         if (!key.equals("litemall_cache")) {
             return ResponseUtil.fail();
         }
 
         // 清除缓存
-        HomeCacheManager.clear();
-        if (!HomeCacheManager.hasData()) {
-            return ResponseUtil.ok();
-        } else {
-            return ResponseUtil.fail();
-        }
+        HomeCacheManager.clearAll();
+        return ResponseUtil.ok("缓存已清除");
     }
 
     /**
@@ -73,8 +69,8 @@ public class WxHomeController {
     @GetMapping("/index")
     public Object index() {
         //优先从缓存中读取
-        if (HomeCacheManager.hasData()) {
-            return ResponseUtil.ok(HomeCacheManager.getCacheData());
+        if (HomeCacheManager.hasData(HomeCacheManager.INDEX)) {
+            return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.INDEX));
         }
 
 
@@ -143,7 +139,7 @@ public class WxHomeController {
         data.put("floorGoodsList", categoryList);
 
         //缓存数据
-        HomeCacheManager.loadData(data);
+        HomeCacheManager.loadData(HomeCacheManager.INDEX, data);
         return ResponseUtil.ok(data);
     }
 }

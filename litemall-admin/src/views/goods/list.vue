@@ -23,7 +23,7 @@
             </el-form-item>
             <el-form-item label="商品介绍">
               <span>{{ props.row.brief }}</span>
-            </el-form-item>   
+            </el-form-item>
             <el-form-item label="商品单位">
               <span>{{ props.row.unit }}</span>
             </el-form-item>
@@ -32,14 +32,14 @@
             </el-form-item>
             <el-form-item label="类目ID">
               <span>{{ props.row.categoryId }}</span>
-            </el-form-item>      
+            </el-form-item>
             <el-form-item label="品牌商ID">
               <span>{{ props.row.brandId }}</span>
             </el-form-item>
-          </el-form>          
+          </el-form>
         </template>
       </el-table-column>
-      
+
       <el-table-column align="center" label="商品编号" prop="goodsSn">
       </el-table-column>
 
@@ -49,6 +49,12 @@
       <el-table-column align="center" property="iconUrl" label="图片">
         <template slot-scope="scope">
           <img :src="scope.row.picUrl" width="40"/>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" property="iconUrl" label="分享图">
+        <template slot-scope="scope">
+          <img :src="scope.row.shareUrl" width="40"/>
         </template>
       </el-table-column>
 
@@ -71,19 +77,19 @@
         <template slot-scope="scope">
           <el-tag :type="scope.row.isNew ? 'success' : 'error' ">{{scope.row.isNew ? '新品' : '非新品'}}</el-tag>
         </template>
-      </el-table-column> 
+      </el-table-column>
 
       <el-table-column align="center" label="是否热品" prop="isHot">
         <template slot-scope="scope">
           <el-tag :type="scope.row.isHot ? 'success' : 'error' ">{{scope.row.isHot ? '热品' : '非热品'}}</el-tag>
         </template>
-      </el-table-column> 
+      </el-table-column>
 
       <el-table-column align="center" label="是否在售" prop="isOnSale">
         <template slot-scope="scope">
           <el-tag :type="scope.row.isOnSale ? 'success' : 'error' ">{{scope.row.isOnSale ? '在售' : '未售'}}</el-tag>
         </template>
-      </el-table-column>             
+      </el-table-column>
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
