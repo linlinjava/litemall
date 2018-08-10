@@ -37,7 +37,7 @@ CREATE TABLE `litemall_ad` (
   `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `enabled` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='广告表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='广告表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +200,7 @@ CREATE TABLE `litemall_comment` (
   `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
   PRIMARY KEY (`id`),
   KEY `id_value` (`value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1004 DEFAULT CHARSET=utf8 COMMENT='评论表';
+) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=utf8 COMMENT='评论表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -300,6 +300,51 @@ CREATE TABLE `litemall_goods_specification` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `litemall_groupon`
+--
+
+DROP TABLE IF EXISTS `litemall_groupon`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_groupon` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL COMMENT '关联的订单ID',
+  `groupon_id` int(11) DEFAULT '0' COMMENT '参与的团购ID，仅当user_type不是1',
+  `rules_id` int(11) NOT NULL COMMENT '团购规则ID，关联litemall_groupon_rules表ID字段',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `creator_user_id` int(11) NOT NULL COMMENT '创建者ID',
+  `add_time` datetime NOT NULL COMMENT '创建时间',
+  `share_url` varchar(255) DEFAULT NULL COMMENT '团购分享图片地址',
+  `payed` tinyint(1) NOT NULL COMMENT '是否已经支付',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_groupon_rules`
+--
+
+DROP TABLE IF EXISTS `litemall_groupon_rules`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_groupon_rules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) NOT NULL COMMENT '商品表的商品ID',
+  `goods_name` varchar(127) NOT NULL COMMENT '商品名称',
+  `pic_url` varchar(255) DEFAULT NULL COMMENT '商品图片或者商品货品图片',
+  `discount` decimal(63,0) NOT NULL COMMENT '优惠金额',
+  `discount_member` int(11) NOT NULL COMMENT '达到优惠条件的人数',
+  `add_time` datetime NOT NULL COMMENT '创建时间',
+  `expire_time` datetime DEFAULT NULL COMMENT '团购过期时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `litemall_issue`
 --
 
@@ -357,6 +402,7 @@ CREATE TABLE `litemall_order` (
   `freight_price` decimal(10,2) NOT NULL COMMENT '配送费用',
   `coupon_price` decimal(10,2) NOT NULL COMMENT '优惠券减免',
   `integral_price` decimal(10,2) NOT NULL COMMENT '用户积分减免',
+  `groupon_price` decimal(10,2) NOT NULL COMMENT '团购优惠价减免',
   `order_price` decimal(10,2) NOT NULL COMMENT '订单费用， = goods_price + freight_price - coupon_price',
   `actual_price` decimal(10,2) NOT NULL COMMENT '实付费用， = order_price - integral_price',
   `pay_id` varchar(63) DEFAULT NULL COMMENT '微信付款编号',
@@ -581,4 +627,4 @@ CREATE TABLE `litemall_user_formid` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-30 11:34:15
+-- Dump completed on 2018-08-10 13:30:07
