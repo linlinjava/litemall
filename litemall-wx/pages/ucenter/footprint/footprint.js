@@ -43,7 +43,8 @@ Page({
     let that = this;
     let index = event.currentTarget.dataset.index;
     let iindex = event.currentTarget.dataset.iindex;
-    let goodsId = this.data.footprintList[index][iindex].id;
+    let footprintId = this.data.footprintList[index][iindex].id;
+    let goodsId = this.data.footprintList[index][iindex].goodsId;
     var touchTime = that.data.touchEnd - that.data.touchStart;
     console.log(touchTime);
     //如果按下时间大于350为长按  
@@ -53,7 +54,7 @@ Page({
         content: '要删除所选足迹？',
         success: function (res) {
           if (res.confirm) {
-            util.request(api.FootprintDelete, { footprintId: goodsId }, 'POST').then(function (res) {
+            util.request(api.FootprintDelete, { footprintId: footprintId }, 'POST').then(function (res) {
               if (res.errno === 0) {
                 wx.showToast({
                   title: '删除成功',
