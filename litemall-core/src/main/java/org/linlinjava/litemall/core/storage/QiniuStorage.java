@@ -21,7 +21,7 @@ public class QiniuStorage implements Storage {
     private String accessKey;
     private String secretKey;
     private String bucketName;
-    private String upToken;
+    private Auth auth;
     private UploadManager uploadManager;
     private BucketManager bucketManager;
 
@@ -63,12 +63,14 @@ public class QiniuStorage implements Storage {
     @Override
     public void store(InputStream inputStream, long contentLength, String contentType, String keyName) {
         if(uploadManager == null){
+            if(auth == null) {
+                auth = Auth.create(accessKey, secretKey);
+            }
             uploadManager = new UploadManager(new Configuration());
-            Auth auth = Auth.create(accessKey, secretKey);
-            upToken = auth.uploadToken(bucketName);
         }
 
         try {
+            String upToken = auth.uploadToken(bucketName);
             Response response = uploadManager.put(inputStream, keyName, upToken, null, contentType);
         } catch (QiniuException ex) {
             ex.printStackTrace();
@@ -104,7 +106,9 @@ public class QiniuStorage implements Storage {
     @Override
     public void delete(String keyName) {
         if(bucketManager == null){
-            Auth auth = Auth.create(accessKey, secretKey);
+            if(auth == null) {
+                auth = Auth.create(accessKey, secretKey);
+            }
             bucketManager = new BucketManager(auth, new Configuration() );
         }
 
