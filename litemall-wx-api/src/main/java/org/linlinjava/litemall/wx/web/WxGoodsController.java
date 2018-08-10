@@ -183,7 +183,7 @@ public class WxGoodsController {
         if (cur.getPid() == 0) {
             parent = cur;
             children = categoryService.queryByPid(cur.getId());
-            cur = children.get(0);
+            cur = children.size()>0?children.get(0):cur;
         } else {
             parent = categoryService.findById(cur.getPid());
             children = categoryService.queryByPid(cur.getPid());
