@@ -116,7 +116,7 @@
     <choose>
       <when test="selective != null and selective.length &gt; 0">
         <foreach collection="selective" item="column" separator=",">
-          ${column.value}
+          ${column.escapedColumnName}
         </foreach>
       </when>
       <otherwise>
@@ -151,7 +151,7 @@
     <choose>
       <when test="selective != null and selective.length &gt; 0">
         <foreach collection="selective" item="column" separator=",">
-          ${column.value}
+          ${column.escapedColumnName}
         </foreach>
       </when>
       <otherwise>
@@ -343,7 +343,7 @@
     <choose>
       <when test="selective != null and selective.length &gt; 0">
         <foreach collection="selective" item="column" separator=",">
-          ${column.value}
+          ${column.escapedColumnName}
         </foreach>
       </when>
       <otherwise>

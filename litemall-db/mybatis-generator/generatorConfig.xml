@@ -45,9 +45,9 @@
 
         <!--数据库连接信息-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/litemall2?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
-                        userId="root"
-                        password="Menethil.2822"/>
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/litemall?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
+                        userId="litemall"
+                        password="litemall123456"/>
 
 
         <javaModelGenerator targetPackage="org.linlinjava.litemall.db.domain" targetProject="src/main/java"/>
@@ -56,71 +56,86 @@
                              targetProject="src/main/java"/>
         <!--表名-->
         <table tableName="litemall_ad">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="start_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="end_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_address">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_admin">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="last_login_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_brand">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_cart">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="specifications" javaType="java.lang.String[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_category">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_collect">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_comment">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
             <columnOverride column="pic_urls" javaType="java.lang.String[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
         <table tableName="litemall_footprint">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_goods">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
             <columnOverride column="gallery" javaType="java.lang.String[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
         <table tableName="litemall_goods_attribute">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_goods_specification">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_issue">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_keyword">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_order">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="pay_time"/>
@@ -129,12 +144,14 @@
             <columnOverride javaType="java.time.LocalDateTime" column="end_time"/>
         </table>
         <table tableName="litemall_order_goods">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="specifications" javaType="java.lang.String[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_product">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="specifications" javaType="java.lang.String[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
@@ -144,41 +161,49 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <table tableName="litemall_search_history">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_storage">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="modified"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_topic">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="goods" javaType="java.lang.Integer[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_user">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDate" column="birthday"/>
             <columnOverride javaType="java.time.LocalDateTime" column="last_login_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
         <table tableName="litemall_system">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
         <table tableName="litemall_user_formid">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="expire_time"/>
         </table>
 
         <table tableName="litemall_groupon_rules">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="expire_time"/>
         </table>
         <table tableName="litemall_groupon">
+            <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>
