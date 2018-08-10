@@ -123,6 +123,92 @@
   height: 253rpx;
 }
 
+.a-groupon {
+ width: 750rpx;
+ height: auto;
+ overflow: hidden;
+}
+
+.a-groupon .b .item {
+ border-top: 1px solid #d9d9d9;
+ margin: 0 20rpx;
+ height: 244rpx;
+ width: 710rpx;
+}
+
+.a-groupon .b .img {
+ margin-top: 12rpx;
+ margin-right: 12rpx;
+ float: left;
+ width: 220rpx;
+ height: 220rpx;
+}
+
+.a-groupon .b .right {
+ float: left;
+ height: 244rpx;
+ width: 476rpx;
+ display: flex;
+ flex-flow: row nowrap;
+}
+
+.a-groupon .b .text {
+ display: flex;
+ flex-wrap: nowrap;
+ flex-direction: column;
+ justify-content: center;
+ overflow: hidden;
+ height: 244rpx;
+ width: 476rpx;
+}
+
+.a-groupon .b .name {
+ float: left;
+ width: 330rpx;
+ display: block;
+ color: #333;
+ line-height: 50rpx;
+ font-size: 30rpx;
+}
+
+.a-groupon .capsule-tag {
+ float: right;
+ padding-right: 0rpx;
+ padding-top: 8rpx;
+}
+
+.a-groupon .zan-capsule + .zan-capsule {
+ margin-left: 10px;
+}
+
+.a-groupon .b .desc {
+ width: 476rpx;
+ display: block;
+ color: #999;
+ line-height: 50rpx;
+ font-size: 25rpx;
+}
+
+.a-groupon .b .price {
+ width: 476rpx;
+ display: flex;
+ color: #b4282d;
+ line-height: 50rpx;
+ font-size: 33rpx;
+}
+
+.a-groupon .b .counterPrice {
+ text-decoration: line-through;
+ font-size: 28rpx;
+ color: #999;
+}
+
+.a-groupon .b .retailPrice {
+ margin-left: 30rpx;
+ font-size: 28rpx;
+ color: #a78845;
+}
+
 .a-new .b {
   width: 750rpx;
   height: auto;

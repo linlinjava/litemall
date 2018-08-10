@@ -1,0 +1,222 @@
+page {
+ height: 100%;
+ width: 100%;
+ background: #f4f4f4;
+}
+
+.capsule-tag {
+ float: right;
+ /* padding-right: 10rpx; */
+}
+
+.zan-capsule + .zan-capsule {
+ margin-left: 5px;
+}
+
+.orders-switch {
+ width: 100%;
+ background: #fff;
+ height: 84rpx;
+ border-bottom: 1px solid #a78845;
+}
+
+.orders-switch .item {
+ display: inline-block;
+ height: 82rpx;
+ width: 50%;
+ padding: 0 15rpx;
+ text-align: center;
+}
+
+.orders-switch .item .txt {
+ display: inline-block;
+ height: 82rpx;
+ padding: 0 20rpx;
+ line-height: 82rpx;
+ color: #333;
+ font-size: 30rpx;
+ width: 100%;
+}
+
+.orders-switch .item.active .txt {
+ color: #a78845;
+ border-bottom: 4rpx solid #a78845;
+}
+
+.no-order {
+ width: 100%;
+ height: auto;
+ margin: 0 auto;
+}
+
+.no-order .c {
+ width: 100%;
+ height: auto;
+ margin-top: 200rpx;
+}
+
+.no-order .c image {
+ margin: 0 auto;
+ display: block;
+ text-align: center;
+ width: 258rpx;
+ height: 258rpx;
+}
+
+.no-order .c text {
+ margin: 0 auto;
+ display: block;
+ width: 258rpx;
+ height: 29rpx;
+ line-height: 29rpx;
+ text-align: center;
+ font-size: 29rpx;
+ color: #999;
+}
+
+.orders {
+ height: auto;
+ width: 100%;
+ overflow: hidden;
+}
+
+.order {
+ margin-top: 20rpx;
+ background: #fff;
+}
+
+.order .h {
+ height: 83.3rpx;
+ line-height: 83.3rpx;
+ margin-left: 31.25rpx;
+ padding-right: 31.25rpx;
+ border-bottom: 1px solid #f4f4f4;
+}
+
+.order .h .l {
+ float: left;
+ color: #a78845;
+ font-size: 26rpx;
+}
+
+.order .h .r {
+ float: right;
+ color: #a78845;
+ font-size: 26rpx;
+}
+
+.order .i {
+ height: 56rpx;
+ line-height: 56rpx;
+ margin-left: 31.25rpx;
+ padding-right: 31.25rpx;
+ border-bottom: 1px solid #f4f4f4;
+}
+
+.order .i .l {
+ float: left;
+ color: #a78845;
+ font-size: 26rpx;
+}
+
+.order .i .r {
+ float: right;
+ color: #a78845;
+ font-size: 26rpx;
+}
+
+.order .j {
+ height: 56rpx;
+ line-height: 56rpx;
+ margin-left: 31.25rpx;
+ padding-right: 31.25rpx;
+}
+
+.order .j .l {
+ float: left;
+ font-size: 26rpx;
+ color: #a78845;
+}
+
+.order .j .r {
+ float: right;
+ color: #a78845;
+ font-size: 26rpx;
+}
+
+.order .goods {
+ display: flex;
+ align-items: center;
+ height: 199rpx;
+ margin-left: 31.25rpx;
+}
+
+.order .goods .img {
+ height: 145.83rpx;
+ width: 145.83rpx;
+ background: #f4f4f4;
+}
+
+.order .goods .img image {
+ height: 145.83rpx;
+ width: 145.83rpx;
+}
+
+.order .goods .info {
+ height: 145.83rpx;
+ flex: 1;
+ padding-left: 20rpx;
+}
+
+.order .goods .name {
+ margin-top: 30rpx;
+ display: block;
+ height: 44rpx;
+ line-height: 44rpx;
+ color: #333;
+ font-size: 30rpx;
+}
+
+.order .goods .number {
+ display: block;
+ height: 37rpx;
+ line-height: 37rpx;
+ color: #666;
+ font-size: 25rpx;
+}
+
+.order .goods .status {
+ width: 105rpx;
+ color: #a78845;
+ font-size: 25rpx;
+}
+
+.order .b {
+ height: 103rpx;
+ line-height: 103rpx;
+ margin-left: 31.25rpx;
+ padding-right: 31.25rpx;
+ border-top: 1px solid #f4f4f4;
+ font-size: 30rpx;
+ color: #333;
+}
+
+.order .b .l {
+ float: left;
+}
+
+.order .b .r {
+ float: right;
+}
+
+.order .b .btn {
+ margin-top: 19rpx;
+ height: 64.5rpx;
+ line-height: 64.5rpx;
+ text-align: center;
+ padding: 0 20rpx;
+ border-radius: 5rpx;
+ font-size: 28rpx;
+ color: #fff;
+ background: #a78845;
+}

@@ -4,9 +4,9 @@
 // 局域网测试使用
 // var WxApiRoot = 'http://192.168.0.101:8080/wx/';
 // 云平台部署时使用
-var WxApiRoot = 'http://122.152.206.172:8080/wx/';
+// var WxApiRoot = 'http://122.152.206.172:8080/wx/';
 // 云平台上线时使用
-// var WxApiRoot = 'https://www.menethil.com.cn/wx/';
+var WxApiRoot = 'https://www.menethil.com.cn/wx/';
 
 module.exports = {
  IndexUrl: WxApiRoot + 'home/index', //首页数据接口
@@ -79,5 +79,9 @@ module.exports = {
 
  UserFormIdCreate: WxApiRoot + 'formid/create', //用户FromId，用于发送模版消息
 
+ GroupOn: WxApiRoot + 'groupon/query', //团购API-查询
+ GroupOnMy: WxApiRoot + 'groupon/my', //团购API-我的团购
+ GroupOnDetail: WxApiRoot + 'groupon/detail', //团购API-详情
+ GroupOnJoin: WxApiRoot + 'groupon/join', //团购API-详情
   StorageUpload: WxApiRoot + 'storage/upload' //图片上传
 };

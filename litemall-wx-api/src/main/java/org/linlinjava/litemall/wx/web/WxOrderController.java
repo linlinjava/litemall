@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
+import org.linlinjava.litemall.core.qcode.QCodeService;
 import org.linlinjava.litemall.core.util.DateTimeUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -82,15 +83,18 @@ public class WxOrderController {
     private LitemallRegionService regionService;
     @Autowired
     private LitemallProductService productService;
-
     @Autowired
     private WxPayService wxPayService;
-
     @Autowired
     private NotifyService notifyService;
-
     @Autowired
     private LitemallUserFormIdService formIdService;
+    @Autowired
+    private LitemallGrouponRulesService grouponRulesService;
+    @Autowired
+    private LitemallGrouponService grouponService;
+    @Autowired
+    private QCodeService qCodeService;
 
     public WxOrderController() {
     }
@@ -153,6 +157,13 @@ public class WxOrderController {
             orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
             orderVo.put("handleOption", OrderUtil.build(order));
 
+            LitemallGroupon groupon = grouponService.queryByOrderId(order.getId());
+            if (groupon != null) {
+                orderVo.put("isGroupin", true);
+            } else {
+                orderVo.put("isGroupin", false);
+            }
+
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
             List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
@@ -167,6 +178,7 @@ public class WxOrderController {
 
             orderVoList.add(orderVo);
         }
+
         Map<String, Object> result = new HashMap<>();
         result.put("count", count);
         result.put("data", orderVoList);
@@ -267,6 +279,9 @@ public class WxOrderController {
         Integer cartId = JacksonUtil.parseInteger(body, "cartId");
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
         Integer couponId = JacksonUtil.parseInteger(body, "couponId");
+        Integer grouponRulesId = JacksonUtil.parseInteger(body, "grouponRulesId");
+        Integer grouponLinkId = JacksonUtil.parseInteger(body, "grouponLinkId");
+
         if (cartId == null || addressId == null || couponId == null) {
             return ResponseUtil.badArgument();
         }
@@ -277,6 +292,13 @@ public class WxOrderController {
         // 获取可用的优惠券信息
         // 使用优惠券减免的金额
         BigDecimal couponPrice = new BigDecimal(0.00);
+
+        // 团购优惠
+        BigDecimal grouponPrice = new BigDecimal(0.00);
+        LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponRulesId);
+        if (grouponRules != null) {
+            grouponPrice = grouponRules.getDiscount();
+        }
 
         // 货品价格
         List<LitemallCart> checkedGoodsList = null;
@@ -292,7 +314,12 @@ public class WxOrderController {
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart checkGoods : checkedGoodsList) {
-            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().multiply(new BigDecimal(checkGoods.getNumber())));
+            //  只有当团购规格商品ID符合才进行团购优惠
+            if (grouponRules != null && grouponRules.getGoodsId().equals(checkGoods.getGoodsId())) {
+                checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().subtract(grouponPrice).multiply(new BigDecimal(checkGoods.getNumber())));
+            } else {
+                checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getPrice().multiply(new BigDecimal(checkGoods.getNumber())));
+            }
         }
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
@@ -303,7 +330,6 @@ public class WxOrderController {
 
         // 可以使用的其他钱，例如用户积分
         BigDecimal integralPrice = new BigDecimal(0.00);
-
 
         // 订单费用
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
@@ -332,6 +358,14 @@ public class WxOrderController {
             order.setIntegralPrice(integralPrice);
             order.setOrderPrice(orderTotalPrice);
             order.setActualPrice(actualPrice);
+
+            // 有团购活动
+            if (grouponRules != null) {
+                order.setGrouponPrice(grouponPrice);    //  团购价格
+            } else {
+                order.setGrouponPrice(new BigDecimal(0.00));    //  团购价格
+            }
+
             // 添加订单表项
             orderService.add(order);
             orderId = order.getId();
@@ -368,6 +402,30 @@ public class WxOrderController {
                 }
                 product.setNumber(remainNumber);
                 productService.updateById(product);
+            }
+
+            //如果是团购项目，添加团购信息
+            if (grouponRulesId != null && grouponRulesId > 0) {
+                LitemallGroupon groupon = new LitemallGroupon();
+                groupon.setOrderId(orderId);
+                groupon.setPayed(false);
+                groupon.setUserId(userId);
+                groupon.setRulesId(grouponRulesId);
+
+                //参与者
+                if (grouponLinkId != null && grouponLinkId > 0) {
+                    LitemallGroupon baseGroupon = grouponService.queryById(grouponLinkId);
+                    groupon.setCreatorUserId(baseGroupon.getCreatorUserId());
+                    groupon.setGrouponId(grouponLinkId);
+                    groupon.setShareUrl(baseGroupon.getShareUrl());
+                } else {
+                    groupon.setCreatorUserId(userId);
+                    groupon.setGrouponId(0);
+                }
+
+                groupon.setAddTime(LocalDateTime.now());
+
+                grouponService.createGroupon(groupon);
             }
         } catch (Exception ex) {
             txManager.rollback(status);
@@ -545,6 +603,7 @@ public class WxOrderController {
 
             String orderSn = result.getOutTradeNo();
             String payId = result.getTransactionId();
+
             // 分转化成元
             String totalFee = BaseWxPayResult.fenToYuan(result.getTotalFee());
 
@@ -567,6 +626,20 @@ public class WxOrderController {
             order.setPayTime(LocalDateTime.now());
             order.setOrderStatus(OrderUtil.STATUS_PAY);
             orderService.updateById(order);
+
+            //  支付成功，有团购信息，更新团购信息
+            LitemallGroupon groupon = grouponService.queryByOrderId(order.getId());
+            if (groupon != null) {
+                LitemallGrouponRules grouponRules = grouponRulesService.queryById(groupon.getRulesId());
+
+                //仅当发起者才创建分享图片
+                if (groupon.getGrouponId() == 0) {
+                    String url = qCodeService.createGrouponShareImage(grouponRules.getGoodsName(), grouponRules.getPicUrl(), groupon);
+                    groupon.setShareUrl(url);
+                }
+                groupon.setPayed(true);
+                grouponService.update(groupon);
+            }
 
             //TODO 发送邮件和短信通知，这里采用异步发送
             // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
