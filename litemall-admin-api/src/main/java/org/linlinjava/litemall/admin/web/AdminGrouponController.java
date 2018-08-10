@@ -158,7 +158,7 @@ public class AdminGrouponController {
 
         rulesService.createRules(grouponRules);
 
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(grouponRules);
     }
 
 

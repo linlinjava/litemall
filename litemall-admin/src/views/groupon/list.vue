@@ -15,39 +15,13 @@
     <!-- 查询结果 -->
     <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit
               highlight-current-row>
-
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" class="table-expand">
-            <el-form-item label="宣传画廊">
-              <img class="gallery" v-for="pic in props.row.gallery" :key="pic" :src="pic"/>
-            </el-form-item>
-            <el-form-item label="商品介绍">
-              <span>{{ props.row.brief }}</span>
-            </el-form-item>
-            <el-form-item label="商品单位">
-              <span>{{ props.row.unit }}</span>
-            </el-form-item>
-            <el-form-item label="关键字">
-              <span>{{ props.row.keyword }}</span>
-            </el-form-item>
-            <el-form-item label="类目ID">
-              <span>{{ props.row.categoryId }}</span>
-            </el-form-item>
-            <el-form-item label="品牌商ID">
-              <span>{{ props.row.brandId }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" label="商品ID" prop="goodsId">
       </el-table-column>
 
       <el-table-column align="center" min-width="100" label="名称" prop="goodsName">
       </el-table-column>
 
-      <el-table-column align="center" property="iconUrl" label="图片">
+      <el-table-column align="center" property="picUrl" label="图片">
         <template slot-scope="scope">
           <img :src="scope.row.picUrl" width="40"/>
         </template>
@@ -115,33 +89,12 @@
   </div>
 </template>
 
-<style>
-  .table-expand {
-    font-size: 0;
-  }
-
-  .table-expand label {
-    width: 100px;
-    color: #99a9bf;
-  }
-
-  .table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-  }
-
-  .gallery {
-    width: 80px;
-    margin-right: 10px;
-  }
-</style>
-
 <script>
   import { listGroupon, publishGroupon, deleteGroupon, editGroupon } from '@/api/groupon'
   import BackToTop from '@/components/BackToTop'
 
   export default {
-    name: 'GoodsList',
+    name: 'GrouponList',
     components: { BackToTop },
     data() {
       return {
@@ -155,8 +108,6 @@
           sort: 'add_time',
           order: 'desc'
         },
-        goodsDetail: '',
-        detailDialogVisible: false,
         downloadLoading: false,
         dataForm: {
           id: undefined,
@@ -170,6 +121,9 @@
         textMap: {
           update: '编辑',
           create: '创建'
+        },
+        rules: {
+          goodsId: [{ required: true, message: '商品不能为空', trigger: 'blur' }]
         }
       }
     },
