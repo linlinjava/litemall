@@ -137,12 +137,12 @@
 </style>
 
 <script>
-  import {listGroupon, publishGroupon, deleteGroupon, editGroupon} from '@/api/groupon'
+  import { listGroupon, publishGroupon, deleteGroupon, editGroupon } from '@/api/groupon'
   import BackToTop from '@/components/BackToTop'
 
   export default {
     name: 'GoodsList',
-    components: {BackToTop},
+    components: { BackToTop },
     data() {
       return {
         list: [],
@@ -163,14 +163,14 @@
           goodsId: '',
           discount: '',
           discountMember: '',
-          expireTime: undefined,
+          expireTime: undefined
         },
         dialogFormVisible: false,
         dialogStatus: '',
         textMap: {
           update: '编辑',
           create: '创建'
-        },
+        }
       }
     },
     created() {
@@ -207,7 +207,7 @@
           goodsId: '',
           discount: '',
           discountMember: '',
-          expireTime: undefined,
+          expireTime: undefined
         }
       },
       handleCreate() {

@@ -182,8 +182,12 @@ public class WxAddressController {
         if(address == null){
             return ResponseUtil.badArgument();
         }
+        Integer id = address.getId();
+        if(id == null){
+            return ResponseUtil.badArgumentValue();
+        }
 
-        addressService.delete(address.getId());
+        addressService.delete(id);
         return ResponseUtil.ok();
     }
 }

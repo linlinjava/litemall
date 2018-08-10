@@ -5,7 +5,7 @@ spring:
     encoding: UTF-8
 
 server:
-  port: 8082
+  port: 8080
 
 logging:
   level:

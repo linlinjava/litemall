@@ -93,12 +93,12 @@
 </style>
 
 <script>
-  import {listRecord} from '@/api/groupon'
+  import { listRecord } from '@/api/groupon'
   import BackToTop from '@/components/BackToTop'
 
   export default {
     name: 'GoodsList',
-    components: {BackToTop},
+    components: { BackToTop },
     data() {
       return {
         list: [],
@@ -113,7 +113,7 @@
         },
         goodsDetail: '',
         detailDialogVisible: false,
-        downloadLoading: false,
+        downloadLoading: false
       }
     },
     created() {

@@ -61,6 +61,7 @@ public class WxHomeController {
      * newGoodsList: xxx,
      * hotGoodsList: xxx,
      * topicList: xxx,
+     * grouponList: xxx,
      * floorGoodsList: xxx
      * }
      * }

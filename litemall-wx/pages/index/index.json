@@ -2,6 +2,6 @@
  "navigationBarTitleText": "",
  
  "usingComponents": {
-  "zan-capsule": "../../dist/capsule/index"
+  "zan-capsule": "../../lib/zanui-weapp/capsule/index"
  }
 }

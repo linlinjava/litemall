@@ -107,6 +107,11 @@ Page({
    });
   };
  },
+aboutUs: function () {
+  wx.navigateTo({
+    url: '/pages/about/about'
+  });
+}, 
  exitLogin: function() {
   wx.showModal({
    title: '',
