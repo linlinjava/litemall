@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +106,7 @@ public class WxGrouponController {
             linkGrouponId = groupon.getGrouponId();
 
         }
-        List<LitemallGroupon> groupons = grouponService.queryJoiners(linkGrouponId);
+        List<LitemallGroupon> groupons = grouponService.queryJoinRecord(linkGrouponId);
 
         UserVo joiner;
         for (LitemallGroupon grouponItem : groupons) {

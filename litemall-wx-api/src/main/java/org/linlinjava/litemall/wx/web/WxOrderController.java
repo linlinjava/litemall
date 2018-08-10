@@ -282,6 +282,19 @@ public class WxOrderController {
         Integer grouponRulesId = JacksonUtil.parseInteger(body, "grouponRulesId");
         Integer grouponLinkId = JacksonUtil.parseInteger(body, "grouponLinkId");
 
+        //如果是团购项目,验证活动是否有效
+        if (grouponRulesId != null && grouponRulesId > 0) {
+            LitemallGrouponRules rules = grouponRulesService.queryById(grouponRulesId);
+            //找不到记录
+            if (rules == null) {
+                return ResponseUtil.badArgument();
+            }
+            //团购活动已经过期
+            if (grouponRulesService.isExpired(rules)) {
+                return ResponseUtil.fail(402, "团购活动已经过期!");
+            }
+        }
+
         if (cartId == null || addressId == null || couponId == null) {
             return ResponseUtil.badArgument();
         }
@@ -414,6 +427,7 @@ public class WxOrderController {
 
                 //参与者
                 if (grouponLinkId != null && grouponLinkId > 0) {
+                    //参与的团购记录
                     LitemallGroupon baseGroupon = grouponService.queryById(grouponLinkId);
                     groupon.setCreatorUserId(baseGroupon.getCreatorUserId());
                     groupon.setGrouponId(grouponLinkId);

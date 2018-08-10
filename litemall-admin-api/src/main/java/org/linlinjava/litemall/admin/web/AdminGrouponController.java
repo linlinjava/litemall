@@ -51,7 +51,7 @@ public class AdminGrouponController {
         List<Map<String, Object>> records = new ArrayList<>();
         for (LitemallGroupon groupon : grouponList) {
             Map<String, Object> RecordData = new HashMap<>();
-            List<LitemallGroupon> subGrouponList = grouponService.queryJoiners(groupon.getId());
+            List<LitemallGroupon> subGrouponList = grouponService.queryJoinRecord(groupon.getId());
             LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
             LitemallGoods goods = goodsService.findById(rules.getGoodsId());
 

@@ -8,6 +8,7 @@ import java.util.Map;
  * 简单缓存的数据
  */
 public class HomeCacheManager {
+    public static final boolean ENABLE = true;
     public static final String INDEX = "index";
     public static final String CATALOG = "catalog";
     public static final String GOODS = "goods";
@@ -45,6 +46,9 @@ public class HomeCacheManager {
      * @return
      */
     public static boolean hasData(String cacheKey) {
+        if (!ENABLE)
+            return false;
+
         Map<String, Object> cacheData = cacheDataList.get(cacheKey);
         if (cacheData == null) {
             return false;

@@ -16,17 +16,11 @@ public class LitemallGrouponService {
     LitemallGrouponMapper mapper;
 
     /**
-     * 查询用户所有参与的团购
+     * 获取用户发起的团购记录
      *
      * @param userId
      * @return
      */
-    public List<LitemallGroupon> queryByUserId(Integer userId) {
-        LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        return mapper.selectByExample(example);
-    }
-
     public List<LitemallGroupon> queryMyGroupon(Integer userId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andUserIdEqualTo(userId).andCreatorUserIdEqualTo(userId).andGrouponIdEqualTo(0).andDeletedEqualTo(false).andPayedEqualTo(true);
@@ -34,6 +28,12 @@ public class LitemallGrouponService {
         return mapper.selectByExample(example);
     }
 
+    /**
+     * 获取用户参与的团购记录
+     *
+     * @param userId
+     * @return
+     */
     public List<LitemallGroupon> queryMyJoinGroupon(Integer userId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andUserIdEqualTo(userId).andGrouponIdNotEqualTo(0).andDeletedEqualTo(false).andPayedEqualTo(true);
@@ -41,13 +41,25 @@ public class LitemallGrouponService {
         return mapper.selectByExample(example);
     }
 
+    /**
+     * 根据OrderId查询团购记录
+     *
+     * @param orderId
+     * @return
+     */
     public LitemallGroupon queryByOrderId(Integer orderId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
         return mapper.selectOneByExample(example);
     }
 
-    public List<LitemallGroupon> queryJoiners(Integer id) {
+    /**
+     * 获取某个团购活动参与的记录
+     *
+     * @param id
+     * @return
+     */
+    public List<LitemallGroupon> queryJoinRecord(Integer id) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andGrouponIdEqualTo(id).andDeletedEqualTo(false).andPayedEqualTo(true);
         example.orderBy("add_time desc");
@@ -61,7 +73,9 @@ public class LitemallGrouponService {
      * @return
      */
     public LitemallGroupon queryById(Integer id) {
-        return mapper.selectByPrimaryKey(id);
+        LitemallGrouponExample example = new LitemallGrouponExample();
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false).andPayedEqualTo(true);
+        return mapper.selectOneByExample(example);
     }
 
     /**
@@ -73,18 +87,6 @@ public class LitemallGrouponService {
     public int countGroupon(Integer grouponId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         example.or().andGrouponIdEqualTo(grouponId).andDeletedEqualTo(false).andPayedEqualTo(true);
-        return (int) mapper.countByExample(example);
-    }
-
-    /**
-     * 返回某个团购活动参与人数
-     *
-     * @param rulesId
-     * @return
-     */
-    public int countRules(Integer rulesId) {
-        LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andRulesIdEqualTo(rulesId).andDeletedEqualTo(false);
         return (int) mapper.countByExample(example);
     }
 
@@ -102,6 +104,17 @@ public class LitemallGrouponService {
         return mapper.insertSelective(groupon);
     }
 
+
+    /**
+     * 查询所有发起的团购记录
+     *
+     * @param rulesId
+     * @param page
+     * @param size
+     * @param sort
+     * @param order
+     * @return
+     */
     public List<LitemallGroupon> querySelective(String rulesId, Integer page, Integer size, String sort, String order) {
         LitemallGrouponExample example = new LitemallGrouponExample();
         LitemallGrouponExample.Criteria criteria = example.createCriteria();
