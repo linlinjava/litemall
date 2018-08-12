@@ -17,7 +17,7 @@ public class LitemallAdService {
 
     public List<LitemallAd> queryIndex() {
         LitemallAdExample example = new LitemallAdExample();
-        example.or().andPositionEqualTo((byte)1).andDeletedEqualTo(false);
+        example.or().andPositionEqualTo((byte) 1).andDeletedEqualTo(false).andEnabledEqualTo(true);
         return adMapper.selectByExample(example);
     }
 
@@ -25,10 +25,10 @@ public class LitemallAdService {
         LitemallAdExample example = new LitemallAdExample();
         LitemallAdExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        if(!StringUtils.isEmpty(content)){
+        if (!StringUtils.isEmpty(content)) {
             criteria.andContentLike("%" + content + "%");
         }
         criteria.andDeletedEqualTo(false);
@@ -45,15 +45,15 @@ public class LitemallAdService {
         LitemallAdExample example = new LitemallAdExample();
         LitemallAdExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        if(!StringUtils.isEmpty(content)){
+        if (!StringUtils.isEmpty(content)) {
             criteria.andContentLike("%" + content + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)adMapper.countByExample(example);
+        return (int) adMapper.countByExample(example);
     }
 
     public void updateById(LitemallAd ad) {
