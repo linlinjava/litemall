@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,11 @@ public class WxSearchController {
             //取出用户历史关键字
             historyList = searchHistoryService.queryByUid(userId);
         }
+        else {
+            historyList = new ArrayList<>(0);
+        }
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("defaultKeyword", defaultKeyword);
         data.put("historyKeywordList", historyList);
         data.put("hotKeywordList", hotKeywordList);

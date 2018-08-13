@@ -259,6 +259,9 @@ public class WxGoodsController {
         if (goodsCatIds.size() != 0) {
             categoryList = categoryService.queryL2ByIds(goodsCatIds);
         }
+        else {
+            categoryList = new ArrayList<>(0);
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("goodsList", goodsList);
