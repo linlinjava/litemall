@@ -66,8 +66,8 @@ public class LitemallGrouponRulesService {
      */
     public boolean isExpired(LitemallGrouponRules rules) {
         if (rules == null || rules.getExpireTime().isBefore(LocalDateTime.now()))
-            return false;
-        return true;
+            return true;
+        return false;
     }
 
     /**
