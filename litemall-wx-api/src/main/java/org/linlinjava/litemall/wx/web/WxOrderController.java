@@ -291,7 +291,7 @@ public class WxOrderController {
             }
             //团购活动已经过期
             if (grouponRulesService.isExpired(rules)) {
-                return ResponseUtil.fail(402, "团购活动已经过期!");
+                return ResponseUtil.fail(402, "团购活动已过期!");
             }
         }
 
