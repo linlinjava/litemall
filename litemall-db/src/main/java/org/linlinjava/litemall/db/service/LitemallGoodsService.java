@@ -18,49 +18,75 @@ public class LitemallGoodsService {
     @Resource
     private LitemallGoodsMapper goodsMapper;
 
+    Column[] columns = new Column[]{Column.id, Column.name, Column.picUrl, Column.counterPrice, Column.retailPrice};
+
+    /**
+     * 获取热卖商品
+     *
+     * @param offset
+     * @param limit
+     * @return
+     */
     public List<LitemallGoods> queryByHot(int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andIsHotEqualTo(true).andDeletedEqualTo(false);
         example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
-        return goodsMapper.selectByExample(example);
+
+        return goodsMapper.selectByExampleSelective(example, columns);
     }
 
+    /**
+     * 获取新品上市
+     *
+     * @param offset
+     * @param limit
+     * @return
+     */
     public List<LitemallGoods> queryByNew(int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andIsNewEqualTo(true).andDeletedEqualTo(false);
         example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
-        return goodsMapper.selectByExample(example);
+
+        return goodsMapper.selectByExampleSelective(example, columns);
     }
 
+    /**
+     * 获取分类下的商品
+     *
+     * @param catList
+     * @param offset
+     * @param limit
+     * @return
+     */
     public List<LitemallGoods> queryByCategory(List<Integer> catList, int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andCategoryIdIn(catList).andDeletedEqualTo(false);
         example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
-        return goodsMapper.selectByExample(example);
+
+        return goodsMapper.selectByExampleSelective(example, columns);
     }
 
-    public int countByCategory(List<Integer> catList, int offset, int limit) {
-        LitemallGoodsExample example = new LitemallGoodsExample();
-        example.or().andCategoryIdIn(catList).andDeletedEqualTo(false);
-        return (int) goodsMapper.countByExample(example);
-    }
 
+    /**
+     * 获取分类下的商品
+     *
+     * @param catId
+     * @param offset
+     * @param limit
+     * @return
+     */
     public List<LitemallGoods> queryByCategory(Integer catId, int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andCategoryIdEqualTo(catId).andDeletedEqualTo(false);
         example.setOrderByClause("add_time  desc");
         PageHelper.startPage(offset, limit);
-        return goodsMapper.selectByExample(example);
+
+        return goodsMapper.selectByExampleSelective(example, columns);
     }
 
-    public int countByCategory(Integer catId, Integer page, Integer size) {
-        LitemallGoodsExample example = new LitemallGoodsExample();
-        example.or().andCategoryIdEqualTo(catId).andDeletedEqualTo(false);
-        return (int) goodsMapper.countByExample(example);
-    }
 
     public List<LitemallGoods> querySelective(Integer catId, Integer brandId, String keyword, Boolean isHot, Boolean isNew, Integer offset, Integer limit, String sort, String order) {
         LitemallGoodsExample example = new LitemallGoodsExample();
@@ -98,7 +124,6 @@ public class LitemallGoodsService {
             PageHelper.startPage(offset, limit);
         }
 
-        Column[] columns = new Column[]{Column.id, Column.name, Column.picUrl, Column.counterPrice, Column.retailPrice};
         return goodsMapper.selectByExampleSelective(example, columns);
     }
 
@@ -128,25 +153,6 @@ public class LitemallGoodsService {
             criteria2.andNameLike("%" + keyword + "%");
         }
 
-        return (int) goodsMapper.countByExample(example);
-    }
-
-    public LitemallGoods findById(Integer id) {
-        LitemallGoodsExample example = new LitemallGoodsExample();
-        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
-        return goodsMapper.selectOneByExampleWithBLOBs(example);
-    }
-
-
-    public List<LitemallGoods> queryByIds(List<Integer> relatedGoodsIds) {
-        LitemallGoodsExample example = new LitemallGoodsExample();
-        example.or().andIdIn(relatedGoodsIds).andDeletedEqualTo(false);
-        return goodsMapper.selectByExampleWithBLOBs(example);
-    }
-
-    public Integer queryOnSale() {
-        LitemallGoodsExample example = new LitemallGoodsExample();
-        example.or().andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
         return (int) goodsMapper.countByExample(example);
     }
 
@@ -181,6 +187,24 @@ public class LitemallGoodsService {
         return (int) goodsMapper.countByExample(example);
     }
 
+    public LitemallGoods findById(Integer id) {
+        LitemallGoodsExample example = new LitemallGoodsExample();
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
+        return goodsMapper.selectOneByExampleWithBLOBs(example);
+    }
+
+
+    /**
+     * 获取所有在售物品总数
+     *
+     * @return
+     */
+    public Integer queryOnSale() {
+        LitemallGoodsExample example = new LitemallGoodsExample();
+        example.or().andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
+        return (int) goodsMapper.countByExample(example);
+    }
+
     public void updateById(LitemallGoods goods) {
         goodsMapper.updateByPrimaryKeySelective(goods);
     }
@@ -203,6 +227,9 @@ public class LitemallGoodsService {
         LitemallGoodsExample example = new LitemallGoodsExample();
         LitemallGoodsExample.Criteria criteria1 = example.or();
         LitemallGoodsExample.Criteria criteria2 = example.or();
+
+        criteria1.andDeletedEqualTo(false);
+        criteria2.andDeletedEqualTo(false);
 
         if (!StringUtils.isEmpty(brandId)) {
             criteria1.andBrandIdEqualTo(brandId);
