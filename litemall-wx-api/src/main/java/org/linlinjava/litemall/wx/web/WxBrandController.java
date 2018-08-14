@@ -32,23 +32,23 @@ public class WxBrandController {
      * @param page 分页页数
      * @param size 分页大小
      * @return 品牌列表
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              brandList: xxx,
-     *              totalPages: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * brandList: xxx,
+     * totalPages: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size) {
 
-        List<LitemallBrand> brandList = brandService.query(page, size);
+        List<LitemallBrand> brandList = brandService.queryVO(page, size);
         int total = brandService.queryTotalCount();
         int totalPages = (int) Math.ceil((double) total / size);
 
@@ -63,26 +63,26 @@ public class WxBrandController {
      *
      * @param id 品牌ID
      * @return 品牌详情
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              brand: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * brand: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
     public Object detail(@NotNull Integer id) {
         LitemallBrand entity = brandService.findById(id);
-        if(entity == null){
+        if (entity == null) {
             return ResponseUtil.badArgumentValue();
         }
 
         Map<String, Object> data = new HashMap<String, Object>();
-        data.put("brand",entity);
+        data.put("brand", entity);
         return ResponseUtil.ok(data);
     }
 }

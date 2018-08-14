@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.linlinjava.litemall.core.express.ExpressService;
+import org.linlinjava.litemall.core.express.dao.ExpressInfo;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
@@ -36,6 +38,8 @@ public class WxGrouponController {
     private LitemallOrderGoodsService orderGoodsService;
     @Autowired
     private LitemallUserService userService;
+    @Autowired
+    private ExpressService expressService;
 
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, @NotNull Integer grouponId) {
@@ -94,6 +98,13 @@ public class WxGrouponController {
         Map<String, Object> result = new HashMap<>();
         result.put("orderInfo", orderVo);
         result.put("orderGoods", orderGoodsVoList);
+
+        // 订单状态为已发货且物流信息不为空
+        //"YTO", "800669400640887922"
+        if (order.getOrderStatus().equals(OrderUtil.STATUS_SHIP)) {
+            ExpressInfo ei = expressService.getExpressInfo(order.getShipChannel(), order.getShipSn());
+            result.put("expressInfo", ei);
+        }
 
         UserVo creator = userService.findUserVoById(groupon.getCreatorUserId());
         List<UserVo> joiners = new ArrayList<>();

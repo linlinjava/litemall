@@ -89,7 +89,7 @@ public class WxHomeController {
         List<LitemallGoods> hotGoods = goodsService.queryByHot(0, SystemConfig.getHotLimit());
         data.put("hotGoodsList", hotGoods);
 
-        List<LitemallBrand> brandList = brandService.query(0, SystemConfig.getBrandLimit());
+        List<LitemallBrand> brandList = brandService.queryVO(0, SystemConfig.getBrandLimit());
         data.put("brandList", brandList);
 
         List<LitemallTopic> topicList = topicService.queryList(0, SystemConfig.getTopicLimit());
@@ -100,7 +100,7 @@ public class WxHomeController {
         List<LitemallGoods> grouponGoods = new ArrayList<>();
         List<Map<String, Object>> grouponList = new ArrayList<>();
         for (LitemallGrouponRules rule : grouponRules) {
-            LitemallGoods goods = goodsService.findById(rule.getGoodsId());
+            LitemallGoods goods = goodsService.findByIdVO(rule.getGoodsId());
             if (goods == null)
                 continue;
 

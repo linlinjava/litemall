@@ -11,14 +11,13 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class LitemallGoodsService {
     @Resource
     private LitemallGoodsMapper goodsMapper;
 
-    Column[] columns = new Column[]{Column.id, Column.name, Column.picUrl, Column.counterPrice, Column.retailPrice};
+    Column[] columns = new Column[]{Column.id, Column.name, Column.brief, Column.picUrl, Column.counterPrice, Column.retailPrice};
 
     /**
      * 获取热卖商品
@@ -187,10 +186,28 @@ public class LitemallGoodsService {
         return (int) goodsMapper.countByExample(example);
     }
 
+    /**
+     * 获取某个商品信息,包含完整信息
+     *
+     * @param id
+     * @return
+     */
     public LitemallGoods findById(Integer id) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         return goodsMapper.selectOneByExampleWithBLOBs(example);
+    }
+
+    /**
+     * 获取某个商品信息，仅展示相关内容
+     *
+     * @param id
+     * @return
+     */
+    public LitemallGoods findByIdVO(Integer id) {
+        LitemallGoodsExample example = new LitemallGoodsExample();
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
+        return goodsMapper.selectOneByExampleSelective(example, columns);
     }
 
 

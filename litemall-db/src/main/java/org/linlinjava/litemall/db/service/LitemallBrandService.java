@@ -3,6 +3,7 @@ package org.linlinjava.litemall.db.service;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.domain.LitemallBrandExample;
 import org.linlinjava.litemall.db.dao.LitemallBrandMapper;
+import org.linlinjava.litemall.db.domain.LitemallBrand.Column;
 import org.linlinjava.litemall.db.domain.LitemallBrand;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,6 +15,7 @@ import java.util.List;
 public class LitemallBrandService {
     @Resource
     private LitemallBrandMapper brandMapper;
+    private Column[] columns = new Column[]{Column.id, Column.name, Column.desc, Column.picUrl, Column.floorPrice};
 
     public List<LitemallBrand> query(int offset, int limit) {
         LitemallBrandExample example = new LitemallBrandExample();
@@ -22,10 +24,17 @@ public class LitemallBrandService {
         return brandMapper.selectByExample(example);
     }
 
+    public List<LitemallBrand> queryVO(int offset, int limit) {
+        LitemallBrandExample example = new LitemallBrandExample();
+        example.or().andDeletedEqualTo(false);
+        PageHelper.startPage(offset, limit);
+        return brandMapper.selectByExampleSelective(example, columns);
+    }
+
     public int queryTotalCount() {
         LitemallBrandExample example = new LitemallBrandExample();
         example.or().andDeletedEqualTo(false);
-        return (int)brandMapper.countByExample(example);
+        return (int) brandMapper.countByExample(example);
     }
 
     public LitemallBrand findById(Integer id) {
@@ -36,10 +45,10 @@ public class LitemallBrandService {
         LitemallBrandExample example = new LitemallBrandExample();
         LitemallBrandExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(id)){
+        if (!StringUtils.isEmpty(id)) {
             criteria.andIdEqualTo(Integer.valueOf(id));
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
@@ -56,15 +65,15 @@ public class LitemallBrandService {
         LitemallBrandExample example = new LitemallBrandExample();
         LitemallBrandExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(id)){
+        if (!StringUtils.isEmpty(id)) {
             criteria.andIdEqualTo(Integer.valueOf(id));
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)brandMapper.countByExample(example);
+        return (int) brandMapper.countByExample(example);
     }
 
     public void updateById(LitemallBrand brand) {

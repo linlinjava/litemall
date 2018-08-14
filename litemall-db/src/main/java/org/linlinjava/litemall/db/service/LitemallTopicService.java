@@ -3,6 +3,7 @@ package org.linlinjava.litemall.db.service;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallTopicMapper;
 import org.linlinjava.litemall.db.domain.LitemallTopic;
+import org.linlinjava.litemall.db.domain.LitemallTopic.Column;
 import org.linlinjava.litemall.db.domain.LitemallTopicExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,18 +15,19 @@ import java.util.List;
 public class LitemallTopicService {
     @Resource
     private LitemallTopicMapper topicMapper;
+    private Column[] columns = new Column[]{Column.id, Column.title, Column.subtitle, Column.picUrl, Column.readCount};
 
     public List<LitemallTopic> queryList(int offset, int limit) {
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
-        return topicMapper.selectByExampleWithBLOBs(example);
+        return topicMapper.selectByExampleSelective(example, columns);
     }
 
     public int queryTotal() {
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andDeletedEqualTo(false);
-        return (int)topicMapper.countByExample(example);
+        return (int) topicMapper.countByExample(example);
     }
 
     public LitemallTopic findById(Integer id) {
@@ -38,7 +40,7 @@ public class LitemallTopicService {
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         List<LitemallTopic> topics = topicMapper.selectByExample(example);
-        if(topics.size() == 0){
+        if (topics.size() == 0) {
             return queryList(offset, limit);
         }
         LitemallTopic topic = topics.get(0);
@@ -47,7 +49,7 @@ public class LitemallTopicService {
         example.or().andIdNotEqualTo(topic.getId()).andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
         List<LitemallTopic> relateds = topicMapper.selectByExampleWithBLOBs(example);
-        if(relateds.size() != 0){
+        if (relateds.size() != 0) {
             return relateds;
         }
 
@@ -58,10 +60,10 @@ public class LitemallTopicService {
         LitemallTopicExample example = new LitemallTopicExample();
         LitemallTopicExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(title)){
+        if (!StringUtils.isEmpty(title)) {
             criteria.andTitleLike("%" + title + "%");
         }
-        if(!StringUtils.isEmpty(subtitle)){
+        if (!StringUtils.isEmpty(subtitle)) {
             criteria.andSubtitleLike("%" + subtitle + "%");
         }
         criteria.andDeletedEqualTo(false);
@@ -78,15 +80,15 @@ public class LitemallTopicService {
         LitemallTopicExample example = new LitemallTopicExample();
         LitemallTopicExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(title)){
+        if (!StringUtils.isEmpty(title)) {
             criteria.andTitleLike("%" + title + "%");
         }
-        if(!StringUtils.isEmpty(subtitle)){
+        if (!StringUtils.isEmpty(subtitle)) {
             criteria.andSubtitleLike("%" + subtitle + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)topicMapper.countByExample(example);
+        return (int) topicMapper.countByExample(example);
     }
 
     public void updateById(LitemallTopic topic) {
