@@ -9,6 +9,8 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.express.ExpressService;
+import org.linlinjava.litemall.core.express.dao.ExpressInfo;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
 import org.linlinjava.litemall.core.qcode.QCodeService;
@@ -28,6 +30,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,6 +98,8 @@ public class WxOrderController {
     private LitemallGrouponService grouponService;
     @Autowired
     private QCodeService qCodeService;
+    @Autowired
+    private ExpressService expressService;
 
     public WxOrderController() {
     }
@@ -251,6 +256,14 @@ public class WxOrderController {
         Map<String, Object> result = new HashMap<>();
         result.put("orderInfo", orderVo);
         result.put("orderGoods", orderGoodsVoList);
+
+        // 订单状态为已发货且物流信息不为空
+        //"YTO", "800669400640887922"
+        if (order.getOrderStatus().equals(OrderUtil.STATUS_SHIP)) {
+            ExpressInfo ei = expressService.getExpressInfo(order.getShipChannel(), order.getShipSn());
+            result.put("expressInfo", ei);
+        }
+
         return ResponseUtil.ok(result);
 
     }

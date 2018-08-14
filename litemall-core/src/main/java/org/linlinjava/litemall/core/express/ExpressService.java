@@ -1,9 +1,9 @@
 package org.linlinjava.litemall.core.express;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.linlinjava.litemall.core.express.config.ExpressProperties;
+import org.linlinjava.litemall.core.express.dao.ExpressInfo;
 import org.linlinjava.litemall.core.util.HttpUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
 import java.net.URLEncoder;
@@ -33,14 +33,35 @@ public class ExpressService {
     /**
      * 获取物流供应商名
      *
-     * @param vendooCode
+     * @param vendorCode
      * @return
      */
-    public String getVendorName(String vendooCode) {
+    public String getVendorName(String vendorCode) {
         for (Map<String, String> item : properties.getVendors()) {
-            if (item.get("code").equals(vendooCode))
+            if (item.get("code").equals(vendorCode))
                 return item.get("name");
         }
+        return null;
+    }
+
+    /**
+     * 获取物流信息
+     *
+     * @param expCode
+     * @param expNo
+     * @return
+     */
+    public ExpressInfo getExpressInfo(String expCode, String expNo) {
+        try {
+            String result = getOrderTracesByJson(expCode, expNo);
+            ObjectMapper objMap = new ObjectMapper();
+            ExpressInfo ei = objMap.readValue(result, ExpressInfo.class);
+            ei.setShipperName(getVendorName(expCode));
+            return ei;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -49,8 +70,8 @@ public class ExpressService {
      *
      * @throws Exception
      */
-    public String getOrderTracesByJson(String expCode, String expNo) throws Exception {
-        if(!properties.isEnable()){
+    private String getOrderTracesByJson(String expCode, String expNo) throws Exception {
+        if (!properties.isEnable()) {
             return null;
         }
 
@@ -101,7 +122,7 @@ public class ExpressService {
      * @param charset  编码方式
      * @return DataSign签名
      */
-    private String encrypt(String content, String keyValue, String charset)  {
+    private String encrypt(String content, String keyValue, String charset) {
         if (keyValue != null) {
             content = content + keyValue;
         }

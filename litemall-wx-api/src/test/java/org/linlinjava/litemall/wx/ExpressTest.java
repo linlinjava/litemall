@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.wx;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.linlinjava.litemall.core.express.ExpressService;
@@ -17,15 +16,12 @@ public class ExpressTest {
     @Test
     public void test() {
         ExpressService expressService = new ExpressService();
-        String result = null;
+        ExpressInfo ei = null;
         try {
-            result = expressService.getOrderTracesByJson("YTO", "800669400640887922");
-            ObjectMapper objMap = new ObjectMapper();
-            ExpressInfo ei = objMap.readValue(result, ExpressInfo.class);
-            ei.getTraces();
+            ei = expressService.getExpressInfo("YTO", "800669400640887922");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.print(result);
+        System.out.print(ei);
     }
 }

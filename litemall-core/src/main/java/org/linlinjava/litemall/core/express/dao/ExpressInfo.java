@@ -28,6 +28,8 @@ public class ExpressInfo {
     @JsonProperty("Success")
     private boolean Success;
 
+    private String ShipperName;
+
     public void setLogisticCode(String LogisticCode) {
         this.LogisticCode = LogisticCode;
     }
@@ -76,4 +78,11 @@ public class ExpressInfo {
         return Success;
     }
 
+    public String getShipperName() {
+        return ShipperName;
+    }
+
+    public void setShipperName(String shipperName) {
+        ShipperName = shipperName;
+    }
 }
