@@ -107,6 +107,31 @@ Page({
    });
   };
  },
+bindPhoneNumber: function (e) {
+  if (e.detail.errMsg !== "getPhoneNumber:ok"){
+    // 拒绝授权
+    return;
+  }
+
+  if (!app.globalData.hasLogin) {
+    wx.showToast({
+      title: '绑定失败：请先登录',
+      icon: 'none',
+      duration: 2000
+    });
+    return;
+  }
+
+  util.request(api.AuthBindPhone, { iv: e.detail.iv, encryptedData: e.detail.encryptedData }, 'POST').then(function (res) {
+    if (res.errno === 0) {
+      wx.showToast({
+        title: '绑定手机号码成功',
+        icon: 'success',
+        duration: 2000
+      });
+    }
+  });
+}, 
 aboutUs: function () {
   wx.navigateTo({
     url: '/pages/about/about'

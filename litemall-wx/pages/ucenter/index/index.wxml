@@ -64,7 +64,7 @@
         <text class="txt">联系客服</text>
       </view>
     </button>
-    <button class="item" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+    <button class="item" open-type="getPhoneNumber" bindgetphonenumber="bindPhoneNumber">
       <view class="a">
         <image class="user-menu .icon.phone" src="/static/images/mobile.png"></image>
         <text class="txt">绑定手机号码</text>

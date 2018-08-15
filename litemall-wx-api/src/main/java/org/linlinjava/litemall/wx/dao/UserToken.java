@@ -5,8 +5,17 @@ import java.time.LocalDateTime;
 public class UserToken {
     private Integer userId;
     private String token;
+    private String sessionKey;
     private LocalDateTime expireTime;
     private LocalDateTime updateTime;
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+    }
 
     public void setUserId(Integer userId) {
         this.userId = userId;

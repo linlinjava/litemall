@@ -2,6 +2,7 @@ package org.linlinjava.litemall.wx.web;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.notify.NotifyService;
@@ -13,6 +14,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallUserService;
+import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.dao.UserInfo;
 import org.linlinjava.litemall.wx.dao.UserToken;
 import org.linlinjava.litemall.wx.dao.WxLoginInfo;
@@ -169,6 +171,7 @@ public class WxAuthController {
 
         // token
         UserToken userToken = UserTokenManager.generateToken(user.getId());
+        userToken.setSessionKey(sessionKey);
 
         Map<Object, Object> result = new HashMap<Object, Object>();
         result.put("token", userToken.getToken());
@@ -332,6 +335,19 @@ public class WxAuthController {
 
         userService.update(user);
 
+        return ResponseUtil.ok();
+    }
+
+    @PostMapping("bindPhone")
+    public Object bindPhone(@LoginUser Integer userId, @RequestBody String body) {
+        String sessionKey = UserTokenManager.getSessionKey(userId);
+        String encryptedData = JacksonUtil.parseString(body, "encryptedData");
+        String iv = JacksonUtil.parseString(body, "iv");
+        WxMaPhoneNumberInfo phoneNumberInfo = this.wxService.getUserService().getPhoneNoInfo(sessionKey, encryptedData, iv);
+        String phone = phoneNumberInfo.getPhoneNumber();
+        LitemallUser user = userService.findById(userId);
+        user.setMobile(phone);
+        userService.update(user);
         return ResponseUtil.ok();
     }
 }
