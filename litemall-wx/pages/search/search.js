@@ -49,12 +49,14 @@ Page({
   },
 
   inputChange: function (e) {
-
     this.setData({
       keyword: e.detail.value,
       searchStatus: false
     });
-    this.getHelpKeyword();
+
+    if (e.detail.value) {
+      this.getHelpKeyword();
+    }
   },
   getHelpKeyword: function () {
     let that = this;
