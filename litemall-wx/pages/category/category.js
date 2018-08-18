@@ -49,6 +49,13 @@ Page({
             title: res.data.parentCategory.name
           })
 
+          // 当id是L1分类id时，这里需要重新设置成L1分类的一个子分类的id
+          if (res.data.parentCategory.id == that.data.id) {
+            that.setData({
+              id: res.data.currentCategory.id
+            });
+          }
+
           //nav位置
           let currentIndex = 0;
           let navListCount = that.data.navList.length;
