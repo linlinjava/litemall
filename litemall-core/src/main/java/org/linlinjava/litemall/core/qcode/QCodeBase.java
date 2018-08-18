@@ -22,16 +22,6 @@ public abstract class QCodeBase {
 
     protected abstract String getKeyName(String id);
 
-    /**
-     * 获取图片地址
-     *
-     * @param id
-     * @return
-     */
-    public String getShareImageUrl(String id) {
-        return storageService.generateUrl(getKeyName(id));
-    }
-
     protected BufferedImage getQCode(String scene, String page) {
         //创建该商品的二维码
         File file = null;

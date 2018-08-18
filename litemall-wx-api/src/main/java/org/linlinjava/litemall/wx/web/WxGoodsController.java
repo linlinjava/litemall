@@ -189,7 +189,7 @@ public class WxGoodsController {
         if (cur.getPid() == 0) {
             parent = cur;
             children = categoryService.queryByPid(cur.getId());
-            cur = children.size()>0?children.get(0):cur;
+            cur = children.size() > 0 ? children.get(0) : cur;
         } else {
             parent = categoryService.findById(cur.getPid());
             children = categoryService.queryByPid(cur.getPid());
@@ -258,8 +258,7 @@ public class WxGoodsController {
         List<LitemallCategory> categoryList = null;
         if (goodsCatIds.size() != 0) {
             categoryList = categoryService.queryL2ByIds(goodsCatIds);
-        }
-        else {
+        } else {
             categoryList = new ArrayList<>(0);
         }
 

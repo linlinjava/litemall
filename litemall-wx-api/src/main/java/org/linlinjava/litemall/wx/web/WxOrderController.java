@@ -71,7 +71,6 @@ public class WxOrderController {
 
     @Autowired
     private PlatformTransactionManager txManager;
-
     @Autowired
     private LitemallUserService userService;
     @Autowired

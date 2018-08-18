@@ -96,7 +96,7 @@ public class WxHomeController {
         data.put("topicList", topicList);
 
         //优惠专区
-        List<LitemallGrouponRules> grouponRules = grouponRulesService.queryByIndex(0, 4);
+        List<LitemallGrouponRules> grouponRules = grouponRulesService.queryByIndex(0, 5);
         List<LitemallGoods> grouponGoods = new ArrayList<>();
         List<Map<String, Object>> grouponList = new ArrayList<>();
         for (LitemallGrouponRules rule : grouponRules) {

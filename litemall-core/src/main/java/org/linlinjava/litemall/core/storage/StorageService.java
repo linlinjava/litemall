@@ -95,7 +95,7 @@ public class StorageService {
         storage.delete(keyName);
     }
 
-    public String generateUrl(String keyName) {
+    private String generateUrl(String keyName) {
         return storage.generateUrl(keyName);
     }
 }

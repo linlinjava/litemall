@@ -50,17 +50,21 @@ public class AdminGrouponController {
 
         List<Map<String, Object>> records = new ArrayList<>();
         for (LitemallGroupon groupon : grouponList) {
-            Map<String, Object> RecordData = new HashMap<>();
-            List<LitemallGroupon> subGrouponList = grouponService.queryJoinRecord(groupon.getId());
-            LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
-            LitemallGoods goods = goodsService.findById(rules.getGoodsId());
+            try {
+                Map<String, Object> RecordData = new HashMap<>();
+                List<LitemallGroupon> subGrouponList = grouponService.queryJoinRecord(groupon.getId());
+                LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
+                LitemallGoods goods = goodsService.findById(rules.getGoodsId());
 
-            RecordData.put("groupon", groupon);
-            RecordData.put("subGroupons", subGrouponList);
-            RecordData.put("rules", rules);
-            RecordData.put("goods", goods);
+                RecordData.put("groupon", groupon);
+                RecordData.put("subGroupons", subGrouponList);
+                RecordData.put("rules", rules);
+                RecordData.put("goods", goods);
 
-            records.add(RecordData);
+                records.add(RecordData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         Map<String, Object> data = new HashMap<>();

@@ -17,7 +17,7 @@ public class LitemallGoodsService {
     @Resource
     private LitemallGoodsMapper goodsMapper;
 
-    Column[] columns = new Column[]{Column.id, Column.name, Column.brief, Column.picUrl, Column.counterPrice, Column.retailPrice};
+    Column[] columns = new Column[]{Column.id, Column.name, Column.brief, Column.picUrl, Column.isHot, Column.isNew, Column.counterPrice, Column.retailPrice};
 
     /**
      * 获取热卖商品
