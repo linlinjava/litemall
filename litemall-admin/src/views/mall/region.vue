@@ -48,7 +48,7 @@
 import { listRegion } from '@/api/region'
 
 export default {
-  name: 'Keyword',
+  name: 'Region',
   data() {
     return {
       list: undefined,

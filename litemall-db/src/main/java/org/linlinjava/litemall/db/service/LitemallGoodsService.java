@@ -87,7 +87,7 @@ public class LitemallGoodsService {
     }
 
 
-    public List<LitemallGoods> querySelective(Integer catId, Integer brandId, String keyword, Boolean isHot, Boolean isNew, Integer offset, Integer limit, String sort, String order) {
+    public List<LitemallGoods> querySelective(Integer catId, Integer brandId, String keywords, Boolean isHot, Boolean isNew, Integer offset, Integer limit, String sort, String order) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         LitemallGoodsExample.Criteria criteria1 = example.or();
         LitemallGoodsExample.Criteria criteria2 = example.or();
@@ -108,9 +108,9 @@ public class LitemallGoodsService {
             criteria1.andIsHotEqualTo(isHot);
             criteria2.andIsHotEqualTo(isHot);
         }
-        if (!StringUtils.isEmpty(keyword)) {
-            criteria1.andKeywordsLike("%" + keyword + "%");
-            criteria2.andNameLike("%" + keyword + "%");
+        if (!StringUtils.isEmpty(keywords)) {
+            criteria1.andKeywordsLike("%" + keywords + "%");
+            criteria2.andNameLike("%" + keywords + "%");
         }
         criteria1.andDeletedEqualTo(false);
         criteria2.andDeletedEqualTo(false);
@@ -126,7 +126,7 @@ public class LitemallGoodsService {
         return goodsMapper.selectByExampleSelective(example, columns);
     }
 
-    public int countSelective(Integer catId, Integer brandId, String keyword, Boolean isHot, Boolean isNew, Integer offset, Integer limit, String sort, String order) {
+    public int countSelective(Integer catId, Integer brandId, String keywords, Boolean isHot, Boolean isNew, Integer offset, Integer limit, String sort, String order) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         LitemallGoodsExample.Criteria criteria1 = example.or();
         LitemallGoodsExample.Criteria criteria2 = example.or();
@@ -147,9 +147,9 @@ public class LitemallGoodsService {
             criteria1.andIsHotEqualTo(isHot);
             criteria2.andIsHotEqualTo(isHot);
         }
-        if (!StringUtils.isEmpty(keyword)) {
-            criteria1.andKeywordsLike("%" + keyword + "%");
-            criteria2.andNameLike("%" + keyword + "%");
+        if (!StringUtils.isEmpty(keywords)) {
+            criteria1.andKeywordsLike("%" + keywords + "%");
+            criteria2.andNameLike("%" + keywords + "%");
         }
 
         return (int) goodsMapper.countByExample(example);
@@ -240,7 +240,7 @@ public class LitemallGoodsService {
         return (int) goodsMapper.countByExample(example);
     }
 
-    public List<Integer> getCatIds(Integer brandId, String keyword, Boolean isHot, Boolean isNew) {
+    public List<Integer> getCatIds(Integer brandId, String keywords, Boolean isHot, Boolean isNew) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         LitemallGoodsExample.Criteria criteria1 = example.or();
         LitemallGoodsExample.Criteria criteria2 = example.or();
@@ -260,9 +260,9 @@ public class LitemallGoodsService {
             criteria1.andIsHotEqualTo(isHot);
             criteria2.andIsHotEqualTo(isHot);
         }
-        if (!StringUtils.isEmpty(keyword)) {
-            criteria1.andKeywordsLike("%" + keyword + "%");
-            criteria2.andNameLike("%" + keyword + "%");
+        if (!StringUtils.isEmpty(keywords)) {
+            criteria1.andKeywordsLike("%" + keywords + "%");
+            criteria2.andNameLike("%" + keywords + "%");
         }
 
         List<LitemallGoods> goodsList = goodsMapper.selectByExampleSelective(example, Column.categoryId);

@@ -33,7 +33,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="关键字" prop="keyword">
+      <el-table-column align="center" label="关键字" prop="keywords">
       </el-table-column>
 
       <el-table-column align="center" min-width="100" label="简介" prop="desc">
@@ -70,8 +70,8 @@
         <el-form-item label="类目名称" prop="name">
           <el-input v-model="dataForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="关键字" prop="keyword">
-          <el-input v-model="dataForm.keyword"></el-input>
+        <el-form-item label="关键字" prop="keywords">
+          <el-input v-model="dataForm.keywords"></el-input>
         </el-form-item>
         <el-form-item label="级别" prop="level">
           <el-select v-model="dataForm.level" @change="onLevelChange">
@@ -171,7 +171,7 @@ export default {
       dataForm: {
         id: undefined,
         name: '',
-        keyword: '',
+        keywords: '',
         level: 'L2',
         pid: undefined,
         desc: '',
@@ -228,7 +228,7 @@ export default {
       this.dataForm = {
         id: undefined,
         name: '',
-        keyword: '',
+        keywords: '',
         level: 'L2',
         pid: undefined,
         desc: '',
@@ -320,7 +320,7 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['类目ID', '名称', '关键字', '级别', '父类目ID', '类目图标', '类目图片', '简介']
-        const filterVal = ['id', 'name', 'keyword', 'level', 'pid', 'iconUrl', 'picUrl', 'desc']
+        const filterVal = ['id', 'name', 'keywords', 'level', 'pid', 'iconUrl', 'picUrl', 'desc']
         excel.export_json_to_excel2(tHeader, this.list, filterVal, '商品类目信息')
         this.downloadLoading = false
       })

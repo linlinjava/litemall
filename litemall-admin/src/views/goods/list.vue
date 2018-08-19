@@ -28,7 +28,7 @@
               <span>{{ props.row.unit }}</span>
             </el-form-item>
             <el-form-item label="关键字">
-              <span>{{ props.row.keyword }}</span>
+              <span>{{ props.row.keywords }}</span>
             </el-form-item>
             <el-form-item label="类目ID">
               <span>{{ props.row.categoryId }}</span>
