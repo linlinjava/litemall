@@ -9,7 +9,8 @@ Page({
     topic: {},
     topicList: [],
     commentCount: 0,
-    commentList: []
+    commentList: [],
+    topicGoods: []
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -20,12 +21,12 @@ Page({
 
     util.request(api.TopicDetail, { id: that.data.id }).then(function (res) {
       if (res.errno === 0) {
-
         that.setData({
-          topic: res.data,
+          topic: res.data.topic,
+          topicGoods: res.data.goods
         });
 
-        WxParse.wxParse('topicDetail', 'html', res.data.content, that);
+        WxParse.wxParse('topicDetail', 'html', res.data.topic.content, that);
       }
     });
 
@@ -41,7 +42,6 @@ Page({
     let that = this;
     util.request(api.CommentList, { valueId: that.data.id, type: 1, showType: 0, page: 1, size: 5 }).then(function (res) {
       if (res.errno === 0) {
-
         that.setData({
           commentList: res.data.data,
           commentCount: res.data.count

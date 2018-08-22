@@ -1,6 +1,3 @@
-
-
-
 .content{
     width: 100%;
     height: auto;
@@ -138,6 +135,65 @@
     width: 115rpx;
 }
 
+.sv-goods{
+    width: 100%;
+    height: auto;
+    padding-left:30rpx;
+    background: #fff;
+    margin-top: 20rpx;
+}
+
+.topic-goods .b .item {
+ border-top: 1px solid #d9d9d9;
+ margin: 0 20rpx;
+ height: 244rpx;
+ width: 710rpx;
+}
+.topic-goods .b .img {
+ margin-top: 12rpx;
+ margin-right: 12rpx;
+ float: left;
+ width: 220rpx;
+ height: 220rpx;
+}
+.topic-goods .b .right {
+ float: left;
+ height: 244rpx;
+ width: 476rpx;
+ display: flex;
+ flex-flow: row nowrap;
+}
+.topic-goods .b .text {
+ display: flex;
+ flex-wrap: nowrap;
+ flex-direction: column;
+ justify-content: center;
+ overflow: hidden;
+ height: 244rpx;
+ width: 476rpx;
+}
+.topic-goods .b .name {
+ float: left;
+ width: 330rpx;
+ display: block;
+ color: #333;
+ line-height: 50rpx;
+ font-size: 30rpx;
+}
+.topic-goods .b .desc {
+ width: 476rpx;
+ display: block;
+ color: #999;
+ line-height: 50rpx;
+ font-size: 25rpx;
+}
+.topic-goods .b .price {
+ width: 476rpx;
+ display: flex;
+ color: #b4282d;
+ line-height: 50rpx;
+ font-size: 33rpx;
+}
 
 .rec-box{
     width: 690rpx;
