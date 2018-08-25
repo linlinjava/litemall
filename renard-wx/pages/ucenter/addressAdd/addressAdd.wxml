@@ -1,0 +1,22 @@
+<view class="add-address">
+    <view class="add-form">
+        <view class="form-item">
+            <input class="input" bindinput="bindinputName" placeholder="姓名" value="{{address.name}}"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputMobile" value="{{address.mobile}}" placeholder="手机号码"/>
+        </view>
+        <view class="form-item">
+            <input class="input" bindinput="bindinputAddress" value="{{address.address}}" placeholder="详细地址"/>
+        </view>
+        <view class="form-default">
+            <text bindtap="bindIsDefault" class="default-input {{address.isDefault == 1 ? 'selected' : ''}}">设为默认地址</text>
+        </view>
+    </view>
+
+    <view class="btns">
+        <button class="cannel" bindtap="cancelAddress">取消</button>
+        <button class="save" bindtap="saveAddress">保存</button>
+    </view>
+</view>
+<view class="bg-mask" bindtap="cancelSelectRegion" wx:if="{{openSelectRegion}}"></view>

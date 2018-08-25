@@ -1,0 +1,17 @@
+<view class="share-pop-box" hidden="{{!showPop}}">
+ <view class="share-pop" style='bottom:{{bottom}}rpx;'>
+  <view class="close" bindtap="closeShare">
+   <image class="icon" src="/static/images/icon_close.png"></image>
+  </view>
+  <view class="share-items">
+   <view class='share-touser'>
+    <button style="opacity:0;height: 160rpx;width: 160rpx;" open-type="share">分享给朋友
+    </button>
+   </view>
+   <view class='share-friend'>
+    <button style="opacity:0;height: 160rpx;width: 160rpx;" bindtap="_saveShare">分享朋友圈
+    </button>
+   </view>
+  </view>
+ </view>
+</view>

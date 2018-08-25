@@ -1,0 +1,22 @@
+<view class="comments">
+  <view class="b">
+    <view class="item" wx:for="{{comments}}" wx:key="id">
+      <view class="info">
+        <view class="user">
+          <image src="{{item.userInfo.avatarUrl}}"></image>
+          <text>{{item.userInfo.nickName}}</text>
+        </view>
+        <view class="time">{{item.addTime}}</view>
+      </view>
+      <view class="comment">{{item.content}}</view>
+      <view class="imgs" wx:if="{{item.picList.length > 0}}">
+        <image class="img" wx:for="{{item.picList}}" wx:key="id" wx:for-item="pitem" src="{{pitem.picUrl}}"></image>
+      </view>
+      <!--<view class="customer-service" wx:if="{{item.commentReplyVO}}">
+        <text class="u">小选回复：</text>
+        <text class="c">{{item.commentReplyVO.replyContent}}</text>
+      </view>-->
+    </view>
+
+  </view>
+</view>

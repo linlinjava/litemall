@@ -9,6 +9,7 @@ import java.util.Map;
  * 配置基类，该类实际持有所有的配置，子类只是提供代理访问方法
  */
 abstract class BaseConfig {
+
     //所有的配置均保存在该 HashMap 中
     protected static Map<String, String> configs = new HashMap<>();
 

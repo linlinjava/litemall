@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="form-box">
+
+    <view class="form-item">
+      <input class="mobile" value="{{mobile}}" bindinput="bindMobileInput" placeholder="手机号" />
+      <image wx:if="{{ mobile.length > 0 }}" id="clear-mobile" class="clear" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+    </view>
+
+    <view class="form-item-code">
+      <view class="form-item code-item">
+        <input class="code" value="{{code}}" bindinput="bindCodeInput" placeholder="验证码" />
+        <image class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+      </view>
+      <view class="code-btn" bindtap="sendCode">获取验证码</view>
+    </view>
+
+    <view class="form-item">
+      <input class="password" value="{{password}}" password bindinput="bindPasswordInput" placeholder="密码" />
+      <image class="clear" id="clear-password" wx:if="{{ password.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+    </view>
+
+    <view class="form-item">
+      <input class="password" value="{{confirmPassword}}" password bindinput="bindConfirmPasswordInput" placeholder="确认密码" />
+      <image class="clear" id="clear-confirm-password" wx:if="{{ confirmPassword.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+    </view>
+
+    <button type="default" class="reset-btn" bindtap="startReset">密码重置</button>
+
+  </view>
+</view>

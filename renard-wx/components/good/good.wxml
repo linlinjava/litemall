@@ -1,0 +1,8 @@
+<view class="good">
+ <image class="img" src="{{imageUrl}}" background-size="cover"></image>
+ <view class="name">{{title}}</view>
+ <view class="price">
+  <view class="counterPrice" wx:if="{{counterPrice > retailPrice}}">原价：￥{{counterPrice}}</view>
+  <view class="retailPrice">现价：￥{{retailPrice}}</view>
+ </view>
+</view>
