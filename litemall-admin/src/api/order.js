@@ -1,10 +1,14 @@
 import request from '@/utils/request'
+import Qs from 'qs'
 
 export function listOrder(query) {
   return request({
     url: '/order/list',
     method: 'get',
-    params: query
+    params: query,
+    paramsSerializer: function(params) {
+      return Qs.stringify(params, { arrayFormat: 'repeat' })
+    }
   })
 }
 
