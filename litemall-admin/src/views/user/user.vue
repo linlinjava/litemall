@@ -25,7 +25,7 @@
       
       <el-table-column align="center" label="性别" prop="gender">
         <template slot-scope="scope">
-          <el-tag >{{genderDic[scope.row.status]}}</el-tag>
+          <el-tag >{{genderDic[scope.row.gender]}}</el-tag>
         </template>
       </el-table-column>   
 
