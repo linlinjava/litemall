@@ -41,6 +41,17 @@ Page({
    path: '/pages/index/index?goodId=' + this.data.id
   }
  },
+ 
+ shareFriendOrCircle: function () {
+  //var that = this;
+  if (this.data.openShare === false) {
+    this.setData({
+      openShare: !this.data.openShare
+    });
+  } else {
+    return false;
+  }
+ },
 
  // 保存分享图
  saveShare: function() {
