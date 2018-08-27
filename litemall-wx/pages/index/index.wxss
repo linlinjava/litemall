@@ -9,19 +9,22 @@
 }
 
 .m-menu {
+  /* border: 1px solid black; */
+  /* height: 280rpx; */
+  background: #fff;
+ /* padding: 0 25rpx;  */
   display: flex;
-  height: 181rpx;
-  width: 750rpx;
-  flex-flow: row nowrap;
+  /* justify-content: center; */
   align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
+  flex-wrap: wrap;
+  padding-bottom: 0rpx;
+  padding-top: 25rpx
 }
 
 .m-menu .item {
-  flex: 1;
-  display: block;
-  padding: 20rpx 0;
+  /* border: 1px solid black; */
+  width: 150rpx;
+  height: 126rpx;
 }
 
 .m-menu image {
@@ -192,7 +195,7 @@
 .a-groupon .b .price {
  width: 476rpx;
  display: flex;
- color: #b4282d;
+ color: #AB956D;
  line-height: 50rpx;
  font-size: 33rpx;
 }
@@ -249,7 +252,7 @@
   text-align: center;
   line-height: 30rpx;
   font-size: 30rpx;
-  color: #b4282d;
+  color: #AB956D;
 }
 
 .a-popular {
@@ -310,7 +313,7 @@
 .a-popular .b .price {
   width: 456rpx;
   display: block;
-  color: #b4282d;
+  color: #AB956D;
   line-height: 50rpx;
   font-size: 33rpx;
 }
@@ -354,7 +357,7 @@
 
 .a-topic .b .np .price {
   margin-left: 20.8rpx;
-  color: #b4282d;
+  color: #AB956D;
 }
 
 .a-topic .b .desc {
@@ -433,7 +436,7 @@
   height: 30rpx;
   text-align: center;
   font-size: 30rpx;
-  color: #b4282d;
+  color: #AB956D;
 }
 
 .good-grid .more-item{
