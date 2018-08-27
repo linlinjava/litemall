@@ -102,6 +102,15 @@
             <columnOverride column="pic_urls" javaType="java.lang.String[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
         </table>
+
+        <table tableName="litemall_feedback">
+            <property name="versionColumn" value="version"/>
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
+            <columnOverride column="pic_urls" javaType="java.lang.String[]"
+                            typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
+        </table>
+
         <table tableName="litemall_footprint">
             <property name="versionColumn" value="version"/>
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
