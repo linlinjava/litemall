@@ -52,6 +52,21 @@ Page({
       });
     }
   },
+    goOrderIndex(e) {
+    let tab = e.currentTarget.dataset.index
+    let route = e.currentTarget.dataset.route
+    try {
+      wx.setStorageSync('tab', tab);
+    } catch (e) {
+
+    }
+    wx.navigateTo({
+      url: route,
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
   goCoupon() {
     if (app.globalData.hasLogin) {
       wx.navigateTo({
@@ -85,6 +100,17 @@ Page({
    });
   };
  },
+   goFeedback(e) {
+    if (app.globalData.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/ucenter/feedback/feedback"
+      });
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    };
+  },
  goFootprint() {
   if (app.globalData.hasLogin) {
    wx.navigateTo({

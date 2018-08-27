@@ -6,78 +6,90 @@
     </view>
   </view>
 
-  <view class="user-menu">
-    <view class="item">
-      <view class="a" bindtap="goOrder">
-        <text class="icon order"></text>
-        <text class="txt">我的订单</text>
-      </view>
+    <view class='separate'></view>
+    
+  <view class='user_area'>
+    <view class='user_row' bindtap='goOrder'>
+      <view class='user_row_left'>我的订单</view>
+      <image class='user_row_right' src='/static/images/goright.png'></image>
     </view>
-    <view class="item">
-      <view class="a" bindtap="goCoupon">
-        <text class="icon coupon"></text>
-        <text class="txt">优惠券</text>
+    <view class='user_column'>
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='1' data-route='/pages/ucenter/order/order'>
+        <image class='user_column_item_image' src='/static/images/pendpay.png'></image>
+        <view class='user_column_item_text'>待付款</view>
       </view>
-    </view>
-    <view class="item no-border" bindtap="goGroupon">
-      <view class="a">
-        <text class="icon gift"></text>
-        <text class="txt">团购</text>
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='2' data-route='/pages/ucenter/order/order'>
+        <image class='user_column_item_image' src='/static/images/send.png'></image>
+        <view class='user_column_item_text'>待发货</view>
       </view>
-    </view>
-    <view class="item">
-      <view class="a" bindtap="goCollect">
-        <image class="user-menu .icon.collect" src="/static/images/icon_collect.png"></image>
-        <text class="txt">我的收藏</text>
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='3' data-route='/pages/ucenter/order/order'>
+        <image class='user_column_item_image' src='/static/images/receive.png'></image>
+        <view class='user_column_item_text'>待收货</view>
       </view>
-    </view>
-    <view class="item">
-      <view class="a" bindtap="goFootprint">
-        <image class="user-menu .icon.collect" src="/static/images/foot.png"></image>
-        <text class="txt">我的足迹</text>
-      </view>
-    </view>
-    <!-- <view class="item no-border">
-      <view class="a">
-        <text class="icon kefu"></text>
-        <text class="txt">会员福利</text>
-      </view>
-    </view> -->
-    <view class="item">
-      <view class="a" bindtap="goAddress">
-        <text class="icon address"></text>
-        <text class="txt">地址管理</text>
-      </view>
-    </view>
-    <!-- <view class="item">
-      <view class="a">
-        <text class="icon security"></text>
-        <text class="txt">账号安全</text>
-      </view>
-    </view> -->
-    <!-- 开发环境看不到效果，但是线上环境可以正常使用-->
-    <!-- 开发者参考以下文档自行测试，建议直接采用文档中的网页版客服工具 -->
-    <!-- https://developers.weixin.qq.com/miniprogram/introduction/custom.html#功能介绍 -->
-    <button class="item" open-type="contact" size="20" session-from="weapp">
-      <view class="a">
-        <text class="icon kefu"></text>
-        <text class="txt">联系客服</text>
-      </view>
-    </button>
-    <button class="item" open-type="getPhoneNumber" bindgetphonenumber="bindPhoneNumber">
-      <view class="a">
-        <image class="user-menu .icon.phone" src="/static/images/mobile.png"></image>
-        <text class="txt">绑定手机号码</text>
-      </view>
-    </button>
-    <view class="item">
-      <view class="a" bindtap="aboutUs">
-        <image class="user-menu .icon.collect" src="/static/images/about_us.png"></image>
-        <text class="txt">关于我们</text>
+      <view class='user_column_item' bindtap='goOrderIndex' data-index='4' data-route='/pages/ucenter/order/order'>
+        <image class='user_column_item_image' src='/static/images/comment.png'></image>
+        <view class='user_column_item_text'>待评价</view>
       </view>
     </view>
   </view>
+  
+  <view class='separate'></view>
 
+  <view class='user_row'>
+    <view class='user_row_left'>核心服务</view>
+  </view>
+  <view class='user_column'>
+
+    <view class='user_column_item' bindtap='goCoupon' data-route='/pages/ucenter/order/order'>
+      <image class='user_column_item_image' src='/static/images/coupon.png'></image>
+      <view class='user_column_item_text'>优惠卷</view>
+    </view>
+    <view class='user_column_item' bindtap='goCollect' data-route='/pages/ucenter/order/order'>
+      <image class='user_column_item_image' src='/static/images/icon_collect.png'></image>
+      <view class='user_column_item_text'>商品收藏</view>
+    </view>
+    <view class='user_column_item' bindtap='goFootprint' data-route='/pages/ucenter/order/order'>
+      <image class='user_column_item_image' src='/static/images/footprint.png'></image>
+      <view class='user_column_item_text'>浏览足迹</view>
+    </view>
+    <view class='user_column_item' bindtap='goGroupon' data-route='/pages/ucenter/order/order'>
+      <image class='user_column_item_image' src='/static/images/group.png'></image>
+      <view class='user_column_item_text'>我的拼团</view>
+    </view>
+    <view class='user_column_item' bindtap='goOrderIndex' data-route='/pages/ucenter/order/order'>
+      <image class='user_column_item_image' src='/static/images/aftersale.png'></image>
+      <view class='user_column_item_text'>退款/售后</view>
+    </view>
+  </view>
+  <view class='separate'></view>
+
+  <view class='user_row'>
+    <view class='user_row_left'>必备工具</view>
+  </view>
+  <view class='user_tool_area'>
+    <view class='user_tool_item' bindtap='goAddress'>
+      <image class='user_tool_item_image' src='/static/images/address.png'></image>
+      <view class='user_tool_item_text'>地址管理</view>
+    </view>
+    <button class="user_tool_item_phone" open-type="getPhoneNumber" bindgetphonenumber="bindPhoneNumber">
+      <image class='user_tool_item_image' src='/static/images/mobile.png'></image>
+      <view class='user_tool_item_text'>绑定手机</view>
+    </button>
+    <view class='user_tool_item' bindtap='goFeedback'>
+      <image class='user_tool_item_image' src='/static/images/feedback.png'></image>
+      <view class='user_tool_item_text'>意见反馈</view>
+    </view>
+    <view class='user_tool_item'>
+      <contact-button style="opacity:0;position:absolute;" type="default-dark" session-from="weapp" size="27">
+      </contact-button>
+      <image class='user_tool_item_image' src='/static/images/customer.png'></image>
+      <view class='user_tool_item_text'>联系客服</view>
+    </view>
+    <view class='user_tool_item' bindtap='aboutUs'>
+      <image class='user_tool_item_image' src='/static/images/about_us.png'></image>
+      <view class='user_tool_item_text'>关于我们</view>
+    </view>
+  </view>
 
   <!--<view class="logout" bindtap="exitLogin">退出登录</view>-->
 </view>
