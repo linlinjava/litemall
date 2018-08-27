@@ -51,8 +51,8 @@
   "list": [
    {
     "pagePath": "pages/index/index",
-    "iconPath": "static/images/ic_menu_choice_nor.png",
-    "selectedIconPath": "static/images/home.png",
+    "iconPath": "static/images/home.png",
+    "selectedIconPath": "static/images/home@selected.png",
     "text": "首页"
    },
    {
