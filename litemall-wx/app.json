@@ -7,6 +7,7 @@
   "pages/ucenter/index/index",
   "pages/ucenter/address/address",
   "pages/ucenter/addressAdd/addressAdd",
+  "pages/ucenter/feedback/feedback",
   "pages/ucenter/footprint/footprint",
   "pages/ucenter/order/order",
   "pages/ucenter/orderDetail/orderDetail",
@@ -51,24 +52,24 @@
    {
     "pagePath": "pages/index/index",
     "iconPath": "static/images/ic_menu_choice_nor.png",
-    "selectedIconPath": "static/images/home@selected.png",
+    "selectedIconPath": "static/images/home.png",
     "text": "首页"
    },
    {
     "pagePath": "pages/catalog/catalog",
-    "iconPath": "static/images/ic_menu_sort_nor.png",
+    "iconPath": "static/images/category.png",
     "selectedIconPath": "static/images/category@selected.png",
     "text": "分类"
    },
    {
     "pagePath": "pages/cart/cart",
-    "iconPath": "static/images/ic_menu_shoping_nor.png",
+    "iconPath": "static/images/cart.png",
     "selectedIconPath": "static/images/cart@selected.png",
     "text": "购物车"
    },
    {
     "pagePath": "pages/ucenter/index/index",
-    "iconPath": "static/images/ic_menu_me_nor.png",
+    "iconPath": "static/images/my.png",
     "selectedIconPath": "static/images/my@selected.png",
     "text": "个人"
    }
