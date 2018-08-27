@@ -12,14 +12,12 @@ page {
 }
 
 .profile-info {
-  width: 100%;
-  height: 280rpx;
+  background-color: #ab956d;
+  color: #fff;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0 30.25rpx;
-  background: #333;
+  padding: 30rpx;
+  font-size: 28rpx;
 }
 
 .profile-info .avatar {
@@ -52,126 +50,147 @@ page {
   font-size: 30rpx;
 }
 
-.user-menu {
+.user_area {
+  /* border: 1px solid black; */
   width: 100%;
-  height: auto;
-  overflow: hidden;
+  height: 226rpx;
+  /* margin: 0 auto; */
+  margin-top: -8rpx;
   background: #fff;
+  /* border-top: 1px solid #f4f4f4; */
 }
 
-.user-menu .item {
+.user_row {
+  /* border: 1px solid black; */
+  height: 86rpx;
+  line-height: 86rpx;
+  border-bottom: 1px solid #fafafa;
+}
+
+.user_row_left {
+  /* border: 1px solid #757575; */
   float: left;
-  width: 33.33333%;
-  height: 187.5rpx;
-  border-right: 1px solid rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  text-align: center;
+  height: 86rpx;
+  font-weight: 550;
+  line-height: 86rpx;
+  margin-left: 35rpx;
+  font-size: 26rpx;
+  letter-spacing: 1rpx;
 }
 
-.user-menu .item .a {
+.user_row_right {
+  /* border: 1px solid #757575; */
+  float: right;
+  height: 40rpx;
+  width: 40rpx;
+  font-weight: 550;
+  line-height: 86rpx;
+  margin-top: 28rpx;
+  margin-right: 30rpx;
+}
+
+.user_column {
+  /* border: 1px solid black; */
+  height: 140rpx;
   display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
-.user-menu .item.no-border {
-  border-right: 0;
-}
-
-.user-menu .item.item-bottom {
-  border-bottom: none;
-}
-
-.user-menu .icon {
-  margin: 0 auto;
-  display: block;
-  height: 52.803rpx;
-  width: 52.803rpx;
-  margin-bottom: 16rpx;
-}
-
-.user-menu .icon.order {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -437.5rpx no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.coupon {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -62.4997rpx no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.phone {
-  display: block;
-  height: 55rpx;
-  width: 55rpx;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.gift {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -187.5rpx no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.address {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 0 no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.security {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -500rpx no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.kefu {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -312.5rpx no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.help {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -250rpx no-repeat;
-  background-size: 52.803rpx;
-}
-.user-menu .icon.about {
-  /* background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -62.4997rpx no-repeat; */
-  display: block;
-  height: 55rpx;
-  width: 55rpx;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.feedback {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -125rpx no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .txt {
-  display: block;
-  height: 24rpx;
-  width: 100%;
-  font-size: 24rpx;
-  color: #333;
-}
-
-.logout {
-  margin-top: 50rpx;
-  height: 101rpx;
-  width: 100%;
-  line-height: 101rpx;
+.user_column_item {
+  width: 30%;
+  height: 140rpx;
+  /* background: #757575; */
   text-align: center;
-  background: #fff;
-  color: #333;
-  font-size: 30rpx;
 }
 
-.about {
+.user_column_item_image {
+  width: 50rpx;
+  height: 50rpx;
+  margin-top: 30rpx;
+}
+
+.user_column_item_text {
+  /* border: 1px solid black; */
+  margin-top: 5rpx;
+  font-size: 24rpx;
+  color: #555;
+}
+
+.separate {
+  background: #e0e3da;
   width: 100%;
-  background: url(https://cdn.it120.cc/images/weappshop/arrow-right.png) no-repeat 750rpx center;
-  background-size: 16rpx auto, 750rpx auto;
-  margin: 20rpx 0;
-  height: 80rpx;
-  line-height: 80rpx;
-  padding-left: 100rpx;
+  height: 6rpx;
+}
+
+.box_bottom_area {
+  /* border: 1px solid black; *//* margin-top: 32rpx; */
+  height: auto;
+  background: #fff;
+}
+
+.user_tool_item {
+  width: 187.5rpx;
+  height: 142rpx;
+  /* border: 1px solid #757575; */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  float: left;
+  background: #fff;
+  border-bottom: 1px solid #fafafa;
+}
+
+.user_tool_item_image {
+  /* border: 1px solid #757575; */
+  width: 50rpx;
+  height: 50rpx;
+  margin-top: 23rpx;
+}
+
+.user_tool_item_text {
+  /* border: 1px solid #757575; */
+  width: 187.5rpx;
+  margin-bottom: 12rpx;
+  height: 42rpx;
+  line-height: 42rpx;
+  font-size: 23rpx;
+  color: #555;
+}
+
+.user_tool_item {
+  width: 187.5rpx;
+  height: 142rpx;
+  /* border: 1px solid #757575; */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  float: left;
+  background: #fff;
+  border-bottom: 1px solid #fafafa;
+}
+
+.user_tool_item_phone {
+   background: none !important;
+  font-size: 32rpx;
+  color: #fff !important;
+  border-radius: 0%;
+    width: 187.5rpx;
+  height: 142rpx;
+  /* border: 1px solid #757575; */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  float: left;
+  background: #fff;
+  border-bottom: 0px solid #fafafa;
+}
+.user_tool_item_phone::after{
+  border: none;
 }
