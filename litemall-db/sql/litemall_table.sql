@@ -203,6 +203,31 @@ CREATE TABLE `litemall_comment` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1005 DEFAULT CHARSET=utf8 COMMENT='评论表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+-- ----------------------------
+-- Table structure for litemall_feedback
+-- ----------------------------
+
+DROP TABLE IF EXISTS `litemall_feedback`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+DROP TABLE IF EXISTS `litemall_feedback`;
+CREATE TABLE `litemall_feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户表的用户ID',
+  `username` varchar(63) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '用户名称',
+  `mobile` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '手机号',
+  `feed_type` varchar(63) NOT NULL DEFAULT '' COMMENT '反馈类型',
+  `content` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '反馈内容',
+  `status` int(3) NOT NULL DEFAULT '0' COMMENT '状态',
+  `has_picture` tinyint(1) DEFAULT '0' COMMENT '是否含有图片',
+  `pic_urls` varchar(1023) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '图片地址列表，采用JSON数组格式',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `version` int(11) DEFAULT '0' COMMENT '乐观锁字段',
+  PRIMARY KEY (`id`),
+  KEY `id_value` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=1007 DEFAULT CHARSET=utf8 COMMENT='意见反馈表';
+
 --
 -- Table structure for table `litemall_footprint`
 --
