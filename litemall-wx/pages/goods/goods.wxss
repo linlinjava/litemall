@@ -12,6 +12,30 @@
   height: 750rpx;
 }
 
+.commodity_screen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.2;
+  overflow: hidden;
+  z-index: 1000;
+  color: #fff;
+}
+
+.commodity_attr_box {
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  background: #fff;
+  padding-top: 20rpx;
+}
+
 /* .service-policy {
   width: 750rpx;
   height: 73rpx;
@@ -52,14 +76,47 @@
 .goods-info .c text {
   display: block;
   width: 687.5rpx;
-  text-align: center;
+  text-align: left;
 }
 
-.goods-info .name {
-  height: 41rpx;
-  margin-bottom: 5.208rpx;
-  font-size: 41rpx;
-  line-height: 41rpx;
+.goods_name {
+  /* border: 1px solid black; */
+  height: 86rpx;
+  line-height: 86rpx;
+  border-bottom: 1px solid #fafafa;
+}
+
+.goods_name_left {
+  /* border: 1px solid #757575; */
+  float: left;
+  height: 86rpx;
+  font-weight: 550;
+  line-height: 86rpx;
+  margin-left: 35rpx;
+  font-size: 38rpx;
+  letter-spacing: 1rpx;
+}
+
+.goods_name_right {
+  float: right;
+  font-weight: 550;
+  margin-top: 28rpx;
+  width: 140rpx;
+  height: 80rpx;
+  line-height: 82rpx;
+  padding: 0;
+  margin: 0;
+  margin-right: 0rpx;
+  text-align: center;
+  font-size: 25rpx;
+  color: #f4f4f4;
+  border-top-left-radius: 50rpx;
+  border-bottom-left-radius: 50rpx;
+  border-top-right-radius: 0rpx;
+  border-bottom-right-radius: 0rpx;
+  letter-spacing: 3rpx;
+  /* background-image: linear-gradient(to right, #ff7701 100%); */
+  background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
 }
 
 .goods-info .desc {
@@ -71,29 +128,28 @@
 }
 
 .goods-info .price {
- height: 70rpx;
- align-content: center;
+  height: 70rpx;
+  align-content: center;
 }
 
 .goods-info .counterPrice {
- float: left;
- padding-left: 120rpx;
- text-decoration: line-through;
- font-size: 30rpx;
- color: #999;
+  float: left;
+  padding-left: 0rpx;
+  text-decoration: line-through;
+  font-size: 30rpx;
+  color: #999;
 }
 
 .goods-info .retailPrice {
- /* float: right; */
- padding-left: 60rpx;
- font-size: 30rpx;
- color: #a78845;
+  padding-left: 5%;
+  font-size: 30rpx;
+  color: #a78845;
 }
 
 .goods-info .brand {
   margin-top: 23rpx;
   min-height: 40rpx;
-  text-align: center;
+  text-align: left;
 }
 
 .goods-info .brand text {
@@ -431,7 +487,7 @@
   width: 750rpx;
   height: auto;
   overflow: hidden;
- padding-bottom: 80rpx;
+  padding-bottom: 80rpx;
 }
 
 .related-goods .h {
@@ -601,7 +657,7 @@
 
 .bottom-btn .c {
   float: left;
-  background: #f48f18;
+  background: #b4282d;
   height: 100rpx;
   line-height: 96rpx;
   flex: 1;
@@ -611,8 +667,8 @@
 }
 
 .bottom-btn .r {
-  border: 1px solid #b4282d;
-  background: #b4282d;
+  border: 1px solid #f48f18;
+  background: #f48f18;
   float: left;
   height: 100rpx;
   line-height: 96rpx;
@@ -767,74 +823,126 @@
   line-height: 65rpx;
 }
 
+
 .contact {
   height: 100rpx;
   width: 100rpx;
-  background-color: #008000;
   border-radius: 100%;
   position: fixed;
-  bottom: 150rpx;
-  right: 20rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9;
-  flex-direction: column;
-  /*line-height: 100rpx;
-  text-align: center;
-  padding-top: 26rpx;*/
+  bottom: 96rpx;
+  right: 10rpx;
   font-size: 20rpx;
-  color: #008000;
   box-sizing: border-box;
   background: url("https://litemall.oss-cn-shenzhen.aliyuncs.com/kefu.png") no-repeat center 21rpx;
   background-size: 55rpx auto;
 }
 
-.contact .name {
+.share-pop-box {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 8;
+  bottom: 0;
+  /* display: none; */
+}
+
+.share-pop {
+  width: 100%;
+  height: auto;
+  max-height: 780rpx;
+  padding: 31.25rpx;
+  background: #fff;
+  position: fixed;
+  z-index: 9;
+  bottom: 100rpx;
+}
+
+.share-pop .close {
+  position: absolute;
+  width: 48rpx;
+  height: 48rpx;
+  right: 31.25rpx;
+  top: 31.25rpx;
+}
+
+.share-pop .close .icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.share-pop .share-info {
+  width: 100%;
+  height: 225rpx;
+  overflow: hidden;
+  margin-bottom: 41.5rpx;
+}
+
+.sharebtn {
+  top: 75rpx;
+  background: none !important;
   font-size: 32rpx;
-  max-width: 80rpx;
-  color: #fff;
+  color: #fff !important;
+  border-radius: 0%;
+  width: 175rpx;
+  height: 150rpx;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  float: left;
+  background: #fff;
+  border-bottom: 0px solid #fafafa;
+  margin-left: 15%;
 }
 
-.service-policy {
- width: 100%;
- height: 96rpx;
- /* background: #d3b676; */
- border: 2px solid #fff;
- /* align-items: center; */
+.sharebtn::after {
+  border: none;
+  border-radius: 0%;
 }
 
-.service-policy .sharebtn {
- width: 49.5%;
- float: right;
- border: none;
- height: 80rpx;
- font-size: 32rpx;
- background: #d3b676;
- text-align: center;
- color: #fff;
- border-radius:0%;
+.savesharebtn {
+  top: 75rpx;
+  background: none !important;
+  font-size: 32rpx;
+  color: #fff !important;
+  border-radius: 0%;
+  width: 175rpx;
+  height: 150rpx;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  float: right;
+  background: #fff;
+  border-bottom: 0px solid #fafafa;
+  margin-right: 15%;
 }
 
-.service-policy .sharebtn::after {
- border: none;
- border-radius:0%;
+.savesharebtn::after {
+  border: none;
+  border-radius: 0%;
 }
 
-.service-policy .savesharebtn {
- width: 49.5%;
- float: left;
- border: none;
- height: 80rpx;
- font-size: 32rpx;
- background: #d3b676;
- text-align: center;
- color: #fff;
- border-radius:0%;
+.sharebtn_image {
+  /* border: 1px solid #757575; */
+  width: 128rpx;
+  height: 128rpx;
+  margin-top: 0rpx;
 }
-
-.service-policy .savesharebtn::after {
- border: none;
- border-radius:0%;
+.sharebtn_text {
+  /* border: 1px solid #757575; */
+  width: 150rpx;
+  margin-bottom: 2rpx;
+  height: 20rpx;
+  line-height: 20rpx;
+  font-size: 20rpx;
+  color: #555;
+}
+.separate {
+  background: #e0e3da;
+  width: 100%;
+  height: 6rpx;
 }

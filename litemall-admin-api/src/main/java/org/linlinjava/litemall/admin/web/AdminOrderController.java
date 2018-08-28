@@ -24,6 +24,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -53,7 +54,8 @@ public class AdminOrderController {
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String orderSn, @RequestParam(required = false, value = "orderStatusArray[]") List<Short> orderStatusArray,
+                       Integer userId, String orderSn,
+                       @RequestParam(required = false) List<Short> orderStatusArray,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -72,7 +74,7 @@ public class AdminOrderController {
     }
 
     @GetMapping("/detail")
-    public Object detail(@LoginAdmin Integer adminId, Integer id) {
+    public Object detail(@LoginAdmin Integer adminId, @NotNull Integer id) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
