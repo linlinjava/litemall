@@ -175,21 +175,16 @@ page {
 }
 
 .user_tool_item_phone {
-   background: none !important;
-  font-size: 32rpx;
-  color: #fff !important;
-  border-radius: 0%;
-    width: 187.5rpx;
-  height: 142rpx;
-  /* border: 1px solid #757575; */
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  float: left;
-  background: #fff;
-  border-bottom: 0px solid #fafafa;
+  width:187.5rpx;
+  height:142rpx;
+  text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  float:left;
+  background:#fff;
+  border-bottom:1px solid #fafafa;
 }
 .user_tool_item_phone::after{
   border: none;
