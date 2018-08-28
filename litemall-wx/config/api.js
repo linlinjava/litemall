@@ -75,6 +75,7 @@ module.exports = {
  OrderConfirm: WxApiRoot + 'order/confirm', //确认收货
  OrderComment: WxApiRoot + 'order/comment', // 代评价商品信息
 
+ FeedbackAdd: WxApiRoot + 'feedback/submit', //添加反馈
  FootprintList: WxApiRoot + 'footprint/list', //足迹列表
  FootprintDelete: WxApiRoot + 'footprint/delete', //删除足迹
 
