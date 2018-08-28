@@ -1,4 +1,4 @@
-page{
+  page{
     background: #f4f4f4;
     min-height: 100%;
 }
@@ -36,20 +36,83 @@ page{
 .fb-body{
   width: 100%;
   background: #fff;
-  height: 374rpx;
+  height: 600rpx;
   padding: 18rpx 30rpx 64rpx 30rpx;
 }
 
 .fb-body .content{
   width: 100%;
-  height: 100%;
+  height: 400rpx;
   color: #333;
   line-height: 40rpx;
   font-size: 28rpx;
 }
 
+.weui-uploader__files{
+  width: 100%;
+}
+
+.weui-uploader__file {
+  float: left;
+  margin-right: 9px;
+  margin-bottom: 9px;
+}
+
+.weui-uploader__img {
+  display: block;
+  width: 50px;
+  height: 50px;
+}
+
+.weui-uploader__input-box {
+  float: left;
+  position: relative;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #d9d9d9;
+}
+
+.weui-uploader__input-box:after, .weui-uploader__input-box:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #d9d9d9;
+}
+
+.weui-uploader__input-box:before {
+  width: 2px;
+  height: 39.5px;
+}
+
+.weui-uploader__input-box:after {
+  width: 39.5px;
+  height: 2px;
+}
+
+.weui-uploader__input-box:active {
+  border-color: #999;
+}
+
+.weui-uploader__input-box:active:after, .weui-uploader__input-box:active:before {
+  background-color: #999;
+}
+
+.weui-uploader__input {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
 .fb-body .text-count{
-  padding-top: 17rpx;
   line-height: 30rpx;
   float: right;
   color: #666;
@@ -95,12 +158,13 @@ page{
   font-size: 24rpx;
 }
 
-.clear-icon{
+.fb-mobile .clear-icon{
   position: absolute;
-  top: 43rpx;
+  top: 27rpx;
   right: 30rpx;
   width: 48rpx;
   height: 48rpx;
+  z-index: 2;
 }
 
 .fb-btn{

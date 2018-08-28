@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 32,
+			"current": 33,
 			"list": [
 				{
 					"id": -1,
@@ -225,7 +225,14 @@
 				{
 					"id": -1,
 					"name": "测试更新",
-					"pathName": "pages/index/index"
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "意见反馈",
+					"pathName": "pages/ucenter/feedback/feedback",
+					"query": ""
 				}
 			]
 		}
