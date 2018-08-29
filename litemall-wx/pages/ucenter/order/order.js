@@ -13,7 +13,7 @@ Page({
      var tab = wx.getStorageSync('tab');
 
      this.setData({
-       sh
+       showType: tab
      });
    } catch (e) {
    }
