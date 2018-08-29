@@ -1,6 +1,5 @@
 {
- "navigationBarTitleText": "Ê×Ò³",
- 
+ "navigationBarTitleText": "é¦–é¡µ",
  "usingComponents": {
   "zan-capsule": "../../lib/zanui-weapp/capsule/index"
  }
