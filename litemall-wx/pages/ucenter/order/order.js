@@ -7,7 +7,17 @@ Page({
   showType: 0
  },
  onLoad: function(options) {
-  // 页面初始化 options为页面跳转所带来的参数
+   // 页面初始化 options为页面跳转所带来的参数
+   let that = this
+   try {
+     var tab = wx.getStorageSync('tab');
+
+     this.setData({
+       sh
+     });
+   } catch (e) {
+   }
+
  },
 
  onPullDownRefresh() {
