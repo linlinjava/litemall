@@ -9,7 +9,7 @@ page{
     width: 100%;
     background: #fff;
     height: 84rpx;
-    border-bottom: 1px solid rgba(0,0,0,.15);
+    /* border-bottom: 1px solid rgba(0,0,0,.15); */
 }
 
 .orders-switch .item{
@@ -25,14 +25,14 @@ page{
     height: 82rpx;
     padding: 0 20rpx;
     line-height: 82rpx;
-    color: #333;
+    color: #9a9ba1;
     font-size: 30rpx;
     width: 170rpx;
 }
 
 .orders-switch .item.active .txt{
-    color: #ab2b2b;
-    border-bottom: 4rpx solid #ab2b2b;
+    color: #AB956D;
+    border-bottom: 4rpx solid #AB956D;
 }
 
 

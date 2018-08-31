@@ -90,18 +90,31 @@ page{
 }
 
 .add-address{
-    background: #b4282d;
-    text-align: center;
-    width: 100%;
-    height: 99rpx;
-    line-height: 99rpx;
-    position: fixed;
-    border-radius: 0;
-    border: none;
-    color: #fff;
-    font-size: 29rpx;
-    bottom: 0;
-    left:0;
+  border: none;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 90rpx;
+  line-height: 98rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  margin-left: 5%;
+  text-align: center;
+  /* padding-left: -5rpx; */
+  font-size: 25rpx;
+  color: #f4f4f4;
+  border-top-left-radius: 50rpx;
+  border-bottom-left-radius: 50rpx;
+  border-top-right-radius: 50rpx;
+  border-bottom-right-radius: 50rpx;
+  letter-spacing: 3rpx;
+  background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
 }
 
 .empty-view{

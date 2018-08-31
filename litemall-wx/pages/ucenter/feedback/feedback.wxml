@@ -10,18 +10,26 @@
     </view>
   </picker>
   <view class="fb-body">
-    <textarea class="content" placeholder="对我们网站、商品、服务，你还有什么建议吗？你还希望在商城上买到什么？请告诉我们..."  bindinput ="contentInput" maxlength="500" auto-focus="true" value="{{content}}"/>
+    <textarea class="content" placeholder="对我们网站、商品、服务，你还有什么建议吗？你还希望在商城上买到什么？请告诉我们..." bindinput="contentInput" maxlength="500" auto-focus="true" value="{{content}}" />
+    <view class="weui-uploader__files" id="uploaderFiles">
+      <block wx:for="{{files}}" wx:key="*this">
+        <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+          <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+        </view>
+      </block>
+      <view class="weui-uploader__input-box" wx:if="{{ files.length < 5 }}">
+        <view class="weui-uploader__input" bindtap="chooseImage"></view>
+      </view>
+    </view>
     <view class="text-count">{{contentLength}}/500</view>
   </view>
   <view class="fb-mobile">
     <view class="label">手机号码</view>
     <view class="mobile-box">
-      <input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" bindinput ="mobileInput" value="{{mobile}}"/>
-      <!--
-      <image class="clear-icon" src="https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/150647657fcdd0.png" bindtap="cleanMobile"></image>
-      -->
+      <input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" bindinput="mobileInput" value="{{mobile}}" />
+      <image class="clear-icon" src="/static/images/clear_input.png" wx:if="{{ mobile.length > 0 }}" catchtap="clearMobile"></image>
     </view>
   </view>
 
-  <view class="fb-btn" bindtap="sbmitFeedback">提交</view>
+  <view class="fb-btn" bindtap="submitFeedback">提交</view>
 </view>
