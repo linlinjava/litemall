@@ -45,41 +45,4 @@ public class AdminFootprintController {
 
         return ResponseUtil.ok(data);
     }
-
-    @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallFootprint footprint){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        return ResponseUtil.unsupport();
-    }
-
-    @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId,  @NotNull Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-
-        LitemallFootprint footprint = footprintService.findById(id);
-        return ResponseUtil.ok(footprint);
-    }
-
-    @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallFootprint footprint){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        footprintService.updateById(footprint);
-        return ResponseUtil.ok();
-    }
-
-    @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallFootprint footprint){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        footprintService.deleteById(footprint.getId());
-        return ResponseUtil.ok();
-    }
-
 }

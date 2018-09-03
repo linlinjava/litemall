@@ -75,9 +75,4 @@ public class LitemallFootprintService {
 
         return (int)footprintMapper.countByExample(example);
     }
-
-    public void updateById(LitemallFootprint collect) {
-        footprintMapper.updateByPrimaryKeySelective(collect);
-    }
-
 }
