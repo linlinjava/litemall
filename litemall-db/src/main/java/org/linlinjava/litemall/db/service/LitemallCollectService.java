@@ -83,12 +83,4 @@ public class LitemallCollectService {
 
         return (int)collectMapper.countByExample(example);
     }
-
-    public void updateById(LitemallCollect collect) {
-        collectMapper.updateByPrimaryKeySelective(collect);
-    }
-
-    public LitemallCollect findById(Integer id) {
-        return collectMapper.selectByPrimaryKey(id);
-    }
 }

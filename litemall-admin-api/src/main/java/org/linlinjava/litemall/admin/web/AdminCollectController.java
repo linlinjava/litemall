@@ -45,45 +45,4 @@ public class AdminCollectController {
 
         return ResponseUtil.ok(data);
     }
-
-    @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCollect collect){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        return ResponseUtil.unsupport();
-    }
-
-    @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-
-        if(id == null){
-            return ResponseUtil.badArgument();
-        }
-
-        LitemallCollect collect = collectService.findById(id);
-        return ResponseUtil.ok(collect);
-    }
-
-    @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCollect collect){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        collectService.updateById(collect);
-        return ResponseUtil.ok();
-    }
-
-    @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCollect collect){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        collectService.deleteById(collect.getId());
-        return ResponseUtil.ok();
-    }
-
 }
