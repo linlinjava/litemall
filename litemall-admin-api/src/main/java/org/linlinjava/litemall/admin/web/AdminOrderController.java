@@ -134,7 +134,7 @@ public class AdminOrderController {
         try {
             // 设置订单取消状态
             order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
-            orderService.update(order);
+            orderService.updateById(order);
 
             // 商品货品数量增加
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
@@ -204,7 +204,7 @@ public class AdminOrderController {
         order.setShipSn(shipSn);
         order.setShipChannel(shipChannel);
         order.setShipTime(LocalDateTime.now());
-        orderService.update(order);
+        orderService.updateById(order);
 
         //TODO 发送邮件和短信通知，这里采用异步发送
         // 发货会发送通知短信给用户

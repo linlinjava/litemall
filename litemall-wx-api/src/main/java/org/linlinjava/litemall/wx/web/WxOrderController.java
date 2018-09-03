@@ -509,7 +509,7 @@ public class WxOrderController {
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_CANCEL);
             order.setEndTime(LocalDateTime.now());
-            orderService.update(order);
+            orderService.updateById(order);
 
             // 商品货品数量增加
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
@@ -733,7 +733,7 @@ public class WxOrderController {
 
         // 设置订单申请退款状态
         order.setOrderStatus(OrderUtil.STATUS_REFUND);
-        orderService.update(order);
+        orderService.updateById(order);
 
         //TODO 发送邮件和短信通知，这里采用异步发送
         // 有用户申请退款，邮件通知运营人员
@@ -778,7 +778,7 @@ public class WxOrderController {
 
         order.setOrderStatus(OrderUtil.STATUS_CONFIRM);
         order.setConfirmTime(LocalDateTime.now());
-        orderService.update(order);
+        orderService.updateById(order);
         return ResponseUtil.ok();
     }
 
