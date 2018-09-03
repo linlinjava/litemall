@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { listHistory } from '@/api/history'
+import { listHistory } from '@/api/user'
 
 export default {
   name: 'History',

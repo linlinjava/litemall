@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { listFootprint } from '@/api/footprint'
+import { listFootprint } from '@/api/user'
 
 export default {
   name: 'FootPrint',

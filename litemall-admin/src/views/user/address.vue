@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { listAddress } from '@/api/address'
+import { listAddress } from '@/api/user'
 
 export default {
   name: 'UserAddress',

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { listFeedback } from '@/api/Feedback'
+import { listFeedback } from '@/api/user'
 
 export default {
   name: 'Feedback',

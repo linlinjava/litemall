@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { listCollect } from '@/api/collect'
+import { listCollect } from '@/api/user'
 
 export default {
   name: 'Collect',
