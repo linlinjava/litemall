@@ -32,19 +32,6 @@ public class LitemallSearchHistoryService {
         searchHistoryMapper.logicalDeleteByExample(example);
     }
 
-    public void deleteById(Integer id) {
-        LitemallSearchHistory searchHistory = searchHistoryMapper.selectByPrimaryKey(id);
-        if(searchHistory == null){
-            return;
-        }
-        searchHistory.setDeleted(true);
-        searchHistoryMapper.logicalDeleteByPrimaryKey(id);
-    }
-
-    public void add(LitemallSearchHistory searchHistory) {
-        searchHistoryMapper.insertSelective(searchHistory);
-    }
-
     public List<LitemallSearchHistory> querySelective(String userId, String keyword, Integer page, Integer size, String sort, String order) {
         LitemallSearchHistoryExample example = new LitemallSearchHistoryExample();
         LitemallSearchHistoryExample.Criteria criteria = example.createCriteria();
@@ -78,13 +65,5 @@ public class LitemallSearchHistoryService {
         criteria.andDeletedEqualTo(false);
 
         return (int)searchHistoryMapper.countByExample(example);
-    }
-
-    public void updateById(LitemallSearchHistory collect) {
-        searchHistoryMapper.updateByPrimaryKeySelective(collect);
-    }
-
-    public LitemallSearchHistory findById(Integer id) {
-        return searchHistoryMapper.selectByPrimaryKey(id);
     }
 }

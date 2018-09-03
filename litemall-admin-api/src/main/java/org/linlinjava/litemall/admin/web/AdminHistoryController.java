@@ -42,45 +42,4 @@ public class AdminHistoryController {
 
         return ResponseUtil.ok(data);
     }
-
-    @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        return ResponseUtil.unsupport();
-    }
-
-    @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-
-        if(id == null){
-            return ResponseUtil.badArgument();
-        }
-
-        LitemallSearchHistory history = searchHistoryService.findById(id);
-        return ResponseUtil.ok(history);
-    }
-
-    @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        searchHistoryService.updateById(history);
-        return ResponseUtil.ok();
-    }
-
-    @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        searchHistoryService.deleteById(history.getId());
-        return ResponseUtil.ok();
-    }
-
 }
