@@ -19,7 +19,6 @@ public class LitemallFeedbackService {
     @Autowired
     private LitemallFeedbackMapper feedbackMapper;
 
-    //提交
     public Integer add(LitemallFeedback feedback) {
         return feedbackMapper.insertSelective(feedback);
     }
@@ -56,17 +55,5 @@ public class LitemallFeedbackService {
         }
         criteria.andDeletedEqualTo(false);
         return (int)feedbackMapper.countByExample(example);
-    }
-
-    public LitemallFeedback findById(Integer id) {
-        return feedbackMapper.selectByPrimaryKey(id);
-    }
-
-    public void updateById(LitemallFeedback feedback) {
-        feedbackMapper.updateByPrimaryKeySelective(feedback);
-    }
-
-    public void delete(Integer id) {
-        feedbackMapper.logicalDeleteByPrimaryKey(id);
     }
 }
