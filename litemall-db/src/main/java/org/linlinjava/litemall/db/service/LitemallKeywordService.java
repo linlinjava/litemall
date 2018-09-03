@@ -15,12 +15,6 @@ public class LitemallKeywordService {
     @Resource
     private LitemallKeywordMapper keywordsMapper;
 
-    public List<LitemallKeyword> queryDefaults() {
-        LitemallKeywordExample example = new LitemallKeywordExample();
-        example.or().andIsDefaultEqualTo(true).andDeletedEqualTo(false);
-        return keywordsMapper.selectByExample(example);
-    }
-
     public LitemallKeyword queryDefault() {
         LitemallKeywordExample example = new LitemallKeywordExample();
         example.or().andIsDefaultEqualTo(true).andDeletedEqualTo(false);
@@ -85,8 +79,8 @@ public class LitemallKeywordService {
         return keywordsMapper.selectByPrimaryKey(id);
     }
 
-    public void updateById(LitemallKeyword keywords) {
-        keywordsMapper.updateByPrimaryKeySelective(keywords);
+    public int updateById(LitemallKeyword keywords) {
+        return keywordsMapper.updateWithVersionByPrimaryKeySelective(keywords.getVersion(), keywords);
     }
 
     public void deleteById(Integer id) {

@@ -109,7 +109,7 @@ public class LitemallGrouponRulesService {
         mapper.logicalDeleteByPrimaryKey(id);
     }
 
-    public void update(LitemallGrouponRules grouponRules) {
-        mapper.updateByPrimaryKeySelective(grouponRules);
+    public int update(LitemallGrouponRules grouponRules) {
+        return mapper.updateWithVersionByPrimaryKeySelective(grouponRules.getVersion(), grouponRules);
     }
 }

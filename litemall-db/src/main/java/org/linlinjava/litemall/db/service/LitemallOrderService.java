@@ -23,12 +23,6 @@ public class LitemallOrderService {
         return orderMapper.insertSelective(order);
     }
 
-    public List<LitemallOrder> query(Integer userId) {
-        LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        return orderMapper.selectByExample(example);
-    }
-
     public int count(Integer userId) {
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
@@ -42,7 +36,7 @@ public class LitemallOrderService {
     private String getRandomNum(Integer num) {
         String base = "0123456789";
         Random random = new Random();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < num; i++) {
             int number = random.nextInt(base.length());
             sb.append(base.charAt(number));
@@ -50,13 +44,7 @@ public class LitemallOrderService {
         return sb.toString();
     }
 
-    public LitemallOrder queryByOrderSn(Integer userId, String orderSn){
-        LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
-        return orderMapper.selectOneByExample(example);
-    }
-
-    public int countByOrderSn(Integer userId, String orderSn){
+    private int countByOrderSn(Integer userId, String orderSn){
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
         return (int)orderMapper.countByExample(example);
@@ -97,7 +85,7 @@ public class LitemallOrderService {
     }
 
     public int update(LitemallOrder order) {
-        return orderMapper.updateByPrimaryKeySelective(order);
+        return orderMapper.updateWithVersionByPrimaryKeySelective(order.getVersion(), order);
     }
 
     public List<LitemallOrder> querySelective(Integer userId, String orderSn, List<Short> orderStatusArray, Integer page, Integer size, String sort, String order) {

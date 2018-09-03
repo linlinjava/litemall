@@ -76,8 +76,8 @@ public class LitemallBrandService {
         return (int) brandMapper.countByExample(example);
     }
 
-    public void updateById(LitemallBrand brand) {
-        brandMapper.updateByPrimaryKeySelective(brand);
+    public int updateById(LitemallBrand brand) {
+        return brandMapper.updateWithVersionByPrimaryKeySelective(brand.getVersion(), brand);
     }
 
     public void deleteById(Integer id) {

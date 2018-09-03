@@ -90,8 +90,8 @@ public class LitemallGrouponService {
         return (int) mapper.countByExample(example);
     }
 
-    public void update(LitemallGroupon groupon) {
-        mapper.updateByPrimaryKey(groupon);
+    public int update(LitemallGroupon groupon) {
+        return mapper.updateWithVersionByPrimaryKeySelective(groupon.getVersion(), groupon);
     }
 
     /**

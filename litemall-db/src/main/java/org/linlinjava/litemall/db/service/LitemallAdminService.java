@@ -52,8 +52,8 @@ public class LitemallAdminService {
         return (int)adminMapper.countByExample(example);
     }
 
-    public void updateById(LitemallAdmin admin) {
-        adminMapper.updateByPrimaryKeySelective(admin);
+    public int updateById(LitemallAdmin admin) {
+        return adminMapper.updateWithVersionByPrimaryKeySelective(admin.getVersion(), admin);
     }
 
     public void deleteById(Integer id) {
