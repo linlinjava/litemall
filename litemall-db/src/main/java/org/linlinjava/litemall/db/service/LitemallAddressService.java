@@ -30,7 +30,7 @@ public class LitemallAddressService {
     }
 
     public int update(LitemallAddress address) {
-        return addressMapper.updateByPrimaryKeySelective(address);
+        return addressMapper.updateWithVersionByPrimaryKeySelective(address.getVersion(), address);
     }
 
     public void delete(Integer id) {
@@ -84,9 +84,5 @@ public class LitemallAddressService {
         criteria.andDeletedEqualTo(false);
 
         return (int)addressMapper.countByExample(example);
-    }
-
-    public void updateById(LitemallAddress address) {
-        addressMapper.updateByPrimaryKeySelective(address);
     }
 }
