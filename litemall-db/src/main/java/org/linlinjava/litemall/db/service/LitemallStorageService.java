@@ -25,22 +25,15 @@ public class LitemallStorageService {
         storageMapper.insertSelective(storageInfo);
     }
 
-    public LitemallStorage findByName(String filename) {
-        LitemallStorageExample example = new LitemallStorageExample();
-        example.or().andNameEqualTo(filename).andDeletedEqualTo(false);
-        return storageMapper.selectOneByExample(example);
-    }
-
     public LitemallStorage findByKey(String key) {
         LitemallStorageExample example = new LitemallStorageExample();
         example.or().andKeyEqualTo(key).andDeletedEqualTo(false);
         return storageMapper.selectOneByExample(example);
     }
 
-    public void update(LitemallStorage storageInfo) {
-        storageMapper.updateByPrimaryKeySelective(storageInfo);
+    public int update(LitemallStorage storageInfo) {
+       return storageMapper.updateWithVersionByPrimaryKeySelective(storageInfo.getVersion(), storageInfo);
     }
-
 
     public LitemallStorage findById(Integer id) {
         return storageMapper.selectByPrimaryKey(id);

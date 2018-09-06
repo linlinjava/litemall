@@ -35,7 +35,7 @@ public class LitemallUserFormIdService {
         //更新或者删除缓存
         if (userFormid.getIsprepay() && userFormid.getUseamount() > 1) {
             userFormid.setUseamount(userFormid.getUseamount() - 1);
-            formidMapper.updateByPrimaryKey(userFormid);
+            formidMapper.updateWithVersionByPrimaryKey(userFormid.getVersion(), userFormid);
         } else {
             formidMapper.deleteByPrimaryKey(userFormid.getId());
         }

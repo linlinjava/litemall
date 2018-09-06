@@ -58,8 +58,8 @@ public class LitemallIssueService {
         return (int)issueMapper.countByExample(example);
     }
 
-    public void updateById(LitemallIssue issue) {
-        issueMapper.updateByPrimaryKeySelective(issue);
+    public int updateById(LitemallIssue issue) {
+        return issueMapper.updateWithVersionByPrimaryKeySelective(issue.getVersion(), issue);
     }
 
     public LitemallIssue findById(Integer id) {

@@ -20,14 +20,6 @@ public class LitemallGoodsAttributeService {
         return goodsAttributeMapper.selectByExample(example);
     }
 
-    public void updateById(LitemallGoodsAttribute goodsAttribute) {
-        goodsAttributeMapper.updateByPrimaryKeySelective(goodsAttribute);
-    }
-
-    public void deleteById(Integer id) {
-        goodsAttributeMapper.logicalDeleteByPrimaryKey(id);
-    }
-
     public void add(LitemallGoodsAttribute goodsAttribute) {
         goodsAttributeMapper.insertSelective(goodsAttribute);
     }

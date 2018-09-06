@@ -27,14 +27,6 @@ public class LitemallGoodsSpecificationService {
         return goodsSpecificationMapper.selectByPrimaryKey(id);
     }
 
-    public void updateById(LitemallGoodsSpecification goodsSpecification) {
-        goodsSpecificationMapper.updateByPrimaryKeySelective(goodsSpecification);
-    }
-
-    public void deleteById(Integer id) {
-        goodsSpecificationMapper.logicalDeleteByPrimaryKey(id);
-    }
-
     public void deleteByGid(Integer gid) {
         LitemallGoodsSpecificationExample example = new LitemallGoodsSpecificationExample();
         example.or().andGoodsIdEqualTo(gid);

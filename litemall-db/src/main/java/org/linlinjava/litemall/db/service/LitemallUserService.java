@@ -39,8 +39,8 @@ public class LitemallUserService {
         userMapper.insertSelective(user);
     }
 
-    public void update(LitemallUser user) {
-        userMapper.updateByPrimaryKeySelective(user);
+    public int update(LitemallUser user) {
+        return userMapper.updateWithVersionByPrimaryKeySelective(user.getVersion(), user);
     }
 
     public List<LitemallUser> querySelective(String username, String mobile, Integer page, Integer size, String sort, String order) {

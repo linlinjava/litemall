@@ -8,7 +8,6 @@
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入反馈ID" v-model="listQuery.id">
       </el-input>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
     </div>
 
@@ -39,12 +38,6 @@
       <el-table-column align="center" label="时间" prop="addTime">
       </el-table-column>
 
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <!-- 分页 -->
@@ -54,78 +47,14 @@
       </el-pagination>
     </div>
 
-    <!-- 添加或修改对话框 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
-     
-        <el-form-item label="反馈ID" prop="id">
-          <el-input v-model="dataForm.id"></el-input>
-        </el-form-item>
-
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="dataForm.username"></el-input>
-        </el-form-item>
-
-        <el-form-item label="手机号码" prop="mobile">
-          <el-input v-model="dataForm.mobile" type="textarea" :rows="1"></el-input>
-        </el-form-item>        
-
-        <el-form-item label="反馈类型" prop="feedType">
-          <el-input v-model="dataForm.feedType" type="textarea" :rows="4"></el-input>
-        </el-form-item>   
-
-        <el-form-item label="反馈内容" prop="content">
-          <el-input v-model="dataForm.content" type="textarea" :rows="4"></el-input>
-        </el-form-item>
-        <el-form-item label="反馈时间" prop="addTime">
-          <el-date-picker v-model="dataForm.addTime" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="反馈图片" prop="picUrls">
-          <!-- <el-input v-model="dataForm.picUrls"></el-input>           -->
-          <el-upload action="#" list-type="picture" :headers="headers" :show-file-list="false" :limit="5" :http-request="uploadPicUrls">
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
-      </div>
-    </el-dialog>
-
   </div>
 </template>
 
-<style>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 200px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-  }
-</style>
-
 <script>
-import { listFeedback, createFeedback, updateFeedback, deleteFeedback } from '@/api/Feedback'
-import { createStorage } from '@/api/storage'
-import { getToken } from '@/utils/auth'
+import { listFeedback } from '@/api/user'
 
 export default {
   name: 'Feedback',
-  computed: {
-    headers() {
-      return {
-        'Admin-Token': getToken()
-      }
-    }
-  },
   data() {
     return {
       list: undefined,
@@ -137,26 +66,6 @@ export default {
         username: undefined,
         sort: 'add_time',
         order: 'desc'
-      },
-      dataForm: {
-        id: undefined,
-        username: undefined,
-        mobile: undefined,
-        feedType: undefined,
-        content: undefined,
-        hasPicture: false,
-        picUrls: []
-      },
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
-      rules: {
-        username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
-        // valueId: [{ required: true, message: '反馈ID不能为空', trigger: 'blur' }],
-        content: [{ required: true, message: '反馈内容不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -188,92 +97,6 @@ export default {
     handleCurrentChange(val) {
       this.listQuery.page = val
       this.getList()
-    },
-    resetForm() {
-      this.dataForm = {
-        id: undefined,
-        username: undefined,
-        mobile: undefined,
-        feedType: undefined,
-        content: undefined,
-        picUrls: []
-      }
-    },
-    handleCreate() {
-      this.resetForm()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    uploadPicUrls(item) {
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(res => {
-        this.dataForm.picUrls.push(res.data.data.url)
-        this.dataForm.hasPicture = true
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          createFeedback(this.dataForm).then(response => {
-            this.list.unshift(response.data.data)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.dataForm = Object.assign({}, row)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          updateFeedback(this.dataForm).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.dataForm.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.dataForm)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleDelete(row) {
-      deleteFeedback(row).then(response => {
-        this.$notify({
-          title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
-        })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
-      })
     },
     handleDownload() {
       this.downloadLoading = true

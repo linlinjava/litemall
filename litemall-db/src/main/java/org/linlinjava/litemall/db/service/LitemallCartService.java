@@ -25,8 +25,8 @@ public class LitemallCartService {
         cartMapper.insertSelective(cart);
     }
 
-    public void update(LitemallCart cart) {
-        cartMapper.updateByPrimaryKey(cart);
+    public int update(LitemallCart cart) {
+        return cartMapper.updateWithVersionByPrimaryKeySelective(cart.getVersion(), cart);
     }
 
     public List<LitemallCart> queryByUid(int userId) {
@@ -39,12 +39,6 @@ public class LitemallCartService {
     public List<LitemallCart> queryByUidAndChecked(Integer userId) {
         LitemallCartExample example = new LitemallCartExample();
         example.or().andUserIdEqualTo(userId).andCheckedEqualTo(true).andDeletedEqualTo(false);
-        return cartMapper.selectByExample(example);
-    }
-
-    public List<LitemallCart> queryByUidAndSid(int userId, String sessionId) {
-        LitemallCartExample example = new LitemallCartExample();
-        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return cartMapper.selectByExample(example);
     }
 

@@ -40,7 +40,7 @@ public class LitemallCommentService {
             example.or().andValueIdEqualTo(valueId).andTypeEqualTo(type).andHasPictureEqualTo(true).andDeletedEqualTo(false);
         }
         else{
-            Assert.state(false, "showType不支持");
+            throw new RuntimeException("showType不支持");
         }
         PageHelper.startPage(offset, limit);
         return commentMapper.selectByExample(example);
@@ -55,20 +55,14 @@ public class LitemallCommentService {
             example.or().andValueIdEqualTo(valueId).andTypeEqualTo(type).andHasPictureEqualTo(true).andDeletedEqualTo(false);
         }
         else{
-            Assert.state(false, "");
+            throw new RuntimeException("showType不支持");
         }
         return (int)commentMapper.countByExample(example);
     }
 
-    public Integer save(LitemallComment comment) {
+    public int save(LitemallComment comment) {
         return commentMapper.insertSelective(comment);
     }
-
-
-    public void update(LitemallComment comment) {
-        commentMapper.updateByPrimaryKeySelective(comment);
-    }
-
 
     public List<LitemallComment> querySelective(String userId, String valueId, Integer page, Integer size, String sort, String order) {
         LitemallCommentExample example = new LitemallCommentExample();
@@ -106,19 +100,8 @@ public class LitemallCommentService {
         return (int)commentMapper.countByExample(example);
     }
 
-    public void updateById(LitemallComment comment) {
-        commentMapper.updateByPrimaryKeySelective(comment);
-    }
-
     public void deleteById(Integer id) {
         commentMapper.logicalDeleteByPrimaryKey(id);
     }
 
-    public void add(LitemallComment comment) {
-        commentMapper.insertSelective(comment);
-    }
-
-    public LitemallComment findById(Integer id) {
-        return commentMapper.selectByPrimaryKey(id);
-    }
 }

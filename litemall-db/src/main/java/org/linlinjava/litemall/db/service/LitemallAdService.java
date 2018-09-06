@@ -56,8 +56,8 @@ public class LitemallAdService {
         return (int) adMapper.countByExample(example);
     }
 
-    public void updateById(LitemallAd ad) {
-        adMapper.updateByPrimaryKeySelective(ad);
+    public int updateById(LitemallAd ad) {
+        return adMapper.updateWithVersionByPrimaryKeySelective(ad.getVersion(), ad);
     }
 
     public void deleteById(Integer id) {

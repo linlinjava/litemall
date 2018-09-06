@@ -222,8 +222,8 @@ public class LitemallGoodsService {
         return (int) goodsMapper.countByExample(example);
     }
 
-    public void updateById(LitemallGoods goods) {
-        goodsMapper.updateByPrimaryKeySelective(goods);
+    public int updateById(LitemallGoods goods) {
+        return goodsMapper.updateWithVersionByPrimaryKeySelective(goods.getVersion(), goods);
     }
 
     public void deleteById(Integer id) {
