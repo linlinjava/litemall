@@ -33,10 +33,10 @@ Page({
       if (res.errno === 0) {
 
         that.setData({
-          topic: res.data,
+          topic: res.data.topic
         });
 
-        WxParse.wxParse('topicDetail', 'html', res.data.content, that);
+        WxParse.wxParse('topicDetail', 'html', res.data.topic.content, that);
       }
     });
 
