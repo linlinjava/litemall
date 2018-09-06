@@ -47,39 +47,6 @@ public class AdminCommentController {
         return ResponseUtil.ok(data);
     }
 
-    @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        comment.setAddTime(LocalDateTime.now());
-        commentService.add(comment);
-        return ResponseUtil.ok(comment);
-    }
-
-    @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId,  @NotNull Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-
-        if(id == null){
-            return ResponseUtil.badArgument();
-        }
-
-        LitemallComment comment = commentService.findById(id);
-        return ResponseUtil.ok(comment);
-    }
-
-    @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-        commentService.updateById(comment);
-        return ResponseUtil.ok(comment);
-    }
-
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
         if(adminId == null){
