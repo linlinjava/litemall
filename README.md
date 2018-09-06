@@ -37,15 +37,14 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * 分类列表、分类详情
 * 品牌列表、品牌详情
 * 新品首发、人气推荐
+* 团购
 * 搜索
-* 商品详情
-* 商品评价列表、商品评价
+* 商品详情、商品评价、商品分享
 * 购物车
 * 下单
-* 个人
 * 订单列表、订单详情
-* 地址列表、地址添加、地址删除
-* 收藏、足迹
+* 地址、收藏、足迹、意见反馈
+* 客服
 
 ### 管理平台功能
 
@@ -106,6 +105,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
     打开命令行，输入以下命令
     ```bash
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
     cd litemall/litemall-admin
     cnpm install
     cnpm run dev
@@ -116,6 +116,8 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
    
    打开微信开发者工具，导入litemall-wx模块,点击`编译`即可，此时可以预览小商场效果。
 
+   这里存在两套小商场前端litemall-wx和renard-wx，开发者可以分别导入和测试。
+   
 注意：
 > 这里只是最简启动方式，而且小商场的微信登录会失败，更详细方案请参考文档。
 
@@ -170,10 +172,6 @@ V 3.0.0 完成以下目标：
     * 请百度或谷歌相关技术；
     * 请查看相关技术的官方文档，例如微信小程序的官方文档；
     * 请提问前尽可能做一些DEBUG或者思考分析，然后提问时给出详细的错误相关信息以及个人对问题的理解。
-
-## 相关项目
-
-HubertYoung正在开发Android端[Litemall-Android](https://github.com/HubertYoung/Litemall-Android)
 
 ## License
 
