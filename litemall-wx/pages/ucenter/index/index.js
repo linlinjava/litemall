@@ -8,6 +8,12 @@ Page({
     userInfo: {
       nickName: '点击登录',
       avatarUrl: 'http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png'
+    },
+    order: {
+      unpaid: 0,
+      unship: 0,
+      unrecv: 0,
+      uncomment: 0
     }
   },
   onLoad: function(options) {
@@ -23,6 +29,15 @@ Page({
       let userInfo = wx.getStorageSync('userInfo');
       this.setData({
         userInfo: userInfo,
+      });
+
+      let that = this;
+      util.request(api.UserIndex).then(function (res) {
+        if (res.errno === 0) {
+          that.setData({
+            order: res.data.order
+          });
+        }
       });
     }
 

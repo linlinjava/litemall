@@ -11,7 +11,9 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -168,5 +170,41 @@ public class LitemallOrderService {
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
         return orderMapper.selectOneByExample(example);
+    }
+
+    public Map<Object, Object> orderInfo(Integer userId){
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        List<LitemallOrder> orders = orderMapper.selectByExampleSelective(example, LitemallOrder.Column.orderStatus);
+
+        int unpaid = 0;
+        int unship = 0;
+        int unrecv = 0;
+        int uncomment = 0;
+        for(LitemallOrder order : orders){
+            if(OrderUtil.isCreateStatus(order)){
+                unpaid++;
+            }
+            else if(OrderUtil.isPayStatus(order)){
+                unship++;
+            }
+            else if(OrderUtil.isShipStatus(order)){
+                unrecv++;
+            }
+            else if(OrderUtil.isConfirmStatus(order) || OrderUtil.isAutoConfirmStatus(order)){
+                uncomment++;
+            }
+            else {
+                // do nothing
+            }
+        }
+
+        Map<Object, Object> orderInfo = new HashMap<Object, Object>();
+        orderInfo.put("unpaid", unpaid);
+        orderInfo.put("unship", unship);
+        orderInfo.put("unrecv", unrecv);
+        orderInfo.put("uncomment", uncomment);
+        return orderInfo;
+
     }
 }

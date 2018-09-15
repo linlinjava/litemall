@@ -100,8 +100,20 @@ page {
 .user_column_item {
   width: 30%;
   height: 140rpx;
-  /* background: #757575; */
+  background: #fff;
   text-align: center;
+  position: relative;
+}
+
+.user_column_item_badge {
+  height: 28rpx;
+  width: 28rpx;
+  position: absolute;
+  background: #b4282d;
+  color: #fff;
+  border-radius: 50%;
+  margin-top:20rpx;
+  margin-left:40rpx;
 }
 
 .user_column_item_image {
