@@ -172,7 +172,14 @@ bindPhoneNumber: function (e) {
       });
     }
   });
-}, 
+},
+goAfterSale: function () {
+  wx.showToast({
+    title: '目前不支持',
+    icon: 'none',
+    duration: 2000
+  });
+},
 aboutUs: function () {
   wx.navigateTo({
     url: '/pages/about/about'

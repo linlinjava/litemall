@@ -61,9 +61,9 @@
       <image class='user_column_item_image' src='/static/images/group.png'></image>
       <view class='user_column_item_text'>我的拼团</view>
     </view>
-    <view class='user_column_item' bindtap='goOrderIndex'>
+    <view class='user_column_item' bindtap='goAfterSale'>
       <image class='user_column_item_image' src='/static/images/aftersale.png'></image>
-      <view class='user_column_item_text'>退款/售后</view>
+      <view class='user_column_item_text'>售后</view>
     </view>
   </view>
   <view class='separate'></view>
