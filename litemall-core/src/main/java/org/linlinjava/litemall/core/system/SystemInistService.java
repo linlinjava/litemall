@@ -16,6 +16,8 @@ import java.util.Map;
 class SystemInistService {
     private SystemInistService systemInistService;
     @Autowired
+    private ConfigService configService;
+    @Autowired
     private Environment environment;
 
     @PostConstruct
