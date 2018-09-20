@@ -15,7 +15,7 @@ import java.util.List;
 public class LitemallTopicService {
     @Resource
     private LitemallTopicMapper topicMapper;
-    private Column[] columns = new Column[]{Column.id, Column.title, Column.subtitle, Column.picUrl, Column.readCount};
+    private Column[] columns = new Column[]{Column.id, Column.title, Column.subtitle, Column.price, Column.picUrl, Column.readCount};
 
     public List<LitemallTopic> queryList(int offset, int limit) {
         LitemallTopicExample example = new LitemallTopicExample();
