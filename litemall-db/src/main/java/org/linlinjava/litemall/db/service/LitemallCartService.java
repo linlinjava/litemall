@@ -25,7 +25,7 @@ public class LitemallCartService {
         cartMapper.insertSelective(cart);
     }
 
-    public int update(LitemallCart cart) {
+    public int updateById(LitemallCart cart) {
         return cartMapper.updateWithVersionByPrimaryKeySelective(cart.getVersion(), cart);
     }
 

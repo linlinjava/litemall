@@ -73,7 +73,9 @@ public class AdminStorageController {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
-        litemallStorageService.update(litemallStorage);
+        if(litemallStorageService.update(litemallStorage) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok(litemallStorage);
     }
 

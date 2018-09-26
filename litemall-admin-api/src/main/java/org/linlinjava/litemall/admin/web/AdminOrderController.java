@@ -134,7 +134,9 @@ public class AdminOrderController {
         try {
             // 设置订单取消状态
             order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
-            orderService.updateById(order);
+            if(orderService.updateById(order) == 0) {
+                throw new Exception("跟新数据已失效");
+            }
 
             // 商品货品数量增加
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
@@ -143,7 +145,9 @@ public class AdminOrderController {
                 LitemallProduct product = productService.findById(productId);
                 Integer number = product.getNumber() + orderGoods.getNumber();
                 product.setNumber(number);
-                productService.updateById(product);
+                if(productService.updateById(product) == 0){
+                    throw new Exception("跟新数据已失效");
+                }
             }
         } catch (Exception ex) {
             txManager.rollback(status);
@@ -204,15 +208,13 @@ public class AdminOrderController {
         order.setShipSn(shipSn);
         order.setShipChannel(shipChannel);
         order.setShipTime(LocalDateTime.now());
-        orderService.updateById(order);
+        if(orderService.updateById(order) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
 
         //TODO 发送邮件和短信通知，这里采用异步发送
-        // 发货会发送通知短信给用户
-        /**
-         *
-         * 您的订单已经发货，快递公司 {1}，快递单 {2} ，请注意查收
-         *
-         */
+        // 发货会发送通知短信给用户:          *
+        // "您的订单已经发货，快递公司 {1}，快递单 {2} ，请注意查收"
         notifyService.notifySmsTemplate(order.getMobile(), NotifyType.SHIP, new String[]{shipChannel, shipSn});
 
         return ResponseUtil.ok();
@@ -230,7 +232,7 @@ public class AdminOrderController {
      */
     @Scheduled(fixedDelay = 30 * 60 * 1000)
     public void checkOrderUnpaid() {
-        logger.debug(LocalDateTime.now());
+        logger.info("系统开启任务检查订单是否已经超期自动取消订单");
 
         List<LitemallOrder> orderList = orderService.queryUnpaid();
         for (LitemallOrder order : orderList) {
@@ -249,7 +251,9 @@ public class AdminOrderController {
                 // 设置订单已取消状态
                 order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
                 order.setEndTime(LocalDateTime.now());
-                orderService.updateById(order);
+                if(orderService.updateById(order) == 0){
+                    throw new Exception("跟新数据已失效");
+                }
 
                 // 商品货品数量增加
                 Integer orderId = order.getId();
@@ -259,13 +263,17 @@ public class AdminOrderController {
                     LitemallProduct product = productService.findById(productId);
                     Integer number = product.getNumber() + orderGoods.getNumber();
                     product.setNumber(number);
-                    productService.updateById(product);
+                    if(productService.updateById(product) == 0){
+                        throw new Exception("跟新数据已失效");
+                    }
                 }
             } catch (Exception ex) {
                 txManager.rollback(status);
-                logger.error("系统内部错误", ex);
+                logger.info("订单 ID=" + order.getId() + " 数据已经更新，放弃自动确认收货");
+                return;
             }
             txManager.commit(status);
+            logger.info("订单 ID=" + order.getId() + " 已经超期自动取消订单");
         }
     }
 
@@ -288,7 +296,7 @@ public class AdminOrderController {
      */
     @Scheduled(cron = "0 0 3 * * ?")
     public void checkOrderUnconfirm() {
-        logger.debug(LocalDateTime.now());
+        logger.info("系统开启任务检查订单是否已经超期自动确认收货");
 
         List<LitemallOrder> orderList = orderService.queryUnconfirm();
         for (LitemallOrder order : orderList) {
@@ -301,7 +309,12 @@ public class AdminOrderController {
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_AUTO_CONFIRM);
             order.setConfirmTime(now);
-            orderService.updateById(order);
+            if(orderService.updateById(order) == 0){
+                logger.info("订单 ID=" + order.getId() + " 数据已经更新，放弃自动确认收货");
+            }
+            else{
+                logger.info("订单 ID=" + order.getId() + " 已经超期自动确认收货");
+            }
         }
     }
 }

@@ -72,7 +72,9 @@ public class AdminTopicController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        topicService.updateById(topic);
+        if(topicService.updateById(topic) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok(topic);
     }
 

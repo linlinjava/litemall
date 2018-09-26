@@ -29,7 +29,7 @@ public class LitemallAddressService {
         return addressMapper.insertSelective(address);
     }
 
-    public int update(LitemallAddress address) {
+    public int updateId(LitemallAddress address) {
         return addressMapper.updateWithVersionByPrimaryKeySelective(address.getVersion(), address);
     }
 

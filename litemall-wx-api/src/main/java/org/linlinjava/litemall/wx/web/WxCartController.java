@@ -150,7 +150,9 @@ public class WxCartController {
                 return ResponseUtil.fail(400, "库存不足");
             }
             existCart.setNumber((short) num);
-            cartService.update(existCart);
+            if(cartService.updateById(existCart) == 0){
+                return ResponseUtil.updatedDateExpired();
+            }
         }
 
         return goodscount(userId);
@@ -221,7 +223,9 @@ public class WxCartController {
                 return ResponseUtil.fail(400, "库存不足");
             }
             existCart.setNumber((short) num);
-            cartService.update(existCart);
+            if(cartService.updateById(existCart) == 0){
+                return ResponseUtil.updatedDateExpired();
+            }
         }
 
         return ResponseUtil.ok(existCart != null ? existCart.getId() : cart.getId());
@@ -281,7 +285,9 @@ public class WxCartController {
         }
 
         existCart.setNumber(number.shortValue());
-        cartService.update(existCart);
+        if(cartService.updateById(existCart) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok();
     }
 

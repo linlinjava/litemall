@@ -2,6 +2,8 @@ package org.linlinjava.litemall.core.notify;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.LitemallUserFormid;
 import org.linlinjava.litemall.db.service.LitemallUserFormIdService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,13 @@ import java.util.List;
  * 微信模版消息通知
  */
 public class WxTemplateSender {
-    @Autowired
-    WxMaService wxMaService;
+    private final Log logger = LogFactory.getLog(WxTemplateSender.class);
 
     @Autowired
-    LitemallUserFormIdService formIdService;
+    private WxMaService wxMaService;
+
+    @Autowired
+    private LitemallUserFormIdService formIdService;
 
     /**
      * 发送微信消息(模板消息),不带跳转
@@ -59,7 +63,9 @@ public class WxTemplateSender {
 
         try {
             wxMaService.getMsgService().sendTemplateMsg(msg);
-            formIdService.updateUserFormId(userFormid);
+            if(formIdService.updateUserFormId(userFormid) == 0){
+                logger.warn("更新数据已失效");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

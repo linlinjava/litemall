@@ -65,9 +65,7 @@ public class LitemallGrouponRulesService {
      * @return
      */
     public boolean isExpired(LitemallGrouponRules rules) {
-        if (rules == null || rules.getExpireTime().isBefore(LocalDateTime.now()))
-            return true;
-        return false;
+        return (rules == null || rules.getExpireTime().isBefore(LocalDateTime.now()));
     }
 
     /**
@@ -109,7 +107,7 @@ public class LitemallGrouponRulesService {
         mapper.logicalDeleteByPrimaryKey(id);
     }
 
-    public int update(LitemallGrouponRules grouponRules) {
+    public int updateById(LitemallGrouponRules grouponRules) {
         return mapper.updateWithVersionByPrimaryKeySelective(grouponRules.getVersion(), grouponRules);
     }
 }

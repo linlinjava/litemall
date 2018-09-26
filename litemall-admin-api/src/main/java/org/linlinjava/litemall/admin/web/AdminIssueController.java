@@ -72,7 +72,10 @@ public class AdminIssueController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        issueService.updateById(issue);
+        if(issueService.updateById(issue) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
+
         return ResponseUtil.ok(issue);
     }
 

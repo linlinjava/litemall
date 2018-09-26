@@ -5,6 +5,7 @@ import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.BaseWxPayResult;
+import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -426,7 +428,9 @@ public class WxOrderController {
                     throw new RuntimeException("下单的商品货品数量大于库存量");
                 }
                 product.setNumber(remainNumber);
-                productService.updateById(product);
+                if(productService.updateById(product) == 0){
+                    throw new Exception("更新数据已失效");
+                }
             }
 
             //如果是团购项目，添加团购信息
@@ -509,7 +513,9 @@ public class WxOrderController {
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_CANCEL);
             order.setEndTime(LocalDateTime.now());
-            orderService.updateById(order);
+            if(orderService.updateById(order) == 0){
+                throw new Exception("更新数据已失效");
+            }
 
             // 商品货品数量增加
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
@@ -518,7 +524,9 @@ public class WxOrderController {
                 LitemallProduct product = productService.findById(productId);
                 Integer number = product.getNumber() + orderGoods.getNumber();
                 product.setNumber(number);
-                productService.updateById(product);
+                if(productService.updateById(product) == 0){
+                    throw new Exception("更新数据已失效");
+                }
             }
         } catch (Exception ex) {
             txManager.rollback(status);
@@ -603,7 +611,9 @@ public class WxOrderController {
             return ResponseUtil.fail(403, "订单不能支付");
         }
 
-        orderService.updateById(order);
+        if(orderService.updateById(order) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok(result);
     }
 
@@ -623,78 +633,103 @@ public class WxOrderController {
      */
     @PostMapping("pay-notify")
     public Object payNotify(HttpServletRequest request, HttpServletResponse response) {
+        String xmlResult = null;
         try {
-            String xmlResult = IOUtils.toString(request.getInputStream(), request.getCharacterEncoding());
-            WxPayOrderNotifyResult result = wxPayService.parseOrderNotifyResult(xmlResult);
-
-            String orderSn = result.getOutTradeNo();
-            String payId = result.getTransactionId();
-
-            // 分转化成元
-            String totalFee = BaseWxPayResult.fenToYuan(result.getTotalFee());
-
-            LitemallOrder order = orderService.findBySn(orderSn);
-            if (order == null) {
-                throw new Exception("订单不存在 sn=" + orderSn);
-            }
-
-            // 检查这个订单是否已经处理过
-            if (OrderUtil.isPayStatus(order) && order.getPayId() != null) {
-                return WxPayNotifyResponse.success("处理成功!");
-            }
-
-            // 检查支付订单金额
-            if (!totalFee.equals(order.getActualPrice().toString())) {
-                throw new Exception(order.getOrderSn() + " : 支付金额不符合 totalFee=" + totalFee);
-            }
-
-            order.setPayId(payId);
-            order.setPayTime(LocalDateTime.now());
-            order.setOrderStatus(OrderUtil.STATUS_PAY);
-            orderService.updateById(order);
-
-            //  支付成功，有团购信息，更新团购信息
-            LitemallGroupon groupon = grouponService.queryByOrderId(order.getId());
-            if (groupon != null) {
-                LitemallGrouponRules grouponRules = grouponRulesService.queryById(groupon.getRulesId());
-
-                //仅当发起者才创建分享图片
-                if (groupon.getGrouponId() == 0) {
-                    String url = qCodeService.createGrouponShareImage(grouponRules.getGoodsName(), grouponRules.getPicUrl(), groupon);
-                    groupon.setShareUrl(url);
-                }
-                groupon.setPayed(true);
-                grouponService.update(groupon);
-            }
-
-            //TODO 发送邮件和短信通知，这里采用异步发送
-            // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
-            notifyService.notifyMail("新订单通知", order.toString());
-            /**
-             * 这里微信的短信平台对参数长度有限制，所以将订单号只截取后6位
-             *
-             */
-            notifyService.notifySmsTemplateSync(order.getMobile(), NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
-
-            /**
-             * 请依据自己的模版消息配置更改参数
-             */
-            String[] parms = new String[]{
-                    order.getOrderSn(),
-                    order.getOrderPrice().toString(),
-                    DateTimeUtil.getDateTimeDisplayString(order.getAddTime()),
-                    order.getConsignee(),
-                    order.getMobile(),
-                    order.getAddress()
-            };
-
-            notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "pages/index/index?orderId=" + order.getId());
-
-            return WxPayNotifyResponse.success("处理成功!");
-        } catch (Exception e) {
-            logger.error("微信回调结果异常,异常原因 " + e.getMessage());
+            xmlResult = IOUtils.toString(request.getInputStream(), request.getCharacterEncoding());
+        } catch (IOException e) {
+            e.printStackTrace();
             return WxPayNotifyResponse.fail(e.getMessage());
         }
+
+        WxPayOrderNotifyResult result = null;
+        try {
+            result = wxPayService.parseOrderNotifyResult(xmlResult);
+        } catch (WxPayException e) {
+            e.printStackTrace();
+            return WxPayNotifyResponse.fail(e.getMessage());
+        }
+
+        logger.info("处理腾讯支付平台的订单支付");
+        logger.info(result);
+
+        String orderSn = result.getOutTradeNo();
+        String payId = result.getTransactionId();
+
+        // 分转化成元
+        String totalFee = BaseWxPayResult.fenToYuan(result.getTotalFee());
+        LitemallOrder order = orderService.findBySn(orderSn);
+        if (order == null) {
+            return WxPayNotifyResponse.fail("订单不存在 sn=" + orderSn);
+        }
+
+        // 检查这个订单是否已经处理过
+        if (OrderUtil.isPayStatus(order) && order.getPayId() != null) {
+            return WxPayNotifyResponse.success("订单已经处理成功!");
+        }
+
+        // 检查支付订单金额
+        if (!totalFee.equals(order.getActualPrice().toString())) {
+            return WxPayNotifyResponse.fail(order.getOrderSn() + " : 支付金额不符合 totalFee=" + totalFee);
+        }
+
+        order.setPayId(payId);
+        order.setPayTime(LocalDateTime.now());
+        order.setOrderStatus(OrderUtil.STATUS_PAY);
+        if (orderService.updateById(order) == 0) {
+            // 这里可能存在这样一个问题，用户支付和系统自动取消订单发生在同时
+            // 如果数据库首先因为系统自动取消订单而更新了订单状态；
+            // 此时用户支付完成回调这里也要更新数据库，而由于乐观锁机制这里的更新会失败
+            // 因此，这里会重新读取数据库检查状态是否是订单自动取消，如果是则更新成支付状态。
+            order = orderService.findBySn(orderSn);
+            int updated = 0;
+            if(OrderUtil.isAutoCancelStatus(order)){
+                order.setPayId(payId);
+                order.setPayTime(LocalDateTime.now());
+                order.setOrderStatus(OrderUtil.STATUS_PAY);
+                updated = orderService.updateById(order);
+            }
+
+            // 如果updated是0，那么数据库更新失败
+            if(updated == 0) {
+                return WxPayNotifyResponse.fail("更新数据已失效");
+            }
+        }
+
+        //  支付成功，有团购信息，更新团购信息
+        LitemallGroupon groupon = grouponService.queryByOrderId(order.getId());
+        if (groupon != null) {
+            LitemallGrouponRules grouponRules = grouponRulesService.queryById(groupon.getRulesId());
+
+            //仅当发起者才创建分享图片
+            if (groupon.getGrouponId() == 0) {
+                String url = qCodeService.createGrouponShareImage(grouponRules.getGoodsName(), grouponRules.getPicUrl(), groupon);
+                groupon.setShareUrl(url);
+            }
+            groupon.setPayed(true);
+            if (grouponService.updateById(groupon) == 0) {
+                return WxPayNotifyResponse.fail("更新数据已失效");
+            }
+        }
+
+        //TODO 发送邮件和短信通知，这里采用异步发送
+        // 订单支付成功以后，会发送短信给用户，以及发送邮件给管理员
+        notifyService.notifyMail("新订单通知", order.toString());
+        // 这里微信的短信平台对参数长度有限制，所以将订单号只截取后6位
+        notifyService.notifySmsTemplateSync(order.getMobile(), NotifyType.PAY_SUCCEED, new String[]{orderSn.substring(8, 14)});
+
+        // 请依据自己的模版消息配置更改参数
+        String[] parms = new String[]{
+                order.getOrderSn(),
+                order.getOrderPrice().toString(),
+                DateTimeUtil.getDateTimeDisplayString(order.getAddTime()),
+                order.getConsignee(),
+                order.getMobile(),
+                order.getAddress()
+        };
+
+        notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "pages/index/index?orderId=" + order.getId());
+
+        return WxPayNotifyResponse.success("处理成功!");
     }
 
     /**
@@ -733,7 +768,9 @@ public class WxOrderController {
 
         // 设置订单申请退款状态
         order.setOrderStatus(OrderUtil.STATUS_REFUND);
-        orderService.updateById(order);
+        if(orderService.updateById(order) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
 
         //TODO 发送邮件和短信通知，这里采用异步发送
         // 有用户申请退款，邮件通知运营人员
@@ -778,7 +815,9 @@ public class WxOrderController {
 
         order.setOrderStatus(OrderUtil.STATUS_CONFIRM);
         order.setConfirmTime(LocalDateTime.now());
-        orderService.updateById(order);
+        if(orderService.updateById(order) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok();
     }
 

@@ -74,7 +74,9 @@ public class AdminCategoryController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        categoryService.updateById(category);
+        if(categoryService.updateById(category) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok();
     }
 

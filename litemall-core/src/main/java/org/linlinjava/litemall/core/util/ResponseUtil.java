@@ -41,15 +41,16 @@ public class ResponseUtil {
         return obj;
     }
 
-
-
     public static Object badArgument(){
         return fail(401, "参数不对");
     }
 
-
     public static Object badArgumentValue(){
         return fail(402, "参数值不对");
+    }
+
+    public static Object updatedDateExpired(){
+        return fail(403, "更新数据已经失效");
     }
 
     public static Object unlogin(){

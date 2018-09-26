@@ -166,7 +166,9 @@ public class WxAuthController {
         } else {
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.client(request));
-            userService.update(user);
+            if(userService.updateById(user) == 0){
+                return ResponseUtil.updatedDateExpired();
+            }
         }
 
         // token
@@ -333,7 +335,9 @@ public class WxAuthController {
         String encodedPassword = encoder.encode(password);
         user.setPassword(encodedPassword);
 
-        userService.update(user);
+        if(userService.updateById(user) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
 
         return ResponseUtil.ok();
     }
@@ -347,7 +351,9 @@ public class WxAuthController {
         String phone = phoneNumberInfo.getPhoneNumber();
         LitemallUser user = userService.findById(userId);
         user.setMobile(phone);
-        userService.update(user);
+        if(userService.updateById(user) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok();
     }
 }

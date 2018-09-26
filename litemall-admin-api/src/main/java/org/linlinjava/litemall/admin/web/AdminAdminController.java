@@ -124,7 +124,10 @@ public class AdminAdminController {
         String encodedPassword = encoder.encode(rawPassword);
         admin.setPassword(encodedPassword);
 
-        adminService.updateById(admin);
+        if(adminService.updateById(admin) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
+
         return ResponseUtil.ok(admin);
     }
 

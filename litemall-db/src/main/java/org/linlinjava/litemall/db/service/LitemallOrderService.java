@@ -98,10 +98,6 @@ public class LitemallOrderService {
         return (int)orderMapper.countByExample(example);
     }
 
-    public int update(LitemallOrder order) {
-        return orderMapper.updateByPrimaryKeySelective(order);
-    }
-
     public List<LitemallOrder> querySelective(Integer userId, String orderSn, List<Short> orderStatusArray, Integer page, Integer size, String sort, String order) {
         LitemallOrderExample example = new LitemallOrderExample();
         LitemallOrderExample.Criteria criteria = example.createCriteria();
@@ -140,8 +136,8 @@ public class LitemallOrderService {
         return (int)orderMapper.countByExample(example);
     }
 
-    public void updateById(LitemallOrder order) {
-        orderMapper.updateByPrimaryKeySelective(order);
+    public int updateById(LitemallOrder order) {
+        return orderMapper.updateWithVersionByPrimaryKeySelective(order.getVersion(), order);
     }
 
     public void deleteById(Integer id) {

@@ -101,7 +101,9 @@ public class AdminGoodsController {
             goods.setShareUrl(url);
 
             // 商品基本信息表litemall_goods
-            goodsService.updateById(goods);
+            if(goodsService.updateById(goods) == 0){
+                throw new Exception("跟新数据已失效");
+            }
 
             Integer gid = goods.getId();
             specificationService.deleteByGid(gid);
@@ -109,12 +111,10 @@ public class AdminGoodsController {
             productService.deleteByGid(gid);
 
             // 商品规格表litemall_goods_specification
-            Map<String, Integer> specIds = new HashMap<>();
             for (LitemallGoodsSpecification specification : specifications) {
                 specification.setGoodsId(goods.getId());
                 specification.setAddTime(LocalDateTime.now());
                 specificationService.add(specification);
-                specIds.put(specification.getValue(), specification.getId());
             }
 
             // 商品参数表litemall_goods_attribute
@@ -196,15 +196,15 @@ public class AdminGoodsController {
             //将生成的分享图片地址写入数据库
             String url = qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
             goods.setShareUrl(url);
-            goodsService.updateById(goods);
+            if(goodsService.updateById(goods) == 0){
+                throw new Exception("跟新数据已失效");
+            }
 
             // 商品规格表litemall_goods_specification
-            Map<String, Integer> specIds = new HashMap<>();
             for (LitemallGoodsSpecification specification : specifications) {
                 specification.setGoodsId(goods.getId());
                 specification.setAddTime(LocalDateTime.now());
                 specificationService.add(specification);
-                specIds.put(specification.getValue(), specification.getId());
             }
 
             // 商品参数表litemall_goods_attribute

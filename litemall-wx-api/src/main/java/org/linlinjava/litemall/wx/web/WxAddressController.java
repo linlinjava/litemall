@@ -160,7 +160,9 @@ public class WxAddressController {
             addressService.add(address);
         } else {
             address.setUserId(userId);
-            addressService.update(address);
+            if(addressService.updateId(address) == 0){
+                return ResponseUtil.updatedDateExpired();
+            }
         }
         return ResponseUtil.ok(address.getId());
     }

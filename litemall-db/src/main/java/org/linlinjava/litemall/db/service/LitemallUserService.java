@@ -39,7 +39,7 @@ public class LitemallUserService {
         userMapper.insertSelective(user);
     }
 
-    public int update(LitemallUser user) {
+    public int updateById(LitemallUser user) {
         return userMapper.updateWithVersionByPrimaryKeySelective(user.getVersion(), user);
     }
 

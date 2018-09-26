@@ -100,7 +100,9 @@ public class AdminUserController {
         String encodedPassword = encoder.encode(password);
         user.setPassword(encodedPassword);
 
-        userService.update(user);
+        if(userService.updateById(user) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok(user);
     }
 }

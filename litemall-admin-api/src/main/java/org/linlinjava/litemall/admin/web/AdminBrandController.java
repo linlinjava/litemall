@@ -72,7 +72,9 @@ public class AdminBrandController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        brandService.updateById(brand);
+        if(brandService.updateById(brand) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok(brand);
     }
 

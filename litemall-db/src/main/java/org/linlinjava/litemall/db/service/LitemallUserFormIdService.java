@@ -31,13 +31,13 @@ public class LitemallUserFormIdService {
      *
      * @param userFormid
      */
-    public void updateUserFormId(LitemallUserFormid userFormid) {
+    public int updateUserFormId(LitemallUserFormid userFormid) {
         //更新或者删除缓存
         if (userFormid.getIsprepay() && userFormid.getUseamount() > 1) {
             userFormid.setUseamount(userFormid.getUseamount() - 1);
-            formidMapper.updateWithVersionByPrimaryKey(userFormid.getVersion(), userFormid);
+            return formidMapper.updateWithVersionByPrimaryKey(userFormid.getVersion(), userFormid);
         } else {
-            formidMapper.deleteByPrimaryKey(userFormid.getId());
+            return formidMapper.deleteByPrimaryKey(userFormid.getId());
         }
     }
 

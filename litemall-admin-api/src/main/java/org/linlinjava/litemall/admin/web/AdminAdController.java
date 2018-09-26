@@ -72,7 +72,11 @@ public class AdminAdController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        adService.updateById(ad);
+
+        if(adService.updateById(ad) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
+
         return ResponseUtil.ok(ad);
     }
 

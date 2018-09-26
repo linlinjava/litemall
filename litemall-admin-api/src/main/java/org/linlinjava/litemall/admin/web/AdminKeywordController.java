@@ -72,7 +72,9 @@ public class AdminKeywordController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        keywordService.updateById(keywords);
+        if(keywordService.updateById(keywords) == 0){
+            return ResponseUtil.updatedDateExpired();
+        }
         return ResponseUtil.ok(keywords);
     }
 
