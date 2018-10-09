@@ -16,6 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -133,6 +134,7 @@ public class AdminGoodsController {
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
+            return ResponseUtil.fail();
         }
         txManager.commit(status);
 
@@ -161,6 +163,7 @@ public class AdminGoodsController {
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
+            return ResponseUtil.fail();
         }
         txManager.commit(status);
         return ResponseUtil.ok();
@@ -195,9 +198,11 @@ public class AdminGoodsController {
 
             //将生成的分享图片地址写入数据库
             String url = qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
-            goods.setShareUrl(url);
-            if(goodsService.updateById(goods) == 0){
-                throw new Exception("跟新数据已失效");
+            if(!StringUtils.isEmpty(url)) {
+                goods.setShareUrl(url);
+                if (goodsService.updateById(goods) == 0) {
+                    throw new Exception("跟新数据已失效");
+                }
             }
 
             // 商品规格表litemall_goods_specification
@@ -223,6 +228,7 @@ public class AdminGoodsController {
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
+            return ResponseUtil.fail();
         }
         txManager.commit(status);
 
