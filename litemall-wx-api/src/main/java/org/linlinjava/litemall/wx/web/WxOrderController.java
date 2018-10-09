@@ -315,6 +315,9 @@ public class WxOrderController {
 
         // 收货地址
         LitemallAddress checkedAddress = addressService.findById(addressId);
+        if(checkedAddress == null){
+            return ResponseUtil.badArgument();
+        }
 
         // 获取可用的优惠券信息
         // 使用优惠券减免的金额
