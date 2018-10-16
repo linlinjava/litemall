@@ -58,14 +58,17 @@ public class WxStorageController {
     public ResponseEntity<Resource> fetch(@PathVariable String key) {
         LitemallStorage litemallStorage = litemallStorageService.findByKey(key);
         if (key == null) {
-            ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
+        }
+        if(key.contains("../")){
+            return ResponseEntity.badRequest().build();
         }
         String type = litemallStorage.getType();
         MediaType mediaType = MediaType.parseMediaType(type);
 
         Resource file = storageService.loadAsResource(key);
         if (file == null) {
-            ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().contentType(mediaType).body(file);
     }
@@ -74,14 +77,18 @@ public class WxStorageController {
     public ResponseEntity<Resource> download(@PathVariable String key) {
         LitemallStorage litemallStorage = litemallStorageService.findByKey(key);
         if (key == null) {
-            ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
+        if(key.contains("../")){
+            return ResponseEntity.badRequest().build();
+        }
+
         String type = litemallStorage.getType();
         MediaType mediaType = MediaType.parseMediaType(type);
 
         Resource file = storageService.loadAsResource(key);
         if (file == null) {
-            ResponseEntity.notFound();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().contentType(mediaType).header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
