@@ -68,7 +68,7 @@ public class WxGrouponController {
         Map<String, Object> orderVo = new HashMap<String, Object>();
         orderVo.put("id", order.getId());
         orderVo.put("orderSn", order.getOrderSn());
-        orderVo.put("addTime", LocalDate.now());
+        orderVo.put("addTime", order.getAddTime());
         orderVo.put("consignee", order.getConsignee());
         orderVo.put("mobile", order.getMobile());
         orderVo.put("address", order.getAddress());
