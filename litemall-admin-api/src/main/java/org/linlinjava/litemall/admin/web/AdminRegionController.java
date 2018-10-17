@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +30,9 @@ public class AdminRegionController {
     private LitemallRegionService regionService;
 
     @GetMapping("/clist")
-    public Object clist(@LoginAdmin Integer adminId, Integer id) {
-        if (id == null) {
-            return ResponseUtil.badArgument();
+    public Object clist(@LoginAdmin Integer adminId, @NotNull Integer id) {
+        if(adminId == null){
+            return ResponseUtil.unlogin();
         }
 
         List<LitemallRegion> regionList = regionService.queryByPid(id);

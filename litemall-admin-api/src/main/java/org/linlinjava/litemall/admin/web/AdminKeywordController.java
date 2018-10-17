@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.domain.LitemallKeyword;
 import org.linlinjava.litemall.db.service.LitemallKeywordService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +48,26 @@ public class AdminKeywordController {
         return ResponseUtil.ok(data);
     }
 
+    private Object validate(LitemallKeyword keywords) {
+        String keyword = keywords.getKeyword();
+        if (StringUtils.isEmpty(keyword)) {
+            return ResponseUtil.badArgument();
+        }
+        String url = keywords.getUrl();
+        if (StringUtils.isEmpty(url)) {
+            return ResponseUtil.badArgument();
+        }
+        return null;
+    }
+
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        Object error = validate(keywords);
+        if(error != null){
+            return error;
         }
         keywords.setAddTime(LocalDateTime.now());
         keywordService.add(keywords);
@@ -72,6 +89,10 @@ public class AdminKeywordController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
+        Object error = validate(keywords);
+        if(error != null){
+            return error;
+        }
         if(keywordService.updateById(keywords) == 0){
             return ResponseUtil.updatedDateExpired();
         }
@@ -79,11 +100,15 @@ public class AdminKeywordController {
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword brand){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keyword){
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        keywordService.deleteById(brand.getId());
+        Integer id = keyword.getId();
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
+        keywordService.deleteById(id);
         return ResponseUtil.ok();
     }
 

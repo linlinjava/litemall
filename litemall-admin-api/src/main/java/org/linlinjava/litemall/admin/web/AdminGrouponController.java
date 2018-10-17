@@ -94,36 +94,45 @@ public class AdminGrouponController {
         return ResponseUtil.ok(data);
     }
 
+    private Object validate(LitemallGrouponRules grouponRules) {
+        Integer goodsId = grouponRules.getGoodsId();
+        if(goodsId == null){
+            return ResponseUtil.badArgument();
+        }
+        BigDecimal discount = grouponRules.getDiscount();
+        if(discount == null){
+            return ResponseUtil.badArgument();
+        }
+        Integer discountMember = grouponRules.getDiscountMember();
+        if(discountMember == null){
+            return ResponseUtil.badArgument();
+        }
+        LocalDateTime expireTime = grouponRules.getExpireTime();
+        if(expireTime == null){
+            return ResponseUtil.badArgument();
+        }
+
+        return null;
+    }
+
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody String grouponRulesBody) {
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
-        Integer id = JacksonUtil.parseInteger(grouponRulesBody, "id");
-        Integer goodsId = JacksonUtil.parseInteger(grouponRulesBody, "goodsId");
-        String discount = JacksonUtil.parseString(grouponRulesBody, "discount");
-        Integer discountMember = JacksonUtil.parseInteger(grouponRulesBody, "discountMember");
-        String expireTimeString = JacksonUtil.parseString(grouponRulesBody, "expireTime");
+        Object error = validate(grouponRules);
+        if(error != null){
+            return error;
+        }
 
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime expireTime = LocalDateTime.parse(expireTimeString, df);
-
+        Integer goodsId = grouponRules.getGoodsId();
         LitemallGoods goods = goodsService.findById(goodsId);
         if (goods == null) {
             return ResponseUtil.badArgumentValue();
         }
 
-        LitemallGrouponRules grouponRules = rulesService.queryById(id);
-        if (grouponRules == null) {
-            return ResponseUtil.badArgumentValue();
-        }
-
-        grouponRules.setGoodsId(goodsId);
-        grouponRules.setDiscount(new BigDecimal(discount));
-        grouponRules.setDiscountMember(discountMember);
         grouponRules.setGoodsName(goods.getName());
-        grouponRules.setExpireTime(expireTime);
         grouponRules.setPicUrl(goods.getPicUrl());
 
         if(rulesService.updateById(grouponRules) == 0){
@@ -135,31 +144,24 @@ public class AdminGrouponController {
 
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody String grouponRulesBody) {
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
-        Integer goodsId = JacksonUtil.parseInteger(grouponRulesBody, "goodsId");
-        String discount = JacksonUtil.parseString(grouponRulesBody, "discount");
-        Integer discountMember = JacksonUtil.parseInteger(grouponRulesBody, "discountMember");
-        String expireTimeString = JacksonUtil.parseString(grouponRulesBody, "expireTime");
+        Object error = validate(grouponRules);
+        if(error != null){
+            return error;
+        }
 
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime expireTime = LocalDateTime.parse(expireTimeString, df);
-
+        Integer goodsId = grouponRules.getGoodsId();
         LitemallGoods goods = goodsService.findById(goodsId);
         if (goods == null) {
             return ResponseUtil.badArgumentValue();
         }
 
-        LitemallGrouponRules grouponRules = new LitemallGrouponRules();
-        grouponRules.setGoodsId(goodsId);
-        grouponRules.setDiscount(new BigDecimal(discount));
-        grouponRules.setDiscountMember(discountMember);
         grouponRules.setAddTime(LocalDateTime.now());
         grouponRules.setGoodsName(goods.getName());
-        grouponRules.setExpireTime(expireTime);
         grouponRules.setPicUrl(goods.getPicUrl());
 
         rulesService.createRules(grouponRules);
@@ -169,12 +171,15 @@ public class AdminGrouponController {
 
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody String body) {
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
-        Integer id = JacksonUtil.parseInteger(body, "id");
+        Integer id = grouponRules.getId();
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
 
         rulesService.delete(id);
         return ResponseUtil.ok();

@@ -52,7 +52,11 @@ public class AdminCommentController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        commentService.deleteById(comment.getId());
+        Integer id = comment.getId();
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
+        commentService.deleteById(id);
         return ResponseUtil.ok();
     }
 

@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.domain.LitemallAd;
 import org.linlinjava.litemall.db.service.LitemallAdService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +48,26 @@ public class AdminAdController {
         return ResponseUtil.ok(data);
     }
 
+    private Object validate(LitemallAd ad) {
+        String name = ad.getName();
+        if(StringUtils.isEmpty(name)){
+            return ResponseUtil.badArgument();
+        }
+        String content = ad.getName();
+        if(StringUtils.isEmpty(content)){
+            return ResponseUtil.badArgument();
+        }
+        return null;
+    }
+
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        Object error = validate(ad);
+        if(error != null){
+            return error;
         }
         ad.setAddTime(LocalDateTime.now());
         adService.add(ad);
@@ -72,7 +89,10 @@ public class AdminAdController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-
+        Object error = validate(ad);
+        if(error != null){
+            return error;
+        }
         if(adService.updateById(ad) == 0){
             return ResponseUtil.updatedDateExpired();
         }
@@ -85,7 +105,11 @@ public class AdminAdController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        adService.deleteById(ad.getId());
+        Integer id = ad.getId();
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
+        adService.deleteById(id);
         return ResponseUtil.ok();
     }
 

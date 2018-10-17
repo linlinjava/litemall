@@ -8,6 +8,7 @@ import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallStorage;
 import org.linlinjava.litemall.db.service.LitemallStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,8 +85,12 @@ public class AdminStorageController {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
-        litemallStorageService.deleteByKey(litemallStorage.getKey());
-        storageService.delete(litemallStorage.getKey());
+        String key = litemallStorage.getKey();
+        if(StringUtils.isEmpty(key)){
+            return ResponseUtil.badArgument();
+        }
+        litemallStorageService.deleteByKey(key);
+        storageService.delete(key);
         return ResponseUtil.ok();
     }
 }

@@ -12,9 +12,11 @@ import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +51,9 @@ public class AdminUserController {
     }
 
     @GetMapping("/username")
-    public Object username(String username){
-        if(StringUtil.isEmpty(username)){
-            return ResponseUtil.badArgument();
+    public Object username(@LoginAdmin Integer adminId, @NotEmpty String username){
+        if(adminId == null){
+            return ResponseUtil.unlogin();
         }
 
         int total = userService.countSeletive(username, null, null, null, null, null);
@@ -61,11 +63,37 @@ public class AdminUserController {
         return ResponseUtil.ok("已存在");
     }
 
+    private Object validate(LitemallUser user) {
+        String username = user.getUsername();
+        if(StringUtils.isEmpty(user)){
+            return ResponseUtil.badArgument();
+        }
+        if(RegexUtil.isUsername(username)){
+            return ResponseUtil.fail(402, "用户名不符合规定");
+        }
+        String password = user.getPassword();
+        if(StringUtils.isEmpty(password) || password.length() < 6){
+            return ResponseUtil.fail(402, "用户密码长度不能小于6");
+        }
+        String mobile = user.getMobile();
+        if(StringUtils.isEmpty(mobile)){
+            return ResponseUtil.badArgument();
+        }
+        if(RegexUtil.isMobileExact(mobile)){
+            return ResponseUtil.fail(402, "用户手机号码格式不正确");
+        }
+        return null;
+    }
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallUser user){
-        logger.debug(user);
-
+        if(adminId == null){
+            return ResponseUtil.unlogin();
+        }
+        Object error = validate(user);
+        if(error != null){
+            return error;
+        }
         String username = user.getUsername();
         String mobile = user.getMobile();
         List<LitemallUser> userList = userService.queryByUsername(username);
@@ -92,8 +120,13 @@ public class AdminUserController {
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallUser user){
-        logger.debug(user);
-
+        if(adminId == null){
+            return ResponseUtil.unlogin();
+        }
+        Object error = validate(user);
+        if(error != null){
+            return error;
+        }
         // 用户密码加密存储
         String password = user.getPassword();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

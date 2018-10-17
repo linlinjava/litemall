@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.domain.LitemallIssue;
 import org.linlinjava.litemall.db.service.LitemallIssueService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +48,26 @@ public class AdminIssueController {
         return ResponseUtil.ok(data);
     }
 
+    private Object validate(LitemallIssue issue) {
+        String question = issue.getQuestion();
+        if(StringUtils.isEmpty(question)){
+            return ResponseUtil.badArgument();
+        }
+        String answer = issue.getAnswer();
+        if(StringUtils.isEmpty(answer)){
+            return ResponseUtil.badArgument();
+        }
+        return null;
+    }
+
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        Object error = validate(issue);
+        if(error != null){
+            return error;
         }
         issue.setAddTime(LocalDateTime.now());
         issueService.add(issue);
@@ -72,6 +89,10 @@ public class AdminIssueController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
+        Object error = validate(issue);
+        if(error != null){
+            return error;
+        }
         if(issueService.updateById(issue) == 0){
             return ResponseUtil.updatedDateExpired();
         }
@@ -84,7 +105,11 @@ public class AdminIssueController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        issueService.deleteById(issue.getId());
+        Integer id = issue.getId();
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
+        issueService.deleteById(id);
         return ResponseUtil.ok();
     }
 

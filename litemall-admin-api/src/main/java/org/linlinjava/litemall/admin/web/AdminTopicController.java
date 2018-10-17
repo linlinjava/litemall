@@ -9,10 +9,12 @@ import org.linlinjava.litemall.db.domain.LitemallTopic;
 import org.linlinjava.litemall.db.service.LitemallTopicService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -47,10 +49,30 @@ public class AdminTopicController {
         return ResponseUtil.ok(data);
     }
 
+    private Object validate(LitemallTopic topic) {
+        String title = topic.getTitle();
+        if (StringUtils.isEmpty(title)) {
+            return ResponseUtil.badArgument();
+        }
+        String content = topic.getContent();
+        if (StringUtils.isEmpty(content)) {
+            return ResponseUtil.badArgument();
+        }
+        BigDecimal price = topic.getPrice();
+        if (price == null) {
+            return ResponseUtil.badArgument();
+        }
+        return null;
+    }
+
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        Object error = validate(topic);
+        if(error != null){
+            return error;
         }
         topic.setAddTime(LocalDateTime.now());
         topicService.add(topic);
@@ -71,6 +93,10 @@ public class AdminTopicController {
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        Object error = validate(topic);
+        if(error != null){
+            return error;
         }
         if(topicService.updateById(topic) == 0){
             return ResponseUtil.updatedDateExpired();

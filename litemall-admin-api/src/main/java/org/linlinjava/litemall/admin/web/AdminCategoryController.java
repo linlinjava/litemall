@@ -10,6 +10,7 @@ import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +50,36 @@ public class AdminCategoryController {
         return ResponseUtil.ok(data);
     }
 
+    private Object validate(LitemallCategory category) {
+        String name = category.getName();
+        if(StringUtils.isEmpty(name)){
+            return ResponseUtil.badArgument();
+        }
+
+        String level = category.getLevel();
+        if(StringUtils.isEmpty(level)){
+            return ResponseUtil.badArgument();
+        }
+        if(!level.equals("L1") && !level.equals("L2")){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        Integer pid = category.getPid();
+        if(pid == null){
+            return ResponseUtil.badArgument();
+        }
+
+        return null;
+    }
+
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        Object error = validate(category);
+        if(error != null){
+            return error;
         }
         category.setAddTime(LocalDateTime.now());
         categoryService.add(category);
@@ -74,6 +101,11 @@ public class AdminCategoryController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
+        Object error = validate(category);
+        if(error != null){
+            return error;
+        }
+
         if(categoryService.updateById(category) == 0){
             return ResponseUtil.updatedDateExpired();
         }
@@ -85,7 +117,11 @@ public class AdminCategoryController {
         if(adminId == null){
             return ResponseUtil.unlogin();
         }
-        categoryService.deleteById(category.getId());
+        Integer id = category.getId();
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
+        categoryService.deleteById(id);
         return ResponseUtil.ok();
     }
 
