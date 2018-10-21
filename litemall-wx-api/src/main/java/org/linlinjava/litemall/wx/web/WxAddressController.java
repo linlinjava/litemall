@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.service.LitemallRegionService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -124,6 +125,57 @@ public class WxAddressController {
         return ResponseUtil.ok(data);
     }
 
+    private Object validate(LitemallAddress address) {
+        String name = address.getName();
+        if(StringUtils.isEmpty(name)){
+            return ResponseUtil.badArgument();
+        }
+
+        // 测试收货手机号码是否正确
+        String mobile = address.getMobile();
+        if(StringUtils.isEmpty(mobile)){
+            return ResponseUtil.badArgument();
+        }
+        if(!RegexUtil.isMobileExact(mobile)){
+            return ResponseUtil.badArgument();
+        }
+
+        Integer pid = address.getProvinceId();
+        if(pid == null){
+            return ResponseUtil.badArgument();
+        }
+        if(addressService.findById(pid) == null){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        Integer cid = address.getCityId();
+        if(cid == null){
+            return ResponseUtil.badArgument();
+        }
+        if(addressService.findById(cid) == null){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        Integer aid = address.getAreaId();
+        if(aid == null){
+            return ResponseUtil.badArgument();
+        }
+        if(addressService.findById(aid) == null){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        String detailedAddress = address.getAddress();
+        if(StringUtils.isEmpty(detailedAddress)){
+            return ResponseUtil.badArgument();
+        }
+
+        Boolean isDefault = address.getIsDefault();
+        if(isDefault == null){
+            return ResponseUtil.badArgument();
+        }
+        return null;
+    }
+
     /**
      * 添加或更新收货地址
      *
@@ -138,14 +190,9 @@ public class WxAddressController {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
-        if(address == null){
-            return ResponseUtil.badArgument();
-        }
-
-        // 测试收货手机号码是否正确
-        String mobile = address.getMobile();
-        if(!RegexUtil.isMobileExact(mobile)){
-            return ResponseUtil.badArgument();
+        Object error = validate(address);
+        if(error != null){
+            return error;
         }
 
         if(address.getIsDefault()){
@@ -181,12 +228,9 @@ public class WxAddressController {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
-        if(address == null){
-            return ResponseUtil.badArgument();
-        }
         Integer id = address.getId();
         if(id == null){
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.badArgument();
         }
 
         addressService.delete(id);

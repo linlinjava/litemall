@@ -1,6 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
-import org.linlinjava.litemall.core.util.JacksonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallFeedback;
@@ -13,8 +13,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 /**
@@ -32,18 +30,39 @@ public class WxFeedbackController {
     @Autowired
     private LitemallUserService userService;
 
+    private Object validate(LitemallFeedback feedback) {
+        String content = feedback.getContent();
+        if(StringUtils.isEmpty(content)){
+            return ResponseUtil.badArgument();
+        }
+
+        String type = feedback.getFeedType();
+        if(StringUtils.isEmpty(type)){
+            return ResponseUtil.badArgument();
+        }
+
+        // 测试手机号码是否正确
+        String mobile = feedback.getMobile();
+        if(StringUtils.isEmpty(mobile)){
+            return ResponseUtil.badArgument();
+        }
+        if (!RegexUtil.isMobileExact(mobile)) {
+            return ResponseUtil.badArgument();
+        }
+        return null;
+    }
+
     /**
-     * 意见反馈
+     *  意见反馈
      */
     @PostMapping("submit")
     public Object submit(@LoginUser Integer userId, @RequestBody LitemallFeedback feedback) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
-
-        // 测试手机号码是否正确
-        if (!RegexUtil.isMobileExact(feedback.getMobile())) {
-            return ResponseUtil.badArgument();
+        Object error = validate(feedback);
+        if(error != null){
+            return error;
         }
 
         LitemallUser user = userService.findById(userId);

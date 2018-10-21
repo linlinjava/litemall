@@ -1,8 +1,12 @@
 package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.linlinjava.litemall.db.domain.LitemallComment;
+import org.linlinjava.litemall.db.domain.LitemallGoodsSpecification;
 import org.linlinjava.litemall.db.service.LitemallCommentService;
+import org.linlinjava.litemall.db.service.LitemallGoodsService;
+import org.linlinjava.litemall.db.service.LitemallTopicService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
@@ -29,6 +33,45 @@ public class WxCommentController {
     private LitemallUserService userService;
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private LitemallGoodsService goodsService;
+    @Autowired
+    private LitemallTopicService topicService;
+
+    private Object validate(LitemallComment comment) {
+        String content = comment.getContent();
+        if(StringUtils.isEmpty(content)){
+            return ResponseUtil.badArgument();
+        }
+
+        Short star = comment.getStar();
+        if(star == null){
+            return ResponseUtil.badArgument();
+        }
+        if(star < 0 || star > 5){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        Byte type = comment.getType();
+        Integer valueId = comment.getValueId();
+        if(type == null || valueId == null){
+            return ResponseUtil.badArgument();
+        }
+        if(type == 0){
+            if(goodsService.findById(valueId)  == null){
+                return ResponseUtil.badArgumentValue();
+          }
+        }
+        else if(type == 1){
+            if(topicService.findById(valueId) == null){
+                return ResponseUtil.badArgumentValue();
+            }
+        }
+        else{
+            return ResponseUtil.badArgumentValue();
+        }
+        return null;
+    }
 
     /**
      * 发表评论
@@ -53,8 +96,9 @@ public class WxCommentController {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
-        if(comment == null){
-            return ResponseUtil.badArgument();
+        Object error = validate(comment);
+        if(error != null){
+            return error;
         }
 
         comment.setAddTime(LocalDateTime.now());

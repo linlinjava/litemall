@@ -102,9 +102,6 @@ public class WxOrderController {
     @Autowired
     private ExpressService expressService;
 
-    public WxOrderController() {
-    }
-
     private String detailedAddress(LitemallAddress litemallAddress) {
         Integer provinceId = litemallAddress.getProvinceId();
         Integer cityId = litemallAddress.getCityId();
@@ -141,7 +138,7 @@ public class WxOrderController {
      * }
      * 失败则 { errno: XXX, errmsg: XXX }
      */
-    @RequestMapping("list")
+    @GetMapping("list")
     public Object list(@LoginUser Integer userId,
                        @RequestParam(defaultValue = "0") Integer showType,
                        @RequestParam(defaultValue = "1") Integer page,
