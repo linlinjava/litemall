@@ -144,7 +144,7 @@ public class WxAddressController {
         if(pid == null){
             return ResponseUtil.badArgument();
         }
-        if(addressService.findById(pid) == null){
+        if(regionService.findById(pid) == null){
             return ResponseUtil.badArgumentValue();
         }
 
@@ -152,7 +152,7 @@ public class WxAddressController {
         if(cid == null){
             return ResponseUtil.badArgument();
         }
-        if(addressService.findById(cid) == null){
+        if(regionService.findById(cid) == null){
             return ResponseUtil.badArgumentValue();
         }
 
@@ -160,7 +160,7 @@ public class WxAddressController {
         if(aid == null){
             return ResponseUtil.badArgument();
         }
-        if(addressService.findById(aid) == null){
+        if(regionService.findById(aid) == null){
             return ResponseUtil.badArgumentValue();
         }
 
