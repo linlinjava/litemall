@@ -40,7 +40,7 @@ public class LitemallUserService {
     }
 
     public int updateById(LitemallUser user) {
-        return userMapper.updateWithVersionByPrimaryKeySelective(user.getVersion(), user);
+        return userMapper.updateByPrimaryKeySelective(user);
     }
 
     public List<LitemallUser> querySelective(String username, String mobile, Integer page, Integer size, String sort, String order) {

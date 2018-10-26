@@ -53,7 +53,7 @@ public class LitemallAdminService {
     }
 
     public int updateById(LitemallAdmin admin) {
-        return adminMapper.updateWithVersionByPrimaryKeySelective(admin.getVersion(), admin);
+        return adminMapper.updateByPrimaryKeySelective(admin);
     }
 
     public void deleteById(Integer id) {

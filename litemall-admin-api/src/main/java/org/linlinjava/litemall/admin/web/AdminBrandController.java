@@ -102,7 +102,7 @@ public class AdminBrandController {
             return error;
         }
         if(brandService.updateById(brand) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(brand);
     }

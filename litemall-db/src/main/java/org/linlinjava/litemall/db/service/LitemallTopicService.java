@@ -94,7 +94,7 @@ public class LitemallTopicService {
     public int updateById(LitemallTopic topic) {
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andIdEqualTo(topic.getId());
-        return topicMapper.updateWithVersionByExampleWithBLOBs(topic.getVersion(), topic, example);
+        return topicMapper.updateByExampleWithBLOBs(topic, example);
     }
 
     public void deleteById(Integer id) {

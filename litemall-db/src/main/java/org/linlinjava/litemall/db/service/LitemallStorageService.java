@@ -32,7 +32,7 @@ public class LitemallStorageService {
     }
 
     public int update(LitemallStorage storageInfo) {
-       return storageMapper.updateWithVersionByPrimaryKeySelective(storageInfo.getVersion(), storageInfo);
+       return storageMapper.updateByPrimaryKeySelective(storageInfo);
     }
 
     public LitemallStorage findById(Integer id) {

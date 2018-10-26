@@ -127,6 +127,8 @@ public class AdminOrderController {
             return ResponseUtil.fail(403, "订单不能确认收货");
         }
 
+        Integer version = order.getVersion();
+
         // 开启事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -134,7 +136,7 @@ public class AdminOrderController {
         try {
             // 设置订单取消状态
             order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
-            if(orderService.updateById(order) == 0) {
+            if(orderService.updateByIdWithVersion(version, order) == 0) {
                 throw new Exception("跟新数据已失效");
             }
 
@@ -199,6 +201,8 @@ public class AdminOrderController {
             return ResponseUtil.badArgument();
         }
 
+        Integer version = order.getVersion();
+
         // 如果订单不是已付款状态，则不能发货
         if (!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)) {
             return ResponseUtil.fail(403, "订单不能确认收货");
@@ -208,7 +212,7 @@ public class AdminOrderController {
         order.setShipSn(shipSn);
         order.setShipChannel(shipChannel);
         order.setShipTime(LocalDateTime.now());
-        if(orderService.updateById(order) == 0){
+        if(orderService.updateByIdWithVersion(version, order) == 0){
             return ResponseUtil.updatedDateExpired();
         }
 
@@ -243,6 +247,8 @@ public class AdminOrderController {
                 continue;
             }
 
+            Integer version = order.getVersion();
+
             // 开启事务管理
             DefaultTransactionDefinition def = new DefaultTransactionDefinition();
             def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -251,7 +257,7 @@ public class AdminOrderController {
                 // 设置订单已取消状态
                 order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
                 order.setEndTime(LocalDateTime.now());
-                if(orderService.updateById(order) == 0){
+                if(orderService.updateByIdWithVersion(version, order) == 0){
                     throw new Exception("跟新数据已失效");
                 }
 
@@ -264,12 +270,12 @@ public class AdminOrderController {
                     Integer number = product.getNumber() + orderGoods.getNumber();
                     product.setNumber(number);
                     if(productService.updateById(product) == 0){
-                        throw new Exception("跟新数据已失效");
+                        throw new Exception("跟新数据失败");
                     }
                 }
             } catch (Exception ex) {
                 txManager.rollback(status);
-                logger.info("订单 ID=" + order.getId() + " 数据已经更新，放弃自动确认收货");
+                logger.info("订单 ID=" + order.getId() + " 数据更新失败，放弃自动确认收货");
                 return;
             }
             txManager.commit(status);
@@ -306,10 +312,13 @@ public class AdminOrderController {
             if (expired.isAfter(now)) {
                 continue;
             }
+
+            Integer version = order.getVersion();
+
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_AUTO_CONFIRM);
             order.setConfirmTime(now);
-            if(orderService.updateById(order) == 0){
+            if(orderService.updateByIdWithVersion(version, order) == 0){
                 logger.info("订单 ID=" + order.getId() + " 数据已经更新，放弃自动确认收货");
             }
             else{

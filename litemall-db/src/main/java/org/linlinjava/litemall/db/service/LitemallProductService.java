@@ -25,7 +25,7 @@ public class LitemallProductService {
     }
 
     public int updateById(LitemallProduct product) {
-        return productMapper.updateWithVersionByPrimaryKeySelective(product.getVersion(), product);
+        return productMapper.updateByPrimaryKeySelective(product);
     }
 
     public void deleteById(Integer id) {

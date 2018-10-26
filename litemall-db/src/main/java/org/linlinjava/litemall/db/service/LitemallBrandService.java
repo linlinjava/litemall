@@ -77,7 +77,7 @@ public class LitemallBrandService {
     }
 
     public int updateById(LitemallBrand brand) {
-        return brandMapper.updateWithVersionByPrimaryKeySelective(brand.getVersion(), brand);
+        return brandMapper.updateByPrimaryKeySelective(brand);
     }
 
     public void deleteById(Integer id) {

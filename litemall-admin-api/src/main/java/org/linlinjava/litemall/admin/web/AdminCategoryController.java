@@ -107,7 +107,7 @@ public class AdminCategoryController {
         }
 
         if(categoryService.updateById(category) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok();
     }
