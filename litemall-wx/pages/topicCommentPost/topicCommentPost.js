@@ -113,7 +113,7 @@ Page({
       if (res.errno === 0) {
 
         that.setData({
-          topic: res.data,
+          topic: res.data.topic
         });
 
       }
