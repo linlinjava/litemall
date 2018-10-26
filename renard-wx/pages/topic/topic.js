@@ -28,7 +28,7 @@ Page({
  },
  nextPage: function(event) {
   var that = this;
-  if (this.data.page + 1 > that.data.count / that.data.size) {
+  if (this.data.page > that.data.count / that.data.size) {
    return true;
   }
 
