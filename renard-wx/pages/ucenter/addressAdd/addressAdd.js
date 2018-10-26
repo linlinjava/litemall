@@ -14,7 +14,6 @@ Page({
       name: '',
       mobile: '',
       isDefault: 0,
-      version: 0,
       provinceName: '',
       cityName: '',
       areaName: ''
@@ -302,8 +301,7 @@ Page({
       cityId: address.cityId,
       areaId: address.areaId,
       address: address.address,
-      isDefault: address.isDefault,
-      version: address.version
+      isDefault: address.isDefault
     }, 'POST').then(function (res) {
       if (res.errno === 0) {
         //返回之前，先取出上一页对象，并设置addressId
@@ -312,11 +310,11 @@ Page({
         console.log(prevPage);
         if (prevPage.route == "pages/checkout/checkout") {
           prevPage.setData({
-            addressId: res.data.id
+            addressId: res.data
           })
 
           try {
-            wx.setStorageSync('addressId', res.data.id);
+            wx.setStorageSync('addressId', res.data);
           } catch (e) {
 
           }

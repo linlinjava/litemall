@@ -209,11 +209,11 @@ public class WxAddressController {
             addressService.add(address);
         } else {
             address.setUserId(userId);
-            if(addressService.updateId(address) == 0){
-                return ResponseUtil.updatedDateExpired();
+            if(addressService.update(address) == 0){
+                return ResponseUtil.updatedDataFailed();
             }
         }
-        return ResponseUtil.ok(address);
+        return ResponseUtil.ok(address.getId());
     }
 
     /**

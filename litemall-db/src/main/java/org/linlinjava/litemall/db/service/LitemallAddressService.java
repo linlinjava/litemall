@@ -29,8 +29,8 @@ public class LitemallAddressService {
         return addressMapper.insertSelective(address);
     }
 
-    public int updateId(LitemallAddress address) {
-        return addressMapper.updateWithVersionByPrimaryKeySelective(address.getVersion(), address);
+    public int update(LitemallAddress address) {
+        return addressMapper.updateByPrimaryKeySelective(address);
     }
 
     public void delete(Integer id) {
