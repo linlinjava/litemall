@@ -85,10 +85,11 @@ public class WxAddressController {
      *           name: xxx,
      *           provinceId: xxx,
      *           cityId: xxx,
-     *           districtId: xxx,
+     *           areaId: xxx,
      *           mobile: xxx,
      *           address: xxx,
      *           isDefault: xxx,
+     *           version: xxx
      *           provinceName: xxx,
      *           cityName: xxx,
      *           areaName: xxx
@@ -112,10 +113,11 @@ public class WxAddressController {
         data.put("name", address.getName());
         data.put("provinceId", address.getProvinceId());
         data.put("cityId", address.getCityId());
-        data.put("districtId", address.getAreaId());
+        data.put("areaId", address.getAreaId());
         data.put("mobile", address.getMobile());
         data.put("address", address.getAddress());
         data.put("isDefault", address.getIsDefault());
+        data.put("version", address.getVersion());
         String pname = regionService.findById(address.getProvinceId()).getName();
         data.put("provinceName", pname);
         String cname = regionService.findById(address.getCityId()).getName();
@@ -211,7 +213,7 @@ public class WxAddressController {
                 return ResponseUtil.updatedDateExpired();
             }
         }
-        return ResponseUtil.ok(address.getId());
+        return ResponseUtil.ok(address);
     }
 
     /**
