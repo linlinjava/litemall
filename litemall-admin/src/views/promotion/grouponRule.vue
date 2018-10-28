@@ -94,7 +94,7 @@
   import BackToTop from '@/components/BackToTop'
 
   export default {
-    name: 'GrouponList',
+    name: 'GrouponRule',
     components: { BackToTop },
     data() {
       return {

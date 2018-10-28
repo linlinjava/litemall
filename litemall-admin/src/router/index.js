@@ -105,22 +105,6 @@ export const asyncRouterMap = [
       { path: 'comment', component: _import('goods/comment'), name: 'goodsComment', meta: { title: '商品评论', noCache: true }}
     ]
   },
-
-  {
-    path: '/groupon',
-    component: Layout,
-    redirect: 'noredirect',
-    name: 'grouponManage',
-    meta: {
-      title: '团购管理',
-      icon: 'chart'
-    },
-    children: [
-      { path: 'list', component: _import('groupon/list'), name: 'list', meta: { title: '团购规则', noCache: true }},
-      { path: 'record', component: _import('groupon/record'), name: 'record', meta: { title: '团购活动', noCache: true }}
-    ]
-  },
-
   {
     path: '/promotion',
     component: Layout,
@@ -132,7 +116,9 @@ export const asyncRouterMap = [
     },
     children: [
       { path: 'ad', component: _import('promotion/ad'), name: 'ad', meta: { title: '广告列表', noCache: true }},
-      { path: 'topic', component: _import('promotion/topic'), name: 'topic', meta: { title: '专题管理', noCache: true }}
+      { path: 'topic', component: _import('promotion/topic'), name: 'topic', meta: { title: '专题管理', noCache: true }},
+      { path: 'groupon-rule', component: _import('promotion/grouponRule'), name: 'grouponRule', meta: { title: '团购规则', noCache: true }},
+      { path: 'groupon-activity', component: _import('promotion/grouponActivity'), name: 'grouponActivity', meta: { title: '团购活动', noCache: true }}
     ]
   },
 

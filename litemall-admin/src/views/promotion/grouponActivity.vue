@@ -6,7 +6,6 @@
       <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入商品编号" v-model="listQuery.goodsId">
       </el-input>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <!--<el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>-->
       <el-button class="filter-item" type="primary" :loading="downloadLoading" icon="el-icon-download"
                  @click="handleDownload">导出
       </el-button>
@@ -97,7 +96,7 @@
   import BackToTop from '@/components/BackToTop'
 
   export default {
-    name: 'GoodsList',
+    name: 'GrouponActivity',
     components: { BackToTop },
     data() {
       return {
