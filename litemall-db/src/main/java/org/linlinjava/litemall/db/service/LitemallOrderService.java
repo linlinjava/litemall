@@ -25,12 +25,6 @@ public class LitemallOrderService {
         return orderMapper.insertSelective(order);
     }
 
-    public List<LitemallOrder> query(Integer userId) {
-        LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        return orderMapper.selectByExample(example);
-    }
-
     public int count(Integer userId) {
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
@@ -50,12 +44,6 @@ public class LitemallOrderService {
             sb.append(base.charAt(number));
         }
         return sb.toString();
-    }
-
-    public LitemallOrder queryByOrderSn(Integer userId, String orderSn){
-        LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
-        return orderMapper.selectOneByExample(example);
     }
 
     public int countByOrderSn(Integer userId, String orderSn){
@@ -136,8 +124,8 @@ public class LitemallOrderService {
         return (int)orderMapper.countByExample(example);
     }
 
-    public int updateById(LitemallOrder order) {
-        return orderMapper.updateWithVersionByPrimaryKeySelective(order.getVersion(), order);
+    public int updateByIdWithVersion(Integer version, LitemallOrder order) {
+        return orderMapper.updateWithVersionByPrimaryKeySelective(version, order);
     }
 
     public void deleteById(Integer id) {

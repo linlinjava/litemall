@@ -53,6 +53,10 @@ public class ResponseUtil {
         return fail(403, "更新数据已经失效");
     }
 
+    public static Object updatedDataFailed(){
+        return fail(404, "更新数据失败");
+    }
+
     public static Object unlogin(){
         return fail(501, "请登录");
     }

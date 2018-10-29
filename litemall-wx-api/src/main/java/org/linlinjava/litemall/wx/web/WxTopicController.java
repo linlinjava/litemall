@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.linlinjava.litemall.core.validator.Order;
+import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallTopic;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
@@ -47,8 +49,10 @@ public class WxTopicController {
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size) {
-        List<LitemallTopic> topicList = topicService.queryList(page, size);
+                       @RequestParam(defaultValue = "10") Integer size,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        List<LitemallTopic> topicList = topicService.queryList(page, size, sort, order);
         int total = topicService.queryTotal();
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("data", topicList);

@@ -94,7 +94,7 @@ public class AdminKeywordController {
             return error;
         }
         if(keywordService.updateById(keywords) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(keywords);
     }

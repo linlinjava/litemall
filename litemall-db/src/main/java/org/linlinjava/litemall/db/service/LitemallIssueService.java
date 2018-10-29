@@ -59,7 +59,7 @@ public class LitemallIssueService {
     }
 
     public int updateById(LitemallIssue issue) {
-        return issueMapper.updateWithVersionByPrimaryKeySelective(issue.getVersion(), issue);
+        return issueMapper.updateByPrimaryKeySelective(issue);
     }
 
     public LitemallIssue findById(Integer id) {

@@ -85,10 +85,11 @@ public class WxAddressController {
      *           name: xxx,
      *           provinceId: xxx,
      *           cityId: xxx,
-     *           districtId: xxx,
+     *           areaId: xxx,
      *           mobile: xxx,
      *           address: xxx,
      *           isDefault: xxx,
+     *           version: xxx
      *           provinceName: xxx,
      *           cityName: xxx,
      *           areaName: xxx
@@ -112,10 +113,11 @@ public class WxAddressController {
         data.put("name", address.getName());
         data.put("provinceId", address.getProvinceId());
         data.put("cityId", address.getCityId());
-        data.put("districtId", address.getAreaId());
+        data.put("areaId", address.getAreaId());
         data.put("mobile", address.getMobile());
         data.put("address", address.getAddress());
         data.put("isDefault", address.getIsDefault());
+        data.put("version", address.getVersion());
         String pname = regionService.findById(address.getProvinceId()).getName();
         data.put("provinceName", pname);
         String cname = regionService.findById(address.getCityId()).getName();
@@ -144,7 +146,7 @@ public class WxAddressController {
         if(pid == null){
             return ResponseUtil.badArgument();
         }
-        if(addressService.findById(pid) == null){
+        if(regionService.findById(pid) == null){
             return ResponseUtil.badArgumentValue();
         }
 
@@ -152,7 +154,7 @@ public class WxAddressController {
         if(cid == null){
             return ResponseUtil.badArgument();
         }
-        if(addressService.findById(cid) == null){
+        if(regionService.findById(cid) == null){
             return ResponseUtil.badArgumentValue();
         }
 
@@ -160,7 +162,7 @@ public class WxAddressController {
         if(aid == null){
             return ResponseUtil.badArgument();
         }
-        if(addressService.findById(aid) == null){
+        if(regionService.findById(aid) == null){
             return ResponseUtil.badArgumentValue();
         }
 
@@ -207,8 +209,8 @@ public class WxAddressController {
             addressService.add(address);
         } else {
             address.setUserId(userId);
-            if(addressService.updateId(address) == 0){
-                return ResponseUtil.updatedDateExpired();
+            if(addressService.update(address) == 0){
+                return ResponseUtil.updatedDataFailed();
             }
         }
         return ResponseUtil.ok(address.getId());

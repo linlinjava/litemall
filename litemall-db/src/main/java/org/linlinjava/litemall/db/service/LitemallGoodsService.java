@@ -223,7 +223,7 @@ public class LitemallGoodsService {
     }
 
     public int updateById(LitemallGoods goods) {
-        return goodsMapper.updateWithVersionByPrimaryKeySelective(goods.getVersion(), goods);
+        return goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
     public void deleteById(Integer id) {

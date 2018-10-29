@@ -26,7 +26,7 @@ public class LitemallCartService {
     }
 
     public int updateById(LitemallCart cart) {
-        return cartMapper.updateWithVersionByPrimaryKeySelective(cart.getVersion(), cart);
+        return cartMapper.updateByPrimaryKeySelective(cart);
     }
 
     public List<LitemallCart> queryByUid(int userId) {

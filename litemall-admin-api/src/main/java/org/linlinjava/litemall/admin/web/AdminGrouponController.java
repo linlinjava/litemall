@@ -136,7 +136,7 @@ public class AdminGrouponController {
         grouponRules.setPicUrl(goods.getPicUrl());
 
         if(rulesService.updateById(grouponRules) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
 
         return ResponseUtil.ok();

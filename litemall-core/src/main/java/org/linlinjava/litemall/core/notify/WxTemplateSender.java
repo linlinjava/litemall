@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.core.notify;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.bean.WxMaTemplateData;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,10 +72,10 @@ public class WxTemplateSender {
         }
     }
 
-    private List<WxMaTemplateMessage.Data> createMsgData(String[] parms) {
-        List<WxMaTemplateMessage.Data> dataList = new ArrayList<>();
+    private List<WxMaTemplateData> createMsgData(String[] parms) {
+        List<WxMaTemplateData> dataList = new ArrayList<WxMaTemplateData>();
         for (int i = 1; i <= parms.length; i++) {
-            dataList.add(new WxMaTemplateMessage.Data("keyword" + i, parms[i - 1]));
+            dataList.add(new WxMaTemplateData("keyword" + i, parms[i - 1]));
         }
 
         return dataList;

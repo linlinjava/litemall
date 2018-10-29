@@ -3,7 +3,7 @@
     <import src="../../lib/wxParse/wxParse.wxml"/> 
     <template is="wxParse" data="{{wxParseData:topicDetail.nodes}}"/>
   </scroll-view>
-  <scroll-view class="sv-goods">
+  <scroll-view class="sv-goods" wx:if="{{topicGoods.length > 0 }}">
   <view class="topic-goods">
    <view class="h">
       <text class="t">专题商品</text>

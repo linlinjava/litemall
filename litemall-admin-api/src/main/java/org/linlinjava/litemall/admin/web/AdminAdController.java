@@ -94,7 +94,7 @@ public class AdminAdController {
             return error;
         }
         if(adService.updateById(ad) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
 
         return ResponseUtil.ok(ad);

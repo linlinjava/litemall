@@ -108,6 +108,6 @@ public class LitemallGrouponRulesService {
     }
 
     public int updateById(LitemallGrouponRules grouponRules) {
-        return mapper.updateWithVersionByPrimaryKeySelective(grouponRules.getVersion(), grouponRules);
+        return mapper.updateByPrimaryKeySelective(grouponRules);
     }
 }

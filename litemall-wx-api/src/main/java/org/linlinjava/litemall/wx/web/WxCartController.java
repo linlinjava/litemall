@@ -151,7 +151,7 @@ public class WxCartController {
             }
             existCart.setNumber((short) num);
             if(cartService.updateById(existCart) == 0){
-                return ResponseUtil.updatedDateExpired();
+                return ResponseUtil.updatedDataFailed();
             }
         }
 
@@ -224,7 +224,7 @@ public class WxCartController {
             }
             existCart.setNumber((short) num);
             if(cartService.updateById(existCart) == 0){
-                return ResponseUtil.updatedDateExpired();
+                return ResponseUtil.updatedDataFailed();
             }
         }
 
@@ -286,7 +286,7 @@ public class WxCartController {
 
         existCart.setNumber(number.shortValue());
         if(cartService.updateById(existCart) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok();
     }

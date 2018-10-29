@@ -167,7 +167,7 @@ public class WxAuthController {
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.client(request));
             if(userService.updateById(user) == 0){
-                return ResponseUtil.updatedDateExpired();
+                return ResponseUtil.updatedDataFailed();
             }
         }
 
@@ -336,7 +336,7 @@ public class WxAuthController {
         user.setPassword(encodedPassword);
 
         if(userService.updateById(user) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
 
         return ResponseUtil.ok();
@@ -352,7 +352,7 @@ public class WxAuthController {
         LitemallUser user = userService.findById(userId);
         user.setMobile(phone);
         if(userService.updateById(user) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok();
     }

@@ -17,16 +17,10 @@ public class LitemallBrandService {
     private LitemallBrandMapper brandMapper;
     private Column[] columns = new Column[]{Column.id, Column.name, Column.desc, Column.picUrl, Column.floorPrice};
 
-    public List<LitemallBrand> query(int offset, int limit) {
-        LitemallBrandExample example = new LitemallBrandExample();
-        example.or().andDeletedEqualTo(false);
-        PageHelper.startPage(offset, limit);
-        return brandMapper.selectByExample(example);
-    }
-
     public List<LitemallBrand> queryVO(int offset, int limit) {
         LitemallBrandExample example = new LitemallBrandExample();
         example.or().andDeletedEqualTo(false);
+        example.setOrderByClause("add_time desc");
         PageHelper.startPage(offset, limit);
         return brandMapper.selectByExampleSelective(example, columns);
     }
@@ -77,7 +71,7 @@ public class LitemallBrandService {
     }
 
     public int updateById(LitemallBrand brand) {
-        return brandMapper.updateWithVersionByPrimaryKeySelective(brand.getVersion(), brand);
+        return brandMapper.updateByPrimaryKeySelective(brand);
     }
 
     public void deleteById(Integer id) {

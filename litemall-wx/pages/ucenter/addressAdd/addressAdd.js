@@ -301,10 +301,7 @@ Page({
       cityId: address.cityId,
       areaId: address.areaId,
       address: address.address,
-      isDefault: address.isDefault,
-      provinceName: address.provinceName,
-      cityName: address.cityName,
-      countyName: address.areaName
+      isDefault: address.isDefault
     }, 'POST').then(function (res) {
       if (res.errno === 0) {
         //返回之前，先取出上一页对象，并设置addressId

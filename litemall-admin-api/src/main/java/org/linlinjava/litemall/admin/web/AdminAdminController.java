@@ -149,7 +149,7 @@ public class AdminAdminController {
         admin.setPassword(encodedPassword);
 
         if(adminService.updateById(admin) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
 
         return ResponseUtil.ok(admin);

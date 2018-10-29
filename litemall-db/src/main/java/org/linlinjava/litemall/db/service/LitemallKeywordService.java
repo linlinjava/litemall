@@ -80,7 +80,7 @@ public class LitemallKeywordService {
     }
 
     public int updateById(LitemallKeyword keywords) {
-        return keywordsMapper.updateWithVersionByPrimaryKeySelective(keywords.getVersion(), keywords);
+        return keywordsMapper.updateByPrimaryKeySelective(keywords);
     }
 
     public void deleteById(Integer id) {

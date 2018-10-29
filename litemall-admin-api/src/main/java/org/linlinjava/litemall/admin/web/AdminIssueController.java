@@ -94,7 +94,7 @@ public class AdminIssueController {
             return error;
         }
         if(issueService.updateById(issue) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
 
         return ResponseUtil.ok(issue);

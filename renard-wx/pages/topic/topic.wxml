@@ -10,7 +10,7 @@
         </navigator>
         <view class="page" wx:if="{{showPage}}">
             <view class="prev {{ page <= 1 ? 'disabled' : ''}}" bindtap="prevPage">上一页</view>
-            <view class="next {{ (count / size) < page +1 ? 'disabled' : ''}}" bindtap="nextPage">下一页</view>
+            <view class="next {{ (count / size) < page ? 'disabled' : ''}}" bindtap="nextPage">下一页</view>
         </view>
     </scroll-view>
 </view>

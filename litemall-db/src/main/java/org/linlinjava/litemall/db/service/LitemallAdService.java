@@ -57,7 +57,7 @@ public class LitemallAdService {
     }
 
     public int updateById(LitemallAd ad) {
-        return adMapper.updateWithVersionByPrimaryKeySelective(ad.getVersion(), ad);
+        return adMapper.updateByPrimaryKeySelective(ad);
     }
 
     public void deleteById(Integer id) {

@@ -87,7 +87,7 @@ public class LitemallCategoryService {
     }
 
     public int updateById(LitemallCategory category) {
-        return categoryMapper.updateWithVersionByPrimaryKeySelective(category.getVersion(), category);
+        return categoryMapper.updateByPrimaryKeySelective(category);
     }
 
     public void deleteById(Integer id) {

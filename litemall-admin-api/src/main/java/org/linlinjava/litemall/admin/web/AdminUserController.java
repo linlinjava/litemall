@@ -134,7 +134,7 @@ public class AdminUserController {
         user.setPassword(encodedPassword);
 
         if(userService.updateById(user) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(user);
     }

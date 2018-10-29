@@ -99,7 +99,7 @@ public class AdminTopicController {
             return error;
         }
         if(topicService.updateById(topic) == 0){
-            return ResponseUtil.updatedDateExpired();
+            return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(topic);
     }
