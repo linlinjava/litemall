@@ -23,20 +23,6 @@ Page({
   wx.hideNavigationBarLoading() //完成停止加载
   wx.stopPullDownRefresh() //停止下拉刷新
  },
-  getOrderExpress: function() {
-    let that = this;
-    util.request(api.ExpressQuery, {
-      expCode: that.data.orderInfo.expCode,
-      expNo: that.data.orderInfo.expNo
-    }, 'POST').then(function(res) {
-      if (res.errno === 0) {
-        that.setData({
-          expressInfo: res.data
-        });
-
-      }
-    });
-  },
   expandDetail: function() {
     let that = this;
     this.setData({
@@ -44,6 +30,14 @@ Page({
     })
   },
   getOrderDetail: function () {
+    wx.showLoading({
+      title: '加载中',
+    });
+
+    setTimeout(function () {
+      wx.hideLoading()
+    }, 2000);
+
     let that = this;
     util.request(api.OrderDetail, {
       orderId: that.data.orderId
@@ -53,14 +47,12 @@ Page({
         that.setData({
           orderInfo: res.data.orderInfo,
           orderGoods: res.data.orderGoods,
-          handleOption: res.data.orderInfo.handleOption
+          handleOption: res.data.orderInfo.handleOption,
+          expressInfo: res.data.expressInfo
         });
-
-    // 请求物流信息,仅当订单状态为发货时才请求
-    if (res.data.orderInfo.handleOption.confirm) {
-     that.getOrderExpress();
-    }
    }
+
+    wx.hideLoading();
   });
  },
  // “去付款”按钮点击效果
