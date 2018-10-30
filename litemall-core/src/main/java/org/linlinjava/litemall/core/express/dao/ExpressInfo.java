@@ -85,4 +85,17 @@ public class ExpressInfo {
     public void setShipperName(String shipperName) {
         ShipperName = shipperName;
     }
+
+    @Override
+    public String toString() {
+        return "ExpressInfo{" +
+                "LogisticCode='" + LogisticCode + '\'' +
+                ", ShipperCode='" + ShipperCode + '\'' +
+                ", Traces=" + Traces +
+                ", State='" + State + '\'' +
+                ", EBusinessID='" + EBusinessID + '\'' +
+                ", Success=" + Success +
+                ", ShipperName='" + ShipperName + '\'' +
+                '}';
+    }
 }
