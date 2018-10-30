@@ -11,7 +11,7 @@
   * vue-element-admin
   * 其他，见package.json
 * 后台管理后端, 即litemall-admin-api模块
-  * Spring Boot 1.5.10
+  * Spring Boot 2.x
   * Spring MVC
 
 目前存在的问题：

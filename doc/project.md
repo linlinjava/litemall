@@ -15,7 +15,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 
 * 小商场子系统(wxmall)
 
-  由litemall-wx-api模块和litemall-wx模块组成；
+  由litemall-wx-api模块、litemall-wx模块和renard-wx模块组成；
 
 * 后台管理子系统(admin)
 
@@ -34,7 +34,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
   
 * miniprogram（微信小程序）技术栈
 
-  采用微信小程序开发工具，开发litemall-wx模块；
+  采用微信小程序开发工具，开发litemall-wx模块和renard-wx模块；
   
 * Vue技术栈
 
@@ -57,6 +57,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 * 分类列表、分类详情
 * 品牌列表、品牌详情
 * 新品首发、人气推荐
+* 团购
 * 搜索
 * 商品详情
 * 商品评价列表、商品评价
@@ -65,7 +66,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 * 个人
 * 订单列表、订单详情
 * 地址列表、地址添加、地址删除
-* 收藏、足迹
+* 收藏、足迹、关于
 
 ### 1.2.2 管理平台功能
 
@@ -75,6 +76,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
   * 会员收藏
   * 会员足迹
   * 搜索历史
+  * 意见反馈
 * 商城管理
   * 行政区域
   * 品牌制造商
@@ -91,6 +93,8 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 * 推广管理
   * 广告管理
   * 专题管理
+  * 团购规则
+  * 团购活动
 * 系统管理
   * 管理员
   * 对象存储
@@ -152,7 +156,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 而部署阶段则更为自由。
 
 其次，需要明确的是，这里划分三种阶段不是简单的文档说明，还直接影响项目本身的行为
-和代码编译结果，因此开发者需要清晰的了解：
+和代码编译结果，因此开发者需要清晰的了解；
 
 最后，其实dep和prod不存在先后关系。例如，如果开发者已经存在域名和生产环境，可以直接
 跳过dep阶段，而直接部署在线上环境中。因此有些时候，这里部署和上线是一个阶段。
@@ -194,7 +198,9 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 1. 安装JDK8
 2. 安装Maven
 3. 安装Git（可选）
-4. 安装IDEA Community，建议安装Maven插件和git插件。Eclipse没有试过，但是应该也是可行的。
+4. 安装IDEA Community，建议安装Maven插件和Git插件。
+   这里IDEA社区版即可，不要求IDEA商业版。
+   Eclipse没有试过，但应该也是可行的。
 5. IDEA导入本项目
 6. 采用Maven命令安装依赖库
 
@@ -243,29 +249,25 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
     如果出现JSON数据，则litemall-all模块运行正常。
     
 注意：
-> 1. 在上述开发步骤中，既介绍了Maven命令方式，也介绍了IDEA方式，但是仍然建议
->    开发时采用IDEA即可。
+> 1. 在上述开发步骤中，既介绍了Maven命令方式，也介绍了IDEA方式，
+>    但是仍然建议开发者开发阶段采用IDEA。
 > 2. 以上是本人开发过程中采用的一些步骤，开发者可不拘泥于这些步骤。
+>    如果开发者没有按照本人步骤开发而出现相关问题，也请**不要**咨询，
+>    本人**没有**相关解决经验。
 > 3. 开发者使用IDEA导入项目或者运行项目的时候会出现软件卡顿的现象，这通常是litemall-admin的
 >    node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当IDEA尝试索引该文件夹内的大量文件时
 >    则出现IDEA卡顿的现象，具体解决方式可以参见[FAQ](./FAQ.md)
 
 ### 1.4.3 微信小程序开发环境
 
-1. 安装微信小程序开发工具
-2. 导入本项目的litemall-wx模块文件夹
+1. 安装微信小程序开发工具；
+2. 导入本项目的litemall-wx模块(或者renard-wx模块)文件夹；
 3. 编译前，请确定litemall-all模块已经运行，而litemall-wx模块的config文件夹中的api.js已经设置正确的后台数据服务地址；
 4. 点击`编译`，如果出现数据和图片，则运行正常
 
 注意：
-> 1. 开发者编译以后，可以看到图片和数据，但是采用微信登录是肯定会失败的。
->    原因是这里的appid是本人申请的，而开发者不是本人app的开发者或体验者，
->    因此微信登录导致后台服务向微信服务器交互时会失败。
-> 2. 有的开发者可能认为把litemall-wx模块的appid设置成开发者自己的appid就可以，
->    但是由于小商场的云主机后台服务的appid仍然是本人appid，因此微信登录时仍然会失败。
-> 3. 开发者可以在litemall-wx和litemall-core模块中设置自己的appid，以及部署自己的后台服务，
->    相关内容请阅读章节3。或者，开发者可以采用账号登录方式登录，然后体验商品购买下单的方式。
-> 4. 由于没有设置商户支付信息，因此开发者在付款时会失败。相关内容阅读章节3。
+> 开发者编译以后，可以看到图片和数据，但是采用微信登录或者微信支付是肯定会失败的。
+> 原因是这里的配置信息没有正确设置，例如appid，具体详细配置见1.4.5节。
 
 ### 1.4.4 Vue开发环境
 
@@ -289,6 +291,390 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 4. 请确定litemall-all模块已经运行，然后点击`登录`，如果能够成功登录，则表明管理后台的前端和后端对接成功，运行正常。
 
 目前本人采用VSC（Visual Studio Code）来开发litemall-admin项目，开发者也可以采用其他熟悉的IDE。
+
+### 1.4.5 项目配置
+
+当安装好Spring Boot开发环境、Vue开发环境和小程序开发环境以后，启动相应的模块，已经可以看到一些数据或者效果。
+但是还有一些特性或者功能没有启动，这是因为需要开发者进行配置才能正确启用。
+
+**项目配置结构**
+
+1. 管理后台前端，即litemall-admin模块，配置文件在litemall-admin/config中，存在三个配置文件`dev.env.js`,`dep.env.js`
+和`dep.env.js`。这里面配置信息都是一样，最主要的配置是`BASE_API`，即管理后台的服务根地址。
+
+   * 开发阶段，开发者运行命令`cnpm run dev`，这里就会采用`dev.env.js`配置文件；
+   * 部署阶段，当开发者运行命令`cnpm run build:dep`，这里就会采用`dep.env.js`配置文件；
+   * 上线阶段，当开发者运行命令`cnpm run build:prod`，这里就会采用`prod.env.js`配置文件。
+
+2. 小商场前端，即litemall-wx模块，配置文件是`litemall-wx/project.config.json`和`litemall-wx/api.js`。
+这里面最主要的配置信息是`project.config.json`中的`appid`，开发者需要设置自己申请的appid；
+以及`apis.js`中的`WxApiRoot`，即小商场服务根地址。
+
+    ```
+    // 本机开发时使用
+     var WxApiRoot = 'http://localhost:8080/wx/';
+    // 局域网测试使用
+    // var WxApiRoot = 'http://192.168.0.101:8080/wx/';
+    // 云平台部署时使用
+    // var WxApiRoot = 'http://122.152.206.172:8080/wx/';
+    // 云平台上线时使用
+    // var WxApiRoot = 'https://www.menethil.com.cn/wx/';
+
+    ```
+
+3. 管理后台后端和小商城后端，即多个Spring Boot模块，配置文件是每个模块的`litemall-xx/src/main/java/resources`的
+`application.yml`和`application-xx.yml`配置文件。这里会发现每个模块都会有两个配置文件，但是实际上当前模块的配置信息
+都是在`application-xx.yml`文件中，而`application.yml`文件仅仅用于引入其他模块的配置文件。
+
+   例如litemall-all模块的`application.yml`的内容是
+   ```
+    spring:
+        profiles:
+            active: db, core, admin, wx
+        message:
+            encoding: UTF-8
+    ```
+    因此启动litemall-all模块时，程序首先加载litemall-all的`application.yml`，然后通过`spring.profiles.active`信息
+    再次依次加载`application-db.yml`,`application-core.yml`,`application-admin.yml`和`application.yml-wx`四个配置文件。
+    
+这里后端服务模块的配置如下所示。
+
+#### 1.4.5.1 日志配置
+
+如果开发者启动litemall-all模块，则需要配置该模块的`application.yml`文件
+```
+logging:
+  level:
+    root:  ERROR
+    org.springframework:  ERROR
+    org.mybatis:  ERROR
+    org.linlinjava.litemall.core:  ERROR
+    org.linlinjava.litemall.db:  ERROR
+    org.linlinjava.litemall.admin:  ERROR
+    org.linlinjava.litemall.wx:  ERROR
+    org.linlinjava.litemall:  ERROR
+```
+
+具体如何配置，请自行学习Spring Boot的日志配置。
+
+`org.linlinjava.litemall.core`定义litemall-core模块的日志级别
+`org.linlinjava.litemall.db`定义litemall-core模块的日志级别
+`org.linlinjava.litemall.wx`定义litemall-wx-api模块的日志级别
+`org.linlinjava.litemall.admin`定义litemall-admin-api模块的日志级别
+`org.linlinjava.litemall`而定义litemall所有后端模块的日志级别
+
+当然，如果开发者这里启动litemall后端模块级别是DEBUG时，可能会发现并没有很多日志，
+这是因为代码内部没有写很多日志，开发者可以根据需要添加。
+
+注意：
+> 如果开发者独立启动litemall-wx-api模块，那么则需要配置litemall-wx-api模块的
+> `application.yml`文件来设置日志
+
+#### 1.4.5.2 数据库连接配置
+
+在litemall-db模块的`application-db.yml`文件中配置数据库连接和druid：
+
+```
+
+spring:
+  datasource:
+    druid:
+      url:  jdbc:mysql://localhost:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      driver-class-name:  com.mysql.jdbc.Driver
+      username:  litemall
+      password:  litemall123456
+      initial-size:  10
+      max-active:  50
+      min-idle:  10
+      max-wait:  60000
+      pool-prepared-statements:  true
+      max-pool-prepared-statement-per-connection-size:  20
+      validation-query:  SELECT 1 FROM DUAL
+      test-on-borrow:  false
+      test-on-return:  false
+      test-while-idle:  true
+      time-between-eviction-runs-millis:  60000
+      filters:  stat,wall
+```
+
+#### 1.4.5.3 微信登录配置
+
+微信登录需要配置两个地方，
+首先是小商场前端litemall-wx模块（或renard-wx模块）中`project.config.json`文件的appid
+其次是小商场后端litemall-core模块的`application-core.yml`文件：
+```bash
+litemall:
+  wx:
+    app-id: wxa5b486c6b918ecfb
+    app-secret: e04004829d4c383b4db7769d88dfbca1
+```
+
+这里的`app-id`和`app-secret`需要开发者在[微信公众平台](https://mp.weixin.qq.com/)注册获取。
+
+注意
+> 这里开发者可能会疑惑：小商场后端应该配置在litemall-wx-api模块的`application-wx.yml`文件更合适。
+> 这里放置在`application-core.yml`文件中是因为litemall-core模块也依赖小程序appid配置信息。
+
+#### 1.4.5.4 微信支付配置
+
+在litemall-core模块的`application-core.yml`文件中配置微信支付：
+```
+litemall:
+  wx:
+    mch-id: 111111
+    mch-key: xxxxxx
+    notify-url: https://www.example.com/wx/order/pay-notify
+```
+
+这里的`mch-id`和`mch-key`需要开发者在[微信支付平台](https://pay.weixin.qq.com/)注册获取。
+
+而这里的`notify-url`则应该是项目上线以后微信支付回调地址，当微信支付成功或者失败，
+微信支付平台将向回调地址发生成功或者失败的数据，因此需要确保该地址是
+litemall-wx-api模块的WxOrderController类的payNotify方法所服务的API地址。
+
+开发阶段可以采用一些技术实现临时外网地址映射本地，开发者可以百度关键字“微信 内网穿透”自行学习。
+
+#### 1.4.5.5 邮件通知配置
+
+在litemall-core模块的`application-core.yml`文件中配置邮件通知服务：
+```
+litemall:
+  notify:
+    mail:
+      # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员
+      enable: false
+      host: smtp.exmail.qq.com
+      username: ex@ex.com.cn
+      password: XXXXXXXXXXXXX
+      sendfrom: ex@ex.com.cn
+      sendto: ex@qq.com
+```
+
+配置方式：
+1. 邮件服务器开启smtp服务
+2. 开发者在配置文件中设置`enable`的值`true`，然后其他信息设置相应的值。
+这里只测试过QQ邮箱，开发者需要自行测试其他邮箱。
+
+应用场景：
+目前邮件通知场景也很简单，就是用户下单以后系统会自动向`sendto`用户发送一封邮件，告知用户下单的订单信息。
+以后可能需要继续优化扩展。当然，如果不需要邮件通知订单信息，可以默认关闭即可。
+
+验证配置成功：
+当配置好信息以后，开发者可以运行litemall-core模块的`MailTest`测试类，
+独立发送邮件，然后登录邮箱查看邮件是否成功接收。
+
+#### 1.4.5.6 短信通知配置
+
+在litemall-core模块的`application-core.yml`文件中配置短信通知服务：
+```
+litemall:
+  notify:
+    # 短消息模版通知配置
+    # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    sms:
+      enable: false
+      appid: 111111111
+      appkey: xxxxxxxxxxxxxx
+      template:
+      - name: paySucceed
+        templateId: 156349
+      - name: captcha
+        templateId: 156433
+      - name: ship
+        templateId: 158002
+      - name: refund
+        templateId: 159447
+```        
+
+配置方式：
+1. 腾讯云短信平台申请，然后设置四个场景的短信模板；
+2. 开发者在配置文件设置`enable`的值`true`，然后其他信息设置
+腾讯云短信平台申请的appid等值。
+这里只测试过腾讯云短信平台，开发者需要自行测试其他短信云平台。
+
+应用场景：
+目前短信通知场景只支持支付成功、验证码、订单发送、退款成功四种情况。
+以后可能需要继续优化扩展。
+
+验证配置成功：
+当配置好信息以后，开发者可以litemall-core模块的`SmsTest`测试类中设置手机号和
+模板所需要的参数值，独立启动`SmsTest`测试类发送短信，然后查看手机是否成功接收短信。
+
+#### 1.4.5.7 微信通知配置
+
+微信通知是微信上收到的服务通知。
+
+在litemall-core模块的`application-core.yml`文件中配置微信通知服务：
+```
+litemall:
+  notify:
+    # 微信模版通知配置
+    # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    wx:
+      enable: false
+      template:
+      - name: paySucceed
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: captcha
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: ship
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: refund
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```        
+
+配置方式：
+1. 微信公众平台申请，然后在`模板消息`中设置四个场景的微信模板；
+2. 开发者在配置文件设置`enable`的值`true`，然后其他信息设置
+微信公众平台中所设置模板ID。
+
+应用场景：
+目前微信通知场景只支持支付成功、验证码、订单发送、退款成功四种情况。
+以后可能需要继续优化扩展。
+
+验证配置成功：
+这里没有实现测试类，因为微信通知需要小程序前端的formId作为参数，因此需要
+小商城前端配合。开发者可以在实际场景中DBEUG看看。
+
+#### 1.4.5.8 物流配置
+
+物流配置是查询商品物流信息，这里主要是基于[第三方快递鸟服务](http://www.kdniao.com/api-track)。
+
+在litemall-core模块的`application-core.yml`文件中配置快递鸟物流服务：
+```
+litemall:
+  notify:
+  # 快鸟物流查询配置
+  express:
+    enable: false
+    appId: "XXXXXXXXX"
+    appKey: "XXXXXXXXXXXXXXXXXXXXXXXXX"
+    vendors:
+    - code: "ZTO"
+      name: "中通快递"
+    - code: "YTO"
+      name: "圆通速递"
+    - code: "YD"
+      name: "韵达速递"
+    - code: "YZPY"
+      name: "邮政快递包裹"
+    - code: "EMS"
+      name: "EMS"
+    - code: "DBL"
+      name: "德邦快递"
+    - code: "FAST"
+      name: "快捷快递"
+    - code: "ZJS"
+      name: "宅急送"
+    - code: "TNT"
+      name: "TNT快递"
+    - code: "UPS"
+      name: "UPS"
+    - code: "DHL"
+      name: "DHL"
+    - code: "FEDEX"
+      name: "FEDEX联邦(国内件)"
+    - code: "FEDEX_GJ"
+      name: "FEDEX联邦(国际件)"
+```        
+
+配置方式：
+1. [快递鸟平台](http://www.kdniao.com/)申请；
+2. 开发者在配置文件设置`enable`的值`true`，然后其他信息设置
+快递鸟平台中的appId和appKey。
+
+应用场景：
+小商场查询订单详情时，如果商品已发货，小商城后端会返回详细物流信息。
+
+验证配置成功：
+当配置好信息以后，开发者可以litemall-core模块的`ExpressTest`测试类中设置快递公司编码和
+真实测试快递单号，独立启动`ExpressTest`测试类查询物流信息。
+
+#### 1.4.5.9 对象存储配置
+
+对象存储，即存储和下载文件。
+
+在litemall-core模块的`application-core.yml`文件中配置对象存储服务：
+
+* 本地对象存储配置
+如果开发者采用当前主机保存上传的文件，则需要配置：
+```
+litemall:
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent、qiniu
+    active: local
+    # 本地对象存储配置信息
+    local:
+      storagePath: storage
+      # 这个地方应该是wx模块的WxStorageController的fetch方法对应的地址
+      address: http://localhost:8080/wx/storage/fetch/
+```
+
+配置方式：
+配置文件设置`active`的值`local`，表示当前对象存储模式是本地对象存储；
+而`storagePath`是上传文件保存的路径；`address`则是访问文件的对外路径。
+
+* 阿里云对象存储配置
+
+```
+litemall:
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent、qiniu
+    active: aliyun
+    aliyun:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      accessKeyId: 111111
+      accessKeySecret: xxxxxx
+      bucketName: litemall
+```
+
+配置方式：
+1. 阿里云官网注册
+2. 配置文件设置`active`的值`aliyun`，表示当前对象存储模式是阿里云对象存储；
+
+* 腾讯云对象存储配置
+
+```
+litemall:
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent、qiniu
+    active: tencent
+    # 腾讯对象存储配置信息
+    # 请参考 https://cloud.tencent.com/document/product/436/6249
+    tencent:
+      secretId: 111111
+      secretKey: xxxxxx
+      region: xxxxxx
+      bucketName: litemall
+```
+
+配置方式：
+1. 腾讯云官网注册
+2. 配置文件设置`active`的值`tencent`，表示当前对象存储模式是腾讯云对象存储；
+
+* 七牛云对象存储配置
+
+```
+litemall:
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent、qiniu
+    active: qiniu
+    # 七牛云对象存储配置信息
+    qiniu:
+      endpoint: http://pd5cb6ulu.bkt.clouddn.com
+      accessKey: 111111
+      secretKey: xxxxxx
+      bucketName: litemall
+```
+
+配置方式：
+1. 七牛云官网注册
+2. 配置文件设置`active`的值`qiniu`，表示当前对象存储模式是七牛云对象存储；
+
+#### 1.4.5.10 其他配置
+
+除上述配置信息，本项目还存在其他配置。
+目前仅采用默认值即可，开发者可以自己实践或者扩展新的配置信息。
 
 ## 1.5 部署方案
  
