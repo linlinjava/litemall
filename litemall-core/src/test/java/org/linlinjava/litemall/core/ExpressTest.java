@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.wx;
+package org.linlinjava.litemall.core;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
