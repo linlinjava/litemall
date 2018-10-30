@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.admin.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -27,6 +29,8 @@ import java.util.Map;
 @RequestMapping("/admin/groupon")
 @Validated
 public class AdminGrouponController {
+    private final Log logger = LogFactory.getLog(AdminGrouponController.class);
+
     @Autowired
     private LitemallGrouponRulesService rulesService;
     @Autowired

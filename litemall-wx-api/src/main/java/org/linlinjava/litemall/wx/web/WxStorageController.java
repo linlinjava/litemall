@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.util.CharUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -22,6 +24,7 @@ import java.util.Map;
 @RequestMapping("/wx/storage")
 @Validated
 public class WxStorageController {
+    private final Log logger = LogFactory.getLog(WxStorageController.class);
 
     @Autowired
     private StorageService storageService;

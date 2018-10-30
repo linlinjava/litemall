@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
@@ -20,6 +22,8 @@ import java.util.Map;
 @RequestMapping("/wx/catalog")
 @Validated
 public class WxCatalogController {
+    private final Log logger = LogFactory.getLog(WxCatalogController.class);
+
     @Autowired
     private LitemallCategoryService categoryService;
 

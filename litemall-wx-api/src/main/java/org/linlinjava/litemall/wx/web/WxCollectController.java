@@ -1,6 +1,8 @@
 package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.LitemallCollect;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.LitemallCollectService;
@@ -23,6 +25,8 @@ import java.util.Map;
 @RequestMapping("/wx/collect")
 @Validated
 public class WxCollectController {
+    private final Log logger = LogFactory.getLog(WxCollectController.class);
+
     @Autowired
     private LitemallCollectService collectService;
     @Autowired

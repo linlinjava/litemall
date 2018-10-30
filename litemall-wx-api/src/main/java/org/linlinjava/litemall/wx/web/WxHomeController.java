@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
@@ -21,6 +23,8 @@ import java.util.Map;
 @RequestMapping("/wx/home")
 @Validated
 public class WxHomeController {
+    private final Log logger = LogFactory.getLog(WxHomeController.class);
+
     @Autowired
     private LitemallAdService adService;
     @Autowired

@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.admin.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -23,6 +25,7 @@ import java.util.Map;
 @RequestMapping("/admin/storage")
 @Validated
 public class AdminStorageController {
+    private final Log logger = LogFactory.getLog(AdminStorageController.class);
 
     @Autowired
     private StorageService storageService;

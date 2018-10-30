@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.admin.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.service.AdminTokenManager;
 import org.linlinjava.litemall.core.util.RegexUtil;
@@ -26,6 +28,8 @@ import java.util.Map;
 @RequestMapping("/admin/admin")
 @Validated
 public class AdminAdminController {
+    private final Log logger = LogFactory.getLog(AdminAdminController.class);
+
     @Autowired
     private LitemallAdminService adminService;
 

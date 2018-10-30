@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.LitemallKeyword;
 import org.linlinjava.litemall.db.domain.LitemallSearchHistory;
 import org.linlinjava.litemall.db.service.LitemallKeywordService;
@@ -20,6 +22,8 @@ import java.util.Map;
 @RequestMapping("/wx/search")
 @Validated
 public class WxSearchController {
+    private final Log logger = LogFactory.getLog(WxSearchController.class);
+
     @Autowired
     private LitemallKeywordService keywordsService;
     @Autowired

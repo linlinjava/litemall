@@ -2,6 +2,8 @@ package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.LitemallComment;
 import org.linlinjava.litemall.db.domain.LitemallGoodsSpecification;
 import org.linlinjava.litemall.db.service.LitemallCommentService;
@@ -27,6 +29,8 @@ import java.util.Map;
 @RequestMapping("/wx/comment")
 @Validated
 public class WxCommentController {
+    private final Log logger = LogFactory.getLog(WxCommentController.class);
+
     @Autowired
     private LitemallCommentService commentService;
     @Autowired

@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
@@ -24,6 +26,8 @@ import java.util.Map;
 @RequestMapping("/wx/topic")
 @Validated
 public class WxTopicController {
+    private final Log logger = LogFactory.getLog(WxTopicController.class);
+
     @Autowired
     private LitemallTopicService topicService;
     @Autowired

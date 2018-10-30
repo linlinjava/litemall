@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.domain.LitemallUserFormid;
@@ -19,6 +21,8 @@ import java.time.LocalDateTime;
 @RequestMapping("/wx/formid")
 @Validated
 public class WxUserFormId {
+    private final Log logger = LogFactory.getLog(WxUserFormId.class);
+
     @Autowired
     private LitemallUserService userService;
 
