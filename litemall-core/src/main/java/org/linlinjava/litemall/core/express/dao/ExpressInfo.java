@@ -27,6 +27,8 @@ public class ExpressInfo {
     private String EBusinessID;
     @JsonProperty("Success")
     private boolean Success;
+    @JsonProperty("Reason")
+    private String Reason;
 
     private String ShipperName;
 
@@ -78,6 +80,14 @@ public class ExpressInfo {
         return Success;
     }
 
+    public void setReason(String Reason) {
+        this.Reason = Reason;
+    }
+
+    public String getReason() {
+        return Reason;
+    }
+
     public String getShipperName() {
         return ShipperName;
     }
@@ -95,6 +105,7 @@ public class ExpressInfo {
                 ", State='" + State + '\'' +
                 ", EBusinessID='" + EBusinessID + '\'' +
                 ", Success=" + Success +
+                ", Reason=" + Reason +
                 ", ShipperName='" + ShipperName + '\'' +
                 '}';
     }
