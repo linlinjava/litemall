@@ -81,7 +81,7 @@ public class AdminAdminController {
         if(StringUtils.isEmpty(name)){
             return ResponseUtil.badArgument();
         }
-        if(RegexUtil.isUsername(name)){
+        if(!RegexUtil.isUsername(name)){
             return ResponseUtil.fail(402, "管理员名称不符合规定");
         }
         String password = admin.getPassword();

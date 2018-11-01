@@ -68,7 +68,7 @@ public class AdminUserController {
         if(StringUtils.isEmpty(user)){
             return ResponseUtil.badArgument();
         }
-        if(RegexUtil.isUsername(username)){
+        if(!RegexUtil.isUsername(username)){
             return ResponseUtil.fail(402, "用户名不符合规定");
         }
         String password = user.getPassword();
@@ -79,7 +79,7 @@ public class AdminUserController {
         if(StringUtils.isEmpty(mobile)){
             return ResponseUtil.badArgument();
         }
-        if(RegexUtil.isMobileExact(mobile)){
+        if(!RegexUtil.isMobileExact(mobile)){
             return ResponseUtil.fail(402, "用户手机号码格式不正确");
         }
         return null;
