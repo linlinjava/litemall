@@ -70,10 +70,7 @@
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="dataForm.password" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="checkPassword">
-          <el-input type="password" v-model="dataForm.checkPassword" auto-complete="off"></el-input>
-        </el-form-item>        
+        </el-form-item>     
         <el-form-item label="性别" prop="gender">
           <el-select v-model="dataForm.gender">
             <el-option label="未知" :value="0">
@@ -125,25 +122,6 @@ import { fetchList, createUser, updateUser } from '@/api/user'
 export default {
   name: 'User',
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.dataForm.checkPassword !== '') {
-          this.$refs.dataForm.validateField('checkPassword')
-        }
-        callback()
-      }
-    }
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.dataForm.password) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
     return {
       list: null,
       total: null,
@@ -161,7 +139,6 @@ export default {
         username: '',
         mobile: '',
         password: undefined,
-        checkPassword: undefined,
         gender: 0,
         userLevel: 0,
         birthday: undefined,
@@ -176,14 +153,7 @@ export default {
       rules: {
         username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
         mobile: [{ required: true, message: '手机号码不能为空', trigger: 'blur' }],
-        password: [
-          { required: true, message: '密码不能为空', trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        checkPassword: [
-          { required: true, message: '密码不能为空', trigger: 'blur' },
-          { validator: validatePass2, trigger: 'blur' }
-        ]
+        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
       },
       downloadLoading: false,
       genderDic: ['未知', '男', '女'],
@@ -246,11 +216,14 @@ export default {
           createUser(this.dataForm).then(response => {
             this.list.unshift(response.data.data)
             this.dialogFormVisible = false
-            this.$notify({
+            this.$notify.success({
               title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
+              message: '添加用户成功'
+            })
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
             })
           })
         }
@@ -276,22 +249,23 @@ export default {
               }
             }
             this.dialogFormVisible = false
-            this.$notify({
+            this.$notify.success({
               title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
+              message: '更新成功'
+            })
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
             })
           })
         }
       })
     },
     handleDelete(row) {
-      this.$notify({
+      this.$notify.error({
         title: '警告',
-        message: '用户删除操作不支持！',
-        type: 'warning',
-        duration: 3000
+        message: '用户删除操作不支持！'
       })
     },
     handleDownload() {

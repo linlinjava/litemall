@@ -68,8 +68,7 @@ export default {
       const typeMap = {
         '1': '省',
         '2': '市',
-        '3': '区',
-        '4': '街道'
+        '3': '区'
       }
       return typeMap[status]
     }

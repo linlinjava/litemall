@@ -364,11 +364,9 @@ export default {
         attributes: this.attributes
       }
       editGoods(finalGoods).then(response => {
-        this.$notify({
+        this.$notify.success({
           title: '成功',
-          message: '创建成功',
-          type: 'success',
-          duration: 2000
+          message: '创建成功'
         })
         this.$router.push({ path: '/goods/list' })
       }).catch(response => {

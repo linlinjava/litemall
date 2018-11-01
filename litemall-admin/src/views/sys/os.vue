@@ -147,11 +147,9 @@ export default {
       createStorage(formData).then(response => {
         this.list.unshift(response.data.data)
         this.createDialogVisible = false
-        this.$notify({
+        this.$notify.success({
           title: '成功',
-          message: '创建成功',
-          type: 'success',
-          duration: 2000
+          message: '上传成功'
         })
       }).catch(() => {
         this.$message.error('上传失败，请重新上传')
@@ -176,11 +174,14 @@ export default {
               }
             }
             this.updateDialogVisible = false
-            this.$notify({
+            this.$notify.success({
               title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
+              message: '更新成功'
+            })
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
             })
           })
         }
@@ -188,14 +189,17 @@ export default {
     },
     handleDelete(row) {
       deleteStorage(row).then(response => {
-        this.$notify({
+        this.$notify.success({
           title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
+          message: '删除成功'
         })
         const index = this.list.indexOf(row)
         this.list.splice(index, 1)
+      }).catch(response => {
+        this.$notify.error({
+          title: '失败',
+          message: response.data.errmsg
+        })
       })
     },
     handleDownload() {

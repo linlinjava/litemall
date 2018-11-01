@@ -262,13 +262,16 @@ export default {
         if (valid) {
           shipOrder(this.shipForm).then(response => {
             this.shipDialogVisible = false
-            this.$notify({
+            this.$notify.success({
               title: '成功',
-              message: '确认发货成功',
-              type: 'success',
-              duration: 2000
+              message: '确认发货成功'
             })
             this.getList()
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
+            })
           })
         }
       })
@@ -287,13 +290,16 @@ export default {
         if (valid) {
           refundOrder(this.refundForm).then(response => {
             this.refundDialogVisible = false
-            this.$notify({
+            this.$notify.success({
               title: '成功',
-              message: '确认退款成功',
-              type: 'success',
-              duration: 2000
+              message: '确认退款成功'
             })
             this.getList()
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
+            })
           })
         }
       })

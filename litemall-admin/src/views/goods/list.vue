@@ -196,14 +196,17 @@ export default {
     },
     handleDelete(row) {
       deleteGoods(row).then(response => {
-        this.$notify({
+        this.$notify.success({
           title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
+          message: '删除成功'
         })
         const index = this.list.indexOf(row)
         this.list.splice(index, 1)
+      }).catch(response => {
+        this.$notify.error({
+          title: '失败',
+          message: response.data.errmsg
+        })
       })
     },
     handleDownload() {
