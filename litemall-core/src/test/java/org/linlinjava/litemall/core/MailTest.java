@@ -5,8 +5,15 @@ import org.junit.runner.RunWith;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.concurrent.Executor;
 
 /**
  * 测试邮件发送服务
@@ -23,18 +30,22 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringBootTest
 public class MailTest {
 
+    @Configuration
+    @Import(Application.class)
+    static class ContextConfiguration {
+        @Bean
+        @Primary
+        public Executor executor() {
+            return new SyncTaskExecutor();
+        }
+    }
+
     @Autowired
     private NotifyService notifyService;
 
     @Test
     public void testMail() {
         notifyService.notifyMail("订单信息", "订单1111111已付款，请发货");
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 

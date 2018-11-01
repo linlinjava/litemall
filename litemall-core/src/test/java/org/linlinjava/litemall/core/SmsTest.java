@@ -6,8 +6,15 @@ import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.concurrent.Executor;
 
 /**
  * 测试短信发送服务
@@ -25,6 +32,16 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringBootTest
 public class SmsTest {
 
+    @Configuration
+    @Import(Application.class)
+    static class ContextConfiguration {
+        @Bean
+        @Primary
+        public Executor executor() {
+            return new SyncTaskExecutor();
+        }
+    }
+
     @Autowired
     private NotifyService notifyService;
 
@@ -34,12 +51,6 @@ public class SmsTest {
         String[] params = new String[] {"123456"};
 
         notifyService.notifySmsTemplate(phone, NotifyType.CAPTCHA, params);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -48,12 +59,6 @@ public class SmsTest {
         String[] params = new String[] {"123456"};
 
         notifyService.notifySmsTemplate(phone, NotifyType.PAY_SUCCEED, params);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -62,12 +67,6 @@ public class SmsTest {
         String[] params = new String[] {"123456"};
 
         notifyService.notifySmsTemplate(phone, NotifyType.SHIP, params);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -76,11 +75,5 @@ public class SmsTest {
         String[] params = new String[] {"123456"};
 
         notifyService.notifySmsTemplate(phone, NotifyType.REFUND, params);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
