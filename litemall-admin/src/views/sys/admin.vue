@@ -48,9 +48,6 @@
         <el-form-item label="管理员密码" prop="password">
           <el-input type="password" v-model="dataForm.password"  auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPassword">
-          <el-input type="password" v-model="dataForm.checkPassword" auto-complete="off"></el-input>
-        </el-form-item>
         <el-form-item label="管理员头像" prop="avatar">
           <el-upload class="avatar-uploader" :headers="headers" :action="uploadPath" list-type="picture-card" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif" :on-success="uploadAvatar">
 			      <img v-if="dataForm.avatar" :src="dataForm.avatar" class="avatar">
@@ -109,25 +106,6 @@ export default {
     }
   },
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.dataForm.checkPassword !== '') {
-          this.$refs.dataForm.validateField('checkPassword')
-        }
-        callback()
-      }
-    }
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.dataForm.password) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
     return {
       uploadPath,
       list: null,
@@ -144,7 +122,6 @@ export default {
         id: undefined,
         username: undefined,
         password: undefined,
-        checkPassword: undefined,
         avatar: undefined
       },
       dialogFormVisible: false,
@@ -155,14 +132,7 @@ export default {
       },
       rules: {
         username: [{ required: true, message: '管理员名称不能为空', trigger: 'blur' }],
-        password: [
-          { required: true, message: '密码不能为空', trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        checkPassword: [
-          { required: true, message: '密码不能为空', trigger: 'blur' },
-          { validator: validatePass2, trigger: 'blur' }
-        ]
+        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -200,7 +170,6 @@ export default {
         id: undefined,
         username: undefined,
         password: undefined,
-        checkPassword: undefined,
         avatar: undefined
       }
     },
@@ -224,11 +193,11 @@ export default {
             this.$notify.success({
               title: '成功',
               message: '添加管理员成功'
-            }).catch(response => {
-              this.$notify.error({
-                title: '失败',
-                message: response.data.errmsg
-              })
+            })
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
             })
           })
         }

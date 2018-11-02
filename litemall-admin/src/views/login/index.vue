@@ -73,7 +73,11 @@ export default {
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
-          }).catch(() => {
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
+            })
             this.loading = false
           })
         } else {
