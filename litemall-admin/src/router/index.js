@@ -152,6 +152,14 @@ export const asyncRouterMap = [
       { path: 'goods', component: _import('stat/goods'), name: 'statGoods', meta: { title: '商品统计', noCache: true }}
     ]
   },
-
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      { path: 'password', component: _import('profile/password'), name: 'password', meta: { title: '修改密码', noCache: true }}
+    ],
+    hidden: true
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

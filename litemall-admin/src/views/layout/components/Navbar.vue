@@ -21,7 +21,7 @@
               主页
             </router-link>
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item divided>
             <a target='_blank' href="https://github.com/linlinjava/litemall">
               GitHub
             </a>
@@ -30,6 +30,11 @@
             <a target='_blank' href="https://gitee.com/linlinjava/litemall">
               码云
             </a>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <router-link to="/profile/password">
+              密码修改
+            </router-link>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">退出登录</span>

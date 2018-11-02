@@ -22,6 +22,11 @@ public class LitemallAdminService {
         return adminMapper.selectByExample(example);
     }
 
+    public LitemallAdmin findAdmin(Integer id) {
+        return adminMapper.selectByPrimaryKey(id);
+
+    }
+
     private final Column[] result = new Column[]{Column.id, Column.username, Column.avatar};
     public List<LitemallAdmin> querySelective(String username, Integer page, Integer limit, String sort, String order) {
         LitemallAdminExample example = new LitemallAdminExample();
@@ -67,4 +72,5 @@ public class LitemallAdminService {
     public LitemallAdmin findById(Integer id) {
         return adminMapper.selectByPrimaryKeySelective(id, result);
     }
+
 }
