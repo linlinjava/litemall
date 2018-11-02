@@ -71,30 +71,30 @@
   <view class='user_row'>
     <view class='user_row_left'>必备工具</view>
   </view>
-  <view class='user_tool_area'>
-    <view class='user_tool_item' bindtap='goAddress'>
-      <image class='user_tool_item_image' src='/static/images/address.png'></image>
-      <view class='user_tool_item_text'>地址管理</view>
+  <view class='user_column'>
+    <view class='user_column_item' bindtap='goAddress'>
+      <image class='user_column_item_image' src='/static/images/address.png'></image>
+      <view class='user_column_item_text'>地址管理</view>
     </view>
-    <button class="user_tool_item_phone" open-type="getPhoneNumber" bindgetphonenumber="bindPhoneNumber">
-      <image class='user_tool_item_image' src='/static/images/mobile.png'></image>
-      <view class='user_tool_item_text'>绑定手机</view>
+    <button class="user_column_item_phone" open-type="getPhoneNumber" bindgetphonenumber="bindPhoneNumber">
+      <image class='user_column_item_image' src='/static/images/mobile.png'></image>
+      <view class='user_column_item_text'>绑定手机</view>
     </button>
-    <view class='user_tool_item' bindtap='goFeedback'>
-      <image class='user_tool_item_image' src='/static/images/feedback.png'></image>
-      <view class='user_tool_item_text'>意见反馈</view>
+    <view class='user_column_item' bindtap='goFeedback'>
+      <image class='user_column_item_image' src='/static/images/feedback.png'></image>
+      <view class='user_column_item_text'>意见反馈</view>
     </view>
-    <view class='user_tool_item'>
+    <view class='user_column_item'>
       <contact-button style="opacity:0;position:absolute;" type="default-dark" session-from="weapp" size="27">
       </contact-button>
-      <image class='user_tool_item_image' src='/static/images/customer.png'></image>
-      <view class='user_tool_item_text'>联系客服</view>
+      <image class='user_column_item_image' src='/static/images/customer.png'></image>
+      <view class='user_column_item_text'>联系客服</view>
     </view>
-    <view class='user_tool_item' bindtap='aboutUs'>
-      <image class='user_tool_item_image' src='/static/images/about_us.png'></image>
-      <view class='user_tool_item_text'>关于我们</view>
+    <view class='user_column_item' bindtap='aboutUs'>
+      <image class='user_column_item_image' src='/static/images/about_us.png'></image>
+      <view class='user_column_item_text'>关于我们</view>
     </view>
   </view>
 
-  <!--<view class="logout" bindtap="exitLogin">退出登录</view>-->
+  <view class="logout" wx:if="{{hasLogin}}" bindtap="exitLogin">退出登录</view>
 </view>

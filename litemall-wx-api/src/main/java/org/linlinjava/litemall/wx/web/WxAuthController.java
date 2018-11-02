@@ -356,4 +356,13 @@ public class WxAuthController {
         }
         return ResponseUtil.ok();
     }
+
+    @PostMapping("logout")
+    public Object logout(@LoginUser Integer userId) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        UserTokenManager.removeToken(userId);
+        return ResponseUtil.ok();
+    }
 }

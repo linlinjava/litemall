@@ -135,60 +135,8 @@ page {
   height: 6rpx;
 }
 
-.box_bottom_area {
-  /* border: 1px solid black; *//* margin-top: 32rpx; */
-  height: auto;
-  background: #fff;
-}
-
-.user_tool_item {
-  width: 187.5rpx;
-  height: 142rpx;
-  /* border: 1px solid #757575; */
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  float: left;
-  background: #fff;
-  border-bottom: 1px solid #fafafa;
-}
-
-.user_tool_item_image {
-  /* border: 1px solid #757575; */
-  width: 50rpx;
-  height: 50rpx;
-  margin-top: 23rpx;
-}
-
-.user_tool_item_text {
-  /* border: 1px solid #757575; */
-  width: 187.5rpx;
-  margin-bottom: 12rpx;
-  height: 42rpx;
-  line-height: 42rpx;
-  font-size: 23rpx;
-  color: #555;
-}
-
-.user_tool_item {
-  width: 187.5rpx;
-  height: 142rpx;
-  /* border: 1px solid #757575; */
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  float: left;
-  background: #fff;
-  border-bottom: 1px solid #fafafa;
-}
-
-.user_tool_item_phone {
-  width:187.5rpx;
-  height:142rpx;
+.user_column_item_phone {
+  width: 30%;
   text-align:center;
   display:flex;
   justify-content:center;
@@ -198,6 +146,17 @@ page {
   background:#fff;
   border-bottom:1px solid #fafafa;
 }
-.user_tool_item_phone::after{
+.user_column_item_phone::after{
   border: none;
+}
+
+.logout{
+    margin-top: 30rpx;
+    height: 100rpx;
+    width: 100%;
+    line-height: 100rpx;
+    text-align: center;
+    background: #fff;
+    color: red;
+    font-size: 30rpx;
 }
