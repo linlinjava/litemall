@@ -1,3 +1,4 @@
+
 var api = require('../../../config/api.js');
 var check = require('../../../utils/check.js');
 
@@ -8,7 +9,7 @@ Page({
     password: '',
     confirmPassword: '',
     mobile: '',
-    code: ''
+    captcha: ''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -30,8 +31,27 @@ Page({
     // 页面关闭
 
   },
-  sendCode: function () {
+  sendCaptcha: function () {
     let that = this;
+
+    if (this.data.mobile.length == 0) {
+      wx.showModal({
+        title: '错误信息',
+        content: '手机号不能为空',
+        showCancel: false
+      });
+      return false;
+    }
+
+    if (!check.isValidPhone(this.data.mobile)) {
+      wx.showModal({
+        title: '错误信息',
+        content: '手机号输入不正确',
+        showCancel: false
+      });
+      return false;
+    }
+
     wx.request({
       url: api.AuthRegisterCaptcha,
       data: {
@@ -59,52 +79,16 @@ Page({
       }
     });
   },
-  startRegister: function () {
-    var that = this;
-
-    if (this.data.password.length < 3 || this.data.username.length < 3) {
-      wx.showModal({
-        title: '错误信息',
-        content: '用户名和密码不得少于3位',
-        showCancel: false
-      });
-      return false;
-    }
-
-    if (this.data.password != this.data.confirmPassword) {
-      wx.showModal({
-        title: '错误信息',
-        content: '确认密码不一致',
-        showCancel: false
-      });
-      return false;
-    }
-
-    if (this.data.mobile.length == 0 || this.data.code.length == 0) {
-      wx.showModal({
-        title: '错误信息',
-        content: '手机号和验证码不能为空',
-        showCancel: false
-      });
-      return false;
-    }
-
-    if (!check.isValidPhone(this.data.mobile)) {
-      wx.showModal({
-        title: '错误信息',
-        content: '手机号输入不正确',
-        showCancel: false
-      });
-      return false;
-    }
-    
+  requestRegister: function (code) {
+    let that = this;
     wx.request({
       url: api.AuthRegister,
       data: {
         username: that.data.username,
         password: that.data.password,
         mobile: that.data.mobile,
-        code: that.data.code
+        captcha: that.data.captcha,
+        code: code
       },
       method: 'POST',
       header: {
@@ -124,13 +108,66 @@ Page({
             }
           });
         }
-        else{
+        else {
           wx.showModal({
             title: '错误信息',
             content: res.data.errmsg,
             showCancel: false
           });
         }
+      }
+    });
+  },
+  startRegister: function () {
+    var that = this;
+
+    if (this.data.password.length < 6 || this.data.username.length < 6) {
+      wx.showModal({
+        title: '错误信息',
+        content: '用户名和密码不得少于6位',
+        showCancel: false
+      });
+      return false;
+    }
+
+    if (this.data.password != this.data.confirmPassword) {
+      wx.showModal({
+        title: '错误信息',
+        content: '确认密码不一致',
+        showCancel: false
+      });
+      return false;
+    }
+
+    if (this.data.mobile.length == 0 || this.data.captcha.length == 0) {
+      wx.showModal({
+        title: '错误信息',
+        content: '手机号和验证码不能为空',
+        showCancel: false
+      });
+      return false;
+    }
+
+    if (!check.isValidPhone(this.data.mobile)) {
+      wx.showModal({
+        title: '错误信息',
+        content: '手机号输入不正确',
+        showCancel: false
+      });
+      return false;
+    }
+    
+    wx.login({
+      success: function (res) {
+        if (!res.code) {
+          wx.showModal({
+            title: '错误信息',
+            content: '注册失败',
+            showCancel: false
+          });
+        }
+
+        that.requestRegister(res.code);
       }
     });
   },
@@ -158,10 +195,10 @@ Page({
       mobile: e.detail.value
     });
   },
-  bindCodeInput: function (e) {
+  bindCaptchaInput: function (e) {
 
     this.setData({
-      code: e.detail.value
+      captcha: e.detail.value
     });
   },
   clearInput: function (e) {
@@ -186,9 +223,9 @@ Page({
           mobile: ''
         });
         break;        
-      case 'clear-code':
+      case 'clear-captcha':
         this.setData({
-          code: ''
+          captcha: ''
         });
         break;
     }

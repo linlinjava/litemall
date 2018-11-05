@@ -22,6 +22,7 @@ import org.linlinjava.litemall.wx.service.CaptchaCodeManager;
 import org.linlinjava.litemall.wx.service.UserTokenManager;
 import org.linlinjava.litemall.wx.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -150,8 +151,8 @@ public class WxAuthController {
         LitemallUser user = userService.queryByOid(openId);
         if (user == null) {
             user = new LitemallUser();
-            user.setUsername(userInfo.getNickName());  // 其实没有用，因为用户没有真正注册
-            user.setPassword(openId);                  // 其实没有用，因为用户没有真正注册
+            user.setUsername(openId);
+            user.setPassword(openId);
             user.setWeixinOpenid(openId);
             user.setAvatar(userInfo.getAvatarUrl());
             user.setNickname(userInfo.getNickName());
@@ -192,12 +193,25 @@ public class WxAuthController {
     @PostMapping("regCaptcha")
     public Object registerCaptcha(@RequestBody String body) {
         String phoneNumber = JacksonUtil.parseString(body, "mobile");
+        if(StringUtils.isEmpty(phoneNumber)){
+            return ResponseUtil.badArgument();
+        }
+        if(!RegexUtil.isMobileExact(phoneNumber)){
+            return ResponseUtil.badArgumentValue();
+        }
+
         String code = CharUtil.getRandomNum(6);
+        boolean successful = notifyService.notifySmsTemplate(phoneNumber, NotifyType.CAPTCHA, new String[]{code});
+        if(!successful){
+            return ResponseUtil.fail(404, "小程序后台验证码服务不支持");
+        }
 
-        notifyService.notifySmsTemplate(phoneNumber, NotifyType.CAPTCHA, new String[]{code});
+        successful = CaptchaCodeManager.addToCache(phoneNumber, code);
+        if(!successful){
+            return ResponseUtil.fail(404, "验证码未超时1分钟，不能发送");
+        }
 
-        boolean successful = CaptchaCodeManager.addToCache(phoneNumber, code);
-        return successful ? ResponseUtil.ok() : ResponseUtil.badArgument();
+        return ResponseUtil.ok();
     }
 
     /**
@@ -231,9 +245,11 @@ public class WxAuthController {
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
         String mobile = JacksonUtil.parseString(body, "mobile");
+        String captcha = JacksonUtil.parseString(body, "captcha");
         String code = JacksonUtil.parseString(body, "code");
 
-        if (username == null || password == null || mobile == null || code == null) {
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(mobile)
+            || StringUtils.isEmpty(captcha) || StringUtils.isEmpty(code)) {
             return ResponseUtil.badArgument();
         }
 
@@ -251,20 +267,39 @@ public class WxAuthController {
         }
         //判断验证码是否正确
         String cacheCode = CaptchaCodeManager.getCachedCaptcha(mobile);
-        if (cacheCode == null || cacheCode.isEmpty() || !cacheCode.equals(code))
+        if (cacheCode == null || cacheCode.isEmpty() || !cacheCode.equals(code)) {
             return ResponseUtil.fail(403, "验证码错误");
+        }
 
-        LitemallUser user = new LitemallUser();
+        String openId = null;
+        try {
+            WxMaJscode2SessionResult result = this.wxService.getUserService().getSessionInfo(code);
+            openId = result.getOpenid();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.fail(403, "openid 获取失败");
+        }
+        userList = userService.queryByOpenid(openId);
+        if(userList.size() > 1){
+            return ResponseUtil.fail(403, "openid 存在多个");
+        }
+        if(userList.size() == 1){
+          LitemallUser checkUser = userList.get(0);
+          String checkUsername = checkUser.getUsername();
+          String checkPassword = checkUser.getPassword();
+          if(!checkUsername.equals(openId) || !checkPassword.equals(openId)){
+              return ResponseUtil.fail(403, "openid已绑定账号");
+          }
+        }
 
+        LitemallUser user = null;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(password);
-        user.setPassword(encodedPassword);
-
         user = new LitemallUser();
         user.setUsername(username);
         user.setPassword(encodedPassword);
         user.setMobile(mobile);
-        user.setWeixinOpenid("");
+        user.setWeixinOpenid(openId);
         user.setAvatar("https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64");
         user.setNickname(username);
         user.setGender((byte) 0);
@@ -274,7 +309,6 @@ public class WxAuthController {
         user.setLastLoginIp(IpUtil.client(request));
         user.setAddTime(LocalDateTime.now());
         userService.add(user);
-
 
         // userInfo
         UserInfo userInfo = new UserInfo();

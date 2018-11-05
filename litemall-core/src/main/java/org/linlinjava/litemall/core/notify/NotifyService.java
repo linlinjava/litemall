@@ -44,13 +44,18 @@ public class NotifyService {
      * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      */
     @Async
-    public void notifySmsTemplate(String phoneNumber, NotifyType notifyType, String[] params) {
+    public boolean notifySmsTemplate(String phoneNumber, NotifyType notifyType, String[] params) {
         if (smsSender == null)
-            return;
+            return false;
 
-        int templateId = Integer.parseInt(getTemplateId(notifyType, smsTemplate));
+        String templateIdStr = getTemplateId(notifyType, smsTemplate);
+        if (templateIdStr == null){
+            return false;
+        }
 
+        int templateId = Integer.parseInt(templateIdStr);
         smsSender.sendWithTemplate(phoneNumber, templateId, params);
+        return true;
     }
 
     /**
