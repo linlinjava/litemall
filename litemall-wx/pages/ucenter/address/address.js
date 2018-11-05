@@ -40,7 +40,15 @@ Page({
 
       }
 
-      wx.navigateBack();
+      let addressId = event.currentTarget.dataset.addressId;
+      if (addressId && addressId != 0) {
+        wx.navigateBack();
+      } else {
+        wx.navigateTo({
+          url: '/pages/ucenter/addressAdd/addressAdd?id=' + addressId
+        })
+      }
+
     } else {
       wx.navigateTo({
         url: '/pages/ucenter/addressAdd/addressAdd?id=' + event.currentTarget.dataset.addressId

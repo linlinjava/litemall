@@ -36,18 +36,11 @@ Page({
  },
 
  addressAddOrUpdate(event) {
-  console.log(event);
-
   //返回之前，先取出上一页对象，并设置addressId
   var pages = getCurrentPages();
   var prevPage = pages[pages.length - 2];
 
   if (prevPage.route == "pages/shopping/checkout/checkout") {
-   console.log(event.currentTarget.dataset.addressId);
-   // prevPage.setData({
-   //   addressId: event.currentTarget.dataset.addressId
-   // });
-
    try {
     wx.setStorageSync('addressId', event.currentTarget.dataset.addressId);
    } catch (e) {
@@ -55,7 +48,6 @@ Page({
    }
 
    let addressId = event.currentTarget.dataset.addressId;
-   console.log(addressId);
    if (addressId && addressId != 0) {
     wx.navigateBack();
    } else {
