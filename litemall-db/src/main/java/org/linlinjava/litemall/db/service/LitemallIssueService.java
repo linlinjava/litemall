@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,6 +27,8 @@ public class LitemallIssueService {
     }
 
     public void add(LitemallIssue issue) {
+        issue.setAddTime(LocalDateTime.now());
+        issue.setUpdateTime(LocalDateTime.now());
         issueMapper.insertSelective(issue);
     }
 
@@ -59,6 +62,7 @@ public class LitemallIssueService {
     }
 
     public int updateById(LitemallIssue issue) {
+        issue.setUpdateTime(LocalDateTime.now());
         return issueMapper.updateByPrimaryKeySelective(issue);
     }
 

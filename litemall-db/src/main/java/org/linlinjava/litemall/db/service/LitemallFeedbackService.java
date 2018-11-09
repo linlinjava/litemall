@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public class LitemallFeedbackService {
     private LitemallFeedbackMapper feedbackMapper;
 
     public Integer add(LitemallFeedback feedback) {
+        feedback.setAddTime(LocalDateTime.now());
+        feedback.setUpdateTime(LocalDateTime.now());
         return feedbackMapper.insertSelective(feedback);
     }
 

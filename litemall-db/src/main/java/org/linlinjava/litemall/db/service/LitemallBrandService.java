@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -71,6 +72,7 @@ public class LitemallBrandService {
     }
 
     public int updateById(LitemallBrand brand) {
+        brand.setUpdateTime(LocalDateTime.now());
         return brandMapper.updateByPrimaryKeySelective(brand);
     }
 
@@ -79,6 +81,8 @@ public class LitemallBrandService {
     }
 
     public void add(LitemallBrand brand) {
+        brand.setAddTime(LocalDateTime.now());
+        brand.setUpdateTime(LocalDateTime.now());
         brandMapper.insertSelective(brand);
     }
 

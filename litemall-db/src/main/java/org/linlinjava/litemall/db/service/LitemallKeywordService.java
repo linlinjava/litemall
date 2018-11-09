@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -72,6 +73,8 @@ public class LitemallKeywordService {
     }
 
     public void add(LitemallKeyword keywords) {
+        keywords.setAddTime(LocalDateTime.now());
+        keywords.setUpdateTime(LocalDateTime.now());
         keywordsMapper.insertSelective(keywords);
     }
 
@@ -80,6 +83,7 @@ public class LitemallKeywordService {
     }
 
     public int updateById(LitemallKeyword keywords) {
+        keywords.setUpdateTime(LocalDateTime.now());
         return keywordsMapper.updateByPrimaryKeySelective(keywords);
     }
 

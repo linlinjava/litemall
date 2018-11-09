@@ -8,6 +8,7 @@ import org.linlinjava.litemall.db.domain.UserVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +37,13 @@ public class LitemallUserService {
     }
 
     public void add(LitemallUser user) {
+        user.setAddTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
         userMapper.insertSelective(user);
     }
 
     public int updateById(LitemallUser user) {
+        user.setUpdateTime(LocalDateTime.now());
         return userMapper.updateByPrimaryKeySelective(user);
     }
 

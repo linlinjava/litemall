@@ -35,6 +35,7 @@ public class LitemallUserFormIdService {
         //更新或者删除缓存
         if (userFormid.getIsprepay() && userFormid.getUseamount() > 1) {
             userFormid.setUseamount(userFormid.getUseamount() - 1);
+            userFormid.setUpdateTime(LocalDateTime.now());
             return formidMapper.updateByPrimaryKey(userFormid);
         } else {
             return formidMapper.deleteByPrimaryKey(userFormid.getId());
@@ -47,6 +48,8 @@ public class LitemallUserFormIdService {
      * @param userFormid
      */
     public void addUserFormid(LitemallUserFormid userFormid) {
+        userFormid.setAddTime(LocalDateTime.now());
+        userFormid.setUpdateTime(LocalDateTime.now());
         formidMapper.insertSelective(userFormid);
     }
 }

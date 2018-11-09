@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.domain.LitemallGoodsAttributeExample;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +22,8 @@ public class LitemallGoodsAttributeService {
     }
 
     public void add(LitemallGoodsAttribute goodsAttribute) {
+        goodsAttribute.setAddTime(LocalDateTime.now());
+        goodsAttribute.setUpdateTime(LocalDateTime.now());
         goodsAttributeMapper.insertSelective(goodsAttribute);
     }
 

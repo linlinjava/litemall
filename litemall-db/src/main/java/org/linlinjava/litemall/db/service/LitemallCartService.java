@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,10 +23,13 @@ public class LitemallCartService {
     }
 
     public void add(LitemallCart cart) {
+        cart.setAddTime(LocalDateTime.now());
+        cart.setUpdateTime(LocalDateTime.now());
         cartMapper.insertSelective(cart);
     }
 
     public int updateById(LitemallCart cart) {
+        cart.setUpdateTime(LocalDateTime.now());
         return cartMapper.updateByPrimaryKeySelective(cart);
     }
 
@@ -57,6 +61,7 @@ public class LitemallCartService {
         example.or().andUserIdEqualTo(userId).andProductIdIn(idsList).andDeletedEqualTo(false);
         LitemallCart cart = new LitemallCart();
         cart.setChecked(checked);
+        cart.setUpdateTime(LocalDateTime.now());
         return cartMapper.updateByExampleSelective(cart, example);
     }
 

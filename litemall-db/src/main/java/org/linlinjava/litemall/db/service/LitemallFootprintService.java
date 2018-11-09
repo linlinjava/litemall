@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +39,8 @@ public class LitemallFootprintService {
     }
 
     public void add(LitemallFootprint footprint) {
+        footprint.setAddTime(LocalDateTime.now());
+        footprint.setUpdateTime(LocalDateTime.now());
         footprintMapper.insertSelective(footprint);
     }
 

@@ -3,17 +3,20 @@ package org.linlinjava.litemall.db.service;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallGrouponMapper;
-import org.linlinjava.litemall.db.domain.LitemallGroupon;
-import org.linlinjava.litemall.db.domain.LitemallGrouponExample;
+import org.linlinjava.litemall.db.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LitemallGrouponService {
     @Resource
-    LitemallGrouponMapper mapper;
+    private LitemallGrouponMapper mapper;
 
     /**
      * 获取用户发起的团购记录
@@ -91,6 +94,7 @@ public class LitemallGrouponService {
     }
 
     public int updateById(LitemallGroupon groupon) {
+        groupon.setUpdateTime(LocalDateTime.now());
         return mapper.updateByPrimaryKeySelective(groupon);
     }
 
@@ -101,6 +105,8 @@ public class LitemallGrouponService {
      * @return
      */
     public int createGroupon(LitemallGroupon groupon) {
+        groupon.setAddTime(LocalDateTime.now());
+        groupon.setUpdateTime(LocalDateTime.now());
         return mapper.insertSelective(groupon);
     }
 

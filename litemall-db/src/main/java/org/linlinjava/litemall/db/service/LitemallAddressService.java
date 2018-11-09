@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,10 +27,13 @@ public class LitemallAddressService {
     }
 
     public int add(LitemallAddress address) {
+        address.setAddTime(LocalDateTime.now());
+        address.setUpdateTime(LocalDateTime.now());
         return addressMapper.insertSelective(address);
     }
 
     public int update(LitemallAddress address) {
+        address.setUpdateTime(LocalDateTime.now());
         return addressMapper.updateByPrimaryKeySelective(address);
     }
 
@@ -46,6 +50,7 @@ public class LitemallAddressService {
     public void resetDefault(Integer userId) {
         LitemallAddress address = new LitemallAddress();
         address.setIsDefault(false);
+        address.setUpdateTime(LocalDateTime.now());
         LitemallAddressExample example = new LitemallAddressExample();
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         addressMapper.updateByExampleSelective(address, example);

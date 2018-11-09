@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,6 +17,8 @@ public class LitemallSearchHistoryService {
     private LitemallSearchHistoryMapper searchHistoryMapper;
 
     public void save(LitemallSearchHistory searchHistory) {
+        searchHistory.setAddTime(LocalDateTime.now());
+        searchHistory.setUpdateTime(LocalDateTime.now());
         searchHistoryMapper.insertSelective(searchHistory);
     }
 

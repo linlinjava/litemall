@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -97,6 +98,7 @@ public class LitemallTopicService {
     }
 
     public int updateById(LitemallTopic topic) {
+        topic.setUpdateTime(LocalDateTime.now());
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andIdEqualTo(topic.getId());
         return topicMapper.updateByExampleSelective(topic, example);
@@ -107,6 +109,8 @@ public class LitemallTopicService {
     }
 
     public void add(LitemallTopic topic) {
+        topic.setAddTime(LocalDateTime.now());
+        topic.setUpdateTime(LocalDateTime.now());
         topicMapper.insertSelective(topic);
     }
 

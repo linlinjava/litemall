@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -61,6 +62,8 @@ public class LitemallCommentService {
     }
 
     public int save(LitemallComment comment) {
+        comment.setAddTime(LocalDateTime.now());
+        comment.setUpdateTime(LocalDateTime.now());
         return commentMapper.insertSelective(comment);
     }
 

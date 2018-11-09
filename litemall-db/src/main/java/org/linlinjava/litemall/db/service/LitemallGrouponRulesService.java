@@ -24,6 +24,8 @@ public class LitemallGrouponRulesService {
     private LitemallGoodsMapper goodsMapper;
 
     public int createRules(LitemallGrouponRules rules) {
+        rules.setAddTime(LocalDateTime.now());
+        rules.setUpdateTime(LocalDateTime.now());
         return mapper.insertSelective(rules);
     }
 
@@ -144,6 +146,7 @@ public class LitemallGrouponRulesService {
     }
 
     public int updateById(LitemallGrouponRules grouponRules) {
+        grouponRules.setUpdateTime(LocalDateTime.now());
         return mapper.updateByPrimaryKeySelective(grouponRules);
     }
 }

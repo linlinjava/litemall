@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.domain.LitemallGoodsSpecificationExample;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,8 @@ public class LitemallGoodsSpecificationService {
     }
 
     public void add(LitemallGoodsSpecification goodsSpecification) {
+        goodsSpecification.setAddTime(LocalDateTime.now());
+        goodsSpecification.setUpdateTime(LocalDateTime.now());
         goodsSpecificationMapper.insertSelective(goodsSpecification);
     }
 

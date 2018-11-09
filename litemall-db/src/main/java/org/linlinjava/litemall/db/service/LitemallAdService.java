@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -57,6 +58,7 @@ public class LitemallAdService {
     }
 
     public int updateById(LitemallAd ad) {
+        ad.setUpdateTime(LocalDateTime.now());
         return adMapper.updateByPrimaryKeySelective(ad);
     }
 
@@ -65,6 +67,8 @@ public class LitemallAdService {
     }
 
     public void add(LitemallAd ad) {
+        ad.setAddTime(LocalDateTime.now());
+        ad.setUpdateTime(LocalDateTime.now());
         adMapper.insertSelective(ad);
     }
 
