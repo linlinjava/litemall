@@ -42,9 +42,9 @@
   <view class="h">
    <view class="title">
     <view>
-     <!-- <navigator url="../hotGoods/hotGoods"> -->
-     <text class="txt">优惠专区</text>
-     <!-- </navigator> -->
+     <navigator url="/pages/groupon/grouponList/grouponList">
+      <text class="txt">优惠专区</text>
+     </navigator>
     </view>
    </view>
   </view>

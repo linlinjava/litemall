@@ -99,24 +99,8 @@ public class WxHomeController {
         List<LitemallTopic> topicList = topicService.queryList(0, SystemConfig.getTopicLimit());
         data.put("topicList", topicList);
 
-        //优惠专区
-        List<LitemallGrouponRules> grouponRules = grouponRulesService.queryByIndex(0, 5);
-        List<LitemallGoods> grouponGoods = new ArrayList<>();
-        List<Map<String, Object>> grouponList = new ArrayList<>();
-        for (LitemallGrouponRules rule : grouponRules) {
-            LitemallGoods goods = goodsService.findByIdVO(rule.getGoodsId());
-            if (goods == null)
-                continue;
-
-            if (!grouponGoods.contains(goods)) {
-                Map<String, Object> item = new HashMap<>();
-                item.put("goods", goods);
-                item.put("groupon_price", goods.getRetailPrice().subtract(rule.getDiscount()));
-                item.put("groupon_member", rule.getDiscountMember());
-                grouponList.add(item);
-                grouponGoods.add(goods);
-            }
-        }
+        //团购专区
+        List<Map<String, Object>> grouponList = grouponRulesService.queryList(0, 5);
         data.put("grouponList", grouponList);
 
         List<Map> categoryList = new ArrayList<>();

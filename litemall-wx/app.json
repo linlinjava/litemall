@@ -33,7 +33,8 @@
   "pages/goods/goods",
   "pages/about/about",
   "pages/groupon/myGroupon/myGroupon",
-  "pages/groupon/grouponDetail/grouponDetail"
+  "pages/groupon/grouponDetail/grouponDetail",
+  "pages/groupon/grouponList/grouponList"
  ],
  "window": {
   "navigationBarBackgroundColor": "#FFFFFF",

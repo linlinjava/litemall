@@ -3,6 +3,8 @@ package org.linlinjava.litemall.wx.web;
 import org.linlinjava.litemall.core.express.ExpressService;
 import org.linlinjava.litemall.core.express.dao.ExpressInfo;
 import org.linlinjava.litemall.core.util.ResponseUtil;
+import org.linlinjava.litemall.core.validator.Order;
+import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderUtil;
@@ -42,6 +44,40 @@ public class WxGrouponController {
     private LitemallUserService userService;
     @Autowired
     private ExpressService expressService;
+    @Autowired
+    private LitemallGrouponRulesService grouponRulesService;
+
+
+    /**
+     * 专题列表
+     *
+     * @param page 分页页数
+     * @param size 分页大小
+     * @return 专题列表
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * data: xxx,
+     * count: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
+     */
+    @GetMapping("list")
+    public Object list(@RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        Object topicList = grouponRulesService.queryList(page, size, sort, order);
+        int total = grouponRulesService.countList(page, size, sort, order);
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("data", topicList);
+        data.put("count", total);
+        return ResponseUtil.ok(data);
+    }
 
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, @NotNull Integer grouponId) {
