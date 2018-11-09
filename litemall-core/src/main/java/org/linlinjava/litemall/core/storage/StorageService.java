@@ -54,8 +54,6 @@ public class StorageService {
         storageInfo.setName(fileName);
         storageInfo.setSize((int) contentLength);
         storageInfo.setType(contentType);
-        storageInfo.setAddTime(LocalDateTime.now());
-        storageInfo.setModified(LocalDateTime.now());
         storageInfo.setKey(key);
         storageInfo.setUrl(url);
         litemallStorageService.add(storageInfo);
