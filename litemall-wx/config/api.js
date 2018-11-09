@@ -74,7 +74,8 @@ module.exports = {
  OrderRefund: WxApiRoot + 'order/refund', //退款取消订单
  OrderDelete: WxApiRoot + 'order/delete', //删除订单
  OrderConfirm: WxApiRoot + 'order/confirm', //确认收货
- OrderComment: WxApiRoot + 'order/comment', // 代评价商品信息
+ OrderGoods: WxApiRoot + 'order/goods', // 代评价商品信息
+ OrderComment: WxApiRoot + 'order/comment', // 评价订单商品信息
 
  FeedbackAdd: WxApiRoot + 'feedback/submit', //添加反馈
  FootprintList: WxApiRoot + 'footprint/list', //足迹列表

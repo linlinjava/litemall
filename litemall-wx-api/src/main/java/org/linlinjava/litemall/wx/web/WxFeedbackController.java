@@ -41,6 +41,11 @@ public class WxFeedbackController {
             return ResponseUtil.badArgument();
         }
 
+        Boolean hasPicture = feedback.getHasPicture();
+        if(hasPicture == null || !hasPicture){
+            feedback.setPicUrls(new String[0]);
+        }
+
         // 测试手机号码是否正确
         String mobile = feedback.getMobile();
         if(StringUtils.isEmpty(mobile)){
@@ -70,7 +75,6 @@ public class WxFeedbackController {
         feedback.setId(null);
         feedback.setUserId(userId);
         feedback.setUsername(username);
-        feedback.setAddTime(LocalDateTime.now());
         //状态默认是0，1表示状态已发生变化
         feedback.setStatus(1);
         feedbackService.add(feedback);

@@ -35,6 +35,10 @@
         </view>
     </view>
 
+    <view class="message-box">
+      <input class="message-item" bindinput="bindMessageInput" placeholder="如需要，可以输入订单留言" value="{{message}}" />
+    </view>
+
     <view class="order-box">
         <view class="order-item">
             <view class="l">

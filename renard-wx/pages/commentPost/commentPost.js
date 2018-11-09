@@ -105,11 +105,11 @@ Page({
       type: options.type,
       valueId: options.valueId
     });
-    this.getOrderComment();
+    this.getOrderGoods();
   },
-  getOrderComment: function () {
+  getOrderGoods: function () {
     let that = this;
-    util.request(api.OrderComment, {
+    util.request(api.OrderGoods, {
       orderId: that.data.orderId, goodsId: that.data.valueId
     }).then(function (res) {
       if (res.errno === 0) {

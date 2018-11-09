@@ -74,15 +74,15 @@ public class WxCommentController {
         else{
             return ResponseUtil.badArgumentValue();
         }
+        Boolean hasPicture = comment.getHasPicture();
+        if(hasPicture == null || !hasPicture){
+            comment.setPicUrls(new String[0]);
+        }
         return null;
     }
 
     /**
      * 发表评论
-     *
-     * TODO, 对于评论，应该检测用户是否有权限评论。
-     * 1. 如果用户没有购买过商品，则不能发表对该商品的评论
-     * 2. 如果用户购买商品后规定时间内没有评论，则过期也不能再评论
      *
      * @param userId 用户ID
      * @param comment 评论内容
@@ -105,7 +105,6 @@ public class WxCommentController {
             return error;
         }
 
-        comment.setAddTime(LocalDateTime.now());
         comment.setUserId(userId);
         commentService.save(comment);
         return ResponseUtil.ok(comment);

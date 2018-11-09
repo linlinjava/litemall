@@ -31,7 +31,7 @@ public class WxCartController {
     @Autowired
     private LitemallGoodsService goodsService;
     @Autowired
-    private LitemallProductService productService;
+    private LitemallGoodsProductService productService;
     @Autowired
     private LitemallAddressService addressService;
     @Autowired
@@ -124,7 +124,7 @@ public class WxCartController {
             return ResponseUtil.fail(400, "商品已下架");
         }
 
-        LitemallProduct product = productService.findById(productId);
+        LitemallGoodsProduct product = productService.findById(productId);
         //判断购物车中是否存在此规格商品
         LitemallCart existCart = cartService.queryExist(goodsId, productId, userId);
         if (existCart == null) {
@@ -141,7 +141,6 @@ public class WxCartController {
             cart.setSpecifications(product.getSpecifications());
             cart.setUserId(userId);
             cart.setChecked(true);
-            cart.setAddTime(LocalDateTime.now());
             cartService.add(cart);
         } else {
             //取得规格的信息,判断规格库存
@@ -198,7 +197,7 @@ public class WxCartController {
             return ResponseUtil.fail(400, "商品已下架");
         }
 
-        LitemallProduct product = productService.findById(productId);
+        LitemallGoodsProduct product = productService.findById(productId);
         //判断购物车中是否存在此规格商品
         LitemallCart existCart = cartService.queryExist(goodsId, productId, userId);
         if (existCart == null) {
@@ -279,7 +278,7 @@ public class WxCartController {
         }
 
         //取得规格的信息,判断规格库存
-        LitemallProduct product = productService.findById(productId);
+        LitemallGoodsProduct product = productService.findById(productId);
         if (product == null || product.getNumber() < number) {
             return ResponseUtil.fail(403, "库存不足");
         }
@@ -501,6 +500,7 @@ public class WxCartController {
         Map<String, Object> data = new HashMap<>();
         data.put("addressId", addressId);
         data.put("grouponRulesId", grouponRulesId);
+        data.put("grouponPrice", grouponPrice);
         data.put("checkedAddress", checkedAddress);
         data.put("couponId", couponId);
         data.put("checkedCoupon", 0);

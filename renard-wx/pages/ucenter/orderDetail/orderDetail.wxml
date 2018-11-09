@@ -31,9 +31,9 @@
       <text class="name">{{item.goodsName}}</text>
       <text class="number">x{{item.number}}</text>
      </view>
-     <view class="attr">{{item.goodsSpecificationValues}}</view>
-     <view class="price">￥{{item.retailPrice}}</view>
-     <view class="btn active" wx:if="{{handleOption.comment}}">
+     <view class="attr">{{item.specifications}}</view>
+     <view class="price">￥{{item.price}}</view>
+     <view class="btn active" wx:if="{{handleOption.comment && (item.comment == 0)}}">      
       <navigator url="../../commentPost/commentPost?orderId={{item.orderId}}&&valueId={{item.goodsId}}&type=0">去评价</navigator>
      </view>
      <view class="btn active" wx:if="{{handleOption.rebuy}}">

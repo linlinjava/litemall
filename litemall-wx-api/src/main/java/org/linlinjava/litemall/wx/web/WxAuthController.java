@@ -161,7 +161,6 @@ public class WxAuthController {
             user.setStatus((byte) 0);
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.client(request));
-            user.setAddTime(LocalDateTime.now());
 
             userService.add(user);
         } else {
@@ -307,7 +306,6 @@ public class WxAuthController {
         user.setStatus((byte) 0);
         user.setLastLoginTime(LocalDateTime.now());
         user.setLastLoginIp(IpUtil.client(request));
-        user.setAddTime(LocalDateTime.now());
         userService.add(user);
 
         // userInfo

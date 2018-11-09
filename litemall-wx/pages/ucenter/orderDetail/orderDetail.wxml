@@ -29,9 +29,9 @@
                         <text class="name">{{item.goodsName}}</text>
                         <text class="number">x{{item.number}}</text>
                     </view>
-                    <view class="attr">{{item.goodsSpecificationValues}}</view>
-                    <view class="price">￥{{item.retailPrice}}</view>
-                    <view class="btn active" wx:if="{{handleOption.comment}}">
+                    <view class="attr">{{item.specifications}}</view>
+                    <view class="price">￥{{item.price}}</view>
+                    <view class="btn active" wx:if="{{handleOption.comment && (item.comment == 0)}}">
                       <navigator url="../../commentPost/commentPost?orderId={{item.orderId}}&&valueId={{item.goodsId}}&type=0">去评价</navigator>
                     </view>
                     <view class="btn active" wx:if="{{handleOption.rebuy}}">
@@ -40,10 +40,6 @@
                 </view>
             </view>
         </view>
-  <!-- 展开 -->
-  <!-- <view class="data-expand p10 border-bottom" wx:if="{{ flag }}">
-
- </view> -->
 
     <view class="order-bottom">
         <view class="address">
@@ -86,5 +82,4 @@
    </view>
   </view>
  </view>
- <!-- </view> -->
 </view>

@@ -105,11 +105,11 @@ Page({
       type: options.type,
       valueId: options.valueId
     });
-    this.getOrderComment();
+    this.getOrderGoods();
   },
-  getOrderComment: function () {
+  getOrderGoods: function () {
     let that = this;
-    util.request(api.OrderComment, {
+    util.request(api.OrderGoods, {
       orderId: that.data.orderId, goodsId: that.data.valueId
     }).then(function (res) {
       if (res.errno === 0) {
@@ -130,9 +130,8 @@ Page({
       return false;
     }
 
-    util.request(api.CommentPost, {
-      type: that.data.type,
-      valueId: that.data.valueId,
+    util.request(api.OrderComment, {
+      orderGoodsId: that.data.orderGoods.id,
       content: that.data.content,
       star: that.data.star,
       hasPicture: that.data.hasPicture,
@@ -142,7 +141,9 @@ Page({
         wx.showToast({
           title: '评论成功',
           complete: function () {
-            wx.navigateBack();
+            wx.switchTab({
+              url: '/pages/ucenter/index/index'
+            })
           }
         })
       }

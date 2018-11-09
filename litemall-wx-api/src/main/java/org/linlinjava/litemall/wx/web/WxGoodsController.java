@@ -10,7 +10,6 @@ import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
-import org.linlinjava.litemall.wx.service.HomeCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +33,7 @@ public class WxGoodsController {
     @Autowired
     private LitemallGoodsService goodsService;
     @Autowired
-    private LitemallProductService productService;
+    private LitemallGoodsProductService productService;
     @Autowired
     private LitemallIssueService goodsIssueService;
     @Autowired
@@ -99,13 +98,20 @@ public class WxGoodsController {
         Object specificationList = goodsSpecificationService.getSpecificationVoList(id);
 
         // 商品规格对应的数量和价格
-        List<LitemallProduct> productList = productService.queryByGid(id);
+        List<LitemallGoodsProduct> productList = productService.queryByGid(id);
 
         // 商品问题，这里是一些通用问题
         List<LitemallIssue> issue = goodsIssueService.query();
 
         // 商品品牌商
-        LitemallBrand brand = brandService.findById(info.getBrandId());
+        Integer brandId = info.getBrandId();
+        LitemallBrand brand = null;
+        if(brandId == 0){
+            brand = new LitemallBrand();
+        }
+        else {
+            brand = brandService.findById(info.getBrandId());
+        }
 
         // 评论
         List<LitemallComment> comments = commentService.queryGoodsByGid(id, 0, 2);
@@ -138,7 +144,6 @@ public class WxGoodsController {
         // 记录用户的足迹
         if (userId != null) {
             LitemallFootprint footprint = new LitemallFootprint();
-            footprint.setAddTime(LocalDateTime.now());
             footprint.setUserId(userId);
             footprint.setGoodsId(id);
             footprintService.add(footprint);
@@ -242,7 +247,6 @@ public class WxGoodsController {
         //添加到搜索历史
         if (userId != null && !StringUtils.isNullOrEmpty(keyword)) {
             LitemallSearchHistory searchHistoryVo = new LitemallSearchHistory();
-            searchHistoryVo.setAddTime(LocalDateTime.now());
             searchHistoryVo.setKeyword(keyword);
             searchHistoryVo.setUserId(userId);
             searchHistoryVo.setFrom("wx");

@@ -31,7 +31,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +53,7 @@ import java.util.Map;
  * 101 订单生成，未支付；102，下单后未支付用户取消；103，下单后未支付超时系统自动取消
  * 201 支付完成，商家未发货；202，订单生产，已付款未发货，但是退款取消；
  * 301 商家发货，用户未确认；
- * 401 用户确认收货，订单结束； 402 用户没有确认收货，但是快递反馈已收获后，超过一定时间，系统自动确认收货，订单结束。
+ * 401 用户确认收货； 402 用户没有确认收货超过一定时间，系统自动确认收货；
  *
  * 当101用户未付款时，此时用户可以进行的操作是取消订单，或者付款操作
  * 当201支付完成而商家未发货时，此时用户可以取消订单并申请退款
@@ -63,7 +62,6 @@ import java.util.Map;
  * 当402系统自动确认收货以后，此时用户可以删除订单，评价商品，或者再次购买
  *
  * 目前不支持订单退货和售后服务
- *
  */
 @RestController
 @RequestMapping("/wx/order")
@@ -86,7 +84,7 @@ public class WxOrderController {
     @Autowired
     private LitemallRegionService regionService;
     @Autowired
-    private LitemallProductService productService;
+    private LitemallGoodsProductService productService;
     @Autowired
     private WxPayService wxPayService;
     @Autowired
@@ -101,6 +99,8 @@ public class WxOrderController {
     private QCodeService qCodeService;
     @Autowired
     private ExpressService expressService;
+    @Autowired
+    private LitemallCommentService commentService;
 
     private String detailedAddress(LitemallAddress litemallAddress) {
         Integer provinceId = litemallAddress.getProvinceId();
@@ -237,23 +237,10 @@ public class WxOrderController {
         orderVo.put("expNo", order.getShipSn());
 
         List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
-        List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
-        for (LitemallOrderGoods orderGoods : orderGoodsList) {
-            Map<String, Object> orderGoodsVo = new HashMap<>();
-            orderGoodsVo.put("id", orderGoods.getId());
-            orderGoodsVo.put("orderId", orderGoods.getOrderId());
-            orderGoodsVo.put("goodsId", orderGoods.getGoodsId());
-            orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
-            orderGoodsVo.put("number", orderGoods.getNumber());
-            orderGoodsVo.put("retailPrice", orderGoods.getPrice());
-            orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
-            orderGoodsVo.put("goodsSpecificationValues", orderGoods.getSpecifications());
-            orderGoodsVoList.add(orderGoodsVo);
-        }
 
         Map<String, Object> result = new HashMap<>();
         result.put("orderInfo", orderVo);
-        result.put("orderGoods", orderGoodsVoList);
+        result.put("orderGoods", orderGoodsList);
 
         // 订单状态为已发货且物流信息不为空
         //"YTO", "800669400640887922"
@@ -290,6 +277,7 @@ public class WxOrderController {
         Integer cartId = JacksonUtil.parseInteger(body, "cartId");
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
         Integer couponId = JacksonUtil.parseInteger(body, "couponId");
+        String message = JacksonUtil.parseString(body, "message");
         Integer grouponRulesId = JacksonUtil.parseInteger(body, "grouponRulesId");
         Integer grouponLinkId = JacksonUtil.parseInteger(body, "grouponLinkId");
 
@@ -373,10 +361,10 @@ public class WxOrderController {
             order = new LitemallOrder();
             order.setUserId(userId);
             order.setOrderSn(orderService.generateOrderSn(userId));
-            order.setAddTime(LocalDateTime.now());
             order.setOrderStatus(OrderUtil.STATUS_CREATE);
             order.setConsignee(checkedAddress.getName());
             order.setMobile(checkedAddress.getMobile());
+            order.setMessage(message);
             String detailedAddress = detailedAddress(checkedAddress);
             order.setAddress(detailedAddress);
             order.setGoodsPrice(checkedGoodsPrice);
@@ -421,7 +409,7 @@ public class WxOrderController {
             // 商品货品数量减少
             for (LitemallCart checkGoods : checkedGoodsList) {
                 Integer productId = checkGoods.getProductId();
-                LitemallProduct product = productService.findById(productId);
+                LitemallGoodsProduct product = productService.findById(productId);
 
                 Integer remainNumber = product.getNumber() - checkGoods.getNumber();
                 if (remainNumber < 0) {
@@ -429,7 +417,7 @@ public class WxOrderController {
                 }
                 product.setNumber(remainNumber);
                 if(productService.updateById(product) == 0){
-                    throw new Exception("更新数据已失效");
+                    throw new Exception("更新数据失败");
                 }
             }
 
@@ -452,8 +440,6 @@ public class WxOrderController {
                     groupon.setCreatorUserId(userId);
                     groupon.setGrouponId(0);
                 }
-
-                groupon.setAddTime(LocalDateTime.now());
 
                 grouponService.createGroupon(groupon);
             }
@@ -499,7 +485,7 @@ public class WxOrderController {
             return ResponseUtil.badArgumentValue();
         }
 
-        Integer version = order.getVersion();
+        LocalDateTime preUpdateTime = order.getUpdateTime();
 
         // 检测是否能够取消
         OrderHandleOption handleOption = OrderUtil.build(order);
@@ -515,7 +501,7 @@ public class WxOrderController {
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_CANCEL);
             order.setEndTime(LocalDateTime.now());
-            if(orderService.updateByIdWithVersion(version, order) == 0){
+            if(orderService.updateWithOptimisticLocker(order) == 0){
                 throw new Exception("更新数据已失效");
             }
 
@@ -523,11 +509,11 @@ public class WxOrderController {
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
-                LitemallProduct product = productService.findById(productId);
+                LitemallGoodsProduct product = productService.findById(productId);
                 Integer number = product.getNumber() + orderGoods.getNumber();
                 product.setNumber(number);
                 if(productService.updateById(product) == 0){
-                    throw new Exception("更新数据已失效");
+                    throw new Exception("更新数据失败");
                 }
             }
         } catch (Exception ex) {
@@ -571,8 +557,6 @@ public class WxOrderController {
             return ResponseUtil.badArgumentValue();
         }
 
-        Integer version = order.getVersion();
-
         // 检测是否能够取消
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isPay()) {
@@ -615,7 +599,7 @@ public class WxOrderController {
             return ResponseUtil.fail(403, "订单不能支付");
         }
 
-        if(orderService.updateByIdWithVersion(version, order) == 0){
+        if(orderService.updateWithOptimisticLocker(order) == 0){
             return ResponseUtil.updatedDateExpired();
         }
         return ResponseUtil.ok(result);
@@ -666,8 +650,6 @@ public class WxOrderController {
             return WxPayNotifyResponse.fail("订单不存在 sn=" + orderSn);
         }
 
-        Integer version = order.getVersion();
-
         // 检查这个订单是否已经处理过
         if (OrderUtil.isPayStatus(order) && order.getPayId() != null) {
             return WxPayNotifyResponse.success("订单已经处理成功!");
@@ -681,19 +663,18 @@ public class WxOrderController {
         order.setPayId(payId);
         order.setPayTime(LocalDateTime.now());
         order.setOrderStatus(OrderUtil.STATUS_PAY);
-        if (orderService.updateByIdWithVersion(version, order) == 0) {
+        if (orderService.updateWithOptimisticLocker(order) == 0) {
             // 这里可能存在这样一个问题，用户支付和系统自动取消订单发生在同时
             // 如果数据库首先因为系统自动取消订单而更新了订单状态；
             // 此时用户支付完成回调这里也要更新数据库，而由于乐观锁机制这里的更新会失败
             // 因此，这里会重新读取数据库检查状态是否是订单自动取消，如果是则更新成支付状态。
             order = orderService.findBySn(orderSn);
-            version = order.getVersion();
             int updated = 0;
             if(OrderUtil.isAutoCancelStatus(order)){
                 order.setPayId(payId);
                 order.setPayTime(LocalDateTime.now());
                 order.setOrderStatus(OrderUtil.STATUS_PAY);
-                updated = orderService.updateByIdWithVersion(version, order);
+                updated = orderService.updateWithOptimisticLocker(order);
             }
 
             // 如果updated是0，那么数据库更新失败
@@ -768,8 +749,6 @@ public class WxOrderController {
             return ResponseUtil.badArgumentValue();
         }
 
-        Integer version = order.getVersion();
-
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isRefund()) {
             return ResponseUtil.fail(403, "订单不能取消");
@@ -777,7 +756,7 @@ public class WxOrderController {
 
         // 设置订单申请退款状态
         order.setOrderStatus(OrderUtil.STATUS_REFUND);
-        if(orderService.updateByIdWithVersion(version, order) == 0){
+        if(orderService.updateWithOptimisticLocker(order) == 0){
             return ResponseUtil.updatedDateExpired();
         }
 
@@ -817,16 +796,17 @@ public class WxOrderController {
             return ResponseUtil.badArgumentValue();
         }
 
-        Integer version = order.getVersion();
-
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isConfirm()) {
             return ResponseUtil.fail(403, "订单不能确认收货");
         }
 
+        Short comments = orderGoodsService.getComments(orderId);
+        order.setComments(comments);
+
         order.setOrderStatus(OrderUtil.STATUS_CONFIRM);
         order.setConfirmTime(LocalDateTime.now());
-        if(orderService.updateByIdWithVersion(version, order) == 0){
+        if(orderService.updateWithOptimisticLocker(order) == 0){
             return ResponseUtil.updatedDateExpired();
         }
         return ResponseUtil.ok();
@@ -883,8 +863,8 @@ public class WxOrderController {
      * 成功则 { errno: 0, errmsg: '成功', data: xxx }
      * 失败则 { errno: XXX, errmsg: XXX }
      */
-    @GetMapping("comment")
-    public Object comment(@LoginUser Integer userId,
+    @GetMapping("goods")
+    public Object goods(@LoginUser Integer userId,
                           @NotNull Integer orderId,
                           @NotNull Integer goodsId) {
         if (userId == null) {
@@ -903,4 +883,85 @@ public class WxOrderController {
         LitemallOrderGoods orderGoods = orderGoodsList.get(0);
         return ResponseUtil.ok(orderGoods);
     }
+
+    /**
+     * 评价订单商品
+     * 确认商品收货后7天内可以评价
+     *
+     * @param userId 用户ID
+     * @param body   订单信息，{ orderId：xxx }
+     * @return 订单操作结果
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
+     */
+    @PostMapping("comment")
+    public Object comment(@LoginUser Integer userId, @RequestBody String body) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+
+        Integer orderGoodsId = JacksonUtil.parseInteger(body, "orderGoodsId");
+        if(orderGoodsId == null){
+            return ResponseUtil.badArgument();
+        }
+        LitemallOrderGoods orderGoods = orderGoodsService.findById(orderGoodsId);
+        if(orderGoods == null){
+            return ResponseUtil.badArgumentValue();
+        }
+        Integer orderId =  orderGoods.getOrderId();
+        LitemallOrder order = orderService.findById(orderId);
+        if(order == null){
+            return ResponseUtil.badArgumentValue();
+        }
+        Short orderStatus = order.getOrderStatus();
+        if(!OrderUtil.isConfirmStatus(order) && !OrderUtil.isAutoConfirmStatus(order)) {
+            return ResponseUtil.fail(404, "当前商品不能评价");
+        }
+        if(!order.getUserId().equals(userId)){
+            return ResponseUtil.fail(404, "当前商品不属于用户");
+        }
+        Integer commentId = orderGoods.getComment();
+        if(commentId == -1){
+            return ResponseUtil.fail(404, "当前商品评价时间已经过期");
+        }
+        if(commentId != 0){
+            return ResponseUtil.fail(404, "订单商品已评价");
+        }
+
+        String content = JacksonUtil.parseString(body, "content");
+        Integer star = JacksonUtil.parseInteger(body, "star");
+        if(star == null || star < 0 || star > 5){
+            return ResponseUtil.badArgumentValue();
+        }
+        Boolean hasPicture = JacksonUtil.parseBoolean(body, "hasPicture");
+        List<String> picUrls = JacksonUtil.parseStringList(body, "picUrls");
+        if(hasPicture == null || !hasPicture){
+            picUrls = new ArrayList<>(0);
+        }
+
+        // 1. 创建评价
+        LitemallComment comment = new LitemallComment();
+        comment.setUserId(userId);
+        comment.setValueId(orderGoods.getGoodsId());
+        comment.setType((byte)1);
+        comment.setContent(content);
+        comment.setHasPicture(hasPicture);
+        comment.setPicUrls(picUrls.toArray(new String[]{}));
+        commentService.save(comment);
+
+        // 2. 更新订单商品的评价列表
+        orderGoods.setComment(comment.getId());
+        orderGoodsService.updateById(orderGoods);
+
+        // 3. 更新订单中未评价的订单商品可评价数量
+        Short commentCount = order.getComments();
+        if(commentCount > 0){
+            commentCount--;
+        }
+        order.setComments(commentCount);
+        orderService.updateWithOptimisticLocker(order);
+
+        return ResponseUtil.ok();
+    }
+
 }

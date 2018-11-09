@@ -117,7 +117,6 @@ public class WxAddressController {
         data.put("mobile", address.getMobile());
         data.put("address", address.getAddress());
         data.put("isDefault", address.getIsDefault());
-        data.put("version", address.getVersion());
         String pname = regionService.findById(address.getProvinceId()).getName();
         data.put("provinceName", pname);
         String cname = regionService.findById(address.getCityId()).getName();
@@ -204,7 +203,6 @@ public class WxAddressController {
 
         if (address.getId() == null || address.getId().equals(0)) {
             address.setId(null);
-            address.setAddTime(LocalDateTime.now());
             address.setUserId(userId);
             addressService.add(address);
         } else {

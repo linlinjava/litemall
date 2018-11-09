@@ -133,7 +133,6 @@ public class WxCollectController {
             collect.setUserId(userId);
             collect.setValueId(valueId);
             collect.setType(type);
-            collect.setAddTime(LocalDateTime.now());
             collectService.add(collect);
         }
 

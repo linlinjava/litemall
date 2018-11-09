@@ -18,6 +18,7 @@ Page({
     cartId: 0,
     addressId: 0,
   couponId: 0,
+  message: '',
   grouponLinkId: 0, //参与的团购，如果是发起则为0
   grouponRulesId: 0 //团购规则ID
  },
@@ -62,6 +63,11 @@ Page({
   wx.navigateTo({
    url: '/pages/ucenter/addressAdd/addressAdd',
   })
+ },
+ bindMessageInput: function (e) {
+  this.setData({
+    message: e.detail.value
+  });
  },
  onReady: function() {
   // 页面渲染完成
@@ -131,6 +137,7 @@ Page({
    cartId: this.data.cartId,
    addressId: this.data.addressId,
    couponId: this.data.couponId,
+   message: this.data.message,
    grouponRulesId: this.data.grouponRulesId,
    grouponLinkId: this.data.grouponLinkId
   }, 'POST').then(res => {

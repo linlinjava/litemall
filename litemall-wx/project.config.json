@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 33,
+			"current": 34,
 			"list": [
 				{
 					"id": -1,
@@ -103,10 +103,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 12,
 					"name": "商品",
 					"pathName": "pages/goods/goods",
-					"query": "id=1181000"
+					"query": "id=1181003"
 				},
 				{
 					"id": -1,
@@ -123,7 +123,7 @@
 				{
 					"id": -1,
 					"name": "下单",
-					"pathName": "pages/shopping/checkout/checkout",
+					"pathName": "pages/checkout/checkout",
 					"query": ""
 				},
 				{
@@ -232,6 +232,12 @@
 					"id": -1,
 					"name": "意见反馈",
 					"pathName": "pages/ucenter/feedback/feedback",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "团购专区",
+					"pathName": "pages/groupon/grouponList/grouponList",
 					"query": ""
 				}
 			]
