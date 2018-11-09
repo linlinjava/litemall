@@ -77,6 +77,9 @@
       <el-form-item label="订单用户">
         <span>{{ orderDetail.user.nickname }}</span>
       </el-form-item>
+      <el-form-item label="用户留言">
+        <span>{{ orderDetail.order.message }}</span>
+      </el-form-item>
       <el-form-item label="收货信息">
           <span>（收货人）{{ orderDetail.order.consignee }}</span>
           <span>（手机号）{{ orderDetail.order.mobile }}</span>

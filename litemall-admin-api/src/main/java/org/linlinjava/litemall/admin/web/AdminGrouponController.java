@@ -164,7 +164,6 @@ public class AdminGrouponController {
             return ResponseUtil.badArgumentValue();
         }
 
-        grouponRules.setAddTime(LocalDateTime.now());
         grouponRules.setGoodsName(goods.getName());
         grouponRules.setPicUrl(goods.getPicUrl());
 

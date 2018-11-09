@@ -69,7 +69,6 @@ public class AdminKeywordController {
         if(error != null){
             return error;
         }
-        keywords.setAddTime(LocalDateTime.now());
         keywordService.add(keywords);
         return ResponseUtil.ok(keywords);
     }

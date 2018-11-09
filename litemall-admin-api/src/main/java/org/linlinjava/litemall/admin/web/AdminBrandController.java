@@ -76,8 +76,6 @@ public class AdminBrandController {
         if(error != null){
             return error;
         }
-
-        brand.setAddTime(LocalDateTime.now());
         brandService.add(brand);
         return ResponseUtil.ok(brand);
     }

@@ -74,7 +74,6 @@ public class AdminTopicController {
         if(error != null){
             return error;
         }
-        topic.setAddTime(LocalDateTime.now());
         topicService.add(topic);
         return ResponseUtil.ok(topic);
     }

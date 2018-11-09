@@ -11,7 +11,7 @@ import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
-import org.linlinjava.litemall.db.service.LitemallProductService;
+import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -45,7 +45,7 @@ public class AdminOrderController {
     @Autowired
     private LitemallOrderService orderService;
     @Autowired
-    private LitemallProductService productService;
+    private LitemallGoodsProductService productService;
     @Autowired
     private LitemallUserService userService;
 
@@ -127,8 +127,6 @@ public class AdminOrderController {
             return ResponseUtil.fail(403, "订单不能确认收货");
         }
 
-        Integer version = order.getVersion();
-
         // 开启事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -136,7 +134,7 @@ public class AdminOrderController {
         try {
             // 设置订单取消状态
             order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
-            if(orderService.updateByIdWithVersion(version, order) == 0) {
+            if(orderService.updateWithOptimisticLocker(order) == 0) {
                 throw new Exception("跟新数据已失效");
             }
 
@@ -144,11 +142,11 @@ public class AdminOrderController {
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
-                LitemallProduct product = productService.findById(productId);
+                LitemallGoodsProduct product = productService.findById(productId);
                 Integer number = product.getNumber() + orderGoods.getNumber();
                 product.setNumber(number);
                 if(productService.updateById(product) == 0){
-                    throw new Exception("跟新数据已失效");
+                    throw new Exception("跟新数据失败");
                 }
             }
         } catch (Exception ex) {
@@ -201,8 +199,6 @@ public class AdminOrderController {
             return ResponseUtil.badArgument();
         }
 
-        Integer version = order.getVersion();
-
         // 如果订单不是已付款状态，则不能发货
         if (!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)) {
             return ResponseUtil.fail(403, "订单不能确认收货");
@@ -212,7 +208,7 @@ public class AdminOrderController {
         order.setShipSn(shipSn);
         order.setShipChannel(shipChannel);
         order.setShipTime(LocalDateTime.now());
-        if(orderService.updateByIdWithVersion(version, order) == 0){
+        if(orderService.updateWithOptimisticLocker(order) == 0){
             return ResponseUtil.updatedDateExpired();
         }
 
@@ -247,8 +243,6 @@ public class AdminOrderController {
                 continue;
             }
 
-            Integer version = order.getVersion();
-
             // 开启事务管理
             DefaultTransactionDefinition def = new DefaultTransactionDefinition();
             def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -257,7 +251,7 @@ public class AdminOrderController {
                 // 设置订单已取消状态
                 order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
                 order.setEndTime(LocalDateTime.now());
-                if(orderService.updateByIdWithVersion(version, order) == 0){
+                if(orderService.updateWithOptimisticLocker(order) == 0){
                     throw new Exception("跟新数据已失效");
                 }
 
@@ -266,7 +260,7 @@ public class AdminOrderController {
                 List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
                 for (LitemallOrderGoods orderGoods : orderGoodsList) {
                     Integer productId = orderGoods.getProductId();
-                    LitemallProduct product = productService.findById(productId);
+                    LitemallGoodsProduct product = productService.findById(productId);
                     Integer number = product.getNumber() + orderGoods.getNumber();
                     product.setNumber(number);
                     if(productService.updateById(product) == 0){
@@ -313,16 +307,44 @@ public class AdminOrderController {
                 continue;
             }
 
-            Integer version = order.getVersion();
-
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_AUTO_CONFIRM);
             order.setConfirmTime(now);
-            if(orderService.updateByIdWithVersion(version, order) == 0){
+            if(orderService.updateWithOptimisticLocker(order) == 0){
                 logger.info("订单 ID=" + order.getId() + " 数据已经更新，放弃自动确认收货");
             }
             else{
                 logger.info("订单 ID=" + order.getId() + " 已经超期自动确认收货");
+            }
+        }
+    }
+
+    /**
+     * 可评价订单商品超期
+     * <p>
+     * 定时检查订单商品评价情况，如果确认商品超时七天则取消可评价状态
+     * 定时时间是每天凌晨4点。
+     */
+    @Scheduled(cron = "0 0 4 * * ?")
+    public void checkOrderComment() {
+        logger.info("系统开启任务检查订单是否已经超期未评价");
+
+        LocalDateTime now = LocalDateTime.now();
+        List<LitemallOrder> orderList = orderService.queryComment();
+        for (LitemallOrder order : orderList) {
+            LocalDateTime confirm =  order.getConfirmTime();
+            LocalDateTime expired = confirm.plusDays(7);
+            if (expired.isAfter(now)) {
+                continue;
+            }
+
+            order.setComments((short)0);
+            orderService.updateWithOptimisticLocker(order);
+
+            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
+            for(LitemallOrderGoods orderGoods : orderGoodsList){
+                orderGoods.setComment(-1);
+                orderGoodsService.updateById(orderGoods);
             }
         }
     }

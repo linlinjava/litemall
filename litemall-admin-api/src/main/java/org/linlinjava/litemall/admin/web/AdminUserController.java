@@ -113,7 +113,6 @@ public class AdminUserController {
         String encodedPassword = encoder.encode(password);
         user.setPassword(encodedPassword);
 
-        user.setAddTime(LocalDateTime.now());
         userService.add(user);
         return ResponseUtil.ok(user);
     }

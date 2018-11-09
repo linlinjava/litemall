@@ -69,7 +69,6 @@ public class AdminIssueController {
         if(error != null){
             return error;
         }
-        issue.setAddTime(LocalDateTime.now());
         issueService.add(issue);
         return ResponseUtil.ok(issue);
     }

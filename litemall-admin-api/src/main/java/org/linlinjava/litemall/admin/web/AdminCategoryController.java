@@ -81,7 +81,6 @@ public class AdminCategoryController {
         if(error != null){
             return error;
         }
-        category.setAddTime(LocalDateTime.now());
         categoryService.add(category);
         return ResponseUtil.ok();
     }

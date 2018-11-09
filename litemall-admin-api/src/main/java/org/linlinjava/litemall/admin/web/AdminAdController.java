@@ -69,7 +69,6 @@ public class AdminAdController {
         if(error != null){
             return error;
         }
-        ad.setAddTime(LocalDateTime.now());
         adService.add(ad);
         return ResponseUtil.ok(ad);
     }

@@ -111,8 +111,6 @@ public class AdminAdminController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(rawPassword);
         admin.setPassword(encodedPassword);
-        admin.setAddTime(LocalDateTime.now());
-
         adminService.add(admin);
         return ResponseUtil.ok(admin);
     }

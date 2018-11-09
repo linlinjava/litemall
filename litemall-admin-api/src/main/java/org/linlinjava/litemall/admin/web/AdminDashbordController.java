@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
-import org.linlinjava.litemall.db.service.LitemallProductService;
+import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AdminDashbordController {
     @Autowired
     private LitemallGoodsService goodsService;
     @Autowired
-    private LitemallProductService productService;
+    private LitemallGoodsProductService productService;
     @Autowired
     private LitemallOrderService orderService;
 

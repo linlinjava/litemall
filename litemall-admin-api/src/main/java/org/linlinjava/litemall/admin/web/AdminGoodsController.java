@@ -41,7 +41,7 @@ public class AdminGoodsController {
     @Autowired
     private LitemallGoodsAttributeService attributeService;
     @Autowired
-    private LitemallProductService productService;
+    private LitemallGoodsProductService productService;
     @Autowired
     private LitemallCategoryService categoryService;
     @Autowired
@@ -119,8 +119,8 @@ public class AdminGoodsController {
             }
         }
 
-        LitemallProduct[] products = goodsAllinone.getProducts();
-        for(LitemallProduct product : products){
+        LitemallGoodsProduct[] products = goodsAllinone.getProducts();
+        for(LitemallGoodsProduct product : products){
             Integer number = product.getNumber();
             if(number == null || number < 0){
                 return ResponseUtil.badArgument();
@@ -165,7 +165,7 @@ public class AdminGoodsController {
         LitemallGoods goods = goodsAllinone.getGoods();
         LitemallGoodsAttribute[] attributes = goodsAllinone.getAttributes();
         LitemallGoodsSpecification[] specifications = goodsAllinone.getSpecifications();
-        LitemallProduct[] products = goodsAllinone.getProducts();
+        LitemallGoodsProduct[] products = goodsAllinone.getProducts();
 
         // 开启事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -179,7 +179,7 @@ public class AdminGoodsController {
 
             // 商品基本信息表litemall_goods
             if(goodsService.updateById(goods) == 0){
-                throw new Exception("跟新数据已失效");
+                throw new Exception("跟新数据失败");
             }
 
             Integer gid = goods.getId();
@@ -190,21 +190,18 @@ public class AdminGoodsController {
             // 商品规格表litemall_goods_specification
             for (LitemallGoodsSpecification specification : specifications) {
                 specification.setGoodsId(goods.getId());
-                specification.setAddTime(LocalDateTime.now());
                 specificationService.add(specification);
             }
 
             // 商品参数表litemall_goods_attribute
             for (LitemallGoodsAttribute attribute : attributes) {
                 attribute.setGoodsId(goods.getId());
-                attribute.setAddTime(LocalDateTime.now());
                 attributeService.add(attribute);
             }
 
             // 商品货品表litemall_product
-            for (LitemallProduct product : products) {
+            for (LitemallGoodsProduct product : products) {
                 product.setGoodsId(goods.getId());
-                product.setAddTime(LocalDateTime.now());
                 productService.add(product);
             }
         } catch (Exception ex) {
@@ -263,7 +260,7 @@ public class AdminGoodsController {
         LitemallGoods goods = goodsAllinone.getGoods();
         LitemallGoodsAttribute[] attributes = goodsAllinone.getAttributes();
         LitemallGoodsSpecification[] specifications = goodsAllinone.getSpecifications();
-        LitemallProduct[] products = goodsAllinone.getProducts();
+        LitemallGoodsProduct[] products = goodsAllinone.getProducts();
 
         String name = goods.getName();
         if (goodsService.checkExistByName(name)) {
@@ -277,8 +274,6 @@ public class AdminGoodsController {
         try {
 
             // 商品基本信息表litemall_goods
-            goods.setAddTime(LocalDateTime.now());
-
             goodsService.add(goods);
 
             //将生成的分享图片地址写入数据库
@@ -286,28 +281,25 @@ public class AdminGoodsController {
             if(!StringUtils.isEmpty(url)) {
                 goods.setShareUrl(url);
                 if (goodsService.updateById(goods) == 0) {
-                    throw new Exception("跟新数据已失效");
+                    throw new Exception("跟新数据失败");
                 }
             }
 
             // 商品规格表litemall_goods_specification
             for (LitemallGoodsSpecification specification : specifications) {
                 specification.setGoodsId(goods.getId());
-                specification.setAddTime(LocalDateTime.now());
                 specificationService.add(specification);
             }
 
             // 商品参数表litemall_goods_attribute
             for (LitemallGoodsAttribute attribute : attributes) {
                 attribute.setGoodsId(goods.getId());
-                attribute.setAddTime(LocalDateTime.now());
                 attributeService.add(attribute);
             }
 
             // 商品货品表litemall_product
-            for (LitemallProduct product : products) {
+            for (LitemallGoodsProduct product : products) {
                 product.setGoodsId(goods.getId());
-                product.setAddTime(LocalDateTime.now());
                 productService.add(product);
             }
         } catch (Exception ex) {
@@ -374,7 +366,7 @@ public class AdminGoodsController {
         }
 
         LitemallGoods goods = goodsService.findById(id);
-        List<LitemallProduct> products = productService.queryByGid(id);
+        List<LitemallGoodsProduct> products = productService.queryByGid(id);
         List<LitemallGoodsSpecification> specifications = specificationService.queryByGid(id);
         List<LitemallGoodsAttribute> attributes = attributeService.queryByGid(id);
 
