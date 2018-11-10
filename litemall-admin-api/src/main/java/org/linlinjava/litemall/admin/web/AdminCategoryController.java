@@ -65,7 +65,7 @@ public class AdminCategoryController {
         }
 
         Integer pid = category.getPid();
-        if(pid == null){
+        if(level.equals("L2") && (pid == null)){
             return ResponseUtil.badArgument();
         }
 
@@ -82,7 +82,7 @@ public class AdminCategoryController {
             return error;
         }
         categoryService.add(category);
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(category);
     }
 
     @GetMapping("/read")
