@@ -263,6 +263,8 @@ export default {
         if (valid) {
           createCategory(this.dataForm).then(response => {
             this.list.unshift(response.data.data)
+            // 更新L1目录
+            this.getCatL1()
             this.dialogFormVisible = false
             this.$notify.success({
               title: '成功',
@@ -296,6 +298,8 @@ export default {
                 break
               }
             }
+            // 更新L1目录
+            this.getCatL1()
             this.dialogFormVisible = false
             this.$notify.success({
               title: '成功',
@@ -312,6 +316,8 @@ export default {
     },
     handleDelete(row) {
       deleteCategory(row).then(response => {
+        // 更新L1目录
+        this.getCatL1()
         this.$notify.success({
           title: '成功',
           message: '删除成功'
