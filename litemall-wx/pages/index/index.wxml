@@ -137,9 +137,7 @@
  </view>
  <view class="good-grid" wx:for="{{floorGoods}}" wx:key="id">
   <view class="h">
-   <view>
-    <text>{{item.name}}</text>
-   </view>
+      <text>{{item.name}}</text>
   </view>
   <view class="b">
    <block wx:for="{{item.goodsList}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="id">
@@ -151,12 +149,9 @@
      </navigator>
     </view>
    </block>
-   <view class="item item-b item-more">
-    <navigator url="/pages/category/category?id={{item.id}}" class="more-a">
-     <view class="txt">{{'更多'+item.name+'好物'}}</view>
-     <image class="icon" src="../../static/images/icon_go_more.png" background-size="cover"></image>
-    </navigator>
-   </view>
   </view>
+  <navigator url="/pages/category/category?id={{item.id}}" class="t">
+   <view class="txt">{{'更多'+item.name+'好物 >'}}</view>
+  </navigator>
  </view>
 </view>

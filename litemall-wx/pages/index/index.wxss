@@ -439,30 +439,10 @@
   color: #AB956D;
 }
 
-.good-grid .more-item{
-  height: 100%;
-  width: 100%;
-}
-
-.more-a{
-  height: 100%;
-  width: 100%;
+.good-grid .t {
+  height: 100rpx;
+  background: #fff;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.good-grid .more-a .txt{
-  height: 33rpx;
-  width: 100%;
-  line-height: 33rpx;
-  color: #333;
-  font-size: 33rpx;
-}
-
-.good-grid .more-a .icon{
-  margin: 60rpx auto 0 auto;
-  width: 70rpx;
-  height: 70rpx;
 }

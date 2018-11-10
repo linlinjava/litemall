@@ -11,17 +11,11 @@ page ,.container{
     background: #f4f4f4;
 }
 
-.groupon-list {
- width: 750rpx;
- height: auto;
- overflow: hidden;
-}
-
 .groupon-list .item {
- border-top: 1px solid #d9d9d9;
- margin: 0 20rpx;
  height: 244rpx;
- width: 710rpx;
+ width: 100%;
+ background: #fff;
+ margin-bottom: 20rpx;
 }
 
 .groupon-list .img {
