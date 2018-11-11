@@ -20,13 +20,10 @@
       <view class="imgs" wx:if="{{item.picList.length > 0}}">
         <image class="img" wx:for="{{item.picList}}" wx:key="*this" wx:for-item="pitem" src="{{pitem}}"></image>
       </view>
-      <view class="spec">
-        <!-- <text class="item">白色 2件</text> -->
+      <view class="customer-service" wx:if="{{item.reply}}">
+        <text class="u">小商场回复：</text>
+        <text class="c">{{item.reply}}</text>
       </view>
-      <!--<view class="customer-service" wx:if="{{item.commentReplyVO}}">
-        <text class="u">小选回复：</text>
-        <text class="c">{{item.commentReplyVO.replyContent}}</text>
-      </view>-->
     </view>
 
   </view>
