@@ -942,8 +942,9 @@ public class WxOrderController {
         // 1. 创建评价
         LitemallComment comment = new LitemallComment();
         comment.setUserId(userId);
+        comment.setType((byte)0);
         comment.setValueId(orderGoods.getGoodsId());
-        comment.setType((byte)1);
+        comment.setStar(star.shortValue());
         comment.setContent(content);
         comment.setHasPicture(hasPicture);
         comment.setPicUrls(picUrls.toArray(new String[]{}));
