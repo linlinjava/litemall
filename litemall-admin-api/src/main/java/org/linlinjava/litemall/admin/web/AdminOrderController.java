@@ -9,10 +9,7 @@ import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
-import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
-import org.linlinjava.litemall.db.service.LitemallOrderService;
-import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
-import org.linlinjava.litemall.db.service.LitemallUserService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +18,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +47,8 @@ public class AdminOrderController {
     private LitemallGoodsProductService productService;
     @Autowired
     private LitemallUserService userService;
+    @Autowired
+    private LitemallCommentService commentService;
 
     @Autowired
     private NotifyService notifyService;
@@ -216,6 +217,48 @@ public class AdminOrderController {
         // 发货会发送通知短信给用户:          *
         // "您的订单已经发货，快递公司 {1}，快递单 {2} ，请注意查收"
         notifyService.notifySmsTemplate(order.getMobile(), NotifyType.SHIP, new String[]{shipChannel, shipSn});
+
+        return ResponseUtil.ok();
+    }
+
+
+    /**
+     * 回复订单商品
+     *
+     * @param adminId 管理员ID
+     * @param body   订单信息，{ orderId：xxx }
+     * @return 订单操作结果
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
+     */
+    @PostMapping("reply")
+    public Object reply(@LoginAdmin Integer adminId, @RequestBody String body) {
+        if (adminId == null) {
+            return ResponseUtil.unlogin();
+        }
+
+        Integer commentId = JacksonUtil.parseInteger(body, "commentId");
+        if(commentId == null || commentId == 0){
+            return ResponseUtil.badArgument();
+        }
+        // 目前只支持回复一次
+        if(commentService.findById(commentId) != null){
+            return ResponseUtil.fail(404, "订单商品已回复！");
+        }
+        String content = JacksonUtil.parseString(body, "content");
+        if(StringUtils.isEmpty(content)){
+            return ResponseUtil.badArgument();
+        }
+        // 创建评价回复
+        LitemallComment comment = new LitemallComment();
+        comment.setType((byte)2);
+        comment.setValueId(commentId);
+        comment.setContent(content);
+        comment.setUserId(0);                 // 评价回复没有用
+        comment.setStar((short)0);           // 评价回复没有用
+        comment.setHasPicture(false);        // 评价回复没有用
+        comment.setPicUrls(new String[]{});  // 评价回复没有用
+        commentService.save(comment);
 
         return ResponseUtil.ok();
     }

@@ -35,3 +35,11 @@ export function refundOrder(data) {
     data
   })
 }
+
+export function replyComment(data) {
+  return request({
+    url: '/order/reply',
+    method: 'post',
+    data
+  })
+}

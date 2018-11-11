@@ -20,6 +20,9 @@
       <el-table-column align="center" label="商品ID" prop="valueId">
       </el-table-column>
 
+      <el-table-column align="center" label="打分" prop="star">
+      </el-table-column>
+
       <el-table-column align="center" label="评论内容" prop="content">
       </el-table-column>
 
@@ -47,12 +50,25 @@
       </el-pagination>
     </div>
 
+    <!-- 评论回复 -->
+    <el-dialog title="回复" :visible.sync="replyFormVisible">
+      <el-form ref="replyForm" :model="replyForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
+        <el-form-item label="回复内容" prop="content">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" v-model="replyForm.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="replyFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="reply">确定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { listComment, deleteComment } from '@/api/comment'
-import { MessageBox } from 'element-ui'
+import { replyComment } from '@/api/order'
 
 export default {
   name: 'Comment',
@@ -69,7 +85,12 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
-      downloadLoading: false
+      downloadLoading: false,
+      replyForm: {
+        commentId: 0,
+        content: ''
+      },
+      replyFormVisible: false
     }
   },
   created() {
@@ -101,9 +122,21 @@ export default {
       this.getList()
     },
     handleReply(row) {
-      MessageBox.alert('商品评论回复目前不支持', '失败', {
-        confirmButtonText: '确定',
-        type: 'error'
+      this.replyForm = { commentId: row.id, content: '' }
+      this.replyFormVisible = true
+    },
+    reply() {
+      replyComment(this.replyForm).then(response => {
+        this.replyFormVisible = false
+        this.$notify.success({
+          title: '成功',
+          message: '回复成功'
+        })
+      }).catch(response => {
+        this.$notify.error({
+          title: '失败',
+          message: response.data.errmsg
+        })
       })
     },
     handleDelete(row) {
