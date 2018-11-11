@@ -5,7 +5,7 @@
 * 小商城前端，即litemall-wx模块
   * 微信小程序
 * 小商城后端，即litemall-wx-api模块
-  * Spring Boot 1.5.10
+  * Spring Boot 2.x
   * Spring MVC
   * [weixin-java-tools](https://gitee.com/binary/weixin-java-tools)
 
@@ -84,7 +84,7 @@ litemall
 
 3. 部署后台服务到云主机
 
-4. litemall-wx的api.js设置云主机的公网IP。
+4. litemall-wx的api.js设置云主机的域名。
    编译运行，尝试微信支付。
    
 ## 3.1 litemall-wx-api
@@ -95,9 +95,9 @@ litemall
 
 #### 3.1.1.1 账号登录
 
-#### 3.1.1.4 微信登录
+#### 3.1.1.2 微信登录
 
-#### 3.1.1.5 账号注册
+#### 3.1.1.3 账号注册
 
 目前账号注册只是简单的根据用户名和密码新建一个账号。
 
