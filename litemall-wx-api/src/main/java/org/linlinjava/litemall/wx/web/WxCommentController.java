@@ -172,11 +172,15 @@ public class WxCommentController {
         List<Map<String, Object>> commentVoList = new ArrayList<>(commentList.size());
         for(LitemallComment comment : commentList){
             Map<String, Object> commentVo = new HashMap<>();
-            UserInfo userInfo = userInfoService.getInfo(comment.getUserId());
-            commentVo.put("userInfo", userInfo);
             commentVo.put("addTime", comment.getAddTime());
             commentVo.put("content",comment.getContent());
             commentVo.put("picList", comment.getPicUrls());
+
+            UserInfo userInfo = userInfoService.getInfo(comment.getUserId());
+            commentVo.put("userInfo", userInfo);
+
+            String reply = commentService.queryReply(comment.getId());
+            commentVo.put("reply", reply);
 
             commentVoList.add(commentVo);
         }

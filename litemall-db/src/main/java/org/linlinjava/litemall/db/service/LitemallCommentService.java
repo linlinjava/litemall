@@ -69,8 +69,10 @@ public class LitemallCommentService {
 
     public List<LitemallComment> querySelective(String userId, String valueId, Integer page, Integer size, String sort, String order) {
         LitemallCommentExample example = new LitemallCommentExample();
-        example.setOrderByClause(LitemallComment.Column.addTime.desc());
         LitemallCommentExample.Criteria criteria = example.createCriteria();
+
+        // type=2 是订单商品回复，这里过滤
+        criteria.andTypeNotEqualTo((byte)2);
 
         if(!StringUtils.isEmpty(userId)){
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -107,4 +109,18 @@ public class LitemallCommentService {
         commentMapper.logicalDeleteByPrimaryKey(id);
     }
 
+    public String queryReply(Integer id) {
+        LitemallCommentExample example = new LitemallCommentExample();
+        example.or().andTypeEqualTo((byte)2).andValueIdEqualTo(id);
+        List<LitemallComment> commentReply = commentMapper.selectByExampleSelective(example, LitemallComment.Column.content);
+        // 目前业务只支持回复一次
+        if(commentReply.size() == 1){
+            return commentReply.get(0).getContent();
+        }
+        return null;
+    }
+
+    public LitemallComment findById(Integer id) {
+        return commentMapper.selectByPrimaryKey(id);
+    }
 }
