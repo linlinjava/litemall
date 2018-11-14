@@ -471,9 +471,7 @@ litemall-db模块是一个普通的Spring Boot应用，基于mybatis框架实现
   * generator生成代码
   * 非generator手动代码
 * 业务代码
-* 安全代码
-* JSON支持代码
-* 配置代码
+* mybatis支持代码
 
 ### 2.2.1 mybatis数据库访问代码
 
@@ -503,20 +501,20 @@ mybatis数据库访问代码是指dao接口代码、dao数据库XML文件和doma
 而是直接操作Java代码来完成对数据库的访问处理。
 
 关于如何基于mybatis的Example代码来访问数据库，请查阅相关资料，
-或者参考本模块`org.linlinjava.litemall.db.dservice` 包内的Java代码。
+或者参考本模块`org.linlinjava.litemall.db.service` 包内的Java代码。
 
-当然，为了达到数据库访问效率，开发者也可以手动自定义mapper文件和对应的Java代码，但目前这里不采用或者不建议采用。
-例如，当需要访问两个表的数据时，这里是在业务层通过Java代码遍历的形式来访问两个表。
+当然，为了达到数据库访问效率，开发者也可以手动自定义mapper文件和对应的Java代码。
+例如，当需要访问两个表的数据时，这里是在业务层通过Java代码遍历的形式来访问两个表，
+也可以通过自定义的mapper文件来实现。
 
-这里，以`litemall_brand`表举例说明：
+接下来，以`litemall_brand`表举例说明如何自动生成代码：
 
-1. mybatis generator插件会根据数据库`table`标签
+1. mybatis generator插件会读取`table`标签
 
     ```
     <generatorConfiguration>
          <table tableName="litemall_brand">
              <generatedKey column="id" sqlStatement="MySql" identity="true" />
-             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
          </table>
     </generatorConfiguration>
     ```
@@ -542,16 +540,12 @@ mybatis数据库访问代码是指dao接口代码、dao数据库XML文件和doma
     }
    ```
 
-
-如果基于一个新表创建新访问组件，请阅读下面章节2.2.6
-
-关于mybatis generator的用法，可以参考：
-https://blog.csdn.net/isea533/article/details/42102297
+关于mybatis generator的用法，可以自行查阅官网或文档。
 
 #### 2.2.1.2 非generator手动代码
 
 虽然generator可以自动生产代码，帮助开发者简化开发工作，但是在涉及到多表操作或特殊数据库操作时，
-仍然需要开发者自己手动编写mybatis框架代码。
+仍然需要开发者自己手动编写基于mybatis框架的相关代码。
 
 具体如何基于mybatis框架编写代码，请开发者自己查找资料。
 
@@ -570,26 +564,42 @@ https://blog.csdn.net/isea533/article/details/42102297
 
    在resources文件夹`org.linlinjava.litemall.db.domain.dao` 内的StatMapper.xml文件则是实现真正的数据库访问操作。
 
+4. service代码
 
+   这里可以在`org.linlinjava.litemall.db.service` 内定义一个StatServie.java代码，调用底层mapper代码，对外服务。
+    ```
+    @Service
+    public class StatService {
+        @Resource
+        private StatMapper statMapper;
+
+        public List<Map> statUser() {
+            return statMapper.statUser();
+        }
+
+        public List<Map> statOrder(){
+            return statMapper.statOrder();
+        }
+
+        public List<Map> statGoods(){
+            return statMapper.statGoods();
+        }
+    }
+    ```
+   
 ### 2.2.2 业务代码
 
-虽然2.2.1节所述代码已经能够提供数据库访问操作，但是这里仍然会抽象出业务访问层代码，即基于2.2.1所述代码和实际业务需求
-实现一些具体业务相关的操作，对其他模块提供便捷业务数据服务。
+虽然2.2.1节所述代码已经能够提供数据库访问操作，但是这里需要进一步地抽象出业务访问层代码，
+即基于2.2.1所述代码和实际业务需求实现一些具体业务相关的操作，对其他模块提供便捷业务数据服务。
 
 需要指出的是，这里的业务代码往往是单表相关的业务代码，而涉及到多表操作的java代码通常是在其他高层模块中实现。
 这里的业务分层并不是绝对的。例如，开发者可以取消这里的业务代码，而在其他模块中直接调用2.2.1所述代码。
 
 通常业务层代码在src文件夹`org.linlinjava.litemall.db.service` 包中。
 
-### 2.2.3 安全代码
+### 2.2.3 mybatis支持代码
 
-### 2.2.4 JSON支持代码
-
-### 2.2.5 配置代码
-
-采用Java注解的方式来完成一些特定的配置操作。
-
-### 2.2.6 新服务组件
+### 2.2.4 新服务组件
 
 本节介绍如果基于一个表创建新的服务组件。
 
@@ -670,16 +680,15 @@ https://blog.csdn.net/isea533/article/details/42102297
     }
     ```
 
-### 2.2.7 逻辑删除
+### 2.2.5 逻辑删除
 
-数据删除可以直接使用delete方法进行物理删除，也可以采用设置删除字段进行逻辑删除。
+数据删除可以直接进行物理删除，也可以采用设置删除字段进行逻辑删除。
 根据具体业务，也有可能部分数据可以物理删除，部分数据只能逻辑删除。
 
-目前所有删除操作是逻辑删除，除了极少数表外，其他所有表的设置了`deleted 字段。
+目前本项目所有删除操作都是逻辑删除。
+开发者可以自行修改代码进行真正的物理删除，来避免数据库保存无用数据。
 
-开发者可以自行修改代码进行真正的物理删除。
-
-### 2.2.8 并发访问
+### 2.2.6 并发访问
 
 由于服务是多线程并发的，因此这带来了多线程同时操作数据库中同一数据的问题。
 由于数据极少删除或者是逻辑删除，因此操作数据，可以简化成更新数据。
@@ -695,30 +704,20 @@ https://blog.csdn.net/isea533/article/details/42102297
 
 通常采用悲观锁或者乐观锁来处理并发更新问题，
 
-本项目目前采用基于`version`字段的乐观锁机制。
+本项目目前采用基于`update_time`字段的乐观锁机制。
 原理是：
 
-1. 每个表都存在version字段
-2. 更新前，先查询数据，得到表的业务数据和version字段
-3. 更新时，通过where条件查询当前version字段和数据库中当前version字段是否相同。
-   * 如果相同，说明数据没有改变则可以更新，数据更新同时version调整一个新值；
+1. 每个表都存在update_time字段
+2. 更新前，先查询数据，得到表的业务数据和update_time字段
+3. 更新时，通过where条件查询当前update_time字段和数据库中当前update_time字段是否相同。
+   * 如果相同，说明数据没有改变则可以更新，数据更新同时update_time设置当前更新时间；
    * 如果不相同，则说明数据改变了则更新失败，不能修改数据。   
    
 当然，由于采用乐观锁，这里也会带来另外一个问题：
 数据库有可能更新失败，那么如何处理更新失败的情况？
+目前只是简单地报错更新失败。
 
-目前的方法是在业务层多次尝试。
-
-例如：
-由于用户A和B同时更新同一商品数量，而用户A成功，B则失败。
-此时B失败后会再次进行商品购买逻辑。
-
-当然逻辑上这里仍然会存在再次和其他用户同时购买而失败的情况。
-不过考虑到本项目设想的场景，因此可以采用。
-
-开发者需要注意这个问题，可能需要采用其他技术来解决或避免。
-
-### 2.2.9 事务管理
+### 2.2.7 事务管理
 
 litemall-db模块中不涉及到事务管理，而是在其他后台服务模块中涉及。
 但是其他后台服务模块因为依赖litemall-db模块，因此这里列出。
@@ -736,7 +735,7 @@ litemall-db模块中不涉及到事务管理，而是在其他后台服务模块
 > 并发访问是多个用户同时操作单个表时可能出现的问题；
 > 而事务管理是单个用户操作多个表时可能出现的问题。
 
-### 2.2.10 mybatis增强框架
+### 2.2.8 mybatis增强框架
 
 通过mybatis-generator已经自动生成了很多代码，而且具有一定的功能，
 但是开发者仍然需要基于生成的代码写一些固定的CRUD代码。
@@ -750,7 +749,37 @@ litemall-db模块中不涉及到事务管理，而是在其他后台服务模块
 
 ## 2.3 litemall-core
 
-litemall-core模块是spring boot应用通用的代码，包括配置代码和util代码。
+litemall-core模块是本项目通用的代码：
+
+* config
+
+  通用配置，例如开启Spring Boot异步功能。
+  
+* express
+
+  物流服务，查询订单物流信息。
+  
+* notify
+
+  通知提醒功能，支持邮件通知、短信通知和微信通知。
+  
+* qcode
+
+  本项目定制的分享二维码图片。
+
+* storage
+
+  存储功能，支持本地存储、腾讯云存储、阿里云存储和七牛云存储。
+  
+* validator
+
+  提供两个注解，帮助后端验证请求参数。
+  
+* system
+
+  通过litemall-db模块的数据库访问，读取本项目系统配置信息。
+  
+* util
 
 ### 2.3.1 config
 
