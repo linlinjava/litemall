@@ -80,19 +80,19 @@ public class AdminGoodsController {
         if(StringUtils.isEmpty(goodsSn)){
             return ResponseUtil.badArgument();
         }
+        // 品牌商可以不设置，如果设置则需要验证品牌商存在
         Integer brandId = goods.getBrandId();
-        if(brandId == null){
-            return ResponseUtil.badArgument();
+        if(brandId != null && brandId != 0) {
+            if (brandService.findById(brandId) == null) {
+                return ResponseUtil.badArgumentValue();
+            }
         }
-        if(brandService.findById(brandId) == null) {
-            return ResponseUtil.badArgumentValue();
-        }
+        // 分类可以不设置，如果设置则需要验证分类存在
         Integer categoryId = goods.getCategoryId();
-        if(categoryId == null){
-            return ResponseUtil.badArgument();
-        }
-        if(categoryService.findById(categoryId) == null){
-            return ResponseUtil.badArgumentValue();
+        if(categoryId != null && categoryId != 0) {
+            if (categoryService.findById(categoryId) == null) {
+                return ResponseUtil.badArgumentValue();
+            }
         }
 
         LitemallGoodsAttribute[] attributes = goodsAllinone.getAttributes();
