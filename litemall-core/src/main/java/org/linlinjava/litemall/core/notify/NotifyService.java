@@ -22,6 +22,18 @@ public class NotifyService {
     private WxTemplateSender wxTemplateSender;
     private List<Map<String, String>> wxTemplate = new ArrayList<>();
 
+    public boolean isMailEnable (){
+        return mailSender != null;
+    }
+
+    public boolean isSmsEnable (){
+        return smsSender != null;
+    }
+
+    public boolean isWxEnable (){
+        return wxTemplateSender != null;
+    }
+
     /**
      * 短信消息通知
      *
@@ -30,7 +42,7 @@ public class NotifyService {
      */
     @Async
     public void notifySms(String phoneNumber, String message) {
-        if (mailSender == null)
+        if (smsSender == null)
             return;
 
         smsSender.send(phoneNumber, message);
@@ -44,18 +56,18 @@ public class NotifyService {
      * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      */
     @Async
-    public boolean notifySmsTemplate(String phoneNumber, NotifyType notifyType, String[] params) {
-        if (smsSender == null)
-            return false;
+    public void notifySmsTemplate(String phoneNumber, NotifyType notifyType, String[] params) {
+        if (smsSender == null) {
+            return;
+        }
 
         String templateIdStr = getTemplateId(notifyType, smsTemplate);
         if (templateIdStr == null){
-            return false;
+            return;
         }
 
         int templateId = Integer.parseInt(templateIdStr);
         smsSender.sendWithTemplate(phoneNumber, templateId, params);
-        return true;
     }
 
     /**
@@ -142,57 +154,29 @@ public class NotifyService {
         return null;
     }
 
-//    public MailSender getMailSender() {
-//        return mailSender;
-//    }
-
     public void setMailSender(MailSender mailSender) {
         this.mailSender = mailSender;
     }
-
-//    public String getSendFrom() {
-//        return sendFrom;
-//    }
 
     public void setSendFrom(String sendFrom) {
         this.sendFrom = sendFrom;
     }
 
-//    public String getSendTo() {
-//        return sendTo;
-//    }
-
     public void setSendTo(String sendTo) {
         this.sendTo = sendTo;
     }
-
-//    public SmsSender getSmsSender() {
-//        return smsSender;
-//    }
 
     public void setSmsSender(SmsSender smsSender) {
         this.smsSender = smsSender;
     }
 
-//    public List<Map<String, String>> getSmsTemplate() {
-//        return smsTemplate;
-//    }
-
     public void setSmsTemplate(List<Map<String, String>> smsTemplate) {
         this.smsTemplate = smsTemplate;
     }
 
-//    public WxTemplateSender getWxTemplateSender() {
-//        return wxTemplateSender;
-//    }
-
     public void setWxTemplateSender(WxTemplateSender wxTemplateSender) {
         this.wxTemplateSender = wxTemplateSender;
     }
-
-//    public List<Map<String, String>> getWxTemplate() {
-//        return wxTemplate;
-//    }
 
     public void setWxTemplate(List<Map<String, String>> wxTemplate) {
         this.wxTemplate = wxTemplate;

@@ -199,13 +199,13 @@ public class WxAuthController {
             return ResponseUtil.badArgumentValue();
         }
 
-        String code = CharUtil.getRandomNum(6);
-        boolean successful = notifyService.notifySmsTemplate(phoneNumber, NotifyType.CAPTCHA, new String[]{code});
-        if(!successful){
+        if(notifyService.isSmsEnable()){
             return ResponseUtil.fail(404, "小程序后台验证码服务不支持");
         }
+        String code = CharUtil.getRandomNum(6);
+        notifyService.notifySmsTemplate(phoneNumber, NotifyType.CAPTCHA, new String[]{code});
 
-        successful = CaptchaCodeManager.addToCache(phoneNumber, code);
+        boolean successful = CaptchaCodeManager.addToCache(phoneNumber, code);
         if(!successful){
             return ResponseUtil.fail(404, "验证码未超时1分钟，不能发送");
         }
