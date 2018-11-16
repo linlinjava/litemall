@@ -57,11 +57,6 @@ Page({
    url: '/pages/ucenter/address/address',
   })
  },
- addAddress() {
-  wx.navigateTo({
-   url: '/pages/ucenter/addressAdd/addressAdd',
-  })
- },
  onReady: function() {
   // 页面渲染完成
 

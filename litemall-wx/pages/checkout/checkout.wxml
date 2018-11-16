@@ -13,7 +13,7 @@
                 <image src="/static/images/address_right.png"></image>
             </view>
         </view>
-        <view class="address-item address-empty" bindtap="addAddress" wx:else>
+        <view class="address-item address-empty" bindtap="selectAddress" wx:else>
             <view class="m">
                还没有收货地址，去添加
             </view>

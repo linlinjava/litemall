@@ -59,11 +59,6 @@ Page({
    url: '/pages/ucenter/address/address',
   })
  },
- addAddress() {
-  wx.navigateTo({
-   url: '/pages/ucenter/addressAdd/addressAdd',
-  })
- },
  bindMessageInput: function (e) {
   this.setData({
     message: e.detail.value
