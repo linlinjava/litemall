@@ -15,7 +15,7 @@ Page({
     picUrls: [],
     files: []
   },
-  chooseImage: function (e) {
+  chooseImage: function(e) {
     if (this.data.files.length >= 5) {
       util.showErrorToast('只能上传五张图片')
       return false;
@@ -26,7 +26,7 @@ Page({
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
-      success: function (res) {
+      success: function(res) {
         that.setData({
           files: that.data.files.concat(res.tempFilePaths)
         });
@@ -34,13 +34,13 @@ Page({
       }
     })
   },
-  upload: function (res) {
+  upload: function(res) {
     var that = this;
     const uploadTask = wx.uploadFile({
       url: api.StorageUpload,
       filePath: res.tempFilePaths[0],
       name: 'file',
-      success: function (res) {
+      success: function(res) {
         var _res = JSON.parse(res.data);
         if (_res.errno === 0) {
           var url = _res.data.url
@@ -51,7 +51,7 @@ Page({
           })
         }
       },
-      fail: function (e) {
+      fail: function(e) {
         wx.showModal({
           title: '错误',
           content: '上传失败',
@@ -67,12 +67,12 @@ Page({
     })
 
   },
-  previewImage: function (e) {
+  previewImage: function(e) {
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
-  },  
+  },
   bindPickerChange: function(e) {
     this.setData({
       index: e.detail.value

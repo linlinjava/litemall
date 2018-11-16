@@ -6,8 +6,8 @@
     </view>
   </view>
 
-    <view class='separate'></view>
-    
+  <view class='separate'></view>
+
   <view class='user_area'>
     <view class='user_row' bindtap='goOrder'>
       <view class='user_row_left'>我的订单</view>
@@ -16,8 +16,8 @@
     <view class='user_column'>
       <view class='user_column_item' bindtap='goOrderIndex' data-index='1' data-route='/pages/ucenter/order/order'>
         <text class="user_column_item_badge" wx:if="{{order.unpaid != 0}}">{{order.unpaid}}</text>
-        <image class='user_column_item_image' src='/static/images/pendpay.png'>   
-</image>
+        <image class='user_column_item_image' src='/static/images/pendpay.png'>
+        </image>
         <view class='user_column_item_text'>待付款</view>
       </view>
       <view class='user_column_item' bindtap='goOrderIndex' data-index='2' data-route='/pages/ucenter/order/order'>
@@ -37,7 +37,7 @@
       </view>
     </view>
   </view>
-  
+
   <view class='separate'></view>
 
   <view class='user_row'>

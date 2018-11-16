@@ -1,15 +1,15 @@
-  page{
-    background: #f4f4f4;
-    min-height: 100%;
+page {
+  background: #f4f4f4;
+  min-height: 100%;
 }
 
-.container{
-    background: #f4f4f4;
-    min-height: 100%;
-    padding-top: 30rpx;
+.container {
+  background: #f4f4f4;
+  min-height: 100%;
+  padding-top: 30rpx;
 }
 
-.fb-type{
+.fb-type {
   height: 104rpx;
   width: 100%;
   background: #fff;
@@ -21,26 +21,26 @@
   padding-right: 30rpx;
 }
 
-.fb-type .type-label{
+.fb-type .type-label {
   height: 36rpx;
   flex: 1;
   color: #333;
   font-size: 28rpx;
 }
 
-.fb-type .type-icon{
+.fb-type .type-icon {
   height: 36rpx;
   width: 36rpx;
 }
 
-.fb-body{
+.fb-body {
   width: 100%;
   background: #fff;
   height: 600rpx;
   padding: 18rpx 30rpx 64rpx 30rpx;
 }
 
-.fb-body .content{
+.fb-body .content {
   width: 100%;
   height: 400rpx;
   color: #333;
@@ -48,7 +48,7 @@
   font-size: 28rpx;
 }
 
-.weui-uploader__files{
+.weui-uploader__files {
   width: 100%;
 }
 
@@ -112,19 +112,19 @@
   opacity: 0;
 }
 
-.fb-body .text-count{
+.fb-body .text-count {
   line-height: 30rpx;
   float: right;
   color: #666;
   font-size: 24rpx;
 }
 
-.fb-mobile{
+.fb-mobile {
   height: 162rpx;
   width: 100%;
 }
 
-.fb-mobile .label{
+.fb-mobile .label {
   height: 58rpx;
   width: 100%;
   padding-top: 14rpx;
@@ -136,7 +136,7 @@
   line-height: 33rpx;
 }
 
-.fb-mobile .mobile-box{
+.fb-mobile .mobile-box {
   height: 104rpx;
   width: 100%;
   color: #333;
@@ -147,7 +147,7 @@
   position: relative;
 }
 
-.fb-mobile .mobile{
+.fb-mobile .mobile {
   position: absolute;
   top: 27rpx;
   left: 30rpx;
@@ -158,7 +158,7 @@
   font-size: 24rpx;
 }
 
-.fb-mobile .clear-icon{
+.fb-mobile .clear-icon {
   position: absolute;
   top: 27rpx;
   right: 30rpx;
@@ -167,7 +167,7 @@
   z-index: 2;
 }
 
-.fb-btn{
+.fb-btn {
   right: 0;
   display: flex;
   justify-content: center;
@@ -181,7 +181,7 @@
   border-radius: 0;
   padding: 0;
   margin: 0;
-  margin-left: 10%; 
+  margin-left: 10%;
   text-align: center;
   /* padding-left: -5rpx; */
   font-size: 25rpx;

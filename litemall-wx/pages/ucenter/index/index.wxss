@@ -112,8 +112,8 @@ page {
   background: #b4282d;
   color: #fff;
   border-radius: 50%;
-  margin-top:20rpx;
-  margin-left:40rpx;
+  margin-top: 20rpx;
+  margin-left: 40rpx;
 }
 
 .user_column_item_image {
@@ -137,26 +137,27 @@ page {
 
 .user_column_item_phone {
   width: 30%;
-  text-align:center;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-  float:left;
-  background:#fff;
-  border-bottom:1px solid #fafafa;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  float: left;
+  background: #fff;
+  border-bottom: 1px solid #fafafa;
 }
-.user_column_item_phone::after{
+
+.user_column_item_phone::after {
   border: none;
 }
 
-.logout{
-    margin-top: 30rpx;
-    height: 100rpx;
-    width: 100%;
-    line-height: 100rpx;
-    text-align: center;
-    background: #fff;
-    color: red;
-    font-size: 30rpx;
+.logout {
+  margin-top: 30rpx;
+  height: 100rpx;
+  width: 100%;
+  line-height: 100rpx;
+  text-align: center;
+  background: #fff;
+  color: red;
+  font-size: 30rpx;
 }

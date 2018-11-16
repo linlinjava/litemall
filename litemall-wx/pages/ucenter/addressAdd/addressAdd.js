@@ -6,7 +6,7 @@ var app = getApp();
 Page({
   data: {
     address: {
-      id:0,
+      id: 0,
       provinceId: 0,
       cityId: 0,
       areaId: 0,
@@ -20,10 +20,24 @@ Page({
     },
     addressId: 0,
     openSelectRegion: false,
-    selectRegionList: [
-      { id: 0, name: '省份', pid: 1, type: 1 },
-      { id: 0, name: '城市', pid: 1, type: 2 },
-      { id: 0, name: '区县', pid: 1, type: 3 }
+    selectRegionList: [{
+        id: 0,
+        name: '省份',
+        pid: 1,
+        type: 1
+      },
+      {
+        id: 0,
+        name: '城市',
+        pid: 1,
+        type: 2
+      },
+      {
+        id: 0,
+        name: '区县',
+        pid: 1,
+        type: 3
+      }
     ],
     regionType: 1,
     regionList: [],
@@ -43,14 +57,14 @@ Page({
       address: address
     });
   },
-  bindinputAddress (event){
+  bindinputAddress(event) {
     let address = this.data.address;
     address.address = event.detail.value;
     this.setData({
       address: address
     });
   },
-  bindIsDefault(){
+  bindIsDefault() {
     let address = this.data.address;
     address.isDefault = !address.isDefault;
     this.setData({
@@ -59,12 +73,14 @@ Page({
   },
   getAddressDetail() {
     let that = this;
-    util.request(api.AddressDetail, { id: that.data.addressId }).then(function (res) {
+    util.request(api.AddressDetail, {
+      id: that.data.addressId
+    }).then(function(res) {
       if (res.errno === 0) {
-        if(res.data){
-            that.setData({
-                address: res.data
-            });
+        if (res.data) {
+          that.setData({
+            address: res.data
+          });
         }
       }
     });
@@ -110,10 +126,24 @@ Page({
       this.getRegionList(address.cityId);
     } else {
       this.setData({
-        selectRegionList: [
-          { id: 0, name: '省份', pid: 0, type: 1 },
-          { id: 0, name: '城市', pid: 0, type: 2 },
-          { id: 0, name: '区县', pid: 0, type: 3 }
+        selectRegionList: [{
+            id: 0,
+            name: '省份',
+            pid: 0,
+            type: 1
+          },
+          {
+            id: 0,
+            name: '城市',
+            pid: 0,
+            type: 2
+          },
+          {
+            id: 0,
+            name: '区县',
+            pid: 0,
+            type: 3
+          }
         ],
         regionType: 1
       })
@@ -123,7 +153,7 @@ Page({
     this.setRegionDoneStatus();
 
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
     console.log(options)
     if (options.id && options.id != 0) {
@@ -133,7 +163,7 @@ Page({
       this.getAddressDetail();
     }
   },
-  onReady: function () {
+  onReady: function() {
 
   },
   selectRegionType(event) {
@@ -142,14 +172,14 @@ Page({
     let selectRegionList = that.data.selectRegionList;
 
     //判断是否可点击
-    if (regionTypeIndex + 1 == this.data.regionType || (regionTypeIndex - 1 >= 0 && selectRegionList[regionTypeIndex-1].id <= 0)) {
+    if (regionTypeIndex + 1 == this.data.regionType || (regionTypeIndex - 1 >= 0 && selectRegionList[regionTypeIndex - 1].id <= 0)) {
       return false;
     }
 
     this.setData({
       regionType: regionTypeIndex + 1
     })
-    
+
     let selectRegionItem = selectRegionList[regionTypeIndex];
 
     this.getRegionList(selectRegionItem.pid);
@@ -240,7 +270,9 @@ Page({
   getRegionList(regionId) {
     let that = this;
     let regionType = that.data.regionType;
-    util.request(api.RegionList, { pid: regionId }).then(function (res) {
+    util.request(api.RegionList, {
+      pid: regionId
+    }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           regionList: res.data.map(item => {
@@ -258,10 +290,10 @@ Page({
       }
     });
   },
-  cancelAddress(){
+  cancelAddress() {
     wx.navigateBack();
   },
-  saveAddress(){
+  saveAddress() {
     console.log(this.data.address)
     let address = this.data.address;
 
@@ -293,7 +325,7 @@ Page({
     }
 
     let that = this;
-    util.request(api.AddressSave, { 
+    util.request(api.AddressSave, {
       id: address.id,
       name: address.name,
       mobile: address.mobile,
@@ -302,7 +334,7 @@ Page({
       areaId: address.areaId,
       address: address.address,
       isDefault: address.isDefault
-    }, 'POST').then(function (res) {
+    }, 'POST').then(function(res) {
       if (res.errno === 0) {
         //返回之前，先取出上一页对象，并设置addressId
         var pages = getCurrentPages();
@@ -325,15 +357,15 @@ Page({
     });
 
   },
-  onShow: function () {
+  onShow: function() {
     // 页面显示
 
   },
-  onHide: function () {
+  onHide: function() {
     // 页面隐藏
 
   },
-  onUnload: function () {
+  onUnload: function() {
     // 页面关闭
 
   }

@@ -23,7 +23,7 @@ function formatNumber(n) {
  * 封封微信的的request
  */
 function request(url, data = {}, method = "GET") {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     wx.request({
       url: url,
       data: data,
@@ -32,7 +32,7 @@ function request(url, data = {}, method = "GET") {
         'Content-Type': 'application/json',
         'X-Litemall-Token': wx.getStorageSync('token')
       },
-      success: function (res) {
+      success: function(res) {
 
         if (res.statusCode == 200) {
 
@@ -56,7 +56,7 @@ function request(url, data = {}, method = "GET") {
         }
 
       },
-      fail: function (err) {
+      fail: function(err) {
         reject(err)
       }
     })
@@ -91,5 +91,3 @@ module.exports = {
   redirect,
   showErrorToast
 }
-
-

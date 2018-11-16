@@ -12,14 +12,16 @@ Page({
     commentList: [],
     topicGoods: []
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
     var that = this;
     that.setData({
       id: options.id
     });
 
-    util.request(api.TopicDetail, { id: that.data.id }).then(function (res) {
+    util.request(api.TopicDetail, {
+      id: that.data.id
+    }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           topic: res.data.topic,
@@ -30,7 +32,9 @@ Page({
       }
     });
 
-    util.request(api.TopicRelated, { id: that.data.id }).then(function (res) {
+    util.request(api.TopicRelated, {
+      id: that.data.id
+    }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           topicList: res.data
@@ -40,7 +44,13 @@ Page({
   },
   getCommentList() {
     let that = this;
-    util.request(api.CommentList, { valueId: that.data.id, type: 1, showType: 0, page: 1, size: 5 }).then(function (res) {
+    util.request(api.CommentList, {
+      valueId: that.data.id,
+      type: 1,
+      showType: 0,
+      page: 1,
+      size: 5
+    }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           commentList: res.data.data,
@@ -51,26 +61,27 @@ Page({
   },
   postComment() {
     if (!app.globalData.hasLogin) {
-      wx.navigateTo({ url: "/pages/auth/login/login" });
-    }
-    else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    } else {
       wx.navigateTo({
         url: '/pages/topicCommentPost/topicCommentPost?valueId=' + this.data.id + '&type=1',
       })
     }
   },
-  onReady: function () {
+  onReady: function() {
 
   },
-  onShow: function () {
+  onShow: function() {
     // 页面显示
     this.getCommentList();
   },
-  onHide: function () {
+  onHide: function() {
     // 页面隐藏
 
   },
-  onUnload: function () {
+  onUnload: function() {
     // 页面关闭
 
   }

@@ -18,9 +18,9 @@ Page({
     page: 1,
     size: 100
   },
-  getBanner: function () {
+  getBanner: function() {
     let that = this;
-    util.request(api.GoodsNew).then(function (res) {
+    util.request(api.GoodsNew).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           bannerInfo: res.data.bannerInfo,
@@ -31,8 +31,15 @@ Page({
   getGoodsList: function() {
     var that = this;
 
-    util.request(api.GoodsList, { isNew: true, page: that.data.page, size: that.data.size, order: that.data.currentSortOrder, sort: that.data.currentSort, categoryId: that.data.categoryId })
-      .then(function (res) {
+    util.request(api.GoodsList, {
+        isNew: true,
+        page: that.data.page,
+        size: that.data.size,
+        order: that.data.currentSortOrder,
+        sort: that.data.currentSort,
+        categoryId: that.data.categoryId
+      })
+      .then(function(res) {
         if (res.errno === 0) {
           that.setData({
             goodsList: res.data.goodsList,
@@ -41,27 +48,27 @@ Page({
         }
       });
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
     this.getBanner();
     this.getGoodsList();
   },
-  onReady: function () {
+  onReady: function() {
     // 页面渲染完成
   },
-  onShow: function () {
+  onShow: function() {
     // 页面显示
 
   },
-  onHide: function () {
+  onHide: function() {
     // 页面隐藏
 
   },
-  onUnload: function () {
+  onUnload: function() {
     // 页面关闭
 
   },
-  openSortFilter: function (event) {
+  openSortFilter: function(event) {
     let currentId = event.currentTarget.id;
     switch (currentId) {
       case 'categoryFilter':
@@ -98,7 +105,7 @@ Page({
         this.getGoodsList();
     }
   },
-  selectCategory: function (event) {
+  selectCategory: function(event) {
     let currentIndex = event.target.dataset.categoryIndex;
     this.setData({
       'categoryFilter': false,

@@ -26,7 +26,7 @@
       </view>
     </view>
   </view>
-  
+
   <view class="goods-info">
     <view class="c">
       <text class="desc">{{goods.goodsBrief}}</text>

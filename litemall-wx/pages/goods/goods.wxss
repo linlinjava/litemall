@@ -823,7 +823,6 @@
   line-height: 65rpx;
 }
 
-
 .contact {
   height: 100rpx;
   width: 100rpx;
@@ -932,6 +931,7 @@
   height: 128rpx;
   margin-top: 0rpx;
 }
+
 .sharebtn_text {
   /* border: 1px solid #757575; */
   width: 150rpx;
@@ -941,6 +941,7 @@
   font-size: 20rpx;
   color: #555;
 }
+
 .separate {
   background: #e0e3da;
   width: 100%;

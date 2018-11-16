@@ -21,23 +21,23 @@ Page({
     categoryId: 0
   },
   //事件处理函数
-  closeSearch: function () {
+  closeSearch: function() {
     wx.navigateBack()
   },
-  clearKeyword: function () {
+  clearKeyword: function() {
     this.setData({
       keyword: '',
       searchStatus: false
     });
   },
-  onLoad: function () {
+  onLoad: function() {
 
     this.getSearchKeyword();
   },
 
   getSearchKeyword() {
     let that = this;
-    util.request(api.SearchIndex).then(function (res) {
+    util.request(api.SearchIndex).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           historyKeyword: res.data.historyKeywordList,
@@ -48,7 +48,7 @@ Page({
     });
   },
 
-  inputChange: function (e) {
+  inputChange: function(e) {
     this.setData({
       keyword: e.detail.value,
       searchStatus: false
@@ -58,7 +58,7 @@ Page({
       this.getHelpKeyword();
     }
   },
-  getHelpKeyword: function () {
+  getHelpKeyword: function() {
     let that = this;
     util.request(api.SearchHelper, {
       keyword: that.data.keyword
@@ -70,7 +70,7 @@ Page({
       }
     });
   },
-  inputFocus: function () {
+  inputFocus: function() {
     this.setData({
       searchStatus: false,
       goodsList: []
@@ -80,17 +80,17 @@ Page({
       this.getHelpKeyword();
     }
   },
-  clearHistory: function () {
+  clearHistory: function() {
     this.setData({
       historyKeyword: []
     })
 
     util.request(api.SearchClearHistory, {}, 'POST')
-      .then(function (res) {
+      .then(function(res) {
         console.log('清除成功');
       });
   },
-  getGoodsList: function () {
+  getGoodsList: function() {
     let that = this;
     util.request(api.GoodsList, {
       keyword: that.data.keyword,
@@ -113,7 +113,7 @@ Page({
       that.getSearchKeyword();
     });
   },
-  onKeywordTap: function (event) {
+  onKeywordTap: function(event) {
 
     this.getSearchResult(event.target.dataset.keyword);
 

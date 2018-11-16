@@ -35,10 +35,6 @@
             <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
               <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
             </view>
-            <!-- <view class="weui-uploader__file weui-uploader__file_status" bindtap="previewImage" id="{{item}}">
-              <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
-              <view class="weui-uploader__file-content">50%</view>
-            </view> -->
           </block>
           <view class="weui-uploader__input-box">
             <view class="weui-uploader__input" bindtap="chooseImage"></view>

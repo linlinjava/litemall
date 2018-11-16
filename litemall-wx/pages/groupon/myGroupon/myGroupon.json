@@ -1,6 +1,6 @@
 {
- "navigationBarTitleText": "我的团购",
- "usingComponents": {
-  "zan-capsule": "../../../lib/zanui-weapp/capsule/index"
- }
+  "navigationBarTitleText": "我的团购",
+  "usingComponents": {
+    "zan-capsule": "../../../lib/zanui-weapp/capsule/index"
+  }
 }
