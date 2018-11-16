@@ -5,10 +5,11 @@
     "es6": true,
     "postcss": true,
     "minified": true,
-    "newFeature": true
+    "newFeature": true,
+    "uglifyFileName": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.2.0",
+  "libVersion": "2.4.0",
   "appid": "wxa5b486c6b918ecfb",
   "projectname": "Renard",
   "condition": {
