@@ -5,9 +5,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Configuration
 @EnableConfigurationProperties(StorageProperties.class)
 public class StorageAutoConfiguration {
@@ -23,20 +20,16 @@ public class StorageAutoConfiguration {
         StorageService storageService = new StorageService();
         String active = this.properties.getActive();
         storageService.setActive(active);
-        if(active.equals("local")){
+        if (active.equals("local")) {
             storageService.setStorage(localStorage());
-        }
-        else if(active.equals("aliyun")){
+        } else if (active.equals("aliyun")) {
             storageService.setStorage(aliyunStorage());
-        }
-        else if(active.equals("tencent")){
+        } else if (active.equals("tencent")) {
             storageService.setStorage(tencentStorage());
-        }
-        else if(active.equals("qiniu")){
+        } else if (active.equals("qiniu")) {
             storageService.setStorage(qiniuStorage());
-        }
-        else{
-            throw  new RuntimeException("当前存储模式 " + active + " 不支持");
+        } else {
+            throw new RuntimeException("当前存储模式 " + active + " 不支持");
         }
 
         return storageService;
@@ -53,7 +46,7 @@ public class StorageAutoConfiguration {
 
     @Bean
     public AliyunStorage aliyunStorage() {
-        AliyunStorage aliyunStorage =  new AliyunStorage();
+        AliyunStorage aliyunStorage = new AliyunStorage();
         StorageProperties.Aliyun aliyun = this.properties.getAliyun();
         aliyunStorage.setAccessKeyId(aliyun.getAccessKeyId());
         aliyunStorage.setAccessKeySecret(aliyun.getAccessKeySecret());
@@ -75,7 +68,7 @@ public class StorageAutoConfiguration {
 
     @Bean
     public QiniuStorage qiniuStorage() {
-        QiniuStorage qiniuStorage =  new QiniuStorage();
+        QiniuStorage qiniuStorage = new QiniuStorage();
         StorageProperties.Qiniu qiniu = this.properties.getQiniu();
         qiniuStorage.setAccessKey(qiniu.getAccessKey());
         qiniuStorage.setSecretKey(qiniu.getSecretKey());

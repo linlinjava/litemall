@@ -60,10 +60,10 @@ public class LitemallAddressService {
         LitemallAddressExample example = new LitemallAddressExample();
         LitemallAddressExample.Criteria criteria = example.createCriteria();
 
-        if(userId !=  null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
@@ -80,14 +80,14 @@ public class LitemallAddressService {
         LitemallAddressExample example = new LitemallAddressExample();
         LitemallAddressExample.Criteria criteria = example.createCriteria();
 
-        if(userId !=  null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)addressMapper.countByExample(example);
+        return (int) addressMapper.countByExample(example);
     }
 }

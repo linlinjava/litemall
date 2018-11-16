@@ -3,19 +3,17 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.admin.util.CatVo;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,8 +34,8 @@ public class AdminCategoryController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
-        if(adminId == null){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -52,20 +50,20 @@ public class AdminCategoryController {
 
     private Object validate(LitemallCategory category) {
         String name = category.getName();
-        if(StringUtils.isEmpty(name)){
+        if (StringUtils.isEmpty(name)) {
             return ResponseUtil.badArgument();
         }
 
         String level = category.getLevel();
-        if(StringUtils.isEmpty(level)){
+        if (StringUtils.isEmpty(level)) {
             return ResponseUtil.badArgument();
         }
-        if(!level.equals("L1") && !level.equals("L2")){
+        if (!level.equals("L1") && !level.equals("L2")) {
             return ResponseUtil.badArgumentValue();
         }
 
         Integer pid = category.getPid();
-        if(level.equals("L2") && (pid == null)){
+        if (level.equals("L2") && (pid == null)) {
             return ResponseUtil.badArgument();
         }
 
@@ -73,12 +71,12 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category){
-        if(adminId == null){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(category);
-        if(error != null){
+        if (error != null) {
             return error;
         }
         categoryService.add(category);
@@ -86,8 +84,8 @@ public class AdminCategoryController {
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id){
-        if(adminId == null){
+    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -96,28 +94,28 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category){
-        if(adminId == null){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(category);
-        if(error != null){
+        if (error != null) {
             return error;
         }
 
-        if(categoryService.updateById(category) == 0){
+        if (categoryService.updateById(category) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category){
-        if(adminId == null){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Integer id = category.getId();
-        if(id == null){
+        if (id == null) {
             return ResponseUtil.badArgument();
         }
         categoryService.deleteById(id);
@@ -133,7 +131,7 @@ public class AdminCategoryController {
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
         List<Map<String, Object>> data = new ArrayList<>(l1CatList.size());
-        for(LitemallCategory category : l1CatList){
+        for (LitemallCategory category : l1CatList) {
             Map<String, Object> d = new HashMap<>(2);
             d.put("value", category.getId());
             d.put("label", category.getName());

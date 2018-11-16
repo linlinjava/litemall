@@ -25,7 +25,7 @@ public class StatVo {
         this.rows = rows;
     }
 
-    public void add(Map ... r) {
+    public void add(Map... r) {
         rows.addAll(Arrays.asList(r));
     }
 }

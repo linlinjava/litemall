@@ -30,10 +30,10 @@ public class LitemallFeedbackService {
         LitemallFeedbackExample example = new LitemallFeedbackExample();
         LitemallFeedbackExample.Criteria criteria = example.createCriteria();
 
-        if(userId !=  null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(username)){
+        if (!StringUtils.isEmpty(username)) {
             criteria.andUsernameLike("%" + username + "%");
         }
         criteria.andDeletedEqualTo(false);
@@ -50,13 +50,13 @@ public class LitemallFeedbackService {
         LitemallFeedbackExample example = new LitemallFeedbackExample();
         LitemallFeedbackExample.Criteria criteria = example.createCriteria();
 
-        if(userId !=  null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(username)){
+        if (!StringUtils.isEmpty(username)) {
             criteria.andUsernameLike("%" + username + "%");
         }
         criteria.andDeletedEqualTo(false);
-        return (int)feedbackMapper.countByExample(example);
+        return (int) feedbackMapper.countByExample(example);
     }
 }

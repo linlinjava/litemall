@@ -122,7 +122,7 @@ public class TencentStorage implements Storage {
     public void delete(String keyName) {
         try {
             getCOSClient().deleteObject(bucketName, keyName);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -7,7 +7,10 @@ import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,17 +28,17 @@ public class WxUserController {
      *
      * @param userId 用户ID
      * @return 用户信息
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data: xxx
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data: xxx
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("index")
     public Object list(@LoginUser Integer userId) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
 

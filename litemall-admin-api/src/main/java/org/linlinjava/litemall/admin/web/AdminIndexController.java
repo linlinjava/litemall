@@ -12,7 +12,7 @@ public class AdminIndexController {
     private final Log logger = LogFactory.getLog(AdminIndexController.class);
 
     @RequestMapping("/index")
-    public Object index(){
+    public Object index() {
         return ResponseUtil.ok("hello world, this is admin service");
     }
 

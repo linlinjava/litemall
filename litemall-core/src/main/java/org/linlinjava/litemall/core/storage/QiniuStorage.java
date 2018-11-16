@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class QiniuStorage implements Storage {
 
-    private  String endpoint;
+    private String endpoint;
     private String accessKey;
     private String secretKey;
     private String bucketName;
@@ -62,8 +62,8 @@ public class QiniuStorage implements Storage {
      */
     @Override
     public void store(InputStream inputStream, long contentLength, String contentType, String keyName) {
-        if(uploadManager == null){
-            if(auth == null) {
+        if (uploadManager == null) {
+            if (auth == null) {
                 auth = Auth.create(accessKey, secretKey);
             }
             uploadManager = new UploadManager(new Configuration());
@@ -105,16 +105,16 @@ public class QiniuStorage implements Storage {
 
     @Override
     public void delete(String keyName) {
-        if(bucketManager == null){
-            if(auth == null) {
+        if (bucketManager == null) {
+            if (auth == null) {
                 auth = Auth.create(accessKey, secretKey);
             }
-            bucketManager = new BucketManager(auth, new Configuration() );
+            bucketManager = new BucketManager(auth, new Configuration());
         }
 
         try {
             bucketManager.delete(bucketName, keyName);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -3,11 +3,11 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallTopic;
 import org.linlinjava.litemall.db.service.LitemallTopicService;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +34,8 @@ public class AdminTopicController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
-        if(adminId == null){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -66,12 +65,12 @@ public class AdminTopicController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic){
-        if(adminId == null){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(topic);
-        if(error != null){
+        if (error != null) {
             return error;
         }
         topicService.add(topic);
@@ -79,8 +78,8 @@ public class AdminTopicController {
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id){
-        if(adminId == null){
+    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -89,23 +88,23 @@ public class AdminTopicController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic){
-        if(adminId == null){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(topic);
-        if(error != null){
+        if (error != null) {
             return error;
         }
-        if(topicService.updateById(topic) == 0){
+        if (topicService.updateById(topic) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(topic);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic){
-        if(adminId == null){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         topicService.deleteById(topic.getId());

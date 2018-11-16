@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,10 +105,9 @@ public class WxGoodsController {
         // 商品品牌商
         Integer brandId = info.getBrandId();
         LitemallBrand brand = null;
-        if(brandId == 0){
+        if (brandId == 0) {
             brand = new LitemallBrand();
-        }
-        else {
+        } else {
             brand = brandService.findById(info.getBrandId());
         }
 

@@ -6,11 +6,11 @@ public enum NotifyType {
     REFUND("refund"),
     CAPTCHA("captcha");
 
+    private String type;
+
     NotifyType(String type) {
         this.type = type;
     }
-
-    private String type;
 
     public String getType() {
         return this.type;

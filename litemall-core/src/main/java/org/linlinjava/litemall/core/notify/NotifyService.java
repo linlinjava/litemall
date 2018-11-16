@@ -22,15 +22,15 @@ public class NotifyService {
     private WxTemplateSender wxTemplateSender;
     private List<Map<String, String>> wxTemplate = new ArrayList<>();
 
-    public boolean isMailEnable (){
+    public boolean isMailEnable() {
         return mailSender != null;
     }
 
-    public boolean isSmsEnable (){
+    public boolean isSmsEnable() {
         return smsSender != null;
     }
 
-    public boolean isWxEnable (){
+    public boolean isWxEnable() {
         return wxTemplateSender != null;
     }
 
@@ -62,7 +62,7 @@ public class NotifyService {
         }
 
         String templateIdStr = getTemplateId(notifyType, smsTemplate);
-        if (templateIdStr == null){
+        if (templateIdStr == null) {
             return;
         }
 

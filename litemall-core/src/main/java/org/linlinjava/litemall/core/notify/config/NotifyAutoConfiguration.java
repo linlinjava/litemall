@@ -21,24 +21,24 @@ public class NotifyAutoConfiguration {
     }
 
     @Bean
-    public NotifyService notifyService(){
+    public NotifyService notifyService() {
         NotifyService notifyService = new NotifyService();
 
         NotifyProperties.Mail mailConfig = properties.getMail();
-        if(mailConfig.isEnable()) {
+        if (mailConfig.isEnable()) {
             notifyService.setMailSender(mailSender());
             notifyService.setSendFrom(mailConfig.getSendfrom());
             notifyService.setSendTo(mailConfig.getSendto());
         }
 
         NotifyProperties.Sms smsConfig = properties.getSms();
-        if(smsConfig.isEnable()){
+        if (smsConfig.isEnable()) {
             notifyService.setSmsSender(tencentSmsSender());
             notifyService.setSmsTemplate(smsConfig.getTemplate());
         }
 
         NotifyProperties.Wx wxConfig = properties.getWx();
-        if(wxConfig.isEnable()){
+        if (wxConfig.isEnable()) {
             notifyService.setWxTemplateSender(wxTemplateSender());
             notifyService.setWxTemplate(wxConfig.getTemplate());
         }
@@ -46,7 +46,7 @@ public class NotifyAutoConfiguration {
     }
 
     @Bean
-    public JavaMailSender mailSender(){
+    public JavaMailSender mailSender() {
         NotifyProperties.Mail mailConfig = properties.getMail();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(mailConfig.getHost());
@@ -56,13 +56,13 @@ public class NotifyAutoConfiguration {
     }
 
     @Bean
-    public WxTemplateSender wxTemplateSender(){
+    public WxTemplateSender wxTemplateSender() {
         WxTemplateSender wxTemplateSender = new WxTemplateSender();
         return wxTemplateSender;
     }
 
     @Bean
-    public TencentSmsSender tencentSmsSender(){
+    public TencentSmsSender tencentSmsSender() {
         NotifyProperties.Sms smsConfig = properties.getSms();
         TencentSmsSender smsSender = new TencentSmsSender();
         smsSender.setSender(new SmsSingleSender(smsConfig.getAppid(), smsConfig.getAppkey()));

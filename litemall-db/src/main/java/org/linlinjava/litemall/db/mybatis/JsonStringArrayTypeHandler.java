@@ -1,12 +1,9 @@
 package org.linlinjava.litemall.db.mybatis;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
-import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +17,13 @@ public class JsonStringArrayTypeHandler extends BaseTypeHandler<String[]> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, String[] parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i,toJson(parameter));
+        ps.setString(i, toJson(parameter));
     }
 
-        @Override
-        public String[] getNullableResult(ResultSet rs, String columnName) throws SQLException {
-            return this.toObject(rs.getString(columnName));
-        }
+    @Override
+    public String[] getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        return this.toObject(rs.getString(columnName));
+    }
 
     @Override
     public String[] getNullableResult(ResultSet rs, int columnIndex) throws SQLException {

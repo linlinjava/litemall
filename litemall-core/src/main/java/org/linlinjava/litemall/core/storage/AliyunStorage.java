@@ -20,10 +20,10 @@ import java.util.stream.Stream;
  */
 public class AliyunStorage implements Storage {
 
-    private  String endpoint;
-    private  String accessKeyId;
-    private  String accessKeySecret;
-    private  String bucketName;
+    private String endpoint;
+    private String accessKeyId;
+    private String accessKeySecret;
+    private String bucketName;
 
     public String getEndpoint() {
         return endpoint;
@@ -62,12 +62,12 @@ public class AliyunStorage implements Storage {
      *
      * @return ossClient
      */
-    private OSSClient getOSSClient(){
-        return new OSSClient(endpoint,accessKeyId, accessKeySecret);
+    private OSSClient getOSSClient() {
+        return new OSSClient(endpoint, accessKeyId, accessKeySecret);
     }
 
     private String getBaseUrl() {
-        return "https://" + bucketName + "." +  endpoint + "/" ;
+        return "https://" + bucketName + "." + endpoint + "/";
     }
 
     /**
@@ -119,7 +119,7 @@ public class AliyunStorage implements Storage {
     public void delete(String keyName) {
         try {
             getOSSClient().deleteObject(bucketName, keyName);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

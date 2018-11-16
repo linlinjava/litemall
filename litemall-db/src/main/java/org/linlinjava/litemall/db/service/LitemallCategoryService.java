@@ -15,6 +15,7 @@ import java.util.List;
 public class LitemallCategoryService {
     @Resource
     private LitemallCategoryMapper categoryMapper;
+    private LitemallCategory.Column[] CHANNEL = {LitemallCategory.Column.id, LitemallCategory.Column.name, LitemallCategory.Column.iconUrl};
 
     public List<LitemallCategory> queryL1WithoutRecommend(int offset, int limit) {
         LitemallCategoryExample example = new LitemallCategoryExample();
@@ -56,10 +57,10 @@ public class LitemallCategoryService {
         LitemallCategoryExample example = new LitemallCategoryExample();
         LitemallCategoryExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(id)){
+        if (!StringUtils.isEmpty(id)) {
             criteria.andIdEqualTo(Integer.valueOf(id));
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
@@ -76,15 +77,15 @@ public class LitemallCategoryService {
         LitemallCategoryExample example = new LitemallCategoryExample();
         LitemallCategoryExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(id)){
+        if (!StringUtils.isEmpty(id)) {
             criteria.andIdEqualTo(Integer.valueOf(id));
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)categoryMapper.countByExample(example);
+        return (int) categoryMapper.countByExample(example);
     }
 
     public int updateById(LitemallCategory category) {
@@ -102,7 +103,6 @@ public class LitemallCategoryService {
         categoryMapper.insertSelective(category);
     }
 
-    private LitemallCategory.Column[] CHANNEL = {LitemallCategory.Column.id, LitemallCategory.Column.name, LitemallCategory.Column.iconUrl};
     public List<LitemallCategory> queryChannel() {
         LitemallCategoryExample example = new LitemallCategoryExample();
         example.or().andLevelEqualTo("L1").andDeletedEqualTo(false);

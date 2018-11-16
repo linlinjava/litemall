@@ -17,11 +17,11 @@ public class StatService {
         return statMapper.statUser();
     }
 
-    public List<Map> statOrder(){
+    public List<Map> statOrder() {
         return statMapper.statOrder();
     }
 
-    public List<Map> statGoods(){
+    public List<Map> statGoods() {
         return statMapper.statGoods();
     }
 }

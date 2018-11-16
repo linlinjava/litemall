@@ -69,7 +69,7 @@ public class LitemallKeywordService {
         criteria.andDeletedEqualTo(false);
 
         PageHelper.startPage(page, limit);
-        return (int)keywordsMapper.countByExample(example);
+        return (int) keywordsMapper.countByExample(example);
     }
 
     public void add(LitemallKeyword keywords) {

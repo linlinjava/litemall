@@ -14,8 +14,8 @@ public class BcryptTest {
     @Test
     public void test() {
         String rawPassword = "aaaaaa";
-        String encodedPassword ="";
-        BCryptPasswordEncoder bCryptPasswordEncoder =  new BCryptPasswordEncoder();
+        String encodedPassword = "";
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
 
         System.out.println("rawPassword=" + rawPassword + " encodedPassword=" + encodedPassword);

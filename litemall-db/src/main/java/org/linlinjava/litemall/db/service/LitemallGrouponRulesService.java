@@ -22,6 +22,7 @@ public class LitemallGrouponRulesService {
     private LitemallGrouponRulesMapper mapper;
     @Resource
     private LitemallGoodsMapper goodsMapper;
+    private LitemallGoods.Column[] goodsColumns = new LitemallGoods.Column[]{LitemallGoods.Column.id, LitemallGoods.Column.name, LitemallGoods.Column.brief, LitemallGoods.Column.picUrl, LitemallGoods.Column.counterPrice, LitemallGoods.Column.retailPrice};
 
     public int createRules(LitemallGrouponRules rules) {
         rules.setAddTime(LocalDateTime.now());
@@ -64,7 +65,6 @@ public class LitemallGrouponRulesService {
         return queryList(offset, limit, "add_time", "desc");
     }
 
-    private LitemallGoods.Column[] goodsColumns = new LitemallGoods.Column[]{LitemallGoods.Column.id, LitemallGoods.Column.name, LitemallGoods.Column.brief, LitemallGoods.Column.picUrl, LitemallGoods.Column.counterPrice, LitemallGoods.Column.retailPrice};
     public List<Map<String, Object>> queryList(int offset, int limit, String sort, String order) {
         LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
         example.or().andDeletedEqualTo(false);
@@ -72,7 +72,7 @@ public class LitemallGrouponRulesService {
         PageHelper.startPage(offset, limit);
         List<LitemallGrouponRules> grouponRules = mapper.selectByExample(example);
 
-        List<Map<String, Object>> grouponList =  new ArrayList<>(grouponRules.size());
+        List<Map<String, Object>> grouponList = new ArrayList<>(grouponRules.size());
         for (LitemallGrouponRules rule : grouponRules) {
             Integer goodsId = rule.getGoodsId();
             LitemallGoods goods = goodsMapper.selectByPrimaryKeySelective(goodsId, goodsColumns);
@@ -92,7 +92,7 @@ public class LitemallGrouponRulesService {
     public int countList(int offset, int limit, String sort, String order) {
         LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
         example.or().andDeletedEqualTo(false);
-        return (int)mapper.countByExample(example);
+        return (int) mapper.countByExample(example);
     }
 
     /**

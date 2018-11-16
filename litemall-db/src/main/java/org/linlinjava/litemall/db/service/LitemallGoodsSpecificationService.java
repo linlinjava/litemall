@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.db.service;
 
-import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallGoodsSpecificationMapper;
 import org.linlinjava.litemall.db.domain.LitemallGoodsSpecification;
 import org.linlinjava.litemall.db.domain.LitemallGoodsSpecificationExample;
@@ -40,38 +39,17 @@ public class LitemallGoodsSpecificationService {
         goodsSpecificationMapper.insertSelective(goodsSpecification);
     }
 
-    private class VO {
-        private String name;
-        private List<LitemallGoodsSpecification> valueList;
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public List<LitemallGoodsSpecification> getValueList() {
-            return valueList;
-        }
-
-        public void setValueList(List<LitemallGoodsSpecification> valueList) {
-            this.valueList = valueList;
-        }
-    }
-
     /**
      * [
-     *  {
-     *      name: '',
-     *      valueList: [ {}, {}]
-     *  },
-     *  {
-     *      name: '',
-     *      valueList: [ {}, {}]
-     *  }
-     *  ]
+     * {
+     * name: '',
+     * valueList: [ {}, {}]
+     * },
+     * {
+     * name: '',
+     * valueList: [ {}, {}]
+     * }
+     * ]
      *
      * @param id
      * @return
@@ -82,10 +60,10 @@ public class LitemallGoodsSpecificationService {
         Map<String, VO> map = new HashMap<>();
         List<VO> specificationVoList = new ArrayList<>();
 
-        for(LitemallGoodsSpecification goodsSpecification : goodsSpecificationList){
+        for (LitemallGoodsSpecification goodsSpecification : goodsSpecificationList) {
             String specification = goodsSpecification.getSpecification();
             VO goodsSpecificationVo = map.get(specification);
-            if(goodsSpecificationVo == null){
+            if (goodsSpecificationVo == null) {
                 goodsSpecificationVo = new VO();
                 goodsSpecificationVo.setName(specification);
                 List<LitemallGoodsSpecification> valueList = new ArrayList<>();
@@ -93,14 +71,34 @@ public class LitemallGoodsSpecificationService {
                 goodsSpecificationVo.setValueList(valueList);
                 map.put(specification, goodsSpecificationVo);
                 specificationVoList.add(goodsSpecificationVo);
-            }
-            else{
+            } else {
                 List<LitemallGoodsSpecification> valueList = goodsSpecificationVo.getValueList();
                 valueList.add(goodsSpecification);
             }
         }
 
         return specificationVoList;
+    }
+
+    private class VO {
+        private String name;
+        private List<LitemallGoodsSpecification> valueList;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<LitemallGoodsSpecification> getValueList() {
+            return valueList;
+        }
+
+        public void setValueList(List<LitemallGoodsSpecification> valueList) {
+            this.valueList = valueList;
+        }
     }
 
 }

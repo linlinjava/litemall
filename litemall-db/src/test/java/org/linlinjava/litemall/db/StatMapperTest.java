@@ -22,7 +22,7 @@ public class StatMapperTest {
     @Test
     public void testUser() {
         List<Map> result = statMapper.statUser();
-        for(Map m : result) {
+        for (Map m : result) {
             m.forEach((k, v) -> System.out.println("key:value = " + k + ":" + v));
         }
     }
@@ -30,7 +30,7 @@ public class StatMapperTest {
     @Test
     public void testOrder() {
         List<Map> result = statMapper.statOrder();
-        for(Map m : result) {
+        for (Map m : result) {
             m.forEach((k, v) -> System.out.println("key:value = " + k + ":" + v));
         }
     }
@@ -38,7 +38,7 @@ public class StatMapperTest {
     @Test
     public void testGoods() {
         List<Map> result = statMapper.statGoods();
-        for(Map m : result) {
+        for (Map m : result) {
             m.forEach((k, v) -> System.out.println("key:value = " + k + ":" + v));
         }
     }

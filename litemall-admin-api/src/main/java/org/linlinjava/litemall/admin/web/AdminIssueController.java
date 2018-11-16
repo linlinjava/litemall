@@ -3,18 +3,17 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallIssue;
 import org.linlinjava.litemall.db.service.LitemallIssueService;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +33,8 @@ public class AdminIssueController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
-        if(adminId == null){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -50,23 +49,23 @@ public class AdminIssueController {
 
     private Object validate(LitemallIssue issue) {
         String question = issue.getQuestion();
-        if(StringUtils.isEmpty(question)){
+        if (StringUtils.isEmpty(question)) {
             return ResponseUtil.badArgument();
         }
         String answer = issue.getAnswer();
-        if(StringUtils.isEmpty(answer)){
+        if (StringUtils.isEmpty(answer)) {
             return ResponseUtil.badArgument();
         }
         return null;
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue){
-        if(adminId == null){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(issue);
-        if(error != null){
+        if (error != null) {
             return error;
         }
         issueService.add(issue);
@@ -74,8 +73,8 @@ public class AdminIssueController {
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id){
-        if(adminId == null){
+    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -84,15 +83,15 @@ public class AdminIssueController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue){
-        if(adminId == null){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(issue);
-        if(error != null){
+        if (error != null) {
             return error;
         }
-        if(issueService.updateById(issue) == 0){
+        if (issueService.updateById(issue) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
 
@@ -100,12 +99,12 @@ public class AdminIssueController {
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue){
-        if(adminId == null){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallIssue issue) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Integer id = issue.getId();
-        if(id == null){
+        if (id == null) {
             return ResponseUtil.badArgument();
         }
         issueService.deleteById(id);

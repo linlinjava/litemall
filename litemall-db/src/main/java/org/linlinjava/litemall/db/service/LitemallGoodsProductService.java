@@ -42,7 +42,7 @@ public class LitemallGoodsProductService {
     public int count() {
         LitemallGoodsProductExample example = new LitemallGoodsProductExample();
         example.or().andDeletedEqualTo(false);
-        return (int)goodsProductMapper.countByExample(example);
+        return (int) goodsProductMapper.countByExample(example);
     }
 
     public void deleteByGid(Integer gid) {

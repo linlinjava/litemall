@@ -111,10 +111,10 @@ public class StorageProperties {
     }
 
     public static class Aliyun {
-        private  String endpoint;
-        private  String accessKeyId;
-        private  String accessKeySecret;
-        private  String bucketName;
+        private String endpoint;
+        private String accessKeyId;
+        private String accessKeySecret;
+        private String bucketName;
 
         public String getEndpoint() {
             return endpoint;

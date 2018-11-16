@@ -24,17 +24,17 @@ public class LitemallFootprintService {
         return footprintMapper.selectByExample(example);
     }
 
-    public int countByAddTime(Integer userId,Integer page, Integer size) {
+    public int countByAddTime(Integer userId, Integer page, Integer size) {
         LitemallFootprintExample example = new LitemallFootprintExample();
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        return (int)footprintMapper.countByExample(example);
+        return (int) footprintMapper.countByExample(example);
     }
 
     public LitemallFootprint findById(Integer id) {
         return footprintMapper.selectByPrimaryKey(id);
     }
 
-    public void deleteById(Integer id){
+    public void deleteById(Integer id) {
         footprintMapper.logicalDeleteByPrimaryKey(id);
     }
 
@@ -48,10 +48,10 @@ public class LitemallFootprintService {
         LitemallFootprintExample example = new LitemallFootprintExample();
         LitemallFootprintExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(userId)){
+        if (!StringUtils.isEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
-        if(!StringUtils.isEmpty(goodsId)){
+        if (!StringUtils.isEmpty(goodsId)) {
             criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
         }
         criteria.andDeletedEqualTo(false);
@@ -68,14 +68,14 @@ public class LitemallFootprintService {
         LitemallFootprintExample example = new LitemallFootprintExample();
         LitemallFootprintExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(userId)){
+        if (!StringUtils.isEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
-        if(!StringUtils.isEmpty(goodsId)){
+        if (!StringUtils.isEmpty(goodsId)) {
             criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)footprintMapper.countByExample(example);
+        return (int) footprintMapper.countByExample(example);
     }
 }

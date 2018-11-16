@@ -18,20 +18,20 @@ public class Traces {
     @JsonProperty("AcceptTime")
     private String AcceptTime;
 
-    public void setAcceptStation(String AcceptStation) {
-        this.AcceptStation = AcceptStation;
-    }
-
     public String getAcceptStation() {
         return AcceptStation;
     }
 
-    public void setAcceptTime(String AcceptTime) {
-        this.AcceptTime = AcceptTime;
+    public void setAcceptStation(String AcceptStation) {
+        this.AcceptStation = AcceptStation;
     }
 
     public String getAcceptTime() {
         return AcceptTime;
+    }
+
+    public void setAcceptTime(String AcceptTime) {
+        this.AcceptTime = AcceptTime;
     }
 
 }

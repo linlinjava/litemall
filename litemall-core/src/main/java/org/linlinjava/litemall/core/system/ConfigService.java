@@ -14,17 +14,16 @@ import java.util.List;
 @Component
 class ConfigService {
     private static ConfigService systemConfigService;
-
-    static ConfigService getSystemConfigService() {
-        return systemConfigService;
-    }
-
     @Autowired
     private LitemallSystemConfigService litemallSystemConfigService;
 
     //不允许实例化
     private ConfigService() {
 
+    }
+
+    static ConfigService getSystemConfigService() {
+        return systemConfigService;
     }
 
     @PostConstruct

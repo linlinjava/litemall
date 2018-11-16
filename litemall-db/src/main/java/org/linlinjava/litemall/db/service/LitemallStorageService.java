@@ -47,10 +47,10 @@ public class LitemallStorageService {
         LitemallStorageExample example = new LitemallStorageExample();
         LitemallStorageExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(key)){
+        if (!StringUtils.isEmpty(key)) {
             criteria.andKeyEqualTo(key);
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
@@ -67,14 +67,14 @@ public class LitemallStorageService {
         LitemallStorageExample example = new LitemallStorageExample();
         LitemallStorageExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(key)){
+        if (!StringUtils.isEmpty(key)) {
             criteria.andKeyEqualTo(key);
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)storageMapper.countByExample(example);
+        return (int) storageMapper.countByExample(example);
     }
 }

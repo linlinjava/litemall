@@ -12,7 +12,7 @@ public class WxIndexController {
     private final Log logger = LogFactory.getLog(WxIndexController.class);
 
     @RequestMapping("/index")
-    public Object index(){
+    public Object index() {
         return ResponseUtil.ok("hello world, this is wx service");
     }
 

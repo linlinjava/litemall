@@ -77,10 +77,10 @@ public class LitemallCartService {
         LitemallCartExample example = new LitemallCartExample();
         LitemallCartExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(userId)){
+        if (!StringUtils.isEmpty(userId)) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(goodsId)){
+        if (!StringUtils.isEmpty(goodsId)) {
             criteria.andGoodsIdEqualTo(goodsId);
         }
         criteria.andDeletedEqualTo(false);
@@ -97,15 +97,15 @@ public class LitemallCartService {
         LitemallCartExample example = new LitemallCartExample();
         LitemallCartExample.Criteria criteria = example.createCriteria();
 
-        if(userId != null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(goodsId != null){
+        if (goodsId != null) {
             criteria.andGoodsIdEqualTo(goodsId);
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)cartMapper.countByExample(example);
+        return (int) cartMapper.countByExample(example);
     }
 
     public void deleteById(Integer id) {

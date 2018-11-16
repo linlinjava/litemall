@@ -1,7 +1,7 @@
 package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
-import org.linlinjava.litemall.db.dao.*;
+import org.linlinjava.litemall.db.dao.LitemallRegionMapper;
 import org.linlinjava.litemall.db.domain.LitemallRegion;
 import org.linlinjava.litemall.db.domain.LitemallRegionExample;
 import org.springframework.stereotype.Service;
@@ -29,10 +29,10 @@ public class LitemallRegionService {
         LitemallRegionExample example = new LitemallRegionExample();
         LitemallRegionExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        if(!StringUtils.isEmpty(code)){
+        if (!StringUtils.isEmpty(code)) {
             criteria.andCodeEqualTo(code);
         }
 
@@ -48,12 +48,12 @@ public class LitemallRegionService {
         LitemallRegionExample example = new LitemallRegionExample();
         LitemallRegionExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        if(code != null){
+        if (code != null) {
             criteria.andCodeEqualTo(code);
         }
-        return (int)regionMapper.countByExample(example);
+        return (int) regionMapper.countByExample(example);
     }
 }

@@ -3,11 +3,11 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallBrand;
 import org.linlinjava.litemall.db.service.LitemallBrandService;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +34,8 @@ public class AdminBrandController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
-        if(adminId == null){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -51,29 +50,29 @@ public class AdminBrandController {
 
     private Object validate(LitemallBrand brand) {
         String name = brand.getName();
-        if(StringUtils.isEmpty(name)){
+        if (StringUtils.isEmpty(name)) {
             return ResponseUtil.badArgument();
         }
 
         String desc = brand.getDesc();
-        if(StringUtils.isEmpty(desc)){
+        if (StringUtils.isEmpty(desc)) {
             return ResponseUtil.badArgument();
         }
 
         BigDecimal price = brand.getFloorPrice();
-        if(price == null){
+        if (price == null) {
             return ResponseUtil.badArgument();
         }
         return null;
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand){
-        if(adminId == null){
+    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(brand);
-        if(error != null){
+        if (error != null) {
             return error;
         }
         brandService.add(brand);
@@ -81,8 +80,8 @@ public class AdminBrandController {
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id){
-        if(adminId == null){
+    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -91,27 +90,27 @@ public class AdminBrandController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand){
-        if(adminId == null){
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Object error = validate(brand);
-        if(error != null){
+        if (error != null) {
             return error;
         }
-        if(brandService.updateById(brand) == 0){
+        if (brandService.updateById(brand) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand){
-        if(adminId == null){
+    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand) {
+        if (adminId == null) {
             return ResponseUtil.unlogin();
         }
         Integer id = brand.getId();
-        if(id == null){
+        if (id == null) {
             return ResponseUtil.badArgument();
         }
         brandService.deleteById(id);

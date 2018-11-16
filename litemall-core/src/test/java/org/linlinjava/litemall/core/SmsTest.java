@@ -18,10 +18,10 @@ import java.util.concurrent.Executor;
 
 /**
  * 测试短信发送服务
- *
+ * <p>
  * 注意LitemallNotifyService采用异步线程操作
  * 因此测试的时候需要睡眠一会儿，保证任务执行
- *
+ * <p>
  * 开发者需要确保：
  * 1. 在腾讯云短信平台设置短信签名和短信模板notify.properties已经设置正确
  * 2. 在腾讯云短信平台设置短信签名和短信模板
@@ -32,6 +32,41 @@ import java.util.concurrent.Executor;
 @SpringBootTest
 public class SmsTest {
 
+    @Autowired
+    private NotifyService notifyService;
+
+    @Test
+    public void testCaptcha() {
+        String phone = "xxxxxxxxxxx";
+        String[] params = new String[]{"123456"};
+
+        notifyService.notifySmsTemplate(phone, NotifyType.CAPTCHA, params);
+    }
+
+    @Test
+    public void testPaySucceed() {
+        String phone = "xxxxxxxxxxx";
+        String[] params = new String[]{"123456"};
+
+        notifyService.notifySmsTemplate(phone, NotifyType.PAY_SUCCEED, params);
+    }
+
+    @Test
+    public void testShip() {
+        String phone = "xxxxxxxxxxx";
+        String[] params = new String[]{"123456"};
+
+        notifyService.notifySmsTemplate(phone, NotifyType.SHIP, params);
+    }
+
+    @Test
+    public void testRefund() {
+        String phone = "xxxxxxxxxxx";
+        String[] params = new String[]{"123456"};
+
+        notifyService.notifySmsTemplate(phone, NotifyType.REFUND, params);
+    }
+
     @Configuration
     @Import(Application.class)
     static class ContextConfiguration {
@@ -40,40 +75,5 @@ public class SmsTest {
         public Executor executor() {
             return new SyncTaskExecutor();
         }
-    }
-
-    @Autowired
-    private NotifyService notifyService;
-
-    @Test
-    public void testCaptcha() {
-        String phone = "xxxxxxxxxxx";
-        String[] params = new String[] {"123456"};
-
-        notifyService.notifySmsTemplate(phone, NotifyType.CAPTCHA, params);
-    }
-
-    @Test
-    public void testPaySucceed() {
-        String phone = "xxxxxxxxxxx";
-        String[] params = new String[] {"123456"};
-
-        notifyService.notifySmsTemplate(phone, NotifyType.PAY_SUCCEED, params);
-    }
-
-    @Test
-    public void testShip() {
-        String phone = "xxxxxxxxxxx";
-        String[] params = new String[] {"123456"};
-
-        notifyService.notifySmsTemplate(phone, NotifyType.SHIP, params);
-    }
-
-    @Test
-    public void testRefund() {
-        String phone = "xxxxxxxxxxx";
-        String[] params = new String[] {"123456"};
-
-        notifyService.notifySmsTemplate(phone, NotifyType.REFUND, params);
     }
 }

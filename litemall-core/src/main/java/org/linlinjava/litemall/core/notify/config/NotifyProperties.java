@@ -97,7 +97,7 @@ public class NotifyProperties {
         private boolean enable;
         private int appid;
         private String appkey;
-        private List<Map<String,String>> template = new ArrayList<>();
+        private List<Map<String, String>> template = new ArrayList<>();
 
         public boolean isEnable() {
             return enable;
@@ -134,7 +134,7 @@ public class NotifyProperties {
 
     public static class Wx {
         private boolean enable;
-        private List<Map<String,String>> template = new ArrayList<>();
+        private List<Map<String, String>> template = new ArrayList<>();
 
         public boolean isEnable() {
             return enable;

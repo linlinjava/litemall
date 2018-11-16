@@ -2,12 +2,12 @@ package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.util.JacksonUtil;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallFootprint;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.LitemallFootprintService;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
-import org.linlinjava.litemall.core.util.JacksonUtil;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,30 +33,30 @@ public class WxFootprintController {
      * 删除用户足迹
      *
      * @param userId 用户ID
-     * @param body 请求内容， { footprintId: xxx }
+     * @param body   请求内容， { footprintId: xxx }
      * @return 删除操作结果
-     *   成功则 { errno: 0, errmsg: '成功' }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
-        if(body == null){
+        if (body == null) {
             return ResponseUtil.badArgument();
         }
 
         Integer footprintId = JacksonUtil.parseInteger(body, "footprintId");
-        if(footprintId == null){
+        if (footprintId == null) {
             return ResponseUtil.badArgument();
         }
         LitemallFootprint footprint = footprintService.findById(footprintId);
 
-        if(footprint == null){
+        if (footprint == null) {
             return ResponseUtil.badArgumentValue();
         }
-        if(!footprint.getUserId().equals(userId)){
+        if (!footprint.getUserId().equals(userId)) {
             return ResponseUtil.badArgumentValue();
         }
 
@@ -70,23 +70,23 @@ public class WxFootprintController {
      * @param page 分页页数
      * @param size 分页大小
      * @return 用户足迹列表
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data:
-     *          {
-     *              footprintList: xxx,
-     *              totalPages: xxx
-     *          }
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
+     * 成功则
+     * {
+     * errno: 0,
+     * errmsg: '成功',
+     * data:
+     * {
+     * footprintList: xxx,
+     * totalPages: xxx
+     * }
+     * }
+     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size) {
-        if(userId == null){
+        if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
@@ -95,7 +95,7 @@ public class WxFootprintController {
         int totalPages = (int) Math.ceil((double) count / size);
 
         List<Object> footprintVoList = new ArrayList<>(footprintList.size());
-        for(LitemallFootprint footprint : footprintList){
+        for (LitemallFootprint footprint : footprintList) {
             Map<String, Object> c = new HashMap<String, Object>();
             c.put("id", footprint.getId());
             c.put("goodsId", footprint.getGoodsId());

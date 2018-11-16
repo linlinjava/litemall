@@ -3,7 +3,6 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,19 +98,19 @@ public class AdminGrouponController {
 
     private Object validate(LitemallGrouponRules grouponRules) {
         Integer goodsId = grouponRules.getGoodsId();
-        if(goodsId == null){
+        if (goodsId == null) {
             return ResponseUtil.badArgument();
         }
         BigDecimal discount = grouponRules.getDiscount();
-        if(discount == null){
+        if (discount == null) {
             return ResponseUtil.badArgument();
         }
         Integer discountMember = grouponRules.getDiscountMember();
-        if(discountMember == null){
+        if (discountMember == null) {
             return ResponseUtil.badArgument();
         }
         LocalDateTime expireTime = grouponRules.getExpireTime();
-        if(expireTime == null){
+        if (expireTime == null) {
             return ResponseUtil.badArgument();
         }
 
@@ -126,7 +124,7 @@ public class AdminGrouponController {
         }
 
         Object error = validate(grouponRules);
-        if(error != null){
+        if (error != null) {
             return error;
         }
 
@@ -139,7 +137,7 @@ public class AdminGrouponController {
         grouponRules.setGoodsName(goods.getName());
         grouponRules.setPicUrl(goods.getPicUrl());
 
-        if(rulesService.updateById(grouponRules) == 0){
+        if (rulesService.updateById(grouponRules) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
 
@@ -154,7 +152,7 @@ public class AdminGrouponController {
         }
 
         Object error = validate(grouponRules);
-        if(error != null){
+        if (error != null) {
             return error;
         }
 
@@ -180,7 +178,7 @@ public class AdminGrouponController {
         }
 
         Integer id = grouponRules.getId();
-        if(id == null){
+        if (id == null) {
             return ResponseUtil.badArgument();
         }
 

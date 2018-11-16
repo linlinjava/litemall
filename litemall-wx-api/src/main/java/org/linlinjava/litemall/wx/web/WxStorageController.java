@@ -63,7 +63,7 @@ public class WxStorageController {
         if (key == null) {
             return ResponseEntity.notFound().build();
         }
-        if(key.contains("../")){
+        if (key.contains("../")) {
             return ResponseEntity.badRequest().build();
         }
         String type = litemallStorage.getType();
@@ -82,7 +82,7 @@ public class WxStorageController {
         if (key == null) {
             return ResponseEntity.notFound().build();
         }
-        if(key.contains("../")){
+        if (key.contains("../")) {
             return ResponseEntity.badRequest().build();
         }
 

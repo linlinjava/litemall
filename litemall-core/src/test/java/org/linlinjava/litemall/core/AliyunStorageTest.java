@@ -6,10 +6,8 @@ import org.linlinjava.litemall.core.storage.AliyunStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -7,7 +7,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolation;
@@ -20,28 +19,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseBody
-    public Object badArgumentHandler(IllegalArgumentException e){
+    public Object badArgumentHandler(IllegalArgumentException e) {
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
-    public Object badArgumentHandler(MethodArgumentTypeMismatchException e){
+    public Object badArgumentHandler(MethodArgumentTypeMismatchException e) {
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseBody
-    public Object badArgumentHandler(MissingServletRequestParameterException e){
+    public Object badArgumentHandler(MissingServletRequestParameterException e) {
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
-    public Object badArgumentHandler(HttpMessageNotReadableException e){
+    public Object badArgumentHandler(HttpMessageNotReadableException e) {
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
     }
@@ -50,11 +49,11 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Object badArgumentHandler(ValidationException e) {
         e.printStackTrace();
-        if(e instanceof ConstraintViolationException){
+        if (e instanceof ConstraintViolationException) {
             ConstraintViolationException exs = (ConstraintViolationException) e;
             Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
             for (ConstraintViolation<?> item : violations) {
-                String message = ((PathImpl)item.getPropertyPath()).getLeafNode().getName() +item.getMessage();
+                String message = ((PathImpl) item.getPropertyPath()).getLeafNode().getName() + item.getMessage();
                 return ResponseUtil.fail(402, message);
             }
         }
@@ -63,7 +62,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public Object seriousHandler(Exception e){
+    public Object seriousHandler(Exception e) {
         e.printStackTrace();
         return ResponseUtil.serious();
     }

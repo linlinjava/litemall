@@ -14,11 +14,11 @@ public class AdminTokenManager {
     public static Integer getUserId(String token) {
 
         AdminToken userToken = tokenMap.get(token);
-        if(userToken == null){
+        if (userToken == null) {
             return null;
         }
 
-        if(userToken.getExpireTime().isBefore(LocalDateTime.now())){
+        if (userToken.getExpireTime().isBefore(LocalDateTime.now())) {
             tokenMap.remove(token);
             idMap.remove(userToken.getUserId());
             return null;
@@ -28,7 +28,7 @@ public class AdminTokenManager {
     }
 
 
-    public static AdminToken generateToken(Integer id){
+    public static AdminToken generateToken(Integer id) {
         AdminToken userToken = null;
 
 //        userToken = idMap.get(id);

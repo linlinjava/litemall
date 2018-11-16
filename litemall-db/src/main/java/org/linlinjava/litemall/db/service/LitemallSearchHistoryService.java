@@ -39,11 +39,11 @@ public class LitemallSearchHistoryService {
         LitemallSearchHistoryExample example = new LitemallSearchHistoryExample();
         LitemallSearchHistoryExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(userId)){
+        if (!StringUtils.isEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
-        if(!StringUtils.isEmpty(keyword)){
-            criteria.andKeywordLike("%" + keyword + "%" );
+        if (!StringUtils.isEmpty(keyword)) {
+            criteria.andKeywordLike("%" + keyword + "%");
         }
         criteria.andDeletedEqualTo(false);
 
@@ -59,14 +59,14 @@ public class LitemallSearchHistoryService {
         LitemallSearchHistoryExample example = new LitemallSearchHistoryExample();
         LitemallSearchHistoryExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(userId)){
+        if (!StringUtils.isEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
-        if(!StringUtils.isEmpty(keyword)){
-            criteria.andKeywordLike("%" + keyword + "%" );
+        if (!StringUtils.isEmpty(keyword)) {
+            criteria.andKeywordLike("%" + keyword + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)searchHistoryMapper.countByExample(example);
+        return (int) searchHistoryMapper.countByExample(example);
     }
 }

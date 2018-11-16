@@ -2,8 +2,8 @@ package org.linlinjava.litemall.admin.dao;
 
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallGoodsAttribute;
-import org.linlinjava.litemall.db.domain.LitemallGoodsSpecification;
 import org.linlinjava.litemall.db.domain.LitemallGoodsProduct;
+import org.linlinjava.litemall.db.domain.LitemallGoodsSpecification;
 
 public class GoodsAllinone {
     LitemallGoods goods;
@@ -16,16 +16,16 @@ public class GoodsAllinone {
         return goods;
     }
 
+    public void setGoods(LitemallGoods goods) {
+        this.goods = goods;
+    }
+
     public LitemallGoodsProduct[] getProducts() {
         return products;
     }
 
     public void setProducts(LitemallGoodsProduct[] products) {
         this.products = products;
-    }
-
-    public void setGoods(LitemallGoods goods) {
-        this.goods = goods;
     }
 
     public LitemallGoodsSpecification[] getSpecifications() {

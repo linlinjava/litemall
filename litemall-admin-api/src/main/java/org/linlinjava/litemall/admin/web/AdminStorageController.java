@@ -77,7 +77,7 @@ public class AdminStorageController {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
-        if(litemallStorageService.update(litemallStorage) == 0){
+        if (litemallStorageService.update(litemallStorage) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(litemallStorage);
@@ -89,7 +89,7 @@ public class AdminStorageController {
             return ResponseUtil.unlogin();
         }
         String key = litemallStorage.getKey();
-        if(StringUtils.isEmpty(key)){
+        if (StringUtils.isEmpty(key)) {
             return ResponseUtil.badArgument();
         }
         litemallStorageService.deleteByKey(key);

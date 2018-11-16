@@ -6,12 +6,12 @@ import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
 import org.linlinjava.litemall.core.util.JacksonUtil;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderUtil;
-import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +59,7 @@ public class AdminOrderController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order){
+                       @Order @RequestParam(defaultValue = "desc") String order) {
         if (adminId == null) {
             return ResponseUtil.unlogin();
         }
@@ -135,7 +134,7 @@ public class AdminOrderController {
         try {
             // 设置订单取消状态
             order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
-            if(orderService.updateWithOptimisticLocker(order) == 0) {
+            if (orderService.updateWithOptimisticLocker(order) == 0) {
                 throw new Exception("跟新数据已失效");
             }
 
@@ -146,7 +145,7 @@ public class AdminOrderController {
                 LitemallGoodsProduct product = productService.findById(productId);
                 Integer number = product.getNumber() + orderGoods.getNumber();
                 product.setNumber(number);
-                if(productService.updateById(product) == 0){
+                if (productService.updateById(product) == 0) {
                     throw new Exception("跟新数据失败");
                 }
             }
@@ -209,7 +208,7 @@ public class AdminOrderController {
         order.setShipSn(shipSn);
         order.setShipChannel(shipChannel);
         order.setShipTime(LocalDateTime.now());
-        if(orderService.updateWithOptimisticLocker(order) == 0){
+        if (orderService.updateWithOptimisticLocker(order) == 0) {
             return ResponseUtil.updatedDateExpired();
         }
 
@@ -226,7 +225,7 @@ public class AdminOrderController {
      * 回复订单商品
      *
      * @param adminId 管理员ID
-     * @param body   订单信息，{ orderId：xxx }
+     * @param body    订单信息，{ orderId：xxx }
      * @return 订单操作结果
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
@@ -238,24 +237,24 @@ public class AdminOrderController {
         }
 
         Integer commentId = JacksonUtil.parseInteger(body, "commentId");
-        if(commentId == null || commentId == 0){
+        if (commentId == null || commentId == 0) {
             return ResponseUtil.badArgument();
         }
         // 目前只支持回复一次
-        if(commentService.findById(commentId) != null){
+        if (commentService.findById(commentId) != null) {
             return ResponseUtil.fail(404, "订单商品已回复！");
         }
         String content = JacksonUtil.parseString(body, "content");
-        if(StringUtils.isEmpty(content)){
+        if (StringUtils.isEmpty(content)) {
             return ResponseUtil.badArgument();
         }
         // 创建评价回复
         LitemallComment comment = new LitemallComment();
-        comment.setType((byte)2);
+        comment.setType((byte) 2);
         comment.setValueId(commentId);
         comment.setContent(content);
         comment.setUserId(0);                 // 评价回复没有用
-        comment.setStar((short)0);           // 评价回复没有用
+        comment.setStar((short) 0);           // 评价回复没有用
         comment.setHasPicture(false);        // 评价回复没有用
         comment.setPicUrls(new String[]{});  // 评价回复没有用
         commentService.save(comment);
@@ -294,7 +293,7 @@ public class AdminOrderController {
                 // 设置订单已取消状态
                 order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
                 order.setEndTime(LocalDateTime.now());
-                if(orderService.updateWithOptimisticLocker(order) == 0){
+                if (orderService.updateWithOptimisticLocker(order) == 0) {
                     throw new Exception("跟新数据已失效");
                 }
 
@@ -306,7 +305,7 @@ public class AdminOrderController {
                     LitemallGoodsProduct product = productService.findById(productId);
                     Integer number = product.getNumber() + orderGoods.getNumber();
                     product.setNumber(number);
-                    if(productService.updateById(product) == 0){
+                    if (productService.updateById(product) == 0) {
                         throw new Exception("跟新数据失败");
                     }
                 }
@@ -353,10 +352,9 @@ public class AdminOrderController {
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_AUTO_CONFIRM);
             order.setConfirmTime(now);
-            if(orderService.updateWithOptimisticLocker(order) == 0){
+            if (orderService.updateWithOptimisticLocker(order) == 0) {
                 logger.info("订单 ID=" + order.getId() + " 数据已经更新，放弃自动确认收货");
-            }
-            else{
+            } else {
                 logger.info("订单 ID=" + order.getId() + " 已经超期自动确认收货");
             }
         }
@@ -375,17 +373,17 @@ public class AdminOrderController {
         LocalDateTime now = LocalDateTime.now();
         List<LitemallOrder> orderList = orderService.queryComment();
         for (LitemallOrder order : orderList) {
-            LocalDateTime confirm =  order.getConfirmTime();
+            LocalDateTime confirm = order.getConfirmTime();
             LocalDateTime expired = confirm.plusDays(7);
             if (expired.isAfter(now)) {
                 continue;
             }
 
-            order.setComments((short)0);
+            order.setComments((short) 0);
             orderService.updateWithOptimisticLocker(order);
 
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
-            for(LitemallOrderGoods orderGoods : orderGoodsList){
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 orderGoods.setComment(-1);
                 orderGoodsService.updateById(orderGoods);
             }

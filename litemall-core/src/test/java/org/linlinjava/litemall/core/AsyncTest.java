@@ -9,14 +9,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  * 异步测试
- *
  */
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class AsyncTest {
 
-    @Autowired AsyncTask task;
+    @Autowired
+    AsyncTask task;
 
     @Test
     public void test() {

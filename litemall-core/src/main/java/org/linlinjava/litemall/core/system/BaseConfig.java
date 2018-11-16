@@ -14,13 +14,6 @@ abstract class BaseConfig {
     protected static Map<String, String> configs = new HashMap<>();
 
     /**
-     * 子类实现该方法，并告知父类配置前缀，该前缀用来索引配置组用于简化访问和按组重读配置
-     *
-     * @return
-     */
-    abstract String getPrefix();
-
-    /**
      * 添加配置到公共Map中
      *
      * @param key
@@ -73,4 +66,11 @@ abstract class BaseConfig {
     protected static BigDecimal getConfigBigDec(String keyName) {
         return new BigDecimal(configs.get(keyName));
     }
+
+    /**
+     * 子类实现该方法，并告知父类配置前缀，该前缀用来索引配置组用于简化访问和按组重读配置
+     *
+     * @return
+     */
+    abstract String getPrefix();
 }

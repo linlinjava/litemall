@@ -16,7 +16,7 @@ public class ExpressAutoConfiguration {
     }
 
     @Bean
-    public ExpressService expressService(){
+    public ExpressService expressService() {
         ExpressService expressService = new ExpressService();
         expressService.setProperties(properties);
         return expressService;
