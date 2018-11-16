@@ -244,11 +244,11 @@ public class WxAuthController {
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
         String mobile = JacksonUtil.parseString(body, "mobile");
-        String captcha = JacksonUtil.parseString(body, "captcha");
         String code = JacksonUtil.parseString(body, "code");
+        String wxCode = JacksonUtil.parseString(body, "wxCode");
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(mobile)
-            || StringUtils.isEmpty(captcha) || StringUtils.isEmpty(code)) {
+            || StringUtils.isEmpty(wxCode) || StringUtils.isEmpty(code)) {
             return ResponseUtil.badArgument();
         }
 
@@ -272,7 +272,7 @@ public class WxAuthController {
 
         String openId = null;
         try {
-            WxMaJscode2SessionResult result = this.wxService.getUserService().getSessionInfo(code);
+            WxMaJscode2SessionResult result = this.wxService.getUserService().getSessionInfo(wxCode);
             openId = result.getOpenid();
         } catch (Exception e) {
             e.printStackTrace();

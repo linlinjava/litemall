@@ -9,7 +9,7 @@ Page({
     password: '',
     confirmPassword: '',
     mobile: '',
-    captcha: ''
+    code: ''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -31,7 +31,7 @@ Page({
     // 页面关闭
 
   },
-  sendCaptcha: function () {
+  sendCode: function () {
     let that = this;
 
     if (this.data.mobile.length == 0) {
@@ -79,7 +79,7 @@ Page({
       }
     });
   },
-  requestRegister: function (code) {
+  requestRegister: function (wxCode) {
     let that = this;
     wx.request({
       url: api.AuthRegister,
@@ -87,8 +87,8 @@ Page({
         username: that.data.username,
         password: that.data.password,
         mobile: that.data.mobile,
-        captcha: that.data.captcha,
-        code: code
+        code: that.data.code,
+        wxCode: wxCode
       },
       method: 'POST',
       header: {
@@ -139,7 +139,7 @@ Page({
       return false;
     }
 
-    if (this.data.mobile.length == 0 || this.data.captcha.length == 0) {
+    if (this.data.mobile.length == 0 || this.data.code.length == 0) {
       wx.showModal({
         title: '错误信息',
         content: '手机号和验证码不能为空',
@@ -195,10 +195,10 @@ Page({
       mobile: e.detail.value
     });
   },
-  bindCaptchaInput: function (e) {
+  bindCodeInput: function (e) {
 
     this.setData({
-      captcha: e.detail.value
+      code: e.detail.value
     });
   },
   clearInput: function (e) {
@@ -223,9 +223,9 @@ Page({
           mobile: ''
         });
         break;        
-      case 'clear-captcha':
+      case 'clear-code':
         this.setData({
-          captcha: ''
+          code: ''
         });
         break;
     }

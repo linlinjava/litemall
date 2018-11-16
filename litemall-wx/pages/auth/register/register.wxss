@@ -14,7 +14,7 @@
     border-bottom: 1px solid #d9d9d9;
 }
 
-.form-item .username, .form-item .password, .form-item .mobile, .form-item .captcha{
+.form-item .username, .form-item .password, .form-item .mobile, .form-item .code{
     position: absolute;
     top: 26rpx;
     left: 0;
@@ -26,19 +26,19 @@
     font-size: 30rpx;
 }
 
-.form-item-captcha{
+.form-item-code{
     margin-top:32rpx;
     height: auto;
     overflow: hidden;
     width: 100%;
 }
 
-.form-item-captcha .form-item{
+.form-item-code .form-item{
     float: left;
     width: 350rpx;
 }
 
-.form-item-captcha .captcha-btn{
+.form-item-code .code-btn{
     float: right;
     padding: 20rpx 40rpx;
     border: 1px solid #d9d9d9;

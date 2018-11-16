@@ -21,12 +21,12 @@
     	<image wx:if="{{ mobile.length > 0 }}" id="clear-mobile" class="clear" src="/static/images/clear_input.png" catchtap="clearInput"></image>
     </view>
 		
-    <view class="form-item-captcha" >
-			<view class="form-item captcha-item">
-				<input class="captcha" value="{{captcha}}" bindinput="bindCaptchaInput" placeholder="验证码"/>
-				<image class="clear" id="clear-captcha" wx:if="{{ captcha.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+    <view class="form-item-code" >
+			<view class="form-item code-item">
+				<input class="code" value="{{code}}" bindinput="bindCodeInput" placeholder="验证码"/>
+				<image class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
 			</view>
-			<view class="captcha-btn" bindtap="sendCaptcha">获取验证码</view>
+			<view class="code-btn" bindtap="sendCode">获取验证码</view>
 		</view>
 
     	<button type="primary" class="register-btn" bindtap="startRegister">注册</button>
