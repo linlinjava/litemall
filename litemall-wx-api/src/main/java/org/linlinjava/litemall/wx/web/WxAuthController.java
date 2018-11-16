@@ -199,7 +199,7 @@ public class WxAuthController {
             return ResponseUtil.badArgumentValue();
         }
 
-        if (notifyService.isSmsEnable()) {
+        if (!notifyService.isSmsEnable()) {
             return ResponseUtil.fail(404, "小程序后台验证码服务不支持");
         }
         String code = CharUtil.getRandomNum(6);
