@@ -5,7 +5,7 @@ function isValidPhone(str) {
   } else {
     return true;
   }
-}  
+}
 
 module.exports = {
   isValidPhone

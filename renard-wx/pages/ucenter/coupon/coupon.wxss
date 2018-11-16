@@ -1,15 +1,15 @@
-page{
-    background: #f4f4f4;
-    min-height: 100%;
+page {
+  background: #f4f4f4;
+  min-height: 100%;
 }
 
-.container{
-    background: #f4f4f4;
-    min-height: 100%;
-    padding-top: 30rpx;
+.container {
+  background: #f4f4f4;
+  min-height: 100%;
+  padding-top: 30rpx;
 }
 
-.coupon-form{
+.coupon-form {
   height: 110rpx;
   width: 100%;
   background: #fff;
@@ -19,7 +19,7 @@ page{
   display: flex;
 }
 
-.input-box{
+.input-box {
   flex: 1;
   height: 70rpx;
   color: #333;
@@ -31,7 +31,7 @@ page{
   margin-right: 30rpx;
 }
 
-.input-box .coupon-sn{
+.input-box .coupon-sn {
   position: absolute;
   top: 10rpx;
   left: 30rpx;
@@ -42,7 +42,7 @@ page{
   font-size: 24rpx;
 }
 
-.clear-icon{
+.clear-icon {
   position: absolute;
   top: 21rpx;
   right: 30rpx;
@@ -50,9 +50,9 @@ page{
   height: 28rpx;
 }
 
-.add-btn{
+.add-btn {
   height: 70rpx;
-  border:none;
+  border: none;
   width: 168rpx;
   background: #b4282d;
   border-radius: 0;
@@ -61,11 +61,11 @@ page{
   font-size: 28rpx;
 }
 
-.add-btn.disabled{
+.add-btn.disabled {
   background: #ccc;
 }
 
-.help{
+.help {
   height: 72rpx;
   line-height: 72rpx;
   text-align: right;
@@ -76,7 +76,7 @@ page{
   font-size: 24rpx;
 }
 
-.coupon-list{
+.coupon-list {
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -84,18 +84,18 @@ page{
   padding-right: 30rpx;
 }
 
-.item{
+.item {
   position: relative;
   height: 290rpx;
   width: 100%;
-  background: linear-gradient(to right,#cfa568,#e3bf79);
+  background: linear-gradient(to right, #cfa568, #e3bf79);
   margin-bottom: 30rpx;
   padding-top: 52rpx;
 }
 
-.tag{
+.tag {
   height: 32rpx;
-  background: #A48143;
+  background: #a48143;
   padding-left: 16rpx;
   padding-right: 16rpx;
   position: absolute;
@@ -107,8 +107,7 @@ page{
   line-height: 32rpx;
 }
 
-
-.content{
+.content {
   margin-top: 24rpx;
   margin-left: 40rpx;
   display: flex;
@@ -117,50 +116,50 @@ page{
   align-items: center;
 }
 
-.content .left{
+.content .left {
   flex: 1;
 }
 
-.name{
+.name {
   font-size: 44rpx;
   color: #fff;
   margin-bottom: 14rpx;
 }
 
-.time{
+.time {
   font-size: 24rpx;
-  color: rgba(255,255,255, 0.8);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 30rpx;
 }
 
-.content .right{
+.content .right {
   width: 162rpx;
 }
 
-.go{
+.go {
   height: 48rpx;
-  border:none;
+  border: none;
   width: 162rpx;
-  background: rgba(255,255,255, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 4rpx;
   line-height: 48rpx;
   color: #b69150;
   font-size: 24rpx;
 }
 
-.condition{
+.condition {
   position: absolute;
   width: 100%;
   bottom: 0;
-  left:0;
+  left: 0;
   height: 78rpx;
-  background: rgba(0,0,0,.08);
+  background: rgba(0, 0, 0, 0.08);
   padding: 24rpx 40rpx;
   display: flex;
   flex-direction: row;
 }
 
-.condition .txt{
+.condition .txt {
   display: block;
   height: 30rpx;
   flex: 1;
@@ -170,8 +169,7 @@ page{
   color: #fff;
 }
 
-
-.condition .icon{
+.condition .icon {
   margin-left: 30rpx;
   width: 24rpx;
   height: 24rpx;

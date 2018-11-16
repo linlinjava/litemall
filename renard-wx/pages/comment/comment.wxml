@@ -1,12 +1,12 @@
 <view class="comments">
-    <view class="h">
-        <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
-            <view class="txt">全部({{allCount}})</view>
-        </view>
-        <view class="item {{ showType == 0 ? '' : 'active'}}" bindtap="switchTab">
-            <view class="txt">有图({{hasPicCount}})</view>
-        </view>
+  <view class="h">
+    <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
+      <view class="txt">全部({{allCount}})</view>
     </view>
+    <view class="item {{ showType == 0 ? '' : 'active'}}" bindtap="switchTab">
+      <view class="txt">有图({{hasPicCount}})</view>
+    </view>
+  </view>
   <view class="b">
     <view class="item" wx:for="{{comments}}" wx:key="id">
       <view class="info">

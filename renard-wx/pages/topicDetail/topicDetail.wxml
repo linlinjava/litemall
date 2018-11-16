@@ -1,7 +1,7 @@
 <scroll-view class="container">
   <scroll-view class="content">
-    <import src="../../lib/wxParse/wxParse.wxml"/> 
-    <template is="wxParse" data="{{wxParseData:topicDetail.nodes}}"/>
+    <import src="../../lib/wxParse/wxParse.wxml" />
+    <template is="wxParse" data="{{wxParseData:topicDetail.nodes}}" />
   </scroll-view>
   <view class="topic-goods">
   </view>

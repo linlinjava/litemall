@@ -1,5 +1,5 @@
 {
- "usingComponents": {
-  "goodList": "/components/goodList/goodList"
- }
+  "usingComponents": {
+    "goodList": "/components/goodList/goodList"
+  }
 }

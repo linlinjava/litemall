@@ -2,5 +2,5 @@
   "navigationBarTitleText": "团购专区",
   "usingComponents": {
     "zan-capsule": "/components/capsule/index"
-}
+  }
 }

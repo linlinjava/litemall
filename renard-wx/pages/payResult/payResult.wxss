@@ -33,7 +33,7 @@ page {
   width: 200rpx;
   line-height: 78rpx;
   border: 1px solid #868686;
-  color: #000000;
+  color: #000;
   border-radius: 5rpx;
 }
 

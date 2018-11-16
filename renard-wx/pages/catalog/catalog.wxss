@@ -1,59 +1,67 @@
-.HotName{
-  font-size:80rpx;
-  margin-left:40rpx;
-  color:#293539;
-  font-weight:300;
+.HotName {
+  font-size: 80rpx;
+  margin-left: 40rpx;
+  color: #293539;
+  font-weight: 300;
   position: relative;
 }
-.HotName text{
-  width:14rpx;
-  height:14rpx;
-  position:absolute;
-  border:2px solid #a78845;
-  border-radius:50%;
+
+.HotName text {
+  width: 14rpx;
+  height: 14rpx;
+  position: absolute;
+  border: 2px solid #a78845;
+  border-radius: 50%;
 }
-.menu-box{
-  width:80%;
-  margin:0 auto;
-  margin-top:40rpx;
+
+.menu-box {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 40rpx;
 }
-.menu-box-list{
-  text-align:center;
-  margin-bottom:30rpx;
+
+.menu-box-list {
+  text-align: center;
+  margin-bottom: 30rpx;
 }
-.menu-box-list .menu-list-title{
-  color:#6a7275;
-  font-size:40rpx;
-  font-weight:300;
-  letter-spacing:20rpx;
+
+.menu-box-list .menu-list-title {
+  color: #6a7275;
+  font-size: 40rpx;
+  font-weight: 300;
+  letter-spacing: 20rpx;
   position: relative;
 }
-.menu-box-list .hover{
-  color:#a78845;
+
+.menu-box-list .hover {
+  color: #a78845;
 }
-.menu-box-list .hover .l{
-  width:10rpx;
-  height:10rpx;
-  position:absolute;
-  border:2rpx solid #a78845;
-  border-radius:50%;
-  margin-left:-38rpx;
-  margin-top:30rpx;
+
+.menu-box-list .hover .l {
+  width: 10rpx;
+  height: 10rpx;
+  position: absolute;
+  border: 2rpx solid #a78845;
+  border-radius: 50%;
+  margin-left: -38rpx;
+  margin-top: 30rpx;
 }
-.menu-box-list .hover .r{
-  width:10rpx;
-  height:10rpx;
-  position:absolute;
-  border:2rpx solid #a78845;
-  border-radius:50%;
-  margin-left:6rpx;
-  margin-top:30rpx;
+
+.menu-box-list .hover .r {
+  width: 10rpx;
+  height: 10rpx;
+  position: absolute;
+  border: 2rpx solid #a78845;
+  border-radius: 50%;
+  margin-left: 6rpx;
+  margin-top: 30rpx;
 }
-.menu-list-pro{
+
+.menu-list-pro {
   overflow-x: scroll;
   margin-top: 40rpx;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   height: auto;
   width: 100%;
   overflow: hidden;
@@ -70,8 +78,8 @@
 .menu-list-pro .icon {
   height: 100rpx;
   width: 100rpx;
-  border-radius:12rpx;
-  box-shadow:0px 4rpx 4rpx 0px #cfc9ca;
+  border-radius: 12rpx;
+  box-shadow: 0px 4rpx 4rpx 0px #cfc9ca;
 }
 
 .menu-list-pro .txt {
@@ -115,7 +123,7 @@
   font-size: 30rpx;
 }
 
- /* .menu-list-pro image{
+/* .menu-list-pro image{
   height: 80px;
   width: 80px;
   margin-right: 34rpx;
