@@ -1154,4 +1154,98 @@ litemall-admin编译得到的前端文件在第一次加载时相当耗时，这
 
 目前不支持
 
-### 1.7.3 Spring Boot配置方案
+### 1.7.3 项目代码风格
+
+由于本项目涉及三种技术栈，因此针对这三种技术栈也存在三种代码风格。
+
+如果开发者想要贡献代码，建议尽可能保证代码符合这里的规范。
+
+#### 1.7.3.1 Spring Boot技术栈代码风格
+
+这里的代码风格采用IDEA默认代码风格。
+
+修改代码后，利用`Code`菜单的`Reformat Code`即可格式化代码。
+
+#### 1.7.3.2 小程序技术栈代码风格
+
+这里的代码风格采用微信开发者工具默认代码风格。
+
+修改代码以后，利用`编辑`菜单的`格式化代码`即可格式化代码。
+
+#### 1.7.3.3 Vue技术栈代码风格
+
+这里的代码风格采用ESLint配置代码风格，具体参考vue-element-admin下项目的
+[ESLint文档](https://panjiachen.github.io/vue-element-admin-site/zh/guide/advanced/eslint.html),
+特别是`vscode 配置 ESLint`内容。
+
+注意：
+> Visual Studio Code编辑器中右键存在`格式化代码`的选项，但是请不要使用这种方式，
+> 因为VSC自带的格式化代码风格和ESLint代码风格可能不完全一致。
+
+### 1.7.4 Spring Boot多模块多阶段配置
+
+目前后端服务采用Spring Boot多模块方案，结构清晰、易于测试。
+
+但是存在一个问题，即多模块配置依赖。
+例如，litemall-db模块存在数据库配置信息，那么其他模块如何引入
+litemall-db模块的配置信息呢？
+
+最简单的方式，就是其他模块把litemall-db模块的配置信息拷贝到自己的
+application配置文件中，但是问题就是数据库信息一旦改变则其他模块又要
+再次手动修改，非常不方便。
+
+目前本项目采用一种基于`spring.profiles.active`的方式，细节如下：
+1. litemall-db模块存在application.yml和application-db.yml两个配置文件，
+    在application-db.yml配置文件中存放数据库配置信息；
+2. litemall-core模块也存在application.yml和application-core.yml两个配置文件,
+    在application-core.yml配置文件中存放core模块的一些配置信息，而在application.yml
+    中存在这样一个配置：
+    ```
+    spring:
+        profiles:
+            active: core, db
+    ```
+    因此，如果单独启动litemall-core模块，则会先读取application.yml配置文件，然后基于
+    系统会根据`spring.profiles.active`读取application-db.yml和application-core.yml配置文件，
+    因此就会自动读取litemall-db模块的配置文件。
+3. 以此类推，在litemall-all模块中存在application.yml配置文件，其中内容是
+    ```
+    spring:
+        profiles:
+            active:  db, core, admin, wx
+    ```
+    因此，系统启动litemall-all模块以后，则会先读取application.yml配置文件，然后基于
+    `spring.profiles.active`进一步读取application-db.yml、application-core.yml、
+    application-admin.yml和application-wx.yml四个模块的配置文件。
+    
+但是，虽然以上方案解决了多模块配置依赖问题，但是又会导致另外一个问题，如何支持不同profile，
+也就是开发阶段、测试阶段和上线阶段配置不同。
+
+这里介绍本项目的思路，就是基于Spring Boot的配置加载顺序，采用外部配置文件覆盖jar包内部配置文件。
+1. 开发阶段，系统的配置信息在模块的resources目录配置文件中；
+2. 测试或者部署阶段，系统打包成一个litemall.jar二进制jar包，jar包内部配置文件是之前
+    开发阶段的配置文件，此时在litemall.jar的同级目录创建相同的配置文件，在这些配置文件则
+    保存了测试或者部署阶段的配置信息。启动litemall.jar时，系统会读取当前目录的配置文件，而
+    不再读取jar包内部的配置文件。
+3. 上线阶段，同样地，在litemall.jar包同级目录创建上线配置文件。
+
+此外，这里还可以采用另外一种思路，如下图：
+![](pic1/1-13.png)
+![](pic1/1-14.png)
+![](pic1/1-15.png)
+其实原理也很简单，就是配置文件采用application-{module}-{profile}.yml来支持不同模块不同阶段的配置需求。
+
+### 1.7.5 前后端校验
+
+本项目是前后端分离项目，当用户或者管理员在系统中输入数据时，
+数据需要进行两层校验。
+
+* 第一层是前端校验，是对参数格式校验。
+* 第二层是后端校验，不仅对参数校验，还会根据业务场景进行校验。
+
+注意
+> 目前项目校验思路是这样，但是实际代码的校验还不完善，
+> 例如前端校验很好
+
+### 1.7.6 后端校验返回码
+
