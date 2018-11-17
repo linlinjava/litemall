@@ -128,7 +128,7 @@ export default {
     return {
       uploadPath,
       list: undefined,
-      total: undefined,
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,

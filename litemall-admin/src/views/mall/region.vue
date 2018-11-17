@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       list: undefined,
-      total: undefined,
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,

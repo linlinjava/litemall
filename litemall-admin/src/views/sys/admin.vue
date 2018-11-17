@@ -96,7 +96,7 @@ export default {
     return {
       uploadPath,
       list: null,
-      total: null,
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
