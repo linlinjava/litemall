@@ -1,108 +1,87 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入用户名" v-model="listQuery.username">
-      </el-input>
-      <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入手机号" v-model="listQuery.mobile">
-      </el-input>
+      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户名"/>
+      <el-input v-model="listQuery.mobile" clearable class="filter-item" style="width: 200px;" placeholder="请输入手机号"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" width="100px" label="用户ID" prop="id" sortable>
-      </el-table-column>
+    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+      <el-table-column align="center" width="100px" label="用户ID" prop="id" sortable/>
 
-      <el-table-column align="center" label="用户名" prop="username">
-      </el-table-column>
+      <el-table-column align="center" label="用户名" prop="username"/>
 
-      <el-table-column align="center" label="手机号码" prop="mobile">
-      </el-table-column>
-      
+      <el-table-column align="center" label="手机号码" prop="mobile"/>
+
       <el-table-column align="center" label="性别" prop="gender">
         <template slot-scope="scope">
-          <el-tag >{{genderDic[scope.row.gender]}}</el-tag>
+          <el-tag >{{ genderDic[scope.row.gender] }}</el-tag>
         </template>
-      </el-table-column>   
-
-      <el-table-column align="center" label="生日" prop="birthday">
       </el-table-column>
+
+      <el-table-column align="center" label="生日" prop="birthday"/>
 
       <el-table-column align="center" label="用户等级" prop="userLevel">
         <template slot-scope="scope">
-          <el-tag >{{levelDic[scope.row.userLevel]}}</el-tag>
+          <el-tag >{{ levelDic[scope.row.userLevel] }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="状态" prop="status">
         <template slot-scope="scope">
-          <el-tag>{{statusDic[scope.row.status]}}</el-tag>
+          <el-tag>{{ statusDic[scope.row.status] }}</el-tag>
         </template>
-      </el-table-column>     
+      </el-table-column>
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 分页 -->
-    <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page"
-        :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="dataForm.username"></el-input>
+          <el-input v-model="dataForm.username"/>
         </el-form-item>
         <el-form-item label="手机号码" prop="mobile">
-          <el-input v-model="dataForm.mobile"></el-input>
+          <el-input v-model="dataForm.mobile"/>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="dataForm.password" auto-complete="off"></el-input>
-        </el-form-item>     
+          <el-input v-model="dataForm.password" type="password" auto-complete="off"/>
+        </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-select v-model="dataForm.gender">
-            <el-option label="未知" :value="0">
-            </el-option>
-            <el-option label="男" :value="1">
-            </el-option>
-            <el-option label="女" :value="2">
-            </el-option>
+            <el-option :value="0" label="未知"/>
+            <el-option :value="1" label="男"/>
+            <el-option :value="2" label="女"/>
           </el-select>
         </el-form-item>
         <el-form-item label="生日" prop="birthday">
-          <el-date-picker v-model="dataForm.birthday" type="date" value-format="yyyy-MM-dd">
-          </el-date-picker>
+          <el-date-picker v-model="dataForm.birthday" type="date" value-format="yyyy-MM-dd"/>
         </el-form-item>
         <el-form-item label="用户等级" prop="userLevel">
           <el-select v-model="dataForm.userLevel">
-            <el-option label="普通用户" :value="0">
-            </el-option>
-            <el-option label="VIP用户" :value="1">
-            </el-option>
-            <el-option label="高级VIP用户" :value="2">
-            </el-option>
+            <el-option :value="0" label="普通用户"/>
+            <el-option :value="1" label="VIP用户"/>
+            <el-option :value="2" label="高级VIP用户"/>
           </el-select>
-        </el-form-item>            
+        </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-select v-model="dataForm.status">
-            <el-option label="可用" :value="0">
-            </el-option>
-            <el-option label="禁用" :value="1">
-            </el-option>
-            <el-option label="注销" :value="2">
-            </el-option>
+            <el-option :value="0" label="可用"/>
+            <el-option :value="1" label="禁用"/>
+            <el-option :value="2" label="注销"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -118,9 +97,11 @@
 
 <script>
 import { fetchList, createUser, updateUser } from '@/api/user'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'User',
+  components: { Pagination },
   data() {
     return {
       list: null,
@@ -179,14 +160,6 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      this.getList()
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
       this.getList()
     },
     resetForm() {

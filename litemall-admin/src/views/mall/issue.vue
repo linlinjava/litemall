@@ -1,49 +1,40 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入问题" v-model="listQuery.question">
-      </el-input>
+      <el-input v-model="listQuery.question" clearable class="filter-item" style="width: 200px;" placeholder="请输入问题"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" width="100px" label="问题ID" prop="id" sortable>
-      </el-table-column>
+    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+      <el-table-column align="center" width="100px" label="问题ID" prop="id" sortable/>
 
-      <el-table-column align="center" min-width="200px" label="问题内容" prop="question">
-      </el-table-column>
+      <el-table-column align="center" min-width="200px" label="问题内容" prop="question"/>
 
-      <el-table-column align="center" min-width="400px" label="问题回复" prop="answer">
-      </el-table-column>      
+      <el-table-column align="center" min-width="400px" label="问题回复" prop="answer"/>
 
       <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 分页 -->
-    <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page"
-        :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="问题" prop="question">
-          <el-input v-model="dataForm.question"></el-input>
+          <el-input v-model="dataForm.question"/>
         </el-form-item>
         <el-form-item label="回复" prop="answer">
-          <el-input v-model="dataForm.answer" type="textarea" :rows="8" placeholder="请输入内容"></el-input>
+          <el-input v-model="dataForm.answer" :rows="8" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -58,9 +49,11 @@
 
 <script>
 import { listIssue, createIssue, updateIssue, deleteIssue } from '@/api/issue'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'Issue',
+  components: { Pagination },
   data() {
     return {
       list: null,
@@ -109,14 +102,6 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      this.getList()
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
       this.getList()
     },
     resetForm() {

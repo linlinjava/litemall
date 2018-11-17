@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <ve-histogram :extend="chartExtend" :data="chartData" :settings="chartSettings"></ve-histogram>
+  <div class="app-container">
+    <ve-histogram :extend="chartExtend" :data="chartData" :settings="chartSettings"/>
   </div>
 </template>
 

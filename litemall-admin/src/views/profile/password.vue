@@ -1,19 +1,19 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
+  <div class="app-container">
+    <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
       <el-form-item label="原密码" prop="oldPassword">
-        <el-input type="password" v-model="dataForm.oldPassword"></el-input>
+        <el-input v-model="dataForm.oldPassword" type="password"/>
       </el-form-item>
       <el-form-item label="新密码" prop="newPassword">
-        <el-input type="password" v-model="dataForm.newPassword" auto-complete="off"></el-input>
+        <el-input v-model="dataForm.newPassword" type="password" auto-complete="off"/>
       </el-form-item>
       <el-form-item label="确认密码" prop="newPassword2">
-        <el-input type="password" v-model="dataForm.newPassword2" auto-complete="off"></el-input>
+        <el-input v-model="dataForm.newPassword2" type="password" auto-complete="off"/>
       </el-form-item>
     </el-form>
-    <div style='margin-left:100px;'>
-    <el-button @click="cancel">取消</el-button>
-    <el-button type="primary" @click="change">确定</el-button>
+    <div style="margin-left:100px;">
+      <el-button @click="cancel">取消</el-button>
+      <el-button type="primary" @click="change">确定</el-button>
     </div>
   </div>
 </template>

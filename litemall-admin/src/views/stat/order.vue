@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <ve-line :extend="chartExtend" :data="chartData" :settings="chartSettings"></ve-line>
+  <div class="app-container">
+    <ve-line :extend="chartExtend" :data="chartData" :settings="chartSettings"/>
   </div>
 </template>
 
