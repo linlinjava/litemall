@@ -336,7 +336,7 @@ public class WxOrderController {
             }
         }
 
-        // 根据订单商品总价计算运费，满88则免运费，否则8元；
+        // 根据订单商品总价计算运费，满足条件（例如88元）则免运费，否则需要支付运费（例如8元）；
         BigDecimal freightPrice = new BigDecimal(0.00);
         if (checkedGoodsPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
             freightPrice = SystemConfig.getFreight();
@@ -414,9 +414,8 @@ public class WxOrderController {
                 if (remainNumber < 0) {
                     throw new RuntimeException("下单的商品货品数量大于库存量");
                 }
-                product.setNumber(remainNumber);
-                if (productService.updateById(product) == 0) {
-                    throw new Exception("更新数据失败");
+                if (productService.reduceStock(productId, checkGoods.getNumber()) == 0) {
+                    throw new Exception("商品货品库存减少失败");
                 }
             }
 
@@ -508,11 +507,9 @@ public class WxOrderController {
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
-                LitemallGoodsProduct product = productService.findById(productId);
-                Integer number = product.getNumber() + orderGoods.getNumber();
-                product.setNumber(number);
-                if (productService.updateById(product) == 0) {
-                    throw new Exception("更新数据失败");
+                Short number = orderGoods.getNumber();
+                if (productService.addStock(productId, number) == 0) {
+                    throw new Exception("商品货品库存增加失败");
                 }
             }
         } catch (Exception ex) {

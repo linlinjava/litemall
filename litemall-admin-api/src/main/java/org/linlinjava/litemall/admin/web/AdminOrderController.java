@@ -142,11 +142,9 @@ public class AdminOrderController {
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
-                LitemallGoodsProduct product = productService.findById(productId);
-                Integer number = product.getNumber() + orderGoods.getNumber();
-                product.setNumber(number);
-                if (productService.updateById(product) == 0) {
-                    throw new Exception("跟新数据失败");
+                Short number = orderGoods.getNumber();
+                if (productService.addStock(productId, number) == 0) {
+                    throw new Exception("商品货品库存增加失败");
                 }
             }
         } catch (Exception ex) {
@@ -303,10 +301,9 @@ public class AdminOrderController {
                 for (LitemallOrderGoods orderGoods : orderGoodsList) {
                     Integer productId = orderGoods.getProductId();
                     LitemallGoodsProduct product = productService.findById(productId);
-                    Integer number = product.getNumber() + orderGoods.getNumber();
-                    product.setNumber(number);
-                    if (productService.updateById(product) == 0) {
-                        throw new Exception("跟新数据失败");
+                    Short number = orderGoods.getNumber();
+                    if (productService.addStock(productId, number) == 0) {
+                        throw new Exception("商品货品库存增加失败");
                     }
                 }
             } catch (Exception ex) {

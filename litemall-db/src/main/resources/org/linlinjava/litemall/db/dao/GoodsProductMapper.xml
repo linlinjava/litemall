@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.linlinjava.litemall.db.dao.GoodsProductMapper">
+    <update id="addStock" parameterType="map">
+        update litemall_goods_product
+        set number = number + #{num,jdbcType=INTEGER}, update_time = now()
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="reduceStock" parameterType="map">
+        update litemall_goods_product
+        set number = number - #{num,jdbcType=INTEGER}, update_time = now()
+        where id = #{id,jdbcType=INTEGER} and number >= #{num,jdbcType=INTEGER}
+    </update>
+</mapper>
