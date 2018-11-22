@@ -35,6 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 鉴权服务
+ */
 @RestController
 @RequestMapping("/wx/auth")
 @Validated
@@ -56,18 +59,6 @@ public class WxAuthController {
      * @param body    请求内容，{ username: xxx, password: xxx }
      * @param request 请求对象
      * @return 登录结果
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * token: xxx,
-     * tokenExpire: xxx,
-     * userInfo: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("login")
     public Object login(@RequestBody String body, HttpServletRequest request) {
@@ -113,18 +104,6 @@ public class WxAuthController {
      * @param wxLoginInfo 请求内容，{ code: xxx, userInfo: xxx }
      * @param request     请求对象
      * @return 登录结果
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * token: xxx,
-     * tokenExpire: xxx,
-     * userInfo: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("login_by_weixin")
     public Object loginByWeixin(@RequestBody WxLoginInfo wxLoginInfo, HttpServletRequest request) {

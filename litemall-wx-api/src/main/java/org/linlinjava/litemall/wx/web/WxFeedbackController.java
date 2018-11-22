@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 意见反馈服务
+ *
  * @author Yogeek
  * @date 2018/8/25 14:10
  */
@@ -60,7 +62,11 @@ public class WxFeedbackController {
     }
 
     /**
-     * 意见反馈
+     * 添加意见反馈
+     *
+     * @param userId   用户ID
+     * @param feedback 意见反馈
+     * @return 操作结果
      */
     @PostMapping("submit")
     public Object submit(@LoginUser Integer userId, @RequestBody LitemallFeedback feedback) {

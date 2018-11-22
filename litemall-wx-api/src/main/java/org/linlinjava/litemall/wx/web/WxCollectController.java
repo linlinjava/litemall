@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户收藏服务
+ */
 @RestController
 @RequestMapping("/wx/collect")
 @Validated
@@ -36,21 +39,9 @@ public class WxCollectController {
      *
      * @param userId 用户ID
      * @param type   类型，如果是0则是商品收藏，如果是1则是专题收藏
-     *               目前没有使用
      * @param page   分页页数
      * @param size   分页大小
      * @return 用户收藏列表
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * collectList: xxx,
-     * totalPages: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,
@@ -89,28 +80,17 @@ public class WxCollectController {
 
     /**
      * 用户收藏添加或删除
+     * <p>
+     * 如果商品没有收藏，则添加收藏；如果商品已经收藏，则删除收藏状态。
      *
      * @param userId 用户ID
-     * @param body   请求内容
+     * @param body   请求内容，{ type: xxx, valueId: xxx }
      * @return 操作结果
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * type: xxx,
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("addordelete")
     public Object addordelete(@LoginUser Integer userId, @RequestBody String body) {
         if (userId == null) {
             return ResponseUtil.unlogin();
-        }
-        if (body == null) {
-            return ResponseUtil.badArgument();
         }
 
         Byte type = JacksonUtil.parseByte(body, "type");

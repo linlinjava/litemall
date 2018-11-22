@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 专题服务
+ */
 @RestController
 @RequestMapping("/wx/brand")
 @Validated
@@ -32,17 +35,6 @@ public class WxBrandController {
      * @param page 分页页数
      * @param size 分页大小
      * @return 品牌列表
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * brandList: xxx,
-     * totalPages: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
@@ -63,16 +55,6 @@ public class WxBrandController {
      *
      * @param id 品牌ID
      * @return 品牌详情
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * brand: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
     public Object detail(@NotNull Integer id) {

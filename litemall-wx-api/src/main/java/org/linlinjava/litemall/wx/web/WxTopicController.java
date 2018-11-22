@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 专题服务
+ */
 @RestController
 @RequestMapping("/wx/topic")
 @Validated
@@ -39,17 +42,6 @@ public class WxTopicController {
      * @param page 分页页数
      * @param size 分页大小
      * @return 专题列表
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * data: xxx,
-     * count: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
@@ -69,13 +61,6 @@ public class WxTopicController {
      *
      * @param id 专题ID
      * @return 专题详情
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data: xxx
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
     public Object detail(@NotNull Integer id) {
@@ -97,13 +82,6 @@ public class WxTopicController {
      *
      * @param id 专题ID
      * @return 相关专题
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data: xxx
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("related")
     public Object related(@NotNull Integer id) {

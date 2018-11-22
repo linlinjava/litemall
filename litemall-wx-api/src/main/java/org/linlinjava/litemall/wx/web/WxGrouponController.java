@@ -24,6 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 团购服务
+ * <p>
+ * 需要注意这里团购规则和团购活动的关系和区别。
+ */
 @RestController
 @RequestMapping("/wx/groupon")
 @Validated
@@ -47,24 +52,12 @@ public class WxGrouponController {
     @Autowired
     private LitemallGrouponRulesService grouponRulesService;
 
-
     /**
-     * 专题列表
+     * 团购规则列表
      *
      * @param page 分页页数
      * @param size 分页大小
-     * @return 专题列表
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * data: xxx,
-     * count: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 团购规则列表
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
@@ -79,6 +72,13 @@ public class WxGrouponController {
         return ResponseUtil.ok(data);
     }
 
+    /**
+     * 团购活动详情
+     *
+     * @param userId    用户ID
+     * @param grouponId 团购活动ID
+     * @return 团购活动详情
+     */
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, @NotNull Integer grouponId) {
         if (userId == null) {
@@ -171,6 +171,12 @@ public class WxGrouponController {
         return ResponseUtil.ok(result);
     }
 
+    /**
+     * 参加团购
+     *
+     * @param grouponId 团购活动ID
+     * @return 操作结果
+     */
     @GetMapping("join")
     public Object join(@NotNull Integer grouponId) {
         LitemallGroupon groupon = grouponService.queryById(grouponId);
@@ -195,6 +201,13 @@ public class WxGrouponController {
         return ResponseUtil.ok(result);
     }
 
+    /**
+     * 用户开团或入团情况
+     *
+     * @param userId 用户ID
+     * @param showType 显示类型，如果是0，则是当前用户开的团购；否则，则是当前用户参加的团购
+     * @return 用户开团或入团情况
+     */
     @GetMapping("my")
     public Object my(@LoginUser Integer userId, @RequestParam(defaultValue = "0") Integer showType) {
         if (userId == null) {
@@ -265,6 +278,12 @@ public class WxGrouponController {
         return ResponseUtil.ok(result);
     }
 
+    /**
+     * 商品所对应的团购规则
+     *
+     * @param goodsId 商品ID
+     * @return 团购规则详情
+     */
     @GetMapping("query")
     public Object query(@NotNull Integer goodsId) {
         LitemallGoods goods = goodsService.findById(goodsId);

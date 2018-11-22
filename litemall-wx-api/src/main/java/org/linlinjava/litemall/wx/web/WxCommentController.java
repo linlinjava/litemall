@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户评论服务
+ */
 @RestController
 @RequestMapping("/wx/comment")
 @Validated
@@ -82,13 +85,6 @@ public class WxCommentController {
      * @param userId  用户ID
      * @param comment 评论内容
      * @return 发表评论操作结果
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data: xxx
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("post")
     public Object post(@LoginUser Integer userId, @RequestBody LitemallComment comment) {
@@ -111,17 +107,6 @@ public class WxCommentController {
      * @param type    类型ID。 如果是0，则查询商品评论；如果是1，则查询专题评论。
      * @param valueId 商品或专题ID。如果type是0，则是商品ID；如果type是1，则是专题ID。
      * @return 评论数量
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * allCount: xxx,
-     * hasPicCount: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("count")
     public Object count(@NotNull Byte type, @NotNull Integer valueId) {
@@ -142,18 +127,6 @@ public class WxCommentController {
      * @param page     分页页数
      * @param size     分页大小
      * @return 评论列表
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * data: xxx,
-     * count: xxx，
-     * currentPage: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@NotNull Byte type,

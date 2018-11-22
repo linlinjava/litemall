@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 用户服务
+ */
 @RestController
 @RequestMapping("/wx/user")
 @Validated
@@ -24,17 +27,12 @@ public class WxUserController {
     private LitemallOrderService orderService;
 
     /**
-     * 用户信息
+     * 用户个人页面数据
+     * <p>
+     * 目前是用户订单统计信息
      *
      * @param userId 用户ID
-     * @return 用户信息
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data: xxx
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 用户个人页面数据
      */
     @GetMapping("index")
     public Object list(@LoginUser Integer userId) {

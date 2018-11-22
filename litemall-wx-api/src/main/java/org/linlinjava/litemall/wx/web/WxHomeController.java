@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 首页服务
+ */
 @RestController
 @RequestMapping("/wx/home")
 @Validated
@@ -51,25 +54,9 @@ public class WxHomeController {
     }
 
     /**
-     * app首页
+     * 首页数据
      *
-     * @return app首页相关信息
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * banner: xxx,
-     * channel: xxx,
-     * newGoodsList: xxx,
-     * hotGoodsList: xxx,
-     * topicList: xxx,
-     * grouponList: xxx,
-     * floorGoodsList: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 首页数据
      */
     @GetMapping("/index")
     public Object index() {

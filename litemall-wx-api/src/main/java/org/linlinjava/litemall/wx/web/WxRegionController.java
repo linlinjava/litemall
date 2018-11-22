@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * 区域服务
+ */
 @RestController
 @RequestMapping("/wx/region")
 @Validated
@@ -31,13 +34,6 @@ public class WxRegionController {
      *
      * @param pid 父区域ID
      * @return 区域数据
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data: xxx
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@NotNull Integer pid) {

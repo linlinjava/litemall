@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户收货地址服务
+ */
 @RestController
 @RequestMapping("/wx/address")
 @Validated
@@ -35,13 +38,6 @@ public class WxAddressController {
      *
      * @param userId 用户ID
      * @return 收货地址列表
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data: xxx
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId) {
@@ -72,29 +68,8 @@ public class WxAddressController {
      * 收货地址详情
      *
      * @param userId 用户ID
-     * @param id     收获地址ID
+     * @param id     收货地址ID
      * @return 收货地址详情
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * id: xxx,
-     * name: xxx,
-     * provinceId: xxx,
-     * cityId: xxx,
-     * areaId: xxx,
-     * mobile: xxx,
-     * address: xxx,
-     * isDefault: xxx,
-     * version: xxx
-     * provinceName: xxx,
-     * cityName: xxx,
-     * areaName: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, @NotNull Integer id) {
@@ -182,8 +157,6 @@ public class WxAddressController {
      * @param userId  用户ID
      * @param address 用户收货地址
      * @return 添加或更新操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("save")
     public Object save(@LoginUser Integer userId, @RequestBody LitemallAddress address) {
@@ -217,10 +190,8 @@ public class WxAddressController {
      * 删除收货地址
      *
      * @param userId  用户ID
-     * @param address 用户收货地址
-     * @return 删除结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @param address 用户收货地址，{ id: xxx }
+     * @return 删除操作结果
      */
     @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody LitemallAddress address) {

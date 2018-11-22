@@ -45,22 +45,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
- * 订单设计
+/**
+ * 订单服务
  *
+ * <p>
  * 订单状态：
  * 101 订单生成，未支付；102，下单后未支付用户取消；103，下单后未支付超时系统自动取消
  * 201 支付完成，商家未发货；202，订单生产，已付款未发货，但是退款取消；
  * 301 商家发货，用户未确认；
  * 401 用户确认收货； 402 用户没有确认收货超过一定时间，系统自动确认收货；
  *
+ * <p>
+ * 用户操作：
  * 当101用户未付款时，此时用户可以进行的操作是取消订单，或者付款操作
  * 当201支付完成而商家未发货时，此时用户可以取消订单并申请退款
  * 当301商家已发货时，此时用户可以有确认收货的操作
  * 当401用户确认收货以后，此时用户可以进行的操作是删除订单，评价商品，或者再次购买
  * 当402系统自动确认收货以后，此时用户可以删除订单，评价商品，或者再次购买
  *
- * 目前不支持订单退货和售后服务
+ * <p>
+ * 注意：目前不支持订单退货和售后服务
  */
 @RestController
 @RequestMapping("/wx/order")
@@ -116,26 +120,15 @@ public class WxOrderController {
      * 订单列表
      *
      * @param userId   用户ID
-     * @param showType 订单信息
-     *                 0， 全部订单
-     *                 1，待付款
-     *                 2，待发货
-     *                 3，待收货
-     *                 4，待评价
+     * @param showType 订单信息：
+     *                 0，全部订单；
+     *                 1，待付款；
+     *                 2，待发货；
+     *                 3，待收货；
+     *                 4，待评价。
      * @param page     分页页数
      * @param size     分页大小
-     * @return 订单操作结果
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * data: xxx ,
-     * count: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 订单列表
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,
@@ -192,19 +185,8 @@ public class WxOrderController {
      * 订单详情
      *
      * @param userId  用户ID
-     * @param orderId 订单信息
-     * @return 订单操作结果
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * orderInfo: xxx ,
-     * orderGoods: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @param orderId 订单ID
+     * @return 订单详情
      */
     @GetMapping("detail")
     public Object detail(@LoginUser Integer userId, @NotNull Integer orderId) {
@@ -254,16 +236,16 @@ public class WxOrderController {
 
     /**
      * 提交订单
-     * 1. 根据购物车ID、地址ID、优惠券ID，创建订单表项
-     * 2. 购物车清空
-     * 3. TODO 优惠券设置已用
-     * 4. 商品货品数量减少
+     * <p>
+     * 1. 创建订单表项和订单商品表项;
+     * 2. 购物车清空;
+     * 3. TODO 优惠券设置已用;
+     * 4. 商品货品库存减少;
+     * 5. 如果是团购商品，则创建团购活动表项。
      *
      * @param userId 用户ID
-     * @param body   订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx }
-     * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功', data: { orderId: xxx } }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @param body   订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx, message: xxx, grouponRulesId: xxx,  grouponLinkId: xxx}
+     * @return 提交订单操作结果
      */
     @PostMapping("submit")
     public Object submit(@LoginUser Integer userId, @RequestBody String body) {
@@ -455,15 +437,16 @@ public class WxOrderController {
 
     /**
      * 取消订单
-     * 1. 检测当前订单是否能够取消
-     * 2. 设置订单取消状态
-     * 3. 商品货品数量增加
+     * <p>
+     * 1. 检测当前订单是否能够取消；
+     * 2. 设置订单取消状态；
+     * 3. 商品货品库存恢复；
+     * 4. TODO 优惠券；
+     * 5. TODO 团购活动。
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
-     * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 取消订单操作结果
      */
     @PostMapping("cancel")
     public Object cancel(@LoginUser Integer userId, @RequestBody String body) {
@@ -531,9 +514,7 @@ public class WxOrderController {
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
-     * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '模拟付款支付成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 支付订单ID
      */
     @PostMapping("prepay")
     public Object prepay(@LoginUser Integer userId, @RequestBody String body, HttpServletRequest request) {
@@ -602,18 +583,17 @@ public class WxOrderController {
     }
 
     /**
-     * 付款成功回调接口
-     * 1. 检测当前订单是否是付款状态
-     * 2. 设置订单付款成功状态相关信息
-     * 3. 响应微信支付平台
-     *
-     * @param request
-     * @param response
-     * @return 订单操作结果
-     * 成功则 WxPayNotifyResponse.success的XML内容
-     * 失败则 WxPayNotifyResponse.fail的XML内容
+     * 微信付款成功或失败回调接口
      * <p>
-     * 注意，这里pay-notify是示例地址，开发者应该设立一个隐蔽的回调地址
+     * 1. 检测当前订单是否是付款状态;
+     * 2. 设置订单付款成功状态相关信息;
+     * 3. 响应微信支付平台.
+     * <p>
+     *  注意，这里pay-notify是示例地址，建议开发者应该设立一个隐蔽的回调地址
+     *
+     * @param request 请求内容
+     * @param response 响应内容
+     * @return 操作结果
      */
     @PostMapping("pay-notify")
     public Object payNotify(HttpServletRequest request, HttpServletResponse response) {
@@ -718,14 +698,13 @@ public class WxOrderController {
 
     /**
      * 订单申请退款
-     * 1. 检测当前订单是否能够退款
-     * 2. 设置订单申请退款状态
+     * <p>
+     * 1. 检测当前订单是否能够退款；
+     * 2. 设置订单申请退款状态。
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
-     * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 订单退款操作结果
      */
     @PostMapping("refund")
     public Object refund(@LoginUser Integer userId, @RequestBody String body) {
@@ -765,14 +744,13 @@ public class WxOrderController {
 
     /**
      * 确认收货
-     * 1. 检测当前订单是否能够确认订单
-     * 2. 设置订单确认状态
+     * <p>
+     * 1. 检测当前订单是否能够确认收货；
+     * 2. 设置订单确认收货状态。
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("confirm")
     public Object confirm(@LoginUser Integer userId, @RequestBody String body) {
@@ -810,14 +788,13 @@ public class WxOrderController {
 
     /**
      * 删除订单
-     * 1. 检测当前订单是否删除
-     * 2. 设置订单删除状态
+     * <p>
+     * 1. 检测当前订单是否可以删除；
+     * 2. 删除订单。
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody String body) {
@@ -850,14 +827,12 @@ public class WxOrderController {
     }
 
     /**
-     * 可以评价的订单商品信息
+     * 待评价订单商品信息
      *
      * @param userId  用户ID
      * @param orderId 订单ID
      * @param goodsId 商品ID
-     * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功', data: xxx }
-     * 失败则 { errno: XXX, errmsg: XXX }
+     * @return 待评价订单商品信息
      */
     @GetMapping("goods")
     public Object goods(@LoginUser Integer userId,
@@ -882,13 +857,12 @@ public class WxOrderController {
 
     /**
      * 评价订单商品
-     * 确认商品收货后7天内可以评价
+     * <p>
+     * 确认商品收货或者系统自动确认商品收货后7天内可以评价，过期不能评价。
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
      * @return 订单操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("comment")
     public Object comment(@LoginUser Integer userId, @RequestBody String body) {
