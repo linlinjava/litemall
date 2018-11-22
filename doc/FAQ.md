@@ -6,11 +6,15 @@
 
 ### 1.1 小程序微信登录失败
 
+现象：
+
+小程序微信登录失败
+
 原因：
 
 目前账号的appid是本人申请，同时小程序未上线，因此开发者如果微信登录肯定会失败。
 
-解决方案：
+解决：
 
 1. 如果只是体验商品购买流程，开发者可以采用账号注册登录方式。
 2. 开发者在litemall-wx和litemall-wx-api模块的appid等信息设置成自己申请的信息。
@@ -25,7 +29,7 @@
 
 这里可能是缓存问题，虽然修改了appid，但是微信开发者工具未及时跟新。
 
-解决方案：
+解决：
 
 微信开发者工具中修改appid以后，请关闭litemall-wx项目或者微信开发者工具，重新启动导入litemall-wx。
 
@@ -39,7 +43,7 @@
 
 数据或者图片不可访问。
 
-解决方案：
+解决：
 
 1. 确保小商场后端服务可以访问，可以通过手机浏览器访问后端服务地址测试
    * 小商场的后端服务地址是localhost，则手机不可访问；
@@ -53,7 +57,7 @@
 
 本人手机测试正常，而第三者手机测试不正常。
 
-解决方案：
+解决：
 
 1. 确保小商场后端服务可以访问，可以通过第三者手机浏览器访问后端服务地址测试
 2. 第三者手机小商场的**调试功能**开启
@@ -76,7 +80,7 @@ litemall.wx.mch-key=
 litemall.wx.notify-url=
 ```
 
-解决方案：
+解决：
 
 参考`3.0 小商场环境`，设置相应支付配置信息
 
@@ -92,7 +96,7 @@ litemall.wx.notify-url=
 因此，开发者必须确定`wx.notify-url`所指向的访问链接是可以成功访问，同时
 能够返回正常的响应结果。
 
-解决方案：
+解决：
 
 1. 如果开发者是在微信开发者工具中测试支付，那么需要采用一些内网穿透工具，
 把`WxOrderController.payNotify`所代表的本地地址，例如`http://localhots/wx/order/pay-notify`,
@@ -105,29 +109,7 @@ litemall.wx.notify-url=
 
 这里主要是指litemall-admin-api和litemall-admin两个模块的相关问题。
 
-### 2.1 Invalid bound statement
-
-现象：
-
-有时（特别是采用mybatis generator重新生成代码）后端服务报错
-
-```
-org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): org.linlinjava.litemall.db.dao.XXXX
-```
-
-原因：
-
-应该是自动生成的新的XML文件没有及时跟新到编译文件夹target中，造成了target中mybatis的Java代码和XML文件不对应。
-
-解决方案：
-
-采用maven命令或者插件先清理项目再重新编译打包，例如
-```bash
-mvn clean
-mvn package
-```
-
-### 2.2 登录连接超时，联系管理员
+### 2.1 登录连接超时，联系管理员
 
 现象：
 
@@ -142,7 +124,7 @@ mvn package
     未及时返回数据；
     * 假连接超时，例如向一个不存在的地址请求数据，那自然是返回连接失败。
 
-解决方案：
+解决：
 
 通常是开发者设置不正确引起的假连接超时。
 
@@ -153,7 +135,52 @@ mvn package
 
 ## 3. 基础系统
 
-这里主要是指litemall-d、litemall-core和litemall-all模块三个模块的相关问题。
+这里主要是指litemall-db、litemall-core和litemall-all模块三个模块的相关问题。
+
+
+### 3.1 Invalid bound statement
+
+现象：
+
+有时（特别是采用mybatis generator重新生成代码）后端服务报错
+
+```
+org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): org.linlinjava.litemall.db.dao.XXXX
+```
+
+原因：
+
+应该是自动生成的新的XML文件没有及时跟新到编译文件夹target中，造成了target中mybatis的Java代码和XML文件不对应。
+
+解决：
+
+采用maven命令或者插件先清理项目再重新编译打包，例如
+```bash
+mvn clean
+mvn package
+```
+
+### 3.2 Unknown Column
+
+现象：
+
+```
+Error querying database. Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'add_time' in 'field list'
+The error may exist in org/linlinjava/litemall/db/dao/LitemallSystemMapper.xml
+The error may involve org.linlinjava.litemall.db.dao.LitemallSystemMapper.selectByExample-Inline
+The error occurred while setting parameters
+SQL: select id, key_name, key_value, add_time, update_time, deleted from litemall_system
+Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'add_time' in 'field list'
+```
+
+原因是：
+
+系统处在开发中，所以数据库表根据业务会不断调整，因此如果开发者更新代码以后直接运行，有可能导致当前代码
+操作数据库失败，因为开发者当前的数据库表已经过时。
+
+解决：
+
+如果出现数据库方面的报错，建议开发者重新导入数据库。
 
 ## 4. 项目
 

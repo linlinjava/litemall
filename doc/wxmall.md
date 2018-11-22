@@ -2,7 +2,7 @@
 
 技术：
 
-* 小商城前端，即litemall-wx模块
+* 小商城前端，即litemall-wx模块和renard-wx模块
   * 微信小程序
 * 小商城后端，即litemall-wx-api模块
   * Spring Boot 2.x
@@ -176,7 +176,8 @@ litemall
 具体变化可以采用工具进行对比。
 
 注意
-> 目前litemall-wx项目代码基于nideshop-mini-program的commit版本[acbf6276eb27abc6a48887cddd223d7261f0088e](https://github.com/tumobi/nideshop-mini-program/commit/acbf6276eb27abc6a48887cddd223d7261f0088e)。由于改动变化较大，因此之后litemall-wx将独立开发，nideshop-mini-program的跟新不一定会合并到litemall-wx中。
+> litemall-wx模块代码基于nideshop-mini-program的commit版本[acbf6276eb27abc6a48887cddd223d7261f0088e](https://github.com/tumobi/nideshop-mini-program/commit/acbf6276eb27abc6a48887cddd223d7261f0088e)。
+> 由于改动变化较大，因此之后litemall-wx将独立开发，不会合并nideshop-mini-program的更新。
 
 ### 3.2.1 业务API设置
 
@@ -245,7 +246,7 @@ var WxApiRoot = 'http://localhost:8082/wx/';
 
 因此本模块中，用户的登录状态也是由`wx.login`和`wx.getUserInfo`组成。
 
-#### 3.2.2.1 登录检测
+#### 3.2.3.1 登录检测
 
 开发者可以采用`user.checkLogin`来检查是否`已登录`，而其检测逻辑是：
 
@@ -253,48 +254,42 @@ var WxApiRoot = 'http://localhost:8082/wx/';
 2. 同时`wx.checkSession`也成功。
 
 但是如果每次都使用`checkLogin`可能也不太好，因此目前机制是：
-1. 应用启动时就检测一次，如果登录则设置app.globalData.hasLogin为已登录状态;
+
+1. 应用启动时检测一次，如果登录则设置app.globalData.hasLogin为已登录状态;
 之后，其他页面只要查看这个状态即可知道目前是否已登录；
-2. 此外，如果后台token过期返回401代码时，则及时清除过期的登录状态信息；
-而用户登录失败时则app.globalData.hasLogin为未登录状态。
+2. 如果后端token过期返回501错误码时，则前端清理`userInfo`和`token`；
+3. 用户执行退出操作，则清理`userInfo`和`token`，同时设置hasLogin未登录状态。
 
 注意：
 > 这里的逻辑可能有点乱。。。，但是目前实际效果看没有问题。
 
-#### 3.2.2.2 登录时机
+#### 3.2.3.2 登录时机
 
 登录请求用户信息的时机存在两种设计：
 
-1. 一种是小程序加载时，即申请用户信息，这种实现较简单；
-2. 另外一种是小程序加载时不需要，但是小程序用户需要真正用户信息时才申请用户信息，
+1. 一种是小程序加载时，即申请用户信息，这种实现较简单，但是用户体验可能不是很好；
+2. 另外一种是小程序加载时不需要，但是小程序用户需要真正用户信息时才请求用户登录，
 而这种实现较复杂。
 
-目前采用第二张实现，可以分成两种情况：
+目前采用第二种方式实现，这里又可以进一步分成两种情况：
 
 * 用户主动登录
 
-  用户主动登录，指的是`我的`页面中用户没有登录显示`点击登录`的效果。
+  用户主动登录，指的是`个人`页面中用户没有登录显示`点击登录`的效果。
 
 * 用户被动登录
 
   用户被动登录，指的是用户想购买商品或者需要用户登录才能操作的行为，
-  此时因为向服务器请求时token没有设置，因此服务器拒绝用户的请求，同时返回`401`业务代码。
+  此时因为向服务器请求时token没有设置，因此服务器拒绝用户的请求，同时返回`501`业务代码。
  
-  目前需要检测用户登录的页面有:
-   
-   * 购物车
-   * 我的主页
-
-讨论:
-> 对于第二张情况，原nideshop-mini-program项目是采取一种自动登录的方式。
-> 这里则采用跳转登录页面的方式。
-
-#### 3.2.2.3 登录操作
+ 以上无论哪种情况，都会导致用户被重定向到`登录`页面来进行登录操作。
+ 
+#### 3.2.3.3 登录操作
 
 如前面讨论，这里的登录操作实际包含两个操作`wx.login`和`wx.getUserInfo`。
 开发者可以采用`user.loginByWeixin`来进行登录操作。
 
-按照官网文档，用户登录前应该检测以下，来避免频繁无意义的登录操作，
+按照小程序官网文档，用户登录前应该检测以下，来避免频繁无意义的登录操作，
 因此较合适的做法如下所示:
 
 ```
@@ -311,26 +306,51 @@ var WxApiRoot = 'http://localhost:8082/wx/';
     });
 ```
 
-### 3.2.4 立即购买和放入购物车
+#### 3.2.3.4 登出操作
 
-### 3.2.5 storage使用
+在`个人`页面，如果用户已经登录，则会出现`退出登录`按钮，支持用户退出当前登录状态。
 
-本模块中采用storage来存储一些数据，以及组件间进行通信。
+退出逻辑如下所示：
+```
+        util.request(api.AuthLogout, {}, 'POST');
+        app.globalData.hasLogin = false;
+        wx.removeStorageSync('token');
+        wx.removeStorageSync('userInfo');
+        wx.reLaunch({
+          url: '/pages/index/index'
+        });
+```
 
-#### 3.2.5.1 userInfo和token
+### 3.2.4 storage使用
 
-#### 3.2.5.2 cartId
+litemall-wx模块采用storage来存储一些数据，以及支持组件间数据通信。
 
-#### 3.2.5.3 addressId
+#### 3.2.4.1 userInfo和token
 
-## 3.3 开发新功能
+#### 3.2.4.2 cartId
+
+#### 3.2.4.3 addressId
+
+### 3.2.5 加入购物车和立即购买
+
+### 3.2.6 团购
+
+## 3.3 renard-wx
+
+renard-wx是另外一个小程序前端，其后端API也是litemall-wx-api。
+
+和litemall-wx的区别是：
+1. 界面样式有所调整；
+2. 功能进一步简化。
+
+## 3.4 开发新功能
 
 本章节介绍如何开发新的微信小程序功能。
 
-### 3.3.1 小商场页面开发
+### 3.4.1 小商场页面开发
 
-### 3.3.2 交互服务API设计
+### 3.4.2 交互服务API设计
 
-### 3.3.3 后台服务开发
+### 3.4.3 后台服务开发
 
-### 3.3.4 数据库
+### 3.4.4 数据库

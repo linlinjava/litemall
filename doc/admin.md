@@ -8,7 +8,7 @@
   * vue-router
   * axios
   * element
-  * vue-element-admin
+  * vue-element-admin 3.9.3
   * 其他，见package.json
 * 后台管理后端, 即litemall-admin-api模块
   * Spring Boot 2.x
@@ -16,9 +16,7 @@
 
 目前存在的问题：
 
-* `缺失`支持微信登录
 * `缺失`首页中实现一些小组件，同时点击能够跳转相应页面
-* `缺失`商品评价中管理员回复功能
 * `缺失`支持导出表所有数据
 * `改善`管理员登录页面打开慢，优化速度
 * `改善`地址优化，目前每一次点击都会请求后台，应该缓存已有的数据
@@ -27,7 +25,6 @@
 * `功能`系统日志功能
 * `功能`系统数据字典功能
 * `功能`系统栏目管理功能
-* `功能`支持国际化
 * `功能`支持数据库备份
 
 ## 4.1 litemall-admin-api
@@ -36,28 +33,70 @@
 
 ### 4.1.1 授权服务
 
+见AdminAuthController类
 
+### 4.1.2 用户管理服务
 
+用户管理服务进一步分成：
+* 会员管理服务，见AdminUserController类
+* 收货地址服务，见AdminAddressController类
+* 会员收藏服务，见AdminCollectController类
+* 会员足迹服务，见AdminFootprintController类
+* 搜索历史服务，见AdminHistoryController类
+* 意见反馈服务，见AdminFeedbackController类
 
-### 4.1.16 安全
+### 4.1.3 商场管理服务
 
-#### 4.1.16.1 Token
+商城管理服务进一步分成：
+* 行政区域服务，见AdminRegionController类
+* 品牌制造商服务，见AdminBrandController类
+* 商品类目服务，见AdminCategoryController类
+* 订单管理服务，见AdminOrderController类
+* 通用问题服务，见AdminIssueController类
+* 关键词服务，见AdminKeywordController类
+
+### 4.1.4 商品管理服务
+
+商品服务，见AdminAdminController类
+
+### 4.1.5 推广管理服务
+
+推广管理服务进一步分成：
+
+* 广告服务，见AdminAdController类
+* 专题服务，见AdminTopicController类
+* 团购服务，见AdminGrouponController类
+
+### 4.1.6 系统管理服务
+
+系统管理服务进一步分成：
+* 管理员服务，见AdminAdminController类
+* 对象存储服务，见见AdminStorageController类
+
+### 4.1.7 其他服务
+
+* 统计服务，见AdminStatController类
+* 个人服务，见AdminProfileController类
+
+### 4.1.8 安全
+
+#### 4.1.8.1 Token
 
 用户登录成功以后，后端会返回`token`，之后用户的请求都会携带token。
 
 目前token的失效和跟新机制没有涉及。
 
-#### 4.1.16.2 CROS
+#### 4.1.8.2 CROS
 
 如果litemall-admin-api不配置CROS，则Spring Boot会失败。
 
-#### 4.1.16.3 账号密码加盐
+#### 4.1.8.3 账号密码加盐
 
 如果是微信登录，那么无需账号和密码。
 
 而如果用户采用了账号和密码的形式登录，那么后端需要把用户密码加盐。
 
-#### 4.1.16.4 限制登录
+#### 4.1.8.4 限制登录
 
 如果采用账号密码登录，那么登录失败一定次数，应该限制登录。
 
@@ -65,22 +104,18 @@
 
 目前这里没有实现，仅列出。
 
-### 4.1.17 定时任务
+### 4.1.9 定时任务
 
-### 4.1.18 并发控制
+AdminOrderController类存在以下三个方法，其实是三个定时任务：
+* checkOrderUnpaid
+* checkOrderUnconfirm
+* checkOrderComment
 
-参考`2.2.8 乐观锁`
+注意：
+> 虽然定时任务放在AdminOrderController类中，但是可能这里不是很合适，
+> 以后需要调整或者完善。
 
-当乐观锁更新失败时采用多次尝试方案。
-
-### 4.1.19 事务管理
-
-### 4.1.20 开发技巧
-
-当小商城后台服务开发中因为测试或者debug可能需要经常性重启应用，此时
-一旦重启，将导致小商场的小程序段的token失效，因此要求用户再次登录。
-这里，介绍一个小技巧:
-开发时，
+### 4.1.10 事务管理
 
 
 ## 4.2 litemall-admin
@@ -88,37 +123,6 @@
 本节介绍管理后台的前端模块。
 
 litemall-admin模块的代码基于[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
-
-### 4.2.1
-
-### 4.2.2
-
-### 4.2.3
-
-### 4.2.4
-
-### 4.2.5
-
-### 4.2.6
-
-### 4.2.7
-
-### 4.2.8
-
-### 4.2.9
-
-### 4.2.10 系统基础功能
-
-#### 4.2.10.1 数据字典
-
-#### 4.2.10.2 角色权限
-
-#### 4.2.10.3 国际化
-
-#### 4.2.10.4 菜单
-
-#### 4.2.10.5 日志
-
 
 ## 4.3 开发新组件
 
