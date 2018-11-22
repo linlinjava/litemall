@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户访问足迹服务
+ */
 @RestController
 @RequestMapping("/wx/footprint")
 @Validated
@@ -33,10 +36,8 @@ public class WxFootprintController {
      * 删除用户足迹
      *
      * @param userId 用户ID
-     * @param body   请求内容， { footprintId: xxx }
+     * @param body   请求内容， { id: xxx }
      * @return 删除操作结果
-     * 成功则 { errno: 0, errmsg: '成功' }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("delete")
     public Object delete(@LoginUser Integer userId, @RequestBody String body) {
@@ -47,7 +48,7 @@ public class WxFootprintController {
             return ResponseUtil.badArgument();
         }
 
-        Integer footprintId = JacksonUtil.parseInteger(body, "footprintId");
+        Integer footprintId = JacksonUtil.parseInteger(body, "id");
         if (footprintId == null) {
             return ResponseUtil.badArgument();
         }
@@ -70,17 +71,6 @@ public class WxFootprintController {
      * @param page 分页页数
      * @param size 分页大小
      * @return 用户足迹列表
-     * 成功则
-     * {
-     * errno: 0,
-     * errmsg: '成功',
-     * data:
-     * {
-     * footprintList: xxx,
-     * totalPages: xxx
-     * }
-     * }
-     * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,

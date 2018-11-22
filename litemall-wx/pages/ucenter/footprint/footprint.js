@@ -57,7 +57,7 @@ Page({
         success: function(res) {
           if (res.confirm) {
             util.request(api.FootprintDelete, {
-              footprintId: footprintId
+              id: footprintId
             }, 'POST').then(function(res) {
               if (res.errno === 0) {
                 wx.showToast({
