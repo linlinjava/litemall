@@ -48,6 +48,10 @@ public class AdminGoodsController {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallBrandService brandService;
+    @Autowired
+    private LitemallCartService cartService;
+    @Autowired
+    private LitemallOrderGoodsService orderGoodsService;
 
     @Autowired
     private QCodeService qCodeService;
@@ -142,16 +146,21 @@ public class AdminGoodsController {
         return null;
     }
 
-    /*
+    /**
+     * 编辑商品
+     * <p>
      * TODO
      * 目前商品修改的逻辑是
      * 1. 更新litemall_goods表
-     * 2. 逻辑删除litemall_goods_specification、litemall_goods_attribute、litemall_product
-     * 3. 添加litemall_goods_specification、litemall_goods_attribute、litemall_product
+     * 2. 逻辑删除litemall_goods_specification、litemall_goods_attribute、litemall_goods_product
+     * 3. 添加litemall_goods_specification、litemall_goods_attribute、litemall_goods_product
      *
-     * 这里商品三个表的数据采用删除再跟新的策略是因为
-     * 商品编辑页面，管理员可以添加删除商品规格、添加删除商品属性，因此这里仅仅更新表是不可能的，
-     * 因此这里只能删除所有旧的数据，然后添加新的数据
+     * 这里商品三个表的数据采用删除再添加的策略是因为
+     * 商品编辑页面，支持管理员添加删除商品规格、添加删除商品属性，因此这里仅仅更新是不可能的，
+     * 只能删除三个表旧的数据，然后添加新的数据。
+     * 但是这里又会引入新的问题，就是存在订单商品货品ID指向了失效的商品货品表。
+     * 因此这里会拒绝管理员编辑商品，如果订单或购物车中存在商品。
+     * 所以这里可能需要重新设计。
      */
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone) {
@@ -168,6 +177,16 @@ public class AdminGoodsController {
         LitemallGoodsAttribute[] attributes = goodsAllinone.getAttributes();
         LitemallGoodsSpecification[] specifications = goodsAllinone.getSpecifications();
         LitemallGoodsProduct[] products = goodsAllinone.getProducts();
+
+        Integer id = goods.getId();
+        // 检查是否存在购物车商品或者订单商品
+        // 如果存在则拒绝修改商品。
+        if(orderGoodsService.checkExist(id)){
+            return ResponseUtil.fail(404, "商品已经在购物车中，不能修改");
+        }
+        if(cartService.checkExist(id)){
+            return ResponseUtil.fail(404, "商品已经在订单中，不能修改");
+        }
 
         // 开启事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();

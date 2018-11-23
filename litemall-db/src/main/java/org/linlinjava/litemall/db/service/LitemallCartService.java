@@ -111,4 +111,10 @@ public class LitemallCartService {
     public void deleteById(Integer id) {
         cartMapper.logicalDeleteByPrimaryKey(id);
     }
+
+    public boolean checkExist(Integer goodsId) {
+        LitemallCartExample example = new LitemallCartExample();
+        example.or().andGoodsIdEqualTo(goodsId).andCheckedEqualTo(true);
+        return cartMapper.countByExample(example) != 0;
+    }
 }

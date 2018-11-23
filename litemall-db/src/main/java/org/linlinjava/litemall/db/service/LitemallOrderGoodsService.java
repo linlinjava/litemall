@@ -47,4 +47,10 @@ public class LitemallOrderGoodsService {
         long count = orderGoodsMapper.countByExample(example);
         return (short) count;
     }
+
+    public boolean checkExist(Integer goodsId) {
+        LitemallOrderGoodsExample example = new LitemallOrderGoodsExample();
+        example.or().andGoodsIdEqualTo(goodsId).andDeletedEqualTo(false);
+        return orderGoodsMapper.countByExample(example) != 0;
+    }
 }
