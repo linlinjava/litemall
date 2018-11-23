@@ -135,7 +135,7 @@ public class AdminOrderController {
             // 设置订单取消状态
             order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
             if (orderService.updateWithOptimisticLocker(order) == 0) {
-                throw new Exception("跟新数据已失效");
+                throw new Exception("更新数据已失效");
             }
 
             // 商品货品数量增加
@@ -292,7 +292,7 @@ public class AdminOrderController {
                 order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
                 order.setEndTime(LocalDateTime.now());
                 if (orderService.updateWithOptimisticLocker(order) == 0) {
-                    throw new Exception("跟新数据已失效");
+                    throw new Exception("更新数据已失效");
                 }
 
                 // 商品货品数量增加

@@ -200,7 +200,7 @@ public class AdminGoodsController {
 
             // 商品基本信息表litemall_goods
             if (goodsService.updateById(goods) == 0) {
-                throw new Exception("跟新数据失败");
+                throw new Exception("更新数据失败");
             }
 
             Integer gid = goods.getId();
@@ -302,7 +302,7 @@ public class AdminGoodsController {
             if (!StringUtils.isEmpty(url)) {
                 goods.setShareUrl(url);
                 if (goodsService.updateById(goods) == 0) {
-                    throw new Exception("跟新数据失败");
+                    throw new Exception("更新数据失败");
                 }
             }
 

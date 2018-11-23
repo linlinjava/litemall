@@ -27,7 +27,7 @@
 
 原因：
 
-这里可能是缓存问题，虽然修改了appid，但是微信开发者工具未及时跟新。
+这里可能是缓存问题，虽然修改了appid，但是微信开发者工具未及时更新。
 
 解决：
 
@@ -150,7 +150,7 @@ org.apache.ibatis.binding.BindingException: Invalid bound statement (not found):
 
 原因：
 
-应该是自动生成的新的XML文件没有及时跟新到编译文件夹target中，造成了target中mybatis的Java代码和XML文件不对应。
+应该是自动生成的新的XML文件没有及时更新到编译文件夹target中，造成了target中mybatis的Java代码和XML文件不对应。
 
 解决：
 
