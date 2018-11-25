@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
+
 /**
  * 团购服务
  * <p>
@@ -98,10 +100,10 @@ public class WxGrouponController {
         // 订单信息
         LitemallOrder order = orderService.findById(groupon.getOrderId());
         if (null == order) {
-            return ResponseUtil.fail(403, "订单不存在");
+            return ResponseUtil.fail(ORDER_UNKNOWN, "订单不存在");
         }
         if (!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(403, "不是当前用户的订单");
+            return ResponseUtil.fail(ORDER_INVALID, "不是当前用户的订单");
         }
         Map<String, Object> orderVo = new HashMap<String, Object>();
         orderVo.put("id", order.getId());
@@ -288,7 +290,7 @@ public class WxGrouponController {
     public Object query(@NotNull Integer goodsId) {
         LitemallGoods goods = goodsService.findById(goodsId);
         if (goods == null) {
-            return ResponseUtil.fail(-1, "未找到对应的商品");
+            return ResponseUtil.fail(GOODS_UNKNOWN, "未找到对应的商品");
         }
 
         List<LitemallGrouponRules> rules = rulesService.queryByGoodsId(goodsId);

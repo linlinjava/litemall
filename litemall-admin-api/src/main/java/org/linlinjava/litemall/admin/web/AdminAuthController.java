@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
+
 @RestController
 @RequestMapping("/admin/login")
 @Validated
@@ -51,7 +53,7 @@ public class AdminAuthController {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(password, admin.getPassword())) {
-            return ResponseUtil.fail(403, "账号密码不对");
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "账号密码不对");
         }
 
         Integer adminId = admin.getId();

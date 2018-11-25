@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
+
 @RestController
 @RequestMapping("/admin/admin")
 @Validated
@@ -80,11 +82,11 @@ public class AdminAdminController {
             return ResponseUtil.badArgument();
         }
         if (!RegexUtil.isUsername(name)) {
-            return ResponseUtil.fail(402, "管理员名称不符合规定");
+            return ResponseUtil.fail(ADMIN_INVALID_NAME, "管理员名称不符合规定");
         }
         String password = admin.getPassword();
         if (StringUtils.isEmpty(password) || password.length() < 6) {
-            return ResponseUtil.fail(402, "管理员密码长度不能小于6");
+            return ResponseUtil.fail(ADMIN_INVALID_PASSWORD, "管理员密码长度不能小于6");
         }
         return null;
     }
@@ -102,7 +104,7 @@ public class AdminAdminController {
         String username = admin.getUsername();
         List<LitemallAdmin> adminList = adminService.findAdmin(username);
         if (adminList.size() > 0) {
-            return ResponseUtil.fail(402, "管理员已经存在");
+            return ResponseUtil.fail(ADMIN_NAME_EXIST, "管理员已经存在");
         }
 
         String rawPassword = admin.getPassword();
@@ -140,7 +142,7 @@ public class AdminAdminController {
         // TODO 这里开发者需要删除以下检验代码
         // 目前这里不允许修改超级管理员是防止演示平台上他人修改管理员密码而导致登录失败
         if (anotherAdminId == 1) {
-            return ResponseUtil.fail(403, "超级管理员不能修改");
+            return ResponseUtil.fail(ADMIN_ALTER_NOT_ALLOWED, "超级管理员不能修改");
         }
 
         String rawPassword = admin.getPassword();
@@ -168,7 +170,7 @@ public class AdminAdminController {
         // TODO 这里开发者需要删除以下检验代码
         // 目前这里不允许删除超级管理员是防止演示平台上他人删除管理员账号而导致登录失败
         if (anotherAdminId == 1) {
-            return ResponseUtil.fail(403, "超级管理员不能删除");
+            return ResponseUtil.fail(ADMIN_DELETE_NOT_ALLOWED, "超级管理员不能删除");
         }
 
         adminService.deleteById(anotherAdminId);

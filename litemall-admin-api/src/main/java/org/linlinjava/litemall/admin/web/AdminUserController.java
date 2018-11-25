@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
+
 @RestController
 @RequestMapping("/admin/user")
 @Validated
@@ -67,18 +69,18 @@ public class AdminUserController {
             return ResponseUtil.badArgument();
         }
         if (!RegexUtil.isUsername(username)) {
-            return ResponseUtil.fail(402, "用户名不符合规定");
+            return ResponseUtil.fail(USER_INVALID_NAME, "用户名不符合规定");
         }
         String password = user.getPassword();
         if (StringUtils.isEmpty(password) || password.length() < 6) {
-            return ResponseUtil.fail(402, "用户密码长度不能小于6");
+            return ResponseUtil.fail(USER_INVALID_PASSWORD, "用户密码长度不能小于6");
         }
         String mobile = user.getMobile();
         if (StringUtils.isEmpty(mobile)) {
             return ResponseUtil.badArgument();
         }
         if (!RegexUtil.isMobileExact(mobile)) {
-            return ResponseUtil.fail(402, "用户手机号码格式不正确");
+            return ResponseUtil.fail(USER_INVALID_MOBILE, "用户手机号码格式不正确");
         }
         return null;
     }
@@ -96,14 +98,14 @@ public class AdminUserController {
         String mobile = user.getMobile();
         List<LitemallUser> userList = userService.queryByUsername(username);
         if (userList.size() > 0) {
-            return ResponseUtil.fail(403, "用户名已注册");
+            return ResponseUtil.fail(USER_NAME_EXIST, "用户名已注册");
         }
         userList = userService.queryByMobile(mobile);
         if (userList.size() > 0) {
-            return ResponseUtil.fail(403, "手机号已注册");
+            return ResponseUtil.fail(USER_MOBILE_EXIST, "手机号已注册");
         }
         if (!RegexUtil.isMobileExact(mobile)) {
-            return ResponseUtil.fail(403, "手机号格式不正确");
+            return ResponseUtil.fail(USER_INVALID_MOBILE, "手机号格式不正确");
         }
 
         String password = user.getPassword();

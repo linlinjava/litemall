@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.linlinjava.litemall.wx.util.WxResponseCode.GOODS_NO_STOCK;
+import static org.linlinjava.litemall.wx.util.WxResponseCode.GOODS_UNSHELVE;
+
 /**
  * 用户购物车服务
  */
@@ -106,7 +109,7 @@ public class WxCartController {
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
         if (goods == null || !goods.getIsOnSale()) {
-            return ResponseUtil.fail(400, "商品已下架");
+            return ResponseUtil.fail(GOODS_UNSHELVE, "商品已下架");
         }
 
         LitemallGoodsProduct product = productService.findById(productId);
@@ -115,7 +118,7 @@ public class WxCartController {
         if (existCart == null) {
             //取得规格的信息,判断规格库存
             if (product == null || number > product.getNumber()) {
-                return ResponseUtil.fail(400, "库存不足");
+                return ResponseUtil.fail(GOODS_NO_STOCK, "库存不足");
             }
 
             cart.setId(null);
@@ -131,7 +134,7 @@ public class WxCartController {
             //取得规格的信息,判断规格库存
             int num = existCart.getNumber() + number;
             if (num > product.getNumber()) {
-                return ResponseUtil.fail(400, "库存不足");
+                return ResponseUtil.fail(GOODS_NO_STOCK, "库存不足");
             }
             existCart.setNumber((short) num);
             if (cartService.updateById(existCart) == 0) {
@@ -172,7 +175,7 @@ public class WxCartController {
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
         if (goods == null || !goods.getIsOnSale()) {
-            return ResponseUtil.fail(400, "商品已下架");
+            return ResponseUtil.fail(GOODS_UNSHELVE, "商品已下架");
         }
 
         LitemallGoodsProduct product = productService.findById(productId);
@@ -181,7 +184,7 @@ public class WxCartController {
         if (existCart == null) {
             //取得规格的信息,判断规格库存
             if (product == null || number > product.getNumber()) {
-                return ResponseUtil.fail(400, "库存不足");
+                return ResponseUtil.fail(GOODS_NO_STOCK, "库存不足");
             }
 
             cart.setId(null);
@@ -197,7 +200,7 @@ public class WxCartController {
             //取得规格的信息,判断规格库存
             int num = number;
             if (num > product.getNumber()) {
-                return ResponseUtil.fail(400, "库存不足");
+                return ResponseUtil.fail(GOODS_NO_STOCK, "库存不足");
             }
             existCart.setNumber((short) num);
             if (cartService.updateById(existCart) == 0) {
@@ -249,13 +252,13 @@ public class WxCartController {
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
         if (goods == null || !goods.getIsOnSale()) {
-            return ResponseUtil.fail(403, "商品已下架");
+            return ResponseUtil.fail(GOODS_UNSHELVE, "商品已下架");
         }
 
         //取得规格的信息,判断规格库存
         LitemallGoodsProduct product = productService.findById(productId);
         if (product == null || product.getNumber() < number) {
-            return ResponseUtil.fail(403, "库存不足");
+            return ResponseUtil.fail(GOODS_UNSHELVE, "库存不足");
         }
 
         existCart.setNumber(number.shortValue());

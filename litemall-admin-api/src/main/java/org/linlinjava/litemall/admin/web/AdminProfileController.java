@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
+
 @RestController
 @RequestMapping("/admin/profile")
 @Validated
@@ -44,7 +46,7 @@ public class AdminProfileController {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(oldPassword, admin.getPassword())) {
-            return ResponseUtil.fail(405, "账号密码不对");
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "账号密码不对");
         }
 
         String encodedNewPassword = encoder.encode(newPassword);

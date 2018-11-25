@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
+
 /**
  * 鉴权服务
  */
@@ -80,7 +82,7 @@ public class WxAuthController {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(password, user.getPassword())) {
-            return ResponseUtil.fail(403, "账号密码不对");
+            return ResponseUtil.fail(AUTH_INVALID_ACCOUNT, "账号密码不对");
         }
 
         // userInfo
@@ -179,14 +181,14 @@ public class WxAuthController {
         }
 
         if (!notifyService.isSmsEnable()) {
-            return ResponseUtil.fail(404, "小程序后台验证码服务不支持");
+            return ResponseUtil.fail(AUTH_CAPTCHA_UNSUPPORT, "小程序后台验证码服务不支持");
         }
         String code = CharUtil.getRandomNum(6);
         notifyService.notifySmsTemplate(phoneNumber, NotifyType.CAPTCHA, new String[]{code});
 
         boolean successful = CaptchaCodeManager.addToCache(phoneNumber, code);
         if (!successful) {
-            return ResponseUtil.fail(404, "验证码未超时1分钟，不能发送");
+            return ResponseUtil.fail(AUTH_CAPTCHA_FREQUENCY, "验证码未超时1分钟，不能发送");
         }
 
         return ResponseUtil.ok();
@@ -233,20 +235,20 @@ public class WxAuthController {
 
         List<LitemallUser> userList = userService.queryByUsername(username);
         if (userList.size() > 0) {
-            return ResponseUtil.fail(403, "用户名已注册");
+            return ResponseUtil.fail(AUTH_NAME_REGISTERED, "用户名已注册");
         }
 
         userList = userService.queryByMobile(mobile);
         if (userList.size() > 0) {
-            return ResponseUtil.fail(403, "手机号已注册");
+            return ResponseUtil.fail(AUTH_MOBILE_REGISTERED, "手机号已注册");
         }
         if (!RegexUtil.isMobileExact(mobile)) {
-            return ResponseUtil.fail(403, "手机号格式不正确");
+            return ResponseUtil.fail(AUTH_INVALID_MOBILE, "手机号格式不正确");
         }
         //判断验证码是否正确
         String cacheCode = CaptchaCodeManager.getCachedCaptcha(mobile);
         if (cacheCode == null || cacheCode.isEmpty() || !cacheCode.equals(code)) {
-            return ResponseUtil.fail(403, "验证码错误");
+            return ResponseUtil.fail(AUTH_CAPTCHA_UNMATCH, "验证码错误");
         }
 
         String openId = null;
@@ -255,18 +257,18 @@ public class WxAuthController {
             openId = result.getOpenid();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.fail(403, "openid 获取失败");
+            return ResponseUtil.fail(AUTH_OPENID_UNACCESS, "openid 获取失败");
         }
         userList = userService.queryByOpenid(openId);
         if (userList.size() > 1) {
-            return ResponseUtil.fail(403, "openid 存在多个");
+            return ResponseUtil.serious();
         }
         if (userList.size() == 1) {
             LitemallUser checkUser = userList.get(0);
             String checkUsername = checkUser.getUsername();
             String checkPassword = checkUser.getPassword();
             if (!checkUsername.equals(openId) || !checkPassword.equals(openId)) {
-                return ResponseUtil.fail(403, "openid已绑定账号");
+                return ResponseUtil.fail(AUTH_OPENID_BINDED, "openid已绑定账号");
             }
         }
 
@@ -330,14 +332,14 @@ public class WxAuthController {
         //判断验证码是否正确
         String cacheCode = CaptchaCodeManager.getCachedCaptcha(mobile);
         if (cacheCode == null || cacheCode.isEmpty() || !cacheCode.equals(code))
-            return ResponseUtil.fail(403, "验证码错误");
+            return ResponseUtil.fail(AUTH_CAPTCHA_UNMATCH, "验证码错误");
 
         List<LitemallUser> userList = userService.queryByMobile(mobile);
         LitemallUser user = null;
         if (userList.size() > 1) {
             return ResponseUtil.serious();
         } else if (userList.size() == 0) {
-            return ResponseUtil.fail(403, "手机号未注册");
+            return ResponseUtil.fail(AUTH_MOBILE_UNREGISTERED, "手机号未注册");
         } else {
             user = userList.get(0);
         }

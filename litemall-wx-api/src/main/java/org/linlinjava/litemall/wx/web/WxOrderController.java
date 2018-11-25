@@ -45,6 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
+
 /**
  * 订单服务
  *
@@ -197,10 +199,10 @@ public class WxOrderController {
         // 订单信息
         LitemallOrder order = orderService.findById(orderId);
         if (null == order) {
-            return ResponseUtil.fail(403, "订单不存在");
+            return ResponseUtil.fail(ORDER_UNKNOWN, "订单不存在");
         }
         if (!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(403, "不是当前用户的订单");
+            return ResponseUtil.fail(ORDER_INVALID, "不是当前用户的订单");
         }
         Map<String, Object> orderVo = new HashMap<String, Object>();
         orderVo.put("id", order.getId());
@@ -271,7 +273,7 @@ public class WxOrderController {
             }
             //团购活动已经过期
             if (grouponRulesService.isExpired(rules)) {
-                return ResponseUtil.fail(402, "团购活动已过期!");
+                return ResponseUtil.fail(GROUPON_EXPIRED, "团购活动已过期!");
             }
         }
 
@@ -426,7 +428,7 @@ public class WxOrderController {
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
-            return ResponseUtil.fail(403, "下单失败");
+            return ResponseUtil.fail(ORDER_CHECKOUT_FAIL, "下单失败");
         }
         txManager.commit(status);
 
@@ -471,7 +473,7 @@ public class WxOrderController {
         // 检测是否能够取消
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isCancel()) {
-            return ResponseUtil.fail(403, "订单不能取消");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "订单不能取消");
         }
 
         // 开启事务管理
@@ -498,7 +500,7 @@ public class WxOrderController {
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
-            return ResponseUtil.fail(403, "订单取消失败");
+            return ResponseUtil.fail(ORDER_CANCEL_FAIL, "订单取消失败");
         }
         txManager.commit(status);
 
@@ -537,13 +539,13 @@ public class WxOrderController {
         // 检测是否能够取消
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isPay()) {
-            return ResponseUtil.fail(403, "订单不能支付");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "订单不能支付");
         }
 
         LitemallUser user = userService.findById(userId);
         String openid = user.getWeixinOpenid();
         if (openid == null) {
-            return ResponseUtil.fail(403, "订单不能支付");
+            return ResponseUtil.fail(AUTH_OPENID_UNACCESS, "订单不能支付");
         }
         WxPayMpOrderResult result = null;
         try {
@@ -573,7 +575,7 @@ public class WxOrderController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseUtil.fail(403, "订单不能支付");
+            return ResponseUtil.fail(ORDER_PAY_FAIL, "订单不能支付");
         }
 
         if (orderService.updateWithOptimisticLocker(order) == 0) {
@@ -726,7 +728,7 @@ public class WxOrderController {
 
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isRefund()) {
-            return ResponseUtil.fail(403, "订单不能取消");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "订单不能取消");
         }
 
         // 设置订单申请退款状态
@@ -772,7 +774,7 @@ public class WxOrderController {
 
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isConfirm()) {
-            return ResponseUtil.fail(403, "订单不能确认收货");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "订单不能确认收货");
         }
 
         Short comments = orderGoodsService.getComments(orderId);
@@ -816,7 +818,7 @@ public class WxOrderController {
 
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isDelete()) {
-            return ResponseUtil.fail(403, "订单不能删除");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "订单不能删除");
         }
 
         // 订单order_status没有字段用于标识删除
@@ -885,17 +887,17 @@ public class WxOrderController {
         }
         Short orderStatus = order.getOrderStatus();
         if (!OrderUtil.isConfirmStatus(order) && !OrderUtil.isAutoConfirmStatus(order)) {
-            return ResponseUtil.fail(404, "当前商品不能评价");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "当前商品不能评价");
         }
         if (!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(404, "当前商品不属于用户");
+            return ResponseUtil.fail(ORDER_INVALID, "当前商品不属于用户");
         }
         Integer commentId = orderGoods.getComment();
         if (commentId == -1) {
-            return ResponseUtil.fail(404, "当前商品评价时间已经过期");
+            return ResponseUtil.fail(ORDER_COMMENT_EXPIRED, "当前商品评价时间已经过期");
         }
         if (commentId != 0) {
-            return ResponseUtil.fail(404, "订单商品已评价");
+            return ResponseUtil.fail(ORDER_COMMENTED, "订单商品已评价");
         }
 
         String content = JacksonUtil.parseString(body, "content");

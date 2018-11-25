@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
+
 @RestController
 @RequestMapping("/admin/order")
 @Validated
@@ -124,7 +126,7 @@ public class AdminOrderController {
 
         // 如果订单不是退款状态，则不能退款
         if (!order.getOrderStatus().equals(OrderUtil.STATUS_REFUND)) {
-            return ResponseUtil.fail(403, "订单不能确认收货");
+            return ResponseUtil.fail(ORDER_CONFIRM_NOT_ALLOWED, "订单不能确认收货");
         }
 
         // 开启事务管理
@@ -150,7 +152,7 @@ public class AdminOrderController {
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
-            return ResponseUtil.fail(403, "订单退款失败");
+            return ResponseUtil.fail(ORDER_REFUND_FAILED, "订单退款失败");
         }
 
         //TODO 发送邮件和短信通知，这里采用异步发送
@@ -199,7 +201,7 @@ public class AdminOrderController {
 
         // 如果订单不是已付款状态，则不能发货
         if (!order.getOrderStatus().equals(OrderUtil.STATUS_PAY)) {
-            return ResponseUtil.fail(403, "订单不能确认收货");
+            return ResponseUtil.fail(ORDER_CONFIRM_NOT_ALLOWED, "订单不能确认收货");
         }
 
         order.setOrderStatus(OrderUtil.STATUS_SHIP);
@@ -240,7 +242,7 @@ public class AdminOrderController {
         }
         // 目前只支持回复一次
         if (commentService.findById(commentId) != null) {
-            return ResponseUtil.fail(404, "订单商品已回复！");
+            return ResponseUtil.fail(ORDER_REPLY_EXIST, "订单商品已回复！");
         }
         String content = JacksonUtil.parseString(body, "content");
         if (StringUtils.isEmpty(content)) {
