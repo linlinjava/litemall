@@ -10,7 +10,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 
 public class LoginAdminHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
-    public static final String LOGIN_TOKEN_KEY = "Admin-Token";
+    public static final String LOGIN_TOKEN_KEY = "X-Litemall-Admin-Token";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
