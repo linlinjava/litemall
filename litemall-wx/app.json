@@ -4,70 +4,75 @@
     "pages/catalog/catalog",
     "pages/newGoods/newGoods",
     "pages/hotGoods/hotGoods",
-    "pages/ucenter/index/index",        
+    "pages/ucenter/index/index",
     "pages/ucenter/address/address",
     "pages/ucenter/addressAdd/addressAdd",
+    "pages/ucenter/feedback/feedback",
     "pages/ucenter/footprint/footprint",
     "pages/ucenter/order/order",
     "pages/ucenter/orderDetail/orderDetail",
     "pages/ucenter/coupon/coupon",
     "pages/ucenter/collect/collect",
     "pages/auth/login/login",
+    "pages/auth/accountLogin/accountLogin",
     "pages/auth/register/register",
     "pages/auth/reset/reset",
     "pages/payResult/payResult",
     "pages/comment/comment",
     "pages/commentPost/commentPost",
-    "pages/topic/topic",        
+    "pages/topic/topic",
     "pages/topicComment/topicComment",
     "pages/topicDetail/topicDetail",
-    "pages/topicCommentPost/topicCommentPost",        
+    "pages/topicCommentPost/topicCommentPost",
     "pages/brand/brand",
     "pages/brandDetail/brandDetail",
     "pages/search/search",
     "pages/category/category",
     "pages/cart/cart",
-    "pages/shopping/checkout/checkout",
-    "pages/shopping/address/address",
-    "pages/shopping/addressAdd/addressAdd",
-    "pages/goods/goods"
+    "pages/checkout/checkout",
+    "pages/goods/goods",
+    "pages/about/about",
+    "pages/groupon/myGroupon/myGroupon",
+    "pages/groupon/grouponDetail/grouponDetail",
+    "pages/groupon/grouponList/grouponList"
   ],
   "window": {
-    "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "仿网易严选",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "litemall小程序商城",
+    "enablePullDownRefresh": true,
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "backgroundColor": "#FFFFFF",
+    "backgroundTextStyle": "dark"
   },
   "tabBar": {
     "backgroundColor": "#fafafa",
     "borderStyle": "white",
-    "selectedColor": "#b4282d",
+    "selectedColor": "#AB956D",
     "color": "#666",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/images/ic_menu_choice_nor.png",
-        "selectedIconPath": "static/images/ic_menu_choice_pressed.png",
+        "iconPath": "static/images/home.png",
+        "selectedIconPath": "static/images/home@selected.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/catalog/catalog",
-        "iconPath": "static/images/ic_menu_sort_nor.png",
-        "selectedIconPath": "static/images/ic_menu_sort_pressed.png",
+        "iconPath": "static/images/category.png",
+        "selectedIconPath": "static/images/category@selected.png",
         "text": "分类"
       },
       {
         "pagePath": "pages/cart/cart",
-        "iconPath": "static/images/ic_menu_shoping_nor.png",
-        "selectedIconPath": "static/images/ic_menu_shoping_pressed.png",
+        "iconPath": "static/images/cart.png",
+        "selectedIconPath": "static/images/cart@selected.png",
         "text": "购物车"
       },
       {
         "pagePath": "pages/ucenter/index/index",
-        "iconPath": "static/images/ic_menu_me_nor.png",
-        "selectedIconPath": "static/images/ic_menu_me_pressed.png",
-        "text": "我的"
+        "iconPath": "static/images/my.png",
+        "selectedIconPath": "static/images/my@selected.png",
+        "text": "个人"
       }
     ]
   },

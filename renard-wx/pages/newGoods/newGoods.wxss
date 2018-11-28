@@ -1,0 +1,138 @@
+page {
+  background: #f4f4f4;
+}
+
+.brand-info .name {
+  width: 100%;
+  height: 278rpx;
+  position: relative;
+}
+
+.brand-info .img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 278rpx;
+}
+
+.brand-info .info-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 278rpx;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-info .info {
+  display: block;
+}
+
+.brand-info .txt {
+  display: block;
+  height: 40rpx;
+  font-size: 37.5rpx;
+  color: #fff;
+}
+
+.brand-info .line {
+  margin: 0 auto;
+  margin-top: 16rpx;
+  display: block;
+  height: 2rpx;
+  width: 145rpx;
+  background: #fff;
+}
+
+.sort {
+  position: relative;
+  background: #fff;
+  width: 100%;
+  height: 78rpx;
+}
+
+.sort-box {
+  background: #fff;
+  width: 100%;
+  height: 78rpx;
+  overflow: hidden;
+  padding: 0 30rpx;
+  display: flex;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.sort-box .item {
+  height: 78rpx;
+  line-height: 78rpx;
+  text-align: center;
+  flex: 1;
+  color: #333;
+  font-size: 30rpx;
+}
+
+.sort-box .item .txt {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #333;
+}
+
+.sort-box .item.active .txt {
+  color: #a78845;
+}
+
+.sort-box .item.by-price {
+  background: url(//yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-3127092a69.png) 155rpx center no-repeat;
+  background-size: 15rpx 21rpx;
+}
+
+.sort-box .item.by-price.active.asc {
+  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/up-636b92c0a5.png) 155rpx center no-repeat;
+  background-size: 15rpx 21rpx;
+}
+
+.sort-box .item.by-price.active.desc {
+  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/down-95e035f3e5.png) 155rpx center no-repeat;
+  background-size: 15rpx 21rpx;
+}
+
+.cate-item {
+  z-index: -1;
+}
+
+.goodList {
+  z-index: -1;
+}
+
+.sort-box-category {
+  background: #fff;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: 40rpx 40rpx 0 0;
+  border-bottom: 1px solid #d9d9d9;
+  z-index: 5000;
+}
+
+.sort-box-category .item {
+  height: 54rpx;
+  line-height: 54rpx;
+  text-align: center;
+  float: left;
+  padding: 0 16rpx;
+  margin: 0 0 40rpx 40rpx;
+  border: 1px solid #666;
+  color: #333;
+  font-size: 24rpx;
+  z-index: 5000;
+}
+
+.sort-box-category .item.active {
+  color: #a78845;
+  border: 1px solid #a78845;
+  z-index: 5000;
+}

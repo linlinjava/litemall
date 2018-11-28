@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,20 +27,18 @@ public class LitemallAddressService {
     }
 
     public int add(LitemallAddress address) {
+        address.setAddTime(LocalDateTime.now());
+        address.setUpdateTime(LocalDateTime.now());
         return addressMapper.insertSelective(address);
     }
 
     public int update(LitemallAddress address) {
+        address.setUpdateTime(LocalDateTime.now());
         return addressMapper.updateByPrimaryKeySelective(address);
     }
 
     public void delete(Integer id) {
-        LitemallAddress address = addressMapper.selectByPrimaryKey(id);
-        if(address == null){
-            return;
-        }
-        address.setDeleted(true);
-        addressMapper.updateByPrimaryKey(address);
+        addressMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public LitemallAddress findDefault(Integer userId) {
@@ -51,6 +50,7 @@ public class LitemallAddressService {
     public void resetDefault(Integer userId) {
         LitemallAddress address = new LitemallAddress();
         address.setIsDefault(false);
+        address.setUpdateTime(LocalDateTime.now());
         LitemallAddressExample example = new LitemallAddressExample();
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
         addressMapper.updateByExampleSelective(address, example);
@@ -60,13 +60,17 @@ public class LitemallAddressService {
         LitemallAddressExample example = new LitemallAddressExample();
         LitemallAddressExample.Criteria criteria = example.createCriteria();
 
-        if(userId !=  null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, limit);
         return addressMapper.selectByExample(example);
@@ -76,18 +80,14 @@ public class LitemallAddressService {
         LitemallAddressExample example = new LitemallAddressExample();
         LitemallAddressExample.Criteria criteria = example.createCriteria();
 
-        if(userId !=  null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)addressMapper.countByExample(example);
-    }
-
-    public void updateById(LitemallAddress address) {
-        addressMapper.updateByPrimaryKeySelective(address);
+        return (int) addressMapper.countByExample(example);
     }
 }

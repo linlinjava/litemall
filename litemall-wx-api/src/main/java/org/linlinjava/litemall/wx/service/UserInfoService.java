@@ -21,6 +21,4 @@ public class UserInfoService {
         userInfo.setAvatarUrl(user.getAvatar());
         return userInfo;
     }
-
-
 }

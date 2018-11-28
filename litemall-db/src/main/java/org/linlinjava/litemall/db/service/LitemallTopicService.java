@@ -3,29 +3,37 @@ package org.linlinjava.litemall.db.service;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallTopicMapper;
 import org.linlinjava.litemall.db.domain.LitemallTopic;
+import org.linlinjava.litemall.db.domain.LitemallTopic.Column;
 import org.linlinjava.litemall.db.domain.LitemallTopicExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class LitemallTopicService {
     @Resource
     private LitemallTopicMapper topicMapper;
+    private Column[] columns = new Column[]{Column.id, Column.title, Column.subtitle, Column.price, Column.picUrl, Column.readCount};
 
     public List<LitemallTopic> queryList(int offset, int limit) {
+        return queryList(offset, limit, "add_time", "desc");
+    }
+
+    public List<LitemallTopic> queryList(int offset, int limit, String sort, String order) {
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andDeletedEqualTo(false);
+        example.setOrderByClause(sort + " " + order);
         PageHelper.startPage(offset, limit);
-        return topicMapper.selectByExampleWithBLOBs(example);
+        return topicMapper.selectByExampleSelective(example, columns);
     }
 
     public int queryTotal() {
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andDeletedEqualTo(false);
-        return (int)topicMapper.countByExample(example);
+        return (int) topicMapper.countByExample(example);
     }
 
     public LitemallTopic findById(Integer id) {
@@ -38,8 +46,8 @@ public class LitemallTopicService {
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         List<LitemallTopic> topics = topicMapper.selectByExample(example);
-        if(topics.size() == 0){
-            return queryList(offset, limit);
+        if (topics.size() == 0) {
+            return queryList(offset, limit, "add_time", "desc");
         }
         LitemallTopic topic = topics.get(0);
 
@@ -47,24 +55,28 @@ public class LitemallTopicService {
         example.or().andIdNotEqualTo(topic.getId()).andDeletedEqualTo(false);
         PageHelper.startPage(offset, limit);
         List<LitemallTopic> relateds = topicMapper.selectByExampleWithBLOBs(example);
-        if(relateds.size() != 0){
+        if (relateds.size() != 0) {
             return relateds;
         }
 
-        return queryList(offset, limit);
+        return queryList(offset, limit, "add_time", "desc");
     }
 
     public List<LitemallTopic> querySelective(String title, String subtitle, Integer page, Integer limit, String sort, String order) {
         LitemallTopicExample example = new LitemallTopicExample();
         LitemallTopicExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(title)){
+        if (!StringUtils.isEmpty(title)) {
             criteria.andTitleLike("%" + title + "%");
         }
-        if(!StringUtils.isEmpty(subtitle)){
+        if (!StringUtils.isEmpty(subtitle)) {
             criteria.andSubtitleLike("%" + subtitle + "%");
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, limit);
         return topicMapper.selectByExampleWithBLOBs(example);
@@ -74,33 +86,31 @@ public class LitemallTopicService {
         LitemallTopicExample example = new LitemallTopicExample();
         LitemallTopicExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(title)){
+        if (!StringUtils.isEmpty(title)) {
             criteria.andTitleLike("%" + title + "%");
         }
-        if(!StringUtils.isEmpty(subtitle)){
+        if (!StringUtils.isEmpty(subtitle)) {
             criteria.andSubtitleLike("%" + subtitle + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)topicMapper.countByExample(example);
+        return (int) topicMapper.countByExample(example);
     }
 
-    public void updateById(LitemallTopic topic) {
+    public int updateById(LitemallTopic topic) {
+        topic.setUpdateTime(LocalDateTime.now());
         LitemallTopicExample example = new LitemallTopicExample();
         example.or().andIdEqualTo(topic.getId());
-        topicMapper.updateByExampleWithBLOBs(topic, example);
+        return topicMapper.updateByExampleSelective(topic, example);
     }
 
     public void deleteById(Integer id) {
-        LitemallTopic topic = topicMapper.selectByPrimaryKey(id);
-        if(topic == null){
-            return;
-        }
-        topic.setDeleted(true);
-        topicMapper.updateByPrimaryKeySelective(topic);
+        topicMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallTopic topic) {
+        topic.setAddTime(LocalDateTime.now());
+        topic.setUpdateTime(LocalDateTime.now());
         topicMapper.insertSelective(topic);
     }
 

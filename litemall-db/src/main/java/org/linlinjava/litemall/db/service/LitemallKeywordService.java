@@ -8,18 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class LitemallKeywordService {
     @Resource
     private LitemallKeywordMapper keywordsMapper;
-
-    public List<LitemallKeyword> queryDefaults() {
-        LitemallKeywordExample example = new LitemallKeywordExample();
-        example.or().andIsDefaultEqualTo(true).andDeletedEqualTo(false);
-        return keywordsMapper.selectByExample(example);
-    }
 
     public LitemallKeyword queryDefault() {
         LitemallKeywordExample example = new LitemallKeywordExample();
@@ -53,8 +48,12 @@ public class LitemallKeywordService {
         }
         criteria.andDeletedEqualTo(false);
 
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
         PageHelper.startPage(page, limit);
-        return keywordsMapper.selectByExampleSelective(example);
+        return keywordsMapper.selectByExample(example);
     }
 
     public int countSelective(String keyword, String url, Integer page, Integer limit, String sort, String order) {
@@ -70,10 +69,12 @@ public class LitemallKeywordService {
         criteria.andDeletedEqualTo(false);
 
         PageHelper.startPage(page, limit);
-        return (int)keywordsMapper.countByExample(example);
+        return (int) keywordsMapper.countByExample(example);
     }
 
     public void add(LitemallKeyword keywords) {
+        keywords.setAddTime(LocalDateTime.now());
+        keywords.setUpdateTime(LocalDateTime.now());
         keywordsMapper.insertSelective(keywords);
     }
 
@@ -81,16 +82,12 @@ public class LitemallKeywordService {
         return keywordsMapper.selectByPrimaryKey(id);
     }
 
-    public void updateById(LitemallKeyword keywords) {
-        keywordsMapper.updateByPrimaryKeySelective(keywords);
+    public int updateById(LitemallKeyword keywords) {
+        keywords.setUpdateTime(LocalDateTime.now());
+        return keywordsMapper.updateByPrimaryKeySelective(keywords);
     }
 
     public void deleteById(Integer id) {
-        LitemallKeyword keywords = keywordsMapper.selectByPrimaryKey(id);
-        if(keywords == null){
-            return;
-        }
-        keywords.setDeleted(true);
-        keywordsMapper.updateByPrimaryKey(keywords);
+        keywordsMapper.logicalDeleteByPrimaryKey(id);
     }
 }

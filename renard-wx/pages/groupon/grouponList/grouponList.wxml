@@ -1,0 +1,30 @@
+<view class="container">
+  <scroll-view class="groupon-list" scroll-y="true" scroll-top="{{scrollTop}}">
+
+    <view class="item" wx:for="{{grouponList}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+      <navigator url="/pages/goods/goods?id={{item.goods.id}}">
+        <image class="img" src="{{item.goods.picUrl}}" background-size="cover"></image>
+        <view class="right">
+          <view class="text">
+            <view class="header">
+              <text class="name">{{item.goods.name}}</text>
+              <view class="capsule-tag">
+                <zan-capsule color="#a78845" leftText="团购" rightText="{{item.groupon_member}}" />
+              </view>
+            </view>
+            <text class="desc">{{item.goods.brief}}</text>
+            <view class="price">
+              <view class="counterPrice">原价：￥{{item.goods.counterPrice}}</view>
+              <view class="retailPrice">现价：￥{{item.groupon_price}}</view>
+            </view>
+          </view>
+        </view>
+      </navigator>
+    </view>
+
+    <view class="page" wx:if="{{showPage}}">
+      <view class="prev {{ page <= 1 ? 'disabled' : ''}}" bindtap="prevPage">上一页</view>
+      <view class="next {{ (count / size) < page ? 'disabled' : ''}}" bindtap="nextPage">下一页</view>
+    </view>
+  </scroll-view>
+</view>

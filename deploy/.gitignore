@@ -1,6 +1,3 @@
-/litemall-admin-api/litemall-admin-api.jar
-/litemall-os-api/litemall-os-api.jar
-/litemall-wx-api/litemall-wx-api.jar
-/litemall-admin/dist.tar
-/litemall-db/litemall.sql
-/litemall-db/litemall_schema.sql
+
+/db/litemall.sql
+/litemall/litemall.jar

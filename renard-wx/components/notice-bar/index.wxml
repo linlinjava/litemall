@@ -1,0 +1,31 @@
+<view
+  wx:if="{{ show }}"
+  class="custom-class van-notice-bar {{ hasRightIcon ? 'van-notice-bar--within-icon' : '' }}"
+  style="color: {{ color }};background-color: {{ backgroundColor }}"
+  bind:tap="onClick"
+>
+  <view wx:if="{{ leftIcon }}" class="van-notice-bar__left-icon">
+    <image src="{{ leftIcon }}" />
+  </view>
+  <view class="van-notice-bar__content-wrap">
+    <view class="van-notice-bar__content" animation="{{ animationData }}">
+      {{ text }}
+    </view>
+  </view>
+
+  <block wx:if="{{ mode }}">
+    <van-icon
+      wx:if="{{ mode === 'closeable' }}"
+      class="van-notice-bar__right-icon"
+      name="close"
+      bind:tap="_handleButtonClick"
+    />
+    <navigator
+      wx:if="{{ mode === 'link' }}"
+      url="{{ url }}"
+      open-type="{{ openType }}"
+    >
+      <van-icon class="van-notice-bar__right-icon" name="arrow" />
+    </navigator>
+  </block>
+</view>

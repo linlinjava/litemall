@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.linlinjava.litemall.db.dao.OrderMapper">
+    <update id="updateWithOptimisticLocker" parameterType="map">
+        update litemall_order
+        <set>
+            <if test="order.id != null">
+                id = #{order.id,jdbcType=INTEGER},
+            </if>
+            <if test="order.userId != null">
+                user_id = #{order.userId,jdbcType=INTEGER},
+            </if>
+            <if test="order.orderSn != null">
+                order_sn = #{order.orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="order.orderStatus != null">
+                order_status = #{order.orderStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="order.consignee != null">
+                consignee = #{order.consignee,jdbcType=VARCHAR},
+            </if>
+            <if test="order.mobile != null">
+                mobile = #{order.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="order.address != null">
+                address = #{order.address,jdbcType=VARCHAR},
+            </if>
+            <if test="order.message != null">
+                message = #{order.message,jdbcType=VARCHAR},
+            </if>
+            <if test="order.goodsPrice != null">
+                goods_price = #{order.goodsPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="order.freightPrice != null">
+                freight_price = #{order.freightPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="order.couponPrice != null">
+                coupon_price = #{order.couponPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="order.integralPrice != null">
+                integral_price = #{order.integralPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="order.grouponPrice != null">
+                groupon_price = #{order.grouponPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="order.orderPrice != null">
+                order_price = #{order.orderPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="order.actualPrice != null">
+                actual_price = #{order.actualPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="order.payId != null">
+                pay_id = #{order.payId,jdbcType=VARCHAR},
+            </if>
+            <if test="order.payTime != null">
+                pay_time = #{order.payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="order.shipSn != null">
+                ship_sn = #{order.shipSn,jdbcType=VARCHAR},
+            </if>
+            <if test="order.shipChannel != null">
+                ship_channel = #{order.shipChannel,jdbcType=VARCHAR},
+            </if>
+            <if test="order.shipTime != null">
+                ship_time = #{order.shipTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="order.confirmTime != null">
+                confirm_time = #{order.confirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="order.comments != null">
+                comments = #{order.comments,jdbcType=SMALLINT},
+            </if>
+            <if test="order.endTime != null">
+                end_time = #{order.endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="order.addTime != null">
+                add_time = #{order.addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="order.updateTime != null">
+                update_time = #{order.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="order.deleted != null">
+                deleted = #{order.deleted,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{order.id,jdbcType=INTEGER} and update_time = #{lastUpdateTime,jdbcType=INTEGER}
+    </update>
+</mapper>

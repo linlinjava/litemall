@@ -1,0 +1,195 @@
+page {
+  background: #f4f4f4;
+  min-height: 100%;
+}
+
+.container {
+  background: #f4f4f4;
+  min-height: 100%;
+  padding-top: 30rpx;
+}
+
+.fb-type {
+  height: 104rpx;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 20rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+}
+
+.fb-type .type-label {
+  height: 36rpx;
+  flex: 1;
+  color: #333;
+  font-size: 28rpx;
+}
+
+.fb-type .type-icon {
+  height: 36rpx;
+  width: 36rpx;
+}
+
+.fb-body {
+  width: 100%;
+  background: #fff;
+  height: 600rpx;
+  padding: 18rpx 30rpx 64rpx 30rpx;
+}
+
+.fb-body .content {
+  width: 100%;
+  height: 400rpx;
+  color: #333;
+  line-height: 40rpx;
+  font-size: 28rpx;
+}
+
+.weui-uploader__files {
+  width: 100%;
+}
+
+.weui-uploader__file {
+  float: left;
+  margin-right: 9px;
+  margin-bottom: 9px;
+}
+
+.weui-uploader__img {
+  display: block;
+  width: 50px;
+  height: 50px;
+}
+
+.weui-uploader__input-box {
+  float: left;
+  position: relative;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #d9d9d9;
+}
+
+.weui-uploader__input-box:after, .weui-uploader__input-box:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #d9d9d9;
+}
+
+.weui-uploader__input-box:before {
+  width: 2px;
+  height: 39.5px;
+}
+
+.weui-uploader__input-box:after {
+  width: 39.5px;
+  height: 2px;
+}
+
+.weui-uploader__input-box:active {
+  border-color: #999;
+}
+
+.weui-uploader__input-box:active:after, .weui-uploader__input-box:active:before {
+  background-color: #999;
+}
+
+.weui-uploader__input {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.fb-body .text-count {
+  line-height: 30rpx;
+  float: right;
+  color: #666;
+  font-size: 24rpx;
+}
+
+.fb-mobile {
+  height: 162rpx;
+  width: 100%;
+}
+
+.fb-mobile .label {
+  height: 58rpx;
+  width: 100%;
+  padding-top: 14rpx;
+  padding-bottom: 11rpx;
+  color: #7f7f7f;
+  font-size: 24rpx;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  line-height: 33rpx;
+}
+
+.fb-mobile .mobile-box {
+  height: 104rpx;
+  width: 100%;
+  color: #333;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  font-size: 24rpx;
+  background: #fff;
+  position: relative;
+}
+
+.fb-mobile .mobile {
+  position: absolute;
+  top: 27rpx;
+  left: 30rpx;
+  height: 50rpx;
+  width: 100%;
+  color: #333;
+  line-height: 50rpx;
+  font-size: 24rpx;
+}
+
+.fb-mobile .clear-icon {
+  position: absolute;
+  top: 27rpx;
+  right: 30rpx;
+  width: 48rpx;
+  height: 48rpx;
+  z-index: 2;
+}
+
+.fb-btn {
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 90rpx;
+  line-height: 98rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  margin-left: 10%;
+  text-align: center;
+  /* padding-left: -5rpx; */
+  font-size: 25rpx;
+  color: #f4f4f4;
+  border-top-left-radius: 50rpx;
+  border-bottom-left-radius: 50rpx;
+  border-top-right-radius: 50rpx;
+  border-bottom-right-radius: 50rpx;
+  letter-spacing: 3rpx;
+  background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
+}

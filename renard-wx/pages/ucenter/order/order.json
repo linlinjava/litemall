@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的订单",
+  "usingComponents": {
+    "zan-capsule": "/components/capsule/index"
+  }
+}

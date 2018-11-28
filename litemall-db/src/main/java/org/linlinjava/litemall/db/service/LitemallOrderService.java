@@ -2,40 +2,43 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallOrderMapper;
+import org.linlinjava.litemall.db.dao.OrderMapper;
 import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.domain.LitemallOrderExample;
+import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service
 public class LitemallOrderService {
     @Resource
-    private LitemallOrderMapper orderMapper;
+    private LitemallOrderMapper litemallOrderMapper;
+    @Resource
+    private OrderMapper orderMapper;
 
     public int add(LitemallOrder order) {
-        return orderMapper.insertSelective(order);
-    }
-
-    public List<LitemallOrder> query(Integer userId) {
-        LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        return orderMapper.selectByExample(example);
+        order.setAddTime(LocalDateTime.now());
+        order.setUpdateTime(LocalDateTime.now());
+        return litemallOrderMapper.insertSelective(order);
     }
 
     public int count(Integer userId) {
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        return (int)orderMapper.countByExample(example);
+        return (int) litemallOrderMapper.countByExample(example);
     }
 
     public LitemallOrder findById(Integer orderId) {
-        return orderMapper.selectByPrimaryKey(orderId);
+        return litemallOrderMapper.selectByPrimaryKey(orderId);
     }
 
     private String getRandomNum(Integer num) {
@@ -49,23 +52,18 @@ public class LitemallOrderService {
         return sb.toString();
     }
 
-    public LitemallOrder queryByOrderSn(Integer userId, String orderSn){
+    public int countByOrderSn(Integer userId, String orderSn) {
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
-        return orderMapper.selectOneByExample(example);
+        return (int) litemallOrderMapper.countByExample(example);
     }
 
-    public int countByOrderSn(Integer userId, String orderSn){
-        LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andUserIdEqualTo(userId).andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
-        return (int)orderMapper.countByExample(example);
-    }
-
+    // TODO 这里应该产生一个唯一的订单，但是实际上这里仍然存在两个订单相同的可能性
     public String generateOrderSn(Integer userId) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
         String now = df.format(LocalDate.now());
         String orderSn = now + getRandomNum(6);
-        while(countByOrderSn(userId, orderSn) != 0){
+        while (countByOrderSn(userId, orderSn) != 0) {
             orderSn = getRandomNum(6);
         }
         return orderSn;
@@ -73,78 +71,134 @@ public class LitemallOrderService {
 
     public List<LitemallOrder> queryByOrderStatus(Integer userId, List<Short> orderStatus) {
         LitemallOrderExample example = new LitemallOrderExample();
-        example.orderBy(LitemallOrder.Column.addTime.desc());
+        example.setOrderByClause(LitemallOrder.Column.addTime.desc());
         LitemallOrderExample.Criteria criteria = example.or();
         criteria.andUserIdEqualTo(userId);
-        if(orderStatus != null) {
+        if (orderStatus != null) {
             criteria.andOrderStatusIn(orderStatus);
         }
         criteria.andDeletedEqualTo(false);
-        return orderMapper.selectByExample(example);
+        return litemallOrderMapper.selectByExample(example);
     }
 
     public int countByOrderStatus(Integer userId, List<Short> orderStatus) {
         LitemallOrderExample example = new LitemallOrderExample();
         LitemallOrderExample.Criteria criteria = example.or();
         criteria.andUserIdEqualTo(userId);
-        if(orderStatus != null) {
+        if (orderStatus != null) {
             criteria.andOrderStatusIn(orderStatus);
         }
         criteria.andDeletedEqualTo(false);
-        return (int)orderMapper.countByExample(example);
+        return (int) litemallOrderMapper.countByExample(example);
     }
 
-    public int update(LitemallOrder order) {
-        return orderMapper.updateByPrimaryKeySelective(order);
-    }
-
-    public List<LitemallOrder> querySelective(Integer userId, String orderSn, Integer page, Integer size, String sort, String order) {
+    public List<LitemallOrder> querySelective(Integer userId, String orderSn, List<Short> orderStatusArray, Integer page, Integer size, String sort, String order) {
         LitemallOrderExample example = new LitemallOrderExample();
         LitemallOrderExample.Criteria criteria = example.createCriteria();
 
-        if(userId != null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(orderSn)){
+        if (!StringUtils.isEmpty(orderSn)) {
             criteria.andOrderSnEqualTo(orderSn);
         }
+        if (orderStatusArray != null && orderStatusArray.size() != 0) {
+            criteria.andOrderStatusIn(orderStatusArray);
+        }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, size);
-        return orderMapper.selectByExample(example);
+        return litemallOrderMapper.selectByExample(example);
     }
 
-    public int countSelective(Integer userId, String orderSn, Integer page, Integer size, String sort, String order) {
+    public int countSelective(Integer userId, String orderSn, List<Short> orderStatusArray, Integer page, Integer size, String sort, String order) {
         LitemallOrderExample example = new LitemallOrderExample();
         LitemallOrderExample.Criteria criteria = example.createCriteria();
 
-        if(userId != null){
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
-        if(!StringUtils.isEmpty(orderSn)){
+        if (!StringUtils.isEmpty(orderSn)) {
             criteria.andOrderSnEqualTo(orderSn);
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)orderMapper.countByExample(example);
+        return (int) litemallOrderMapper.countByExample(example);
     }
 
-    public void updateById(LitemallOrder order) {
-        orderMapper.updateByPrimaryKeySelective(order);
+    public int updateWithOptimisticLocker(LitemallOrder order) {
+        LocalDateTime preUpdateTime = order.getUpdateTime();
+        order.setUpdateTime(LocalDateTime.now());
+        return orderMapper.updateWithOptimisticLocker(preUpdateTime, order);
     }
 
     public void deleteById(Integer id) {
-        LitemallOrder order = orderMapper.selectByPrimaryKey(id);
-        if(order == null){
-            return;
-        }
-        order.setDeleted(true);
-        orderMapper.updateByPrimaryKey(order);
+        litemallOrderMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public int count() {
         LitemallOrderExample example = new LitemallOrderExample();
         example.or().andDeletedEqualTo(false);
-        return (int)orderMapper.countByExample(example);
+        return (int) litemallOrderMapper.countByExample(example);
+    }
+
+    public List<LitemallOrder> queryUnpaid() {
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_CREATE).andDeletedEqualTo(false);
+        return litemallOrderMapper.selectByExample(example);
+    }
+
+    public List<LitemallOrder> queryUnconfirm() {
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_SHIP).andShipTimeIsNotNull().andDeletedEqualTo(false);
+        return litemallOrderMapper.selectByExample(example);
+    }
+
+    public LitemallOrder findBySn(String orderSn) {
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andOrderSnEqualTo(orderSn).andDeletedEqualTo(false);
+        return litemallOrderMapper.selectOneByExample(example);
+    }
+
+    public Map<Object, Object> orderInfo(Integer userId) {
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        List<LitemallOrder> orders = litemallOrderMapper.selectByExampleSelective(example, LitemallOrder.Column.orderStatus, LitemallOrder.Column.comments);
+
+        int unpaid = 0;
+        int unship = 0;
+        int unrecv = 0;
+        int uncomment = 0;
+        for (LitemallOrder order : orders) {
+            if (OrderUtil.isCreateStatus(order)) {
+                unpaid++;
+            } else if (OrderUtil.isPayStatus(order)) {
+                unship++;
+            } else if (OrderUtil.isShipStatus(order)) {
+                unrecv++;
+            } else if (OrderUtil.isConfirmStatus(order) || OrderUtil.isAutoConfirmStatus(order)) {
+                uncomment += order.getComments();
+            } else {
+                // do nothing
+            }
+        }
+
+        Map<Object, Object> orderInfo = new HashMap<Object, Object>();
+        orderInfo.put("unpaid", unpaid);
+        orderInfo.put("unship", unship);
+        orderInfo.put("unrecv", unrecv);
+        orderInfo.put("uncomment", uncomment);
+        return orderInfo;
+
+    }
+
+    public List<LitemallOrder> queryComment() {
+        LitemallOrderExample example = new LitemallOrderExample();
+        example.or().andCommentsGreaterThan((short) 0).andDeletedEqualTo(false);
+        return litemallOrderMapper.selectByExample(example);
     }
 }

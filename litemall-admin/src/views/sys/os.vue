@@ -1,64 +1,56 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入对象KEY" v-model="listQuery.key">
-      </el-input>
-      <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入对象名称" v-model="listQuery.name">
-      </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" @click="handleCreate" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-input v-model="listQuery.key" clearable class="filter-item" style="width: 200px;" placeholder="请输入对象KEY"/>
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入对象名称"/>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" width="100px" label="存储ID" prop="id" sortable>
+    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+
+      <el-table-column align="center" label="对象KEY" prop="key"/>
+
+      <el-table-column align="center" label="对象名称" prop="name"/>
+
+      <el-table-column align="center" label="对象类型" prop="type"/>
+
+      <el-table-column align="center" label="对象大小" prop="size"/>
+
+      <el-table-column align="center" property="url" label="图片">
+        <template slot-scope="scope">
+          <img :src="scope.row.url" width="40">
+        </template>
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="对象KEY" prop="key">
-      </el-table-column>
+      <el-table-column align="center" label="图片链接" prop="url"/>
 
-      <el-table-column align="center" min-width="100px" label="对象名称" prop="name">
-      </el-table-column>
-      
-      <el-table-column align="center" min-width="100px" label="对象类型" prop="type">
-      </el-table-column>          
-
-      <el-table-column align="center" min-width="100px" label="对象大小" prop="size">
-      </el-table-column>   
-
-      <el-table-column align="center" min-width="100px" label="访问链接" prop="url">
-      </el-table-column>          
-
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 分页 -->
-    <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page"
-        :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 添加对话框 -->
-    <el-dialog title="上传对象" :visible.sync="createDialogVisible">
-      <el-upload action="#" list-type="picture" :show-file-list="false" :limit="1" :http-request="handleUpload">
+    <el-dialog :visible.sync="createDialogVisible" title="上传对象">
+      <el-upload :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
     </el-dialog>
 
     <!-- 修改对话框 -->
-    <el-dialog title="修改对象名称" :visible.sync="updateDialogVisible">
-      <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
+    <el-dialog :visible.sync="updateDialogVisible" title="修改对象名称">
+      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="对象名称" prop="name">
-          <el-input v-model="dataForm.name"></el-input>
+          <el-input v-model="dataForm.name"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -72,24 +64,23 @@
 
 <script>
 import { listStorage, createStorage, updateStorage, deleteStorage } from '@/api/storage'
-import waves from '@/directive/waves' // 水波纹指令
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'Storage',
-  directives: {
-    waves
-  },
+  components: { Pagination },
   data() {
     return {
       list: null,
-      total: null,
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
         limit: 20,
         key: undefined,
         name: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
       createDialogVisible: false,
       dataForm: {
@@ -123,14 +114,6 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
-    },
     resetForm() {
       this.dataForm = {
         id: undefined,
@@ -146,11 +129,9 @@ export default {
       createStorage(formData).then(response => {
         this.list.unshift(response.data.data)
         this.createDialogVisible = false
-        this.$notify({
+        this.$notify.success({
           title: '成功',
-          message: '创建成功',
-          type: 'success',
-          duration: 2000
+          message: '上传成功'
         })
       }).catch(() => {
         this.$message.error('上传失败，请重新上传')
@@ -175,11 +156,14 @@ export default {
               }
             }
             this.updateDialogVisible = false
-            this.$notify({
+            this.$notify.success({
               title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
+              message: '更新成功'
+            })
+          }).catch(response => {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg
             })
           })
         }
@@ -187,14 +171,17 @@ export default {
     },
     handleDelete(row) {
       deleteStorage(row).then(response => {
-        this.$notify({
+        this.$notify.success({
           title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
+          message: '删除成功'
         })
         const index = this.list.indexOf(row)
         this.list.splice(index, 1)
+      }).catch(response => {
+        this.$notify.error({
+          title: '失败',
+          message: response.data.errmsg
+        })
       })
     },
     handleDownload() {

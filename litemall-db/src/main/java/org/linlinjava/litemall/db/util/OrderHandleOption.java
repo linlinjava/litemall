@@ -9,60 +9,60 @@ public class OrderHandleOption {
     private boolean refund = false;     // 取消订单并退款操作
     private boolean rebuy = false;        // 再次购买
 
-    public void setCancel(boolean cancel) {
-        this.cancel = cancel;
-    }
-
-    public void setDelete(boolean delete) {
-        this.delete = delete;
-    }
-
-    public void setPay(boolean pay) {
-        this.pay = pay;
-    }
-
-    public void setComment(boolean comment) {
-        this.comment = comment;
-    }
-
-    public void setConfirm(boolean confirm) {
-        this.confirm = confirm;
-    }
-
-    public void setRefund(boolean refund) {
-        this.refund = refund;
-    }
-
-    public void setRebuy(boolean rebuy) {
-        this.rebuy = rebuy;
-    }
-
     public boolean isCancel() {
         return cancel;
+    }
+
+    public void setCancel(boolean cancel) {
+        this.cancel = cancel;
     }
 
     public boolean isDelete() {
         return delete;
     }
 
+    public void setDelete(boolean delete) {
+        this.delete = delete;
+    }
+
     public boolean isPay() {
         return pay;
+    }
+
+    public void setPay(boolean pay) {
+        this.pay = pay;
     }
 
     public boolean isComment() {
         return comment;
     }
 
+    public void setComment(boolean comment) {
+        this.comment = comment;
+    }
+
     public boolean isConfirm() {
         return confirm;
+    }
+
+    public void setConfirm(boolean confirm) {
+        this.confirm = confirm;
     }
 
     public boolean isRefund() {
         return refund;
     }
 
+    public void setRefund(boolean refund) {
+        this.refund = refund;
+    }
+
     public boolean isRebuy() {
         return rebuy;
+    }
+
+    public void setRebuy(boolean rebuy) {
+        this.rebuy = rebuy;
     }
 
 }

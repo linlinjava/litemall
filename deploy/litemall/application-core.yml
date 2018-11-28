@@ -1,0 +1,104 @@
+litemall:
+  # 开发者应该设置成自己的wx相关信息
+  wx:
+    app-id: wxa5b486c6b918ecfb
+    app-secret: e04004829d4c383b4db7769d88dfbca1
+    mch-id: 111111
+    mch-key: xxxxxx
+    notify-url: http://122.152.206.172:8080/wx/order/pay-notify
+
+  #通知相关配置
+  notify:
+    mail:
+      # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员
+      enable: false
+      host: smtp.exmail.qq.com
+      username: ex@ex.com.cn
+      password: XXXXXXXXXXXXX
+      sendfrom: ex@ex.com.cn
+      sendto: ex@qq.com
+
+    # 短消息模版通知配置
+    # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    sms:
+      enable: false
+      appid: 111111111
+      appkey: xxxxxxxxxxxxxx
+      template:
+      - name: paySucceed
+        templateId: 156349
+      - name: captcha
+        templateId: 156433
+      - name: ship
+        templateId: 158002
+      - name: refund
+        templateId: 159447
+
+    # 微信模版通知配置
+    # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    wx:
+      enable: false
+      template:
+      - name: paySucceed
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: captcha
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: ship
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - name: refund
+        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  # 快鸟物流查询配置
+  express:
+    enable: false
+    appId: "XXXXXXXXX"
+    appKey: "XXXXXXXXXXXXXXXXXXXXXXXXX"
+    vendors:
+    - code: "ZTO"
+      name: "中通快递"
+    - code: "YTO"
+      name: "圆通速递"
+    - code: "YD"
+      name: "韵达速递"
+    - code: "YZPY"
+      name: "邮政快递包裹"
+    - code: "EMS"
+      name: "EMS"
+    - code: "DBL"
+      name: "德邦快递"
+    - code: "FAST"
+      name: "快捷快递"
+    - code: "ZJS"
+      name: "宅急送"
+    - code: "TNT"
+      name: "TNT快递"
+    - code: "UPS"
+      name: "UPS"
+    - code: "DHL"
+      name: "DHL"
+    - code: "FEDEX"
+      name: "FEDEX联邦(国内件)"
+    - code: "FEDEX_GJ"
+      name: "FEDEX联邦(国际件)"
+
+  # 对象存储配置
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent
+    active: local
+    # 本地对象存储配置信息
+    local:
+      storagePath: storage
+      address: http://122.152.206.172:8080/wx/storage/fetch/
+    # 阿里云对象存储配置信息
+    aliyun:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      accessKeyId: 111111
+      accessKeySecret: xxxxxx
+      bucketName: xxxxxx
+    # 腾讯对象存储配置信息
+    # 请参考 https://cloud.tencent.com/document/product/436/6249
+    tencent:
+      secretId: 111111
+      secretKey: xxxxxx
+      region: xxxxxx
+      bucketName: xxxxxx

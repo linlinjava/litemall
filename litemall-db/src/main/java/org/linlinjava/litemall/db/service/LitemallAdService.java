@@ -1,13 +1,14 @@
 package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
+import org.linlinjava.litemall.db.dao.LitemallAdMapper;
 import org.linlinjava.litemall.db.domain.LitemallAd;
 import org.linlinjava.litemall.db.domain.LitemallAdExample;
-import org.linlinjava.litemall.db.dao.LitemallAdMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,9 +16,9 @@ public class LitemallAdService {
     @Resource
     private LitemallAdMapper adMapper;
 
-    public List<LitemallAd> queryByApid(Integer i) {
+    public List<LitemallAd> queryIndex() {
         LitemallAdExample example = new LitemallAdExample();
-        example.or().andPositionEqualTo(i).andDeletedEqualTo(false);
+        example.or().andPositionEqualTo((byte) 1).andDeletedEqualTo(false).andEnabledEqualTo(true);
         return adMapper.selectByExample(example);
     }
 
@@ -25,13 +26,17 @@ public class LitemallAdService {
         LitemallAdExample example = new LitemallAdExample();
         LitemallAdExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        if(!StringUtils.isEmpty(content)){
+        if (!StringUtils.isEmpty(content)) {
             criteria.andContentLike("%" + content + "%");
         }
         criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
 
         PageHelper.startPage(page, limit);
         return adMapper.selectByExample(example);
@@ -41,31 +46,29 @@ public class LitemallAdService {
         LitemallAdExample example = new LitemallAdExample();
         LitemallAdExample.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
-        if(!StringUtils.isEmpty(content)){
+        if (!StringUtils.isEmpty(content)) {
             criteria.andContentLike("%" + content + "%");
         }
         criteria.andDeletedEqualTo(false);
 
-        return (int)adMapper.countByExample(example);
+        return (int) adMapper.countByExample(example);
     }
 
-    public void updateById(LitemallAd ad) {
-        adMapper.updateByPrimaryKeySelective(ad);
+    public int updateById(LitemallAd ad) {
+        ad.setUpdateTime(LocalDateTime.now());
+        return adMapper.updateByPrimaryKeySelective(ad);
     }
 
     public void deleteById(Integer id) {
-        LitemallAd ad = adMapper.selectByPrimaryKey(id);
-        if(ad == null){
-            return;
-        }
-        ad.setDeleted(true);
-        adMapper.updateByPrimaryKey(ad);
+        adMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public void add(LitemallAd ad) {
+        ad.setAddTime(LocalDateTime.now());
+        ad.setUpdateTime(LocalDateTime.now());
         adMapper.insertSelective(ad);
     }
 

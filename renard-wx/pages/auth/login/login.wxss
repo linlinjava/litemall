@@ -1,0 +1,90 @@
+.form-box {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: 0 40rpx;
+  margin-top: 96rpx;
+  background: #fff;
+}
+
+.form-item {
+  position: relative;
+  background: #fff;
+  height: 96rpx;
+  border-bottom: 1px solid #a78845;
+}
+
+.form-item .username, .form-item .password, .form-item .code {
+  position: absolute;
+  top: 26rpx;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 44rpx;
+  background: #fff;
+  color: #a78845;
+  font-size: 30rpx;
+}
+
+.form-item-code {
+  margin-top: 32rpx;
+  height: auto;
+  overflow: hidden;
+  width: 100%;
+}
+
+.form-item-code .form-item {
+  float: left;
+  width: 350rpx;
+}
+
+.form-item-code .code-img {
+  float: right;
+  margin-top: 4rpx;
+  height: 88rpx;
+  width: 236rpx;
+}
+
+.form-item .clear {
+  position: absolute;
+  top: 26rpx;
+  right: 18rpx;
+  z-index: 2;
+  display: block;
+  background: #fff;
+  height: 44rpx;
+  width: 44rpx;
+}
+
+.login-btn {
+  margin: 60rpx 0 40rpx 0;
+  height: 96rpx;
+  line-height: 96rpx;
+  color: #a78845;
+  font-size: 30rpx;
+  width: 100%;
+  background: #b4282d;
+  border-radius: 6rpx;
+}
+
+.form-item-text {
+  height: 35rpx;
+  width: 100%;
+  color: #a78845;
+}
+
+.form-item-text .register {
+  display: block;
+  height: 34rpx;
+  float: left;
+  font-size: 28rpx;
+  color: #a78845;
+}
+
+.form-item-text .reset {
+  display: block;
+  height: 34rpx;
+  float: right;
+  font-size: 28rpx;
+  color: #a78845;
+}

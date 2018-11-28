@@ -1,0 +1,20 @@
+<view class="container">
+  <view class="brand-info">
+    <view class="name">
+      <image class="img" src="{{brand.picUrl}}" background-size="cover"></image>
+      <view class="info-box">
+        <view class="info">
+          <text class="txt">{{brand.name}}</text>
+          <text class="line"></text>
+        </view>
+      </view>
+    </view>
+    <view class="desc">
+      {{brand.desc}}
+    </view>
+  </view>
+
+  <view class="cate-item">
+    <goodList calss="goodList" goods="{{goodsList}}"></goodList>
+  </view>
+</view>

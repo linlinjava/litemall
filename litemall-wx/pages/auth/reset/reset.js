@@ -1,4 +1,6 @@
 var api = require('../../../config/api.js');
+var check = require('../../../utils/check.js');
+
 var app = getApp();
 Page({
   data: {
@@ -7,40 +9,71 @@ Page({
     password: '',
     confirmPassword: ''
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
     // 页面渲染完成
-    
-  },
-  onReady: function () {
 
   },
-  onShow: function () {
+  onReady: function() {
+
+  },
+  onShow: function() {
     // 页面显示
 
   },
-  onHide: function () {
+  onHide: function() {
     // 页面隐藏
 
   },
-  onUnload: function () {
+  onUnload: function() {
     // 页面关闭
 
   },
-  sendCode: function () {
-    wx.showModal({
-      title: '注意',
-      content: '由于目前不支持手机短信发送，因此验证码任意值都可以',
-      showCancel: false
+
+  sendCode: function() {
+    let that = this;
+    wx.request({
+      url: api.AuthRegisterCaptcha,
+      data: {
+        mobile: that.data.mobile
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function(res) {
+        if (res.data.errno == 0) {
+          wx.showModal({
+            title: '发送成功',
+            content: '验证码已发送',
+            showCancel: false
+          });
+        } else {
+          wx.showModal({
+            title: '错误信息',
+            content: res.data.errmsg,
+            showCancel: false
+          });
+        }
+      }
     });
   },
-  startReset: function(){
+  startReset: function() {
     var that = this;
 
     if (this.data.mobile.length == 0 || this.data.code.length == 0) {
       wx.showModal({
         title: '错误信息',
         content: '手机号和验证码不能为空',
+        showCancel: false
+      });
+      return false;
+    }
+
+    if (!check.isValidPhone(this.data.mobile)) {
+      wx.showModal({
+        title: '错误信息',
+        content: '手机号输入不正确',
         showCancel: false
       });
       return false;
@@ -75,11 +108,10 @@ Page({
       header: {
         'content-type': 'application/json'
       },
-      success: function (res) {
+      success: function(res) {
         if (res.data.errno == 0) {
           wx.navigateBack();
-        }
-        else{
+        } else {
           wx.showModal({
             title: '密码重置失败',
             content: res.data.errmsg,
@@ -89,32 +121,32 @@ Page({
       }
     });
   },
-  bindPasswordInput: function (e) {
+  bindPasswordInput: function(e) {
 
     this.setData({
       password: e.detail.value
     });
   },
-  bindConfirmPasswordInput: function (e) {
+  bindConfirmPasswordInput: function(e) {
 
     this.setData({
       confirmPassword: e.detail.value
     });
   },
-  bindMobileInput: function (e) {
+  bindMobileInput: function(e) {
 
     this.setData({
       mobile: e.detail.value
     });
   },
-  bindCodeInput: function(e){
-    
+  bindCodeInput: function(e) {
+
     this.setData({
       code: e.detail.value
     });
   },
-  clearInput: function(e){
-    switch (e.currentTarget.id){
+  clearInput: function(e) {
+    switch (e.currentTarget.id) {
       case 'clear-password':
         this.setData({
           password: ''

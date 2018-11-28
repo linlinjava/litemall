@@ -5,7 +5,7 @@ var api = require('../../config/api.js');
 Page({
   data: {
     orderId: 0,
-    typeId: 0,
+    type: 0,
     valueId: 0,
     orderGoods: {},
     content: '',
@@ -16,7 +16,7 @@ Page({
     picUrls: [],
     files: []
   },
-  chooseImage: function (e) {
+  chooseImage: function(e) {
     if (this.data.files.length >= 5) {
       util.showErrorToast('只能上传五张图片')
       return false;
@@ -27,7 +27,7 @@ Page({
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
-      success: function (res) {
+      success: function(res) {
         that.setData({
           files: that.data.files.concat(res.tempFilePaths)
         });
@@ -35,13 +35,13 @@ Page({
       }
     })
   },
-  upload: function (res) {
+  upload: function(res) {
     var that = this;
     const uploadTask = wx.uploadFile({
       url: api.StorageUpload,
       filePath: res.tempFilePaths[0],
       name: 'file',
-      success: function (res) {
+      success: function(res) {
         var _res = JSON.parse(res.data);
         if (_res.errno === 0) {
           var url = _res.data.url
@@ -52,7 +52,7 @@ Page({
           })
         }
       },
-      fail: function (e) {
+      fail: function(e) {
         wx.showModal({
           title: '错误',
           content: '上传失败',
@@ -68,28 +68,24 @@ Page({
     })
 
   },
-  previewImage: function (e) {
+  previewImage: function(e) {
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
   },
-  selectRater: function (e) {
+  selectRater: function(e) {
     var star = e.currentTarget.dataset.star + 1;
     var starText;
     if (star == 1) {
       starText = '很差';
-    }
-    else if (star == 2) {
+    } else if (star == 2) {
       starText = '不太满意';
-    }
-    else if (star == 3) {
+    } else if (star == 3) {
       starText = '满意';
-    }
-    else if (star == 4) {
+    } else if (star == 4) {
       starText = '比较满意';
-    }
-    else {
+    } else {
       starText = '十分满意'
     }
     this.setData({
@@ -98,20 +94,21 @@ Page({
     })
 
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     var that = this;
     that.setData({
       orderId: options.orderId,
-      typeId: options.typeId,
+      type: options.type,
       valueId: options.valueId
     });
-    this.getOrderComment();
+    this.getOrderGoods();
   },
-  getOrderComment: function () {
+  getOrderGoods: function() {
     let that = this;
-    util.request(api.OrderComment, {
-      orderId: that.data.orderId, goodsId: that.data.valueId
-    }).then(function (res) {
+    util.request(api.OrderGoods, {
+      orderId: that.data.orderId,
+      goodsId: that.data.valueId
+    }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           orderGoods: res.data,
@@ -119,10 +116,10 @@ Page({
       }
     });
   },
-  onClose: function () {
+  onClose: function() {
     wx.navigateBack();
   },
-  onPost: function () {
+  onPost: function() {
     let that = this;
 
     if (!this.data.content) {
@@ -130,19 +127,20 @@ Page({
       return false;
     }
 
-    util.request(api.CommentPost, {
-      typeId: that.data.typeId,
-      valueId: that.data.valueId,
+    util.request(api.OrderComment, {
+      orderGoodsId: that.data.orderGoods.id,
       content: that.data.content,
       star: that.data.star,
       hasPicture: that.data.hasPicture,
       picUrls: that.data.picUrls
-    }, 'POST').then(function (res) {
+    }, 'POST').then(function(res) {
       if (res.errno === 0) {
         wx.showToast({
           title: '评论成功',
-          complete: function () {
-            wx.navigateBack();
+          complete: function() {
+            wx.switchTab({
+              url: '/pages/ucenter/index/index'
+            })
           }
         })
       }
@@ -161,18 +159,18 @@ Page({
       content: event.detail.value,
     })
   },
-  onReady: function () {
+  onReady: function() {
 
   },
-  onShow: function () {
+  onShow: function() {
     // 页面显示
 
   },
-  onHide: function () {
+  onHide: function() {
     // 页面隐藏
 
   },
-  onUnload: function () {
+  onUnload: function() {
     // 页面关闭
 
   }

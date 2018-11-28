@@ -9,19 +9,17 @@
 }
 
 .m-menu {
+  background: #fff;
   display: flex;
-  height: 181rpx;
-  width: 750rpx;
-  flex-flow: row nowrap;
   align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
+  flex-wrap: wrap;
+  padding-bottom: 0rpx;
+  padding-top: 25rpx;
 }
 
 .m-menu .item {
-  flex: 1;
-  display: block;
-  padding: 20rpx 0;
+  width: 150rpx;
+  height: 126rpx;
 }
 
 .m-menu image {
@@ -96,12 +94,12 @@
   display: block;
   font-size: 33rpx;
   height: 43rpx;
-  color: #333;
+  color: #fff;
 }
 
 .a-brand .mt .price, .a-brand .mt .unit {
   font-size: 25rpx;
-  color: #999;
+  color: #fff;
 }
 
 .a-brand .item-1 {
@@ -113,7 +111,7 @@
   margin-left: 1rpx;
 }
 
-.a-brand .item-1:nth-child(2n+1){
+.a-brand .item-1:nth-child(2n+1) {
   margin-left: 0;
   width: 374rpx;
 }
@@ -121,6 +119,92 @@
 .a-brand .item-1 .img {
   width: 375rpx;
   height: 253rpx;
+}
+
+.a-groupon {
+  width: 750rpx;
+  height: auto;
+  overflow: hidden;
+}
+
+.a-groupon .b .item {
+  border-top: 1px solid #d9d9d9;
+  margin: 0 20rpx;
+  height: 244rpx;
+  width: 710rpx;
+}
+
+.a-groupon .b .img {
+  margin-top: 12rpx;
+  margin-right: 12rpx;
+  float: left;
+  width: 220rpx;
+  height: 220rpx;
+}
+
+.a-groupon .b .right {
+  float: left;
+  height: 244rpx;
+  width: 476rpx;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.a-groupon .b .text {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  height: 244rpx;
+  width: 476rpx;
+}
+
+.a-groupon .b .name {
+  float: left;
+  width: 330rpx;
+  display: block;
+  color: #333;
+  line-height: 50rpx;
+  font-size: 30rpx;
+}
+
+.a-groupon .capsule-tag {
+  float: right;
+  padding-right: 0rpx;
+  padding-top: 8rpx;
+}
+
+.a-groupon .zan-capsule + .zan-capsule {
+  margin-left: 10px;
+}
+
+.a-groupon .b .desc {
+  width: 476rpx;
+  display: block;
+  color: #999;
+  line-height: 50rpx;
+  font-size: 25rpx;
+}
+
+.a-groupon .b .price {
+  width: 476rpx;
+  display: flex;
+  color: #ab956d;
+  line-height: 50rpx;
+  font-size: 33rpx;
+}
+
+.a-groupon .b .counterPrice {
+  text-decoration: line-through;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.a-groupon .b .retailPrice {
+  margin-left: 30rpx;
+  font-size: 28rpx;
+  color: #a78845;
 }
 
 .a-new .b {
@@ -163,7 +247,7 @@
   text-align: center;
   line-height: 30rpx;
   font-size: 30rpx;
-  color: #b4282d;
+  color: #ab956d;
 }
 
 .a-popular {
@@ -224,7 +308,7 @@
 .a-popular .b .price {
   width: 456rpx;
   display: block;
-  color: #b4282d;
+  color: #ab956d;
   line-height: 50rpx;
   font-size: 33rpx;
 }
@@ -268,7 +352,7 @@
 
 .a-topic .b .np .price {
   margin-left: 20.8rpx;
-  color: #b4282d;
+  color: #ab956d;
 }
 
 .a-topic .b .desc {
@@ -278,7 +362,7 @@
   font-size: 24rpx;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
 }
 
 .good-grid {
@@ -314,7 +398,7 @@
   text-align: center;
 }
 
-.good-grid .b .item .a{
+.good-grid .b .item .a {
   height: 452rpx;
   width: 100%;
 }
@@ -347,33 +431,13 @@
   height: 30rpx;
   text-align: center;
   font-size: 30rpx;
-  color: #b4282d;
+  color: #ab956d;
 }
 
-.good-grid .more-item{
-  height: 100%;
-  width: 100%;
-}
-
-.more-a{
-  height: 100%;
-  width: 100%;
+.good-grid .t {
+  height: 100rpx;
+  background: #fff;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.good-grid .more-a .txt{
-  height: 33rpx;
-  width: 100%;
-  line-height: 33rpx;
-  color: #333;
-  font-size: 33rpx;
-}
-
-.good-grid .more-a .icon{
-  margin: 60rpx auto 0 auto;
-  width: 70rpx;
-  height: 70rpx;
 }

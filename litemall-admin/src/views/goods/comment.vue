@@ -1,143 +1,86 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入用户ID" v-model="listQuery.userId">
-      </el-input>
-      <el-input clearable class="filter-item" style="width: 200px;" placeholder="请输入商品ID" v-model="listQuery.valueId">
-      </el-input>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="handleDownload" :loading="downloadLoading">导出</el-button>
+      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户ID"/>
+      <el-input v-model="listQuery.valueId" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品ID"/>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table size="small" :data="list" v-loading="listLoading" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" width="150px" label="评论ID" prop="id" sortable>
-      </el-table-column>
+      <el-table-column align="center" label="用户ID" prop="userId"/>
 
-      <el-table-column align="center" width="100px" label="用户ID" prop="userId">
-      </el-table-column>
+      <el-table-column align="center" label="商品ID" prop="valueId"/>
 
-      <el-table-column align="center" width="100px" label="商品ID" prop="valueId">
-      </el-table-column>
+      <el-table-column align="center" label="打分" prop="star"/>
 
-      <el-table-column align="center" min-width="200px" label="评论内容" prop="content">
-      </el-table-column>
+      <el-table-column align="center" label="评论内容" prop="content"/>
 
-      <el-table-column align="center" min-width="200px" label="评论图片" prop="picUrls">
-      </el-table-column>
-
-      <el-table-column align="center" min-width="100px" label="时间" prop="addTime">
-      </el-table-column>
-
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="评论图片" prop="picUrls">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini"  @click="handleDelete(scope.row)">删除</el-button>
+          <img v-for="item in scope.row.picUrls" :key="item" :src="item" width="40">
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="时间" prop="addTime"/>
+
+      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleReply(scope.row)">回复</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 分页 -->
-    <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page"
-        :page-sizes="[10,20,30,50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <!-- 添加或修改对话框 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="dataForm" status-icon label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
-        <el-form-item label="用户ID" prop="userId">
-          <el-input v-model="dataForm.userId"></el-input>
-        </el-form-item>
-        <el-form-item label="商品ID" prop="valueId">
-          <el-input v-model="dataForm.valueId"></el-input>
-        </el-form-item>
-        <el-form-item label="评论内容" prop="content">
-          <el-input v-model="dataForm.content" type="textarea" :rows="4"></el-input>
-        </el-form-item>
-        <el-form-item label="评论时间" prop="addTime">
-          <el-date-picker v-model="dataForm.addTime" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="评论图片" prop="picUrls">
-          <!-- <el-input v-model="dataForm.picUrls"></el-input>           -->
-          <el-upload action="#" list-type="picture" :show-file-list="false" :limit="5" :http-request="uploadPicUrls">
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
+    <!-- 评论回复 -->
+    <el-dialog :visible.sync="replyFormVisible" title="回复">
+      <el-form ref="replyForm" :model="replyForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="回复内容" prop="content">
+          <el-input :autosize="{ minRows: 4, maxRows: 8}" v-model="replyForm.content" type="textarea"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button @click="replyFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="reply">确定</el-button>
       </div>
     </el-dialog>
 
   </div>
 </template>
 
-<style>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 200px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-  }
-</style>
-
 <script>
-import { listComment, createComment, updateComment, deleteComment } from '@/api/comment'
-import { createStorage } from '@/api/storage'
-import waves from '@/directive/waves' // 水波纹指令
+import { listComment, deleteComment } from '@/api/comment'
+import { replyComment } from '@/api/order'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'Comment',
-  directives: {
-    waves
-  },
+  components: { Pagination },
   data() {
     return {
       list: undefined,
-      total: undefined,
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
         limit: 20,
         userId: undefined,
         valueId: undefined,
-        sort: '+id'
+        sort: 'add_time',
+        order: 'desc'
       },
-      dataForm: {
-        id: undefined,
-        userId: undefined,
-        valueId: undefined,
-        content: undefined,
-        hasPicture: false,
-        picUrls: [],
-        addTime: undefined
+      downloadLoading: false,
+      replyForm: {
+        commentId: 0,
+        content: ''
       },
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: '编辑',
-        create: '创建'
-      },
-      rules: {
-        userId: [{ required: true, message: '用户ID不能为空', trigger: 'blur' }],
-        valueId: [{ required: true, message: '商品ID不能为空', trigger: 'blur' }],
-        content: [{ required: true, message: '评论不能为空', trigger: 'blur' }]
-      },
-      downloadLoading: false
+      replyFormVisible: false
     }
   },
   created() {
@@ -160,86 +103,22 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
+    handleReply(row) {
+      this.replyForm = { commentId: row.id, content: '' }
+      this.replyFormVisible = true
     },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
-    },
-    resetForm() {
-      this.dataForm = {
-        id: undefined,
-        userId: undefined,
-        valueId: undefined,
-        content: undefined,
-        picUrls: [],
-        addTime: undefined
-      }
-    },
-    handleCreate() {
-      this.resetForm()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    uploadPicUrls(item) {
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(res => {
-        this.dataForm.picUrls.push(res.data.data.url)
-        this.dataForm.hasPicture = true
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          createComment(this.dataForm).then(response => {
-            this.list.unshift(response.data.data)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.dataForm = Object.assign({}, row)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          updateComment(this.dataForm).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.dataForm.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.dataForm)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
+    reply() {
+      replyComment(this.replyForm).then(response => {
+        this.replyFormVisible = false
+        this.$notify.success({
+          title: '成功',
+          message: '回复成功'
+        })
+      }).catch(response => {
+        this.$notify.error({
+          title: '失败',
+          message: response.data.errmsg
+        })
       })
     },
     handleDelete(row) {

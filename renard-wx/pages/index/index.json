@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "zan-capsule": "/components/capsule/index",
+    "goodList": "/components/goodList/goodList",
+    "van-notice-bar": "/components/notice-bar/index"
+  }
+}

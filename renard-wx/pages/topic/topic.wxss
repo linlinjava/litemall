@@ -1,0 +1,94 @@
+page, .container {
+  width: 750rpx;
+  height: 100%;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+.topic-list {
+  width: 750rpx;
+  height: 100%;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+.topic-list .item {
+  width: 100%;
+  height: 625rpx;
+  overflow: hidden;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.topic-list .img {
+  width: 100%;
+  height: 415rpx;
+}
+
+.topic-list .info {
+  width: 100%;
+  height: 210rpx;
+  overflow: hidden;
+}
+
+.topic-list .title {
+  display: block;
+  text-align: center;
+  width: 100%;
+  height: 33rpx;
+  line-height: 35rpx;
+  color: #a78845;
+  overflow: hidden;
+  font-size: 35rpx;
+  margin-top: 30rpx;
+}
+
+.topic-list .desc {
+  display: block;
+  text-align: center;
+  position: relative;
+  width: auto;
+  height: 24rpx;
+  line-height: 24rpx;
+  overflow: hidden;
+  color: #999;
+  font-size: 24rpx;
+  margin-top: 16rpx;
+  margin-bottom: 30rpx;
+}
+
+.topic-list .price {
+  display: block;
+  text-align: center;
+  width: 100%;
+  height: 27rpx;
+  line-height: 27rpx;
+  overflow: hidden;
+  color: #b4282d;
+  font-size: 27rpx;
+}
+
+.page {
+  width: 750rpx;
+  height: 108rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.page view {
+  height: 108rpx;
+  width: 50%;
+  float: left;
+  font-size: 29rpx;
+  color: #333;
+  text-align: center;
+  line-height: 108rpx;
+}
+
+.page .prev {
+  border-right: 1px solid #d9d9d9;
+}
+
+.page .disabled {
+  color: #ccc;
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "品牌商详情",
+  "usingComponents": {
+    "goodList": "/components/goodList/goodList"
+  }
+}

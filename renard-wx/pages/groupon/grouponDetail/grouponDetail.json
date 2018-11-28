@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "团购详情",
+  "usingComponents": {
+    "sharePop": "/components/sharePop/sharePop"
+  }
+}

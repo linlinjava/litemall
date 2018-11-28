@@ -1,25 +1,26 @@
 package org.linlinjava.litemall.wx.service;
 
-import org.linlinjava.litemall.db.util.CharUtil;
+import org.linlinjava.litemall.core.util.CharUtil;
 import org.linlinjava.litemall.wx.dao.UserToken;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 维护用户token
+ */
 public class UserTokenManager {
     private static Map<String, UserToken> tokenMap = new HashMap<>();
     private static Map<Integer, UserToken> idMap = new HashMap<>();
 
     public static Integer getUserId(String token) {
-
-
         UserToken userToken = tokenMap.get(token);
-        if(userToken == null){
+        if (userToken == null) {
             return null;
         }
 
-        if(userToken.getExpireTime().isBefore(LocalDateTime.now())){
+        if (userToken.getExpireTime().isBefore(LocalDateTime.now())) {
             tokenMap.remove(token);
             idMap.remove(userToken.getUserId());
             return null;
@@ -29,12 +30,14 @@ public class UserTokenManager {
     }
 
 
-    public static UserToken generateToken(Integer id){
-        UserToken userToken = idMap.get(id);
-        if(userToken != null) {
-            tokenMap.remove(userToken.getToken());
-            idMap.remove(id);
-        }
+    public static UserToken generateToken(Integer id) {
+        UserToken userToken = null;
+
+//        userToken = idMap.get(id);
+//        if(userToken != null) {
+//            tokenMap.remove(userToken.getToken());
+//            idMap.remove(id);
+//        }
 
         String token = CharUtil.getRandomString(32);
         while (tokenMap.containsKey(token)) {
@@ -53,5 +56,27 @@ public class UserTokenManager {
         idMap.put(id, userToken);
 
         return userToken;
+    }
+
+    public static String getSessionKey(Integer userId) {
+        UserToken userToken = idMap.get(userId);
+        if (userToken == null) {
+            return null;
+        }
+
+        if (userToken.getExpireTime().isBefore(LocalDateTime.now())) {
+            tokenMap.remove(userToken.getToken());
+            idMap.remove(userId);
+            return null;
+        }
+
+        return userToken.getSessionKey();
+    }
+
+    public static void removeToken(Integer userId) {
+        UserToken userToken = idMap.get(userId);
+        String token = userToken.getToken();
+        idMap.remove(userId);
+        tokenMap.remove(token);
     }
 }

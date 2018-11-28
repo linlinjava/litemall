@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="search">
+    <navigator url="/pages/search/search" class="input">
+      <image class="icon"></image>
+      <text class="txt">搜索</text>
+    </navigator>
+  </view>
+  <view class="HotName">分类
+    <text></text>
+  </view>
+  <view class="menu-box">
+    <view wx:for-items="{{categoryList}}" wx:key="id" class="menu-box-list">
+      <view class="menu-list-title {{currentCategory.id==item.id?'hover':''}}" bindtap="switchCate" id="{{item}}" data-id="{{item}}" data-index="{{index}}">
+        <text class="{{currentCategory.id==item.id ?'l':''}}"></text> {{item.name}}
+        <text class="{{currentCategory.id==item.id ?'r':''}}"></text>
+      </view>
+      <view class="menu-list-pro" if="{{item.level == 2}}" id="{{item.id}}">
+        <view class="menu-list-pro" hidden="{{currentCategory.id==item.id ? '':'true'}}">
+          <!--<navigator url="/pages/category/category?id={{item.id}}" wx:key="id" wx:for="{{currentSubCategoryList}}">
+            <image class="icon" src="{{item.wapBannerUrl}}"></image>
+          </navigator>-->
+
+          <view class="menu-list-item" wx:for-items="{{currentSubCategoryList}}" wx:key="id" bindtap="levelClick" data-id="{{item.id}}">
+            <image class="icon" src="{{item.iconUrl}}"></image>
+            <text class="txt">{{item.name}}</text>
+
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

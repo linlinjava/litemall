@@ -17,7 +17,7 @@ public class JsonIntegerArrayTypeHandler extends BaseTypeHandler<Integer[]> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Integer[] parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i,toJson(parameter));
+        ps.setString(i, toJson(parameter));
     }
 
     @Override

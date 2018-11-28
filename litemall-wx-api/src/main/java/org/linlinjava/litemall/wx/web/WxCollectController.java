@@ -1,106 +1,120 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.util.JacksonUtil;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallCollect;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.LitemallCollectService;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
-import org.linlinjava.litemall.db.util.JacksonUtil;
-import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户收藏服务
+ */
 @RestController
 @RequestMapping("/wx/collect")
+@Validated
 public class WxCollectController {
+    private final Log logger = LogFactory.getLog(WxCollectController.class);
+
     @Autowired
     private LitemallCollectService collectService;
     @Autowired
     private LitemallGoodsService goodsService;
 
     /**
-     * 获取用户收藏
+     * 用户收藏列表
+     *
+     * @param userId 用户ID
+     * @param type   类型，如果是0则是商品收藏，如果是1则是专题收藏
+     * @param page   分页页数
+     * @param size   分页大小
+     * @return 用户收藏列表
      */
-    @RequestMapping("list")
-    public Object list(@LoginUser Integer userId, Integer typeId,
-                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        if(userId == null){
-            return ResponseUtil.fail401();
-        }
-        if(typeId == null){
-            return ResponseUtil.fail402();
+    @GetMapping("list")
+    public Object list(@LoginUser Integer userId,
+                       @NotNull Byte type,
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
         }
 
-
-        List<LitemallCollect> collectList = collectService.queryByType(userId, typeId, page, size);
-        int count = collectService.countByType(userId, typeId);
+        List<LitemallCollect> collectList = collectService.queryByType(userId, type, page, size);
+        int count = collectService.countByType(userId, type);
         int totalPages = (int) Math.ceil((double) count / size);
 
         List<Object> collects = new ArrayList<>(collectList.size());
-        for(LitemallCollect collect : collectList){
-            Map<String, Object> c = new HashMap();
+        for (LitemallCollect collect : collectList) {
+            Map<String, Object> c = new HashMap<String, Object>();
             c.put("id", collect.getId());
-            c.put("typeId", collect.getTypeId());
+            c.put("type", collect.getType());
             c.put("valueId", collect.getValueId());
 
             LitemallGoods goods = goodsService.findById(collect.getValueId());
             c.put("name", goods.getName());
-            c.put("goodsBrief", goods.getGoodsBrief());
-            c.put("listPicUrl", goods.getListPicUrl());
+            c.put("brief", goods.getBrief());
+            c.put("picUrl", goods.getPicUrl());
             c.put("retailPrice", goods.getRetailPrice());
 
             collects.add(c);
         }
 
-        Map<String, Object> result = new HashMap();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("collectList", collects);
         result.put("totalPages", totalPages);
         return ResponseUtil.ok(result);
     }
 
     /**
-     * 获取用户收藏
+     * 用户收藏添加或删除
+     * <p>
+     * 如果商品没有收藏，则添加收藏；如果商品已经收藏，则删除收藏状态。
+     *
+     * @param userId 用户ID
+     * @param body   请求内容，{ type: xxx, valueId: xxx }
+     * @return 操作结果
      */
-    @RequestMapping("addordelete")
+    @PostMapping("addordelete")
     public Object addordelete(@LoginUser Integer userId, @RequestBody String body) {
-        if(userId == null){
-            return ResponseUtil.fail401();
-        }
-        if(body == null){
-            return ResponseUtil.fail402();
+        if (userId == null) {
+            return ResponseUtil.unlogin();
         }
 
-        Integer typeId = JacksonUtil.parseInteger(body, "typeId");
+        Byte type = JacksonUtil.parseByte(body, "type");
         Integer valueId = JacksonUtil.parseInteger(body, "valueId");
-        LitemallCollect collect = collectService.queryByTypeAndValue(userId, typeId, valueId);
+        if (!ObjectUtils.allNotNull(type, valueId)) {
+            return ResponseUtil.badArgument();
+        }
+
+        LitemallCollect collect = collectService.queryByTypeAndValue(userId, type, valueId);
 
         String handleType = null;
-        if(collect != null){
+        if (collect != null) {
             handleType = "delete";
             collectService.deleteById(collect.getId());
-        }
-        else{
+        } else {
             handleType = "add";
             collect = new LitemallCollect();
             collect.setUserId(userId);
             collect.setValueId(valueId);
-            collect.setTypeId(typeId);
-            collect.setAddTime(LocalDateTime.now());
+            collect.setType(type);
             collectService.add(collect);
         }
 
-        Map<String, Object> data = new HashMap();
+        Map<String, Object> data = new HashMap<String, Object>();
         data.put("type", handleType);
         return ResponseUtil.ok(data);
     }

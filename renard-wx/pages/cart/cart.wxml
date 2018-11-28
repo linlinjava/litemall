@@ -1,0 +1,59 @@
+<view class="container">
+  <view class="no-login" wx:if="{{!hasLogin}}">
+    <view class="c">
+      <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
+      <text>还没有登录</text>
+      <button plain="true" bindtap="goLogin">去登录</button>
+    </view>
+  </view>
+  <view class='login' wx:else>
+    <view class="service-policy">
+      <view class="item">30天无忧退货</view>
+      <view class="item">48小时快速退款</view>
+      <view class="item">满88元免邮费</view>
+    </view>
+    <view class="no-cart" wx:if="{{cartGoods.length <= 0}}">
+      <view class="c">
+        <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
+        <text>去添加点什么吧</text>
+      </view>
+    </view>
+    <view class="cart-view" wx:else>
+      <view class="list">
+        <view class="group-item">
+          <view class="goods">
+            <view class="item {{isEditCart ? 'edit' : ''}}" wx:for="{{cartGoods}}" wx:key="id">
+              <view class="checkbox {{item.checked ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
+              <view class="cart-goods">
+                <image class="img" src="{{item.picUrl}}"></image>
+                <view class="info">
+                  <view class="t">
+                    <text class="name">{{item.goodsName}}</text>
+                    <text class="num">x{{item.number}}</text>
+                  </view>
+                  <view class="attr">{{ isEditCart ? '已选择:' : ''}}{{item.goodsSpecificationValues||''}}</view>
+                  <view class="b">
+                    <text class="price">￥{{item.price}}</text>
+                    <view class="selnum">
+                      <view class="cut" bindtap="cutNumber" data-item-index="{{index}}">-</view>
+                      <input value="{{item.number}}" class="number" disabled="true" type="number" />
+                      <view class="add" bindtap="addNumber" data-item-index="{{index}}">+</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+      </view>
+      <view class="cart-bottom">
+        <view class="checkbox {{checkedAllStatus ? 'checked' : ''}}" bindtap="checkedAll">全选({{cartTotal.checkedGoodsCount}})</view>
+        <view class="total">{{!isEditCart ? '￥'+cartTotal.checkedGoodsAmount : ''}}</view>
+        <view class="delete" bindtap="editCart">{{!isEditCart ? '编辑' : '完成'}}</view>
+        <view class="checkout" bindtap="deleteCart" wx:if="{{isEditCart}}">删除所选</view>
+        <view class="checkout" bindtap="checkoutOrder" wx:if="{{!isEditCart}}">下单</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,62 +1,62 @@
-page{
-    background: #f4f4f4;
-    min-height: 100%;
+page {
+  background: #f4f4f4;
+  min-height: 100%;
 }
 
-.container{
-    background: #f4f4f4;
-    min-height: 100%;
-    width: 100%;
-    height: auto;
-    overflow: hidden;
+.container {
+  background: #f4f4f4;
+  min-height: 100%;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
 }
 
-.no-footprint{
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
+.no-footprint {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
 }
 
-.no-footprint .c{
-    width: 100%;
-    height: auto;
-    margin-top: 200rpx;
+.no-footprint .c {
+  width: 100%;
+  height: auto;
+  margin-top: 200rpx;
 }
 
-.no-footprint .c image{
-    margin: 0 auto;
-    display: block;
-    text-align: center;
-    width: 258rpx;
-    height: 258rpx;
+.no-footprint .c image {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  width: 258rpx;
+  height: 258rpx;
 }
 
-.no-footprint .c text{
-    margin: 0 auto;
-    display: block;
-    width: 258rpx;
-    height: 29rpx;
-    line-height: 29rpx;
-    text-align: center;
-    font-size: 29rpx;
-    color: #999;
+.no-footprint .c text {
+  margin: 0 auto;
+  display: block;
+  width: 258rpx;
+  height: 29rpx;
+  line-height: 29rpx;
+  text-align: center;
+  font-size: 29rpx;
+  color: #999;
 }
 
-.footprint{
+.footprint {
   height: auto;
   overflow: hidden;
   width: 100%;
   border-top: 1px solid #e1e1e1;
 }
 
-.day-item{
+.day-item {
   height: auto;
   overflow: hidden;
   width: 100%;
   margin-bottom: 20rpx;
 }
 
-.day-hd{
+.day-hd {
   height: 94rpx;
   width: 100%;
   line-height: 94rpx;
@@ -66,7 +66,7 @@ page{
   font-size: 28rpx;
 }
 
-.day-list{
+.day-list {
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -75,7 +75,7 @@ page{
   border-top: 1px solid #e1e1e1;
 }
 
-.item{
+.item {
   height: 212rpx;
   width: 720rpx;
   background: #fff;
@@ -83,17 +83,17 @@ page{
   border-bottom: 1px solid #e1e1e1;
 }
 
-.item:last-child{
+.item:last-child {
   border-bottom: 1px solid #fff;
 }
 
-.item .img{
+.item .img {
   float: left;
   width: 150rpx;
   height: 150rpx;
 }
 
-.item .info{
+.item .info {
   float: right;
   width: 540rpx;
   height: 150rpx;
@@ -103,21 +103,20 @@ page{
   padding-left: 20rpx;
 }
 
-.item .info .name{
+.item .info .name {
   font-size: 28rpx;
   color: #333;
   line-height: 40rpx;
 }
 
-
-.item .info .subtitle{
+.item .info .subtitle {
   margin-top: 8rpx;
   font-size: 24rpx;
   color: #888;
   line-height: 40rpx;
 }
 
-.item .info .price{
+.item .info .price {
   margin-top: 8rpx;
   font-size: 28rpx;
   color: #333;
