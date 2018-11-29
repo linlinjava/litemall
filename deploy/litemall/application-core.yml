@@ -6,6 +6,9 @@ litemall:
     mch-id: 111111
     mch-key: xxxxxx
     notify-url: http://122.152.206.172:8080/wx/order/pay-notify
+    # 商户证书文件路径
+    # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
+    key-path: xxxxx
 
   #通知相关配置
   notify:
