@@ -39,42 +39,45 @@
 显示数据和图片，但是微信登录会失败，因为appid不是
 开发者自己的，这里进一步介绍开发者需要设置的小商场环境。
 
-### 3.0.1 微信小程序信息
+### 3.0.1 微信小程序配置
 
 开发者在微信小程序官网申请以后，可以有app-id和app-secret信息。
 
-1. 在litemall-core模块的src/main/resources的资源文件中设置
-```
-litemall
-    wx
-        app-id=开发者申请的app-id
-        app-secret=开发者申请的app-secret
-```
+1. 在litemall-core模块的src/main/resources的application-core.yml资源文件中设置
+    ```
+    litemall
+        wx
+            app-id: 开发者申请的app-id
+            app-secret: 开发者申请的app-secret
+    ```
 
 2. 在litemall-wx模块的project.config.json文件中设置
-```
-"appid": "开发者申请的app-id",
-```
+
+    ```
+    "appid": "开发者申请的app-id",
+    ```
 
 3. 启动后台服务
 
-4. 建议开发者关闭当前项目，重新打开（因为此时litemall-wx模块的appid可能未更新）。
+4. 建议开发者关闭当前项目或者直接关闭微信开发者工具，重新打开（因为此时litemall-wx模块的appid可能未更新）。
    编译运行，尝试微信登录
 
-### 3.0.2 微信商户支付信息
+### 3.0.2 微信商户支付配置
 
-开发者在微信支付平台申请以后，可以有app-id和app-secret信息。
+开发者在微信商户平台申请以后，可以有app-id和app-secret信息。
 
-1. 在litemall-wx-api模块的src/main/resources的资源文件中设置
+1. 在litemall-core-api模块的src/main/resources的application-core.yml资源文件中设置
 
     ```
-    wx.mch-id=开发者申请的mch-id
-    wx.mch-key=开发者申请的mch-key
-    wx.notify-url=开发者部署服务的微信支付成功回调地址
+    litemall
+        wx
+            mch-id: 开发者申请的mch-id
+            mch-key: 开发者申请的mch-key
+            notify-url: 开发者部署服务的微信支付成功回调地址
     ```
 
     注意
-    > 1. notify-url是微信支付平台向小商场后台服务发送支付结果的地址。
+    > 1. notify-url是微信商户平台向小商场后台服务发送支付结果的地址。
     >    因此这就要求该地址是可访问的。
     > 2. 目前小商场后台服务的默认request mapping是`/wx/order/pay-notify`（见WxOrderController类的payNotify）,
     >    因此notify-url应该设置的地址类似于`http://www.example.com/wx/order/pay-notify`
@@ -87,6 +90,29 @@ litemall
 4. litemall-wx的api.js设置云主机的域名。
    编译运行，尝试微信支付。
    
+### 3.0.3 微信商户退款配置
+
+目前管理平台的退款功能需要进行维修商户退款配置
+
+1. 从微信商户平台下载商户证书（或者叫做API证书），保存到合适位置，
+   请阅读[文档](https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3)
+2. 在litemall-core-api模块的src/main/resources的application-core.yml资源文件中设置
+
+    ```
+    litemall
+        wx
+            key-path: 证书文件访问路径
+    ```
+3. 启动小程序前端和后端，进行下单、支付、申请退款操作
+
+4. 启动管理后台前端和后端，进行订单退款操作，然后验证手机是否收到退款。
+
+注意：
+> 虽然这里管理后台退款接入了微信退款API，但是从安全角度考虑，**强烈建议**
+> 开发者删除管理后台微信退款代码，然后分成两个步骤实现管理员退款操作：
+> 1. 管理员登录微信平台进行退款操作；
+> 2. 管理员登陆管理后台点击退款按钮，进行订单退款状态变更和商品库存回库。
+
 ## 3.1 litemall-wx-api
 
 本节介绍小商场的后台服务模块。
