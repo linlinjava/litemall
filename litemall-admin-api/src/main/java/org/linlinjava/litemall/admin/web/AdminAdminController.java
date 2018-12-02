@@ -139,11 +139,6 @@ public class AdminAdminController {
         if (anotherAdminId == null) {
             return ResponseUtil.badArgument();
         }
-        // TODO 这里开发者需要删除以下检验代码
-        // 目前这里不允许修改超级管理员是防止演示平台上他人修改管理员密码而导致登录失败
-        if (anotherAdminId == 1) {
-            return ResponseUtil.fail(ADMIN_ALTER_NOT_ALLOWED, "超级管理员不能修改");
-        }
 
         String rawPassword = admin.getPassword();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -166,11 +161,6 @@ public class AdminAdminController {
         Integer anotherAdminId = admin.getId();
         if (anotherAdminId == null) {
             return ResponseUtil.badArgument();
-        }
-        // TODO 这里开发者需要删除以下检验代码
-        // 目前这里不允许删除超级管理员是防止演示平台上他人删除管理员账号而导致登录失败
-        if (anotherAdminId == 1) {
-            return ResponseUtil.fail(ADMIN_DELETE_NOT_ALLOWED, "超级管理员不能删除");
         }
 
         adminService.deleteById(anotherAdminId);
