@@ -35,11 +35,13 @@
 
 ## 3.0 小商场环境
 
-开发者小商场开发环境以后，启动后台服务，小程序端可以
-显示数据和图片，但是微信登录会失败，因为appid不是
-开发者自己的，这里进一步介绍开发者需要设置的小商场环境。
+按照项目README文档中的“快速启动”一节，开发者可以快速启动小商场项目。
+但是小程序端只可以显示数据和图片，而微信登录会失败、微信支付也会失败，
+因为appid不是开发者自己的，
 
-### 3.0.1 微信小程序配置
+这里进一步介绍开发者需要设置的小商场环境。
+
+### 3.0.1 微信登录配置
 
 开发者在微信小程序官网申请以后，可以有app-id和app-secret信息。
 
@@ -62,7 +64,7 @@
 4. 建议开发者关闭当前项目或者直接关闭微信开发者工具，重新打开（因为此时litemall-wx模块的appid可能未更新）。
    编译运行，尝试微信登录
 
-### 3.0.2 微信商户支付配置
+### 3.0.2 微信支付配置
 
 开发者在微信商户平台申请以后，可以有app-id和app-secret信息。
 
@@ -77,11 +79,11 @@
     ```
 
     注意
-    > 1. notify-url是微信商户平台向小商场后台服务发送支付结果的地址。
+    > * notify-url是微信商户平台向小商场后台服务发送支付结果的地址。
     >    因此这就要求该地址是可访问的。
-    > 2. 目前小商场后台服务的默认request mapping是`/wx/order/pay-notify`（见WxOrderController类的payNotify）,
+    > * 目前小商场后台服务的默认request mapping是`/wx/order/pay-notify`（见WxOrderController类的payNotify）,
     >    因此notify-url应该设置的地址类似于`http://www.example.com/wx/order/pay-notify`
-    > 3. 当开发者真正上线后台服务时，强烈建议默认request mapping要重新命名，不能对外公开。
+    > * 当开发者真正上线后台服务时，强烈建议默认request mapping要重新命名，不能对外公开。
 
 2. 启动后台服务
 
@@ -90,9 +92,9 @@
 4. litemall-wx的api.js设置云主机的域名。
    编译运行，尝试微信支付。
    
-### 3.0.3 微信商户退款配置
+### 3.0.3 微信退款配置
 
-目前管理平台的退款功能需要进行维修商户退款配置
+目前管理平台的退款功能需要进行微信商户退款配置
 
 1. 从微信商户平台下载商户证书（或者叫做API证书），保存到合适位置，
    请阅读[文档](https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3)
@@ -110,8 +112,8 @@
 注意：
 > 虽然这里管理后台退款接入了微信退款API，但是从安全角度考虑，**强烈建议**
 > 开发者删除管理后台微信退款代码，然后分成两个步骤实现管理员退款操作：
-> 1. 管理员登录微信平台进行退款操作；
-> 2. 管理员登陆管理后台点击退款按钮，进行订单退款状态变更和商品库存回库。
+> * 首先，管理员登录微信平台进行退款操作；
+> * 然后，管理员登陆管理后台点击退款按钮，进行订单退款状态变更和商品库存回库。
 
 ## 3.1 litemall-wx-api
 
@@ -182,13 +184,34 @@
 
 ### 3.1.16 安全
 
-### 3.1.16.1 开发技巧
+#### 3.1.16.1 Token
 
-当小商城后台服务开发中因为测试或者debug可能需要经常性重启应用，此时
-一旦重启，将导致小商场的小程序段的token失效，因此要求用户再次登录。
-这里，介绍一个小技巧:
-开发时，
+用户登录成功以后，后端会返回`token`，之后用户请求都会携带token。
 
+见WxWebMvcConfiguration类、LoginUser和LoginUserHandlerMethodArgumentResolver类。
+
+小商城后端服务每一次请求都会检测是否存在HTTP头部域`X-Litemall-Token`。
+如果存在，则内部查询转换成LoginUser，然后作为请求参数。
+如果不存在，则作为null请求参数。
+
+而具体的后端服务controller中，则可以利用LoginUser来检查。
+
+例如用户地址服务中：
+```
+@RestController
+@RequestMapping("/wx/address")
+@Validated
+public class WxAddressController {
+    @GetMapping("list")
+    public Object list(@LoginUser Integer userId) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        
+        ...
+    }
+```
+如果检测`userId`是null，则返回错误信息“用户未登录”。
 
 ## 3.2 litemall-wx
 
@@ -347,7 +370,7 @@ var WxApiRoot = 'http://localhost:8082/wx/';
         });
 ```
 
-### 3.2.4 storage使用
+### 3.2.4 storage
 
 litemall-wx模块采用storage来存储一些数据，以及支持组件间数据通信。
 
@@ -369,14 +392,14 @@ renard-wx是另外一个小程序前端，其后端API也是litemall-wx-api。
 1. 界面样式有所调整；
 2. 功能进一步简化。
 
-## 3.4 开发新功能
+## 3.4 开发新组件
 
 本章节介绍如何开发新的微信小程序功能。
 
-### 3.4.1 小商场页面开发
+### 3.4.1 小商场前端页面
 
-### 3.4.2 交互服务API设计
+### 3.4.2 前后端交互服务API
 
-### 3.4.3 后台服务开发
+### 3.4.3 小商场后端服务
 
 ### 3.4.4 数据库

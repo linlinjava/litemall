@@ -7,6 +7,10 @@
 * litemall-db模块
 * litemall-all模块
 
+litemall-db模块提供数据库访问服务。
+
+litemall-core模块提供通用服务。
+
 litemall-all模块则只是一个包裹模块，几乎没有任何代码。该模块的作用是融合两个spring boot模块
 和litemall-admin模块静态文件到一个单独Spring Boot可执行jar包中。
 
@@ -313,7 +317,6 @@ litemall_region表保存了行政区域信息，包括省级、市级、县级�
 
 所对应的后台服务方法是litemall-admin-api模块的`AdminOrderController.checkOrderUnpaid`
 
-
 注意：
 > 上述订单状态变化中具体的逻辑处理可以参考相应模块文档和模块代码。
 
@@ -369,7 +372,7 @@ litemall_region表保存了行政区域信息，包括省级、市级、县级�
 
 #### 2.1.4.3 售后处理
 
-虽然这里用户有`退款`操作，但是目前不支持退货相关业务。
+目前不支持退货售后相关业务。
 
 #### 2.1.4.4 商品评价
 
@@ -405,14 +408,15 @@ litemall_region表保存了行政区域信息，包括省级、市级、县级�
 
 ### 2.1.7 优惠券设计
 
+目前不支持。
+
 ### 2.1.8 系统配置设计
 
 系统配置表litemall_system保存系统的配置信息。
 
 这里需要注意的是，在Java代码层系统配置表只能执行更新操作，
-不能执行创建和删除操作。
-
-这里的系统配置数据都应该是开发者基于系统的配置情况在数据库中手动创建。
+不能执行创建和删除操作。也就是说，系统配置数据都应该是开发者
+基于系统的配置需求在数据库中手动创建。
 
 ### 2.1.9 存储对象设计
 
@@ -441,11 +445,11 @@ litemall_region表保存了行政区域信息，包括省级、市级、县级�
 
 #### 2.1.10.3 update_time
 
-除极少数表，其他所有表都存在`add_time`字段，记录数据修改时间。
+除极少数表，其他所有表都存在`update_time`字段，记录数据修改时间。
 
 此外，此外开发者可以利用update_time来实现乐观锁更新机制。
 
-具体使用方法可以参考`2.2.8 乐观锁`
+具体使用方法可以参考`2.2.6 并发访问`
 
 ## 2.2 litemall-db
 
@@ -471,7 +475,7 @@ litemall-db模块是一个普通的Spring Boot应用，基于mybatis框架实现
   * generator生成代码
   * 非generator手动代码
 * 业务代码
-* mybatis支持代码
+* mybatis generator支持代码
 
 ### 2.2.1 mybatis数据库访问代码
 
@@ -481,10 +485,10 @@ mybatis数据库访问代码是指dao接口代码、dao数据库XML文件和doma
 * domain代码，则是保存数据库返回数据。
 
 此外，这里的数据库访问代码又进一步分成
-* generator生成代码，即基于mybatis generator相关插件自动生成上述三种代码或文件；
-* 非generator手动代码，则是需要开发者自己编写上述三种代码。
+* mybatis generator自动生成代码，即基于mybatis generator相关插件自动生成上述三种代码或文件；
+* 非mybatis generator手动代码，则是需要开发者自己编写上述三种代码。
 
-#### 2.2.1.1 generator生成代码
+#### 2.2.1.1 自动生成代码
 
 ![](./pic2/2-3.png)
 
@@ -542,9 +546,9 @@ mybatis数据库访问代码是指dao接口代码、dao数据库XML文件和doma
 
 关于mybatis generator的用法，可以自行查阅官网或文档。
 
-#### 2.2.1.2 非generator手动代码
+#### 2.2.1.2 手动代码
 
-虽然generator可以自动生产代码，帮助开发者简化开发工作，但是在涉及到多表操作或特殊数据库操作时，
+虽然mybatis generator可以自动生产代码，帮助开发者简化开发工作，但是在涉及到多表操作或特殊数据库操作时，
 仍然需要开发者自己手动编写基于mybatis框架的相关代码。
 
 具体如何基于mybatis框架编写代码，请开发者自己查找资料。
@@ -597,7 +601,34 @@ mybatis数据库访问代码是指dao接口代码、dao数据库XML文件和doma
 
 通常业务层代码在src文件夹`org.linlinjava.litemall.db.service` 包中。
 
-### 2.2.3 mybatis支持代码
+### 2.2.3 mybatis generator支持代码
+
+mybatis generator自动生成代码时，通过内置类型转换器自动把数据库类型转换成Java类。
+例如数据库类型`varchar`自动转化成`java.lang.String`。
+
+但是某些情况下，可以通过自定义TypeHandler的方式来采用自定义的类型转换器。
+开发者可以自行阅读相关资料了解。
+
+本项目中，为了简化数据表的设计，某些字段采用`varchar`来存储Json格式的数据。
+例如商品的图片列表可以直接采用`[url0, url1, ...]`来存储，而不需要设计一个专门商品图片表。
+
+这里通过自定义TypeHandler，可以实现Java的`String[]`和数据库类型`varchar`的自动转换。
+
+1. 实现JsonStringArrayTypeHandler类；
+2. 在mybatis generator配置文件中，配置需要的字段；
+    ```
+        <table tableName="litemall_goods">
+            <columnOverride column="gallery" javaType="java.lang.String[]"
+                            typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
+        </table>
+    ```
+3. 使用mybatis generator自动生成代码，可以看到LitemallGoods的gallery是`String[]`类型。
+
+目前只实现了两个自定义TypeHandler：
+* JsonStringArrayTypeHandler类，实现`String[]`和`varchar`的转换，保存的JSON数据格式是`[string0, string1, ...]`
+* JsonIntegerArrayTypeHandler类，实现`Integer[]`和`varchar`的转换，保存的JSON数据格式是`[integer0, integer1, ...]`
+
+如果开发者需要保存其他格式的JSON数据或者自定义格式的数据，请自行开发。
 
 ### 2.2.4 新服务组件
 
@@ -754,33 +785,35 @@ litemall-core模块是本项目通用的代码：
 * config
 
   通用配置，例如开启Spring Boot异步功能。
+
+* util
+
+  工具代码。
+
+* qcode
+
+  本项目定制的分享二维码图片。
   
+* storage
+
+  存储功能，支持本地存储、腾讯云存储、阿里云存储和七牛云存储。
+      
+* notify
+
+  通知提醒功能，支持邮件通知、短信通知和微信通知。
+
 * express
 
   物流服务，查询订单物流信息。
   
-* notify
-
-  通知提醒功能，支持邮件通知、短信通知和微信通知。
-  
-* qcode
-
-  本项目定制的分享二维码图片。
-
-* storage
-
-  存储功能，支持本地存储、腾讯云存储、阿里云存储和七牛云存储。
-  
-* validator
-
-  提供两个注解，帮助后端验证请求参数。
-  
 * system
 
   通过litemall-db模块的数据库访问，读取本项目系统配置信息。
-  
-* util
 
+* validator
+
+  提供两个校验注解，帮助后端验证请求参数。
+  
 ### 2.3.1 config
 
 #### 2.3.1.1 CorsConfig
@@ -848,28 +881,189 @@ Jackson做一些设置。
 
 bcypt代码本质上是spring里面的代码。
 
+### 2.3.3 二维码
+
+见QCodeService类。
+
 ### 2.3.4 对象存储
 
 对象存储服务目前的目标是支持图片的上传下载。
 
+对象存储服务会自动读取配置配置，然后实例化服务。
+
+对象存储接口：
+```
+public interface Storage {
+    void store(InputStream inputStream, long contentLength, String contentType, String keyName);
+    Stream<Path> loadAll();
+    Path load(String keyName);
+    Resource loadAsResource(String keyName);
+    void delete(String keyName);
+    String generateUrl(String keyName);
+}
+```
+
 #### 2.3.4.1 本地存储服务
+
+见LocalStorage类。
 
 #### 2.3.4.2 腾讯云存储服务
 
+见TencentStorage类。
+
 #### 2.3.4.3 阿里云存储服务
+
+见AliyunStorage类。
+
+#### 2.3.4.4 七牛云存储服务
+
+见QiniuStorage类。
 
 ### 2.3.5 消息通知
 
+消息通知用于通知用户或者管理员。
+
+注意：
+> 目前这里实现比较粗糙，以后会完善细节。
+
 #### 2.3.5.1 邮件通知
+
+见NotifyService类的`notifyMail`方法。
 
 #### 2.3.5.2 短信通知
 
-#### 2.3.5.3 微信模板通知
+见NotifyService类的`notifySms`和`notifySmsTemplate`方法。
+
+而短信通知实现类见`TencentSmsSender`类。
+也就是目前仅支持腾讯云短信服务，其他短信服务不支持。
+此外，开发者必须先在腾讯云短信平台申请模板才能使用。
+
+#### 2.3.5.3 微信通知
+
+见NotifyService类的`notifySms`和`notifyWxTemplate`方法。
+而微信通知实现类见`WxTemplateSender`类。
+开发者必须在微信平台申请模板才能使用。
 
 ### 2.3.6 物流跟踪
 
+物流跟踪是基于第三方服务快鸟物流查询服务。
+开发者需要申请才能使用。
+
+见`ExpressService`类。
+
 ### 2.3.7 系统设置
 
+### 2.3.8 校验注解
+
+自定了两个校验注解，帮助开发者校验HTTP参数。
+
+#### 2.3.8.1 Order
+
+校验用户请求参数值只能是`desc`或者`asc`。
+
+注意，这里的Order不是订单的意思，而是排序的意思。
+
+1. 定义注解Order
+    ```
+    @Target({METHOD, FIELD, PARAMETER})
+    @Retention(RUNTIME)
+    @Documented
+    @Constraint(validatedBy = OrderValidator.class)
+    public @interface Order {
+        String message() default "排序类型不支持";
+        String[] accepts() default {"desc", "asc"};
+        Class<?>[] groups() default {};
+        Class<? extends Payload>[] payload() default {};
+    }
+    ```
+2. 实现OrderValidator
+    ```
+    public class OrderValidator implements ConstraintValidator<Order, String> {
+        private List<String> valueList;
+        @Override
+        public void initialize(Order order) {
+            valueList = new ArrayList<String>();
+            for (String val : order.accepts()) {
+                valueList.add(val.toUpperCase());
+            }
+        }
+        @Override
+        public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+            if (!valueList.contains(s.toUpperCase())) {
+                return false;
+            }
+            return true;
+        }
+    }
+    ```
+3. 使用注解
+    ```
+    @RestController
+    @RequestMapping("/wx/topic")
+    @Validated
+    public class WxTopicController {
+        @GetMapping("list")
+        public Object list(@RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+         ...
+         }
+    ```
+    
+#### 2.3.8.2 Sort
+
+校验用户请求参数值只能是`add_time`或者`id`。
+
+1. 定义注解Sort
+    ```
+    @Target({METHOD, FIELD, PARAMETER})
+    @Retention(RUNTIME)
+    @Documented
+    @Constraint(validatedBy = SortValidator.class)
+    public @interface Sort {
+        String message() default "排序字段不支持";
+        String[] accepts() default {"add_time", "id"};
+        Class<?>[] groups() default {};
+        Class<? extends Payload>[] payload() default {};
+    }
+    ```
+2. 实现SortValidator
+    ```
+    public class SortValidator implements ConstraintValidator<Sort, String> {
+        private List<String> valueList;
+    
+        @Override
+        public void initialize(Sort sort) {
+            valueList = new ArrayList<String>();
+            for (String val : sort.accepts()) {
+                valueList.add(val.toUpperCase());
+            }
+        }
+    
+        @Override
+        public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+            if (!valueList.contains(s.toUpperCase())) {
+                return false;
+            }
+            return true;
+        }
+    }
+    ```
+3. 使用注解
+    ```
+    @RestController
+    @RequestMapping("/wx/topic")
+    @Validated
+    public class WxTopicController {
+        @GetMapping("list")
+        public Object list(@RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer size,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+         ...
+         }
+    ```
 
 ## 2.4 litemall-all
 

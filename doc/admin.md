@@ -2,7 +2,7 @@
 
 项目技术架构：
 
-* 后台管理前端，即litemall-admin模块
+* 管理后台前端，即litemall-admin模块
   * vue
   * vuex
   * vue-router
@@ -10,7 +10,7 @@
   * element
   * vue-element-admin 3.9.3
   * 其他，见package.json
-* 后台管理后端, 即litemall-admin-api模块
+* 管理后台后端, 即litemall-admin-api模块
   * Spring Boot 2.x
   * Spring MVC
 
@@ -82,27 +82,43 @@
 
 #### 4.1.8.1 Token
 
-用户登录成功以后，后端会返回`token`，之后用户的请求都会携带token。
+管理员登录成功以后，后端会返回token，之后管理员的请求都会携带token。
 
-目前token的失效和更新机制没有涉及。
+见AdminWebMvcConfiguration类、LoginAdmin和LoginAdminHandlerMethodArgumentResolver类。
 
-#### 4.1.8.2 CROS
+管理后台后端服务每次请求都会检测是否存在HTTP头部域`X-Litemall-Admin-Token`。
+如果存在，则内部查询转换成LoginAdmin，然后作为请求参数。
+如果不存在，则作为null请求参数。
 
-如果litemall-admin-api不配置CROS，则Spring Boot会失败。
+而具体的后端服务controller中，则可以利用LoginAdmin来检查。
 
-#### 4.1.8.3 账号密码加盐
+例如管理员地址服务中：
+```
+@RestController
+@RequestMapping("/admin/address")
+@Validated
+public class AdminAddressController {
+    @GetMapping("/list")
+    public Object list(@LoginAdmin Integer adminId,
+                       Integer userId, String name,
+                       @RequestParam(defaultValue = "1") Integer page,
+                       @RequestParam(defaultValue = "10") Integer limit,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        if (adminId == null) {
+            return ResponseUtil.unlogin();
+        }
+        
+        ...
+    }
+```
+如果检测`adminId`是null，则返回错误信息“管理员未登录”。
+
+#### 4.1.8.2 账号密码加盐
 
 如果是微信登录，那么无需账号和密码。
 
 而如果用户采用了账号和密码的形式登录，那么后端需要把用户密码加盐。
-
-#### 4.1.8.4 限制登录
-
-如果采用账号密码登录，那么登录失败一定次数，应该限制登录。
-
-进一步地，如果项目启用了短信功能，应该短信提醒用户，防止他人登录。
-
-目前这里没有实现，仅列出。
 
 ### 4.1.9 定时任务
 
@@ -115,15 +131,20 @@ AdminOrderController类存在以下三个方法，其实是三个定时任务：
 > 虽然定时任务放在AdminOrderController类中，但是可能这里不是很合适，
 > 以后需要调整或者完善。
 
-### 4.1.10 事务管理
-
-
 ## 4.2 litemall-admin
 
-本节介绍管理后台的前端模块。
+本章介绍管理后台的前端模块。
 
 litemall-admin模块的代码基于[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 
 ## 4.3 开发新组件
 
-这里介绍开发一个新的组件的流程。
+本章节介绍如何开发新的管理后台功能。
+
+### 4.3.1 管理后台前端页面
+
+### 4.3.2 前后端交互服务API
+
+### 4.3.3 管理后台后端服务
+
+### 4.3.4 数据库
