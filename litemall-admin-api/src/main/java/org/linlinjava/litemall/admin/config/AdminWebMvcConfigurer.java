@@ -1,6 +1,6 @@
-package org.linlinjava.litemall.wx.config;
+package org.linlinjava.litemall.admin.config;
 
-import org.linlinjava.litemall.wx.annotation.support.LoginUserHandlerMethodArgumentResolver;
+import org.linlinjava.litemall.admin.annotation.support.LoginAdminHandlerMethodArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,9 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 @Configuration
-public class UseConfig implements WebMvcConfigurer {
+public class AdminWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new LoginUserHandlerMethodArgumentResolver());
+        argumentResolvers.add(new LoginAdminHandlerMethodArgumentResolver());
     }
 }
