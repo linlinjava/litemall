@@ -204,6 +204,57 @@ CREATE TABLE `litemall_comment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `litemall_coupon`
+--
+
+DROP TABLE IF EXISTS `litemall_coupon`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_coupon` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(63) NOT NULL COMMENT '优惠券名称',
+  `desc` varchar(127) DEFAULT '' COMMENT '优惠券介绍，通常是显示优惠券使用限制文字',
+  `tag` varchar(63) DEFAULT '' COMMENT '优惠券标签，例如新人专用',
+  `total` int(11) NOT NULL DEFAULT '0' COMMENT '优惠券数量，如果是0，则是无限量',
+  `discount` decimal(10,2) DEFAULT '0.00' COMMENT '优惠金额，',
+  `min` decimal(10,2) DEFAULT '0.00' COMMENT '最少消费金额才能使用优惠券。',
+  `limit` smallint(6) DEFAULT '1' COMMENT '用户领券限制数量，如果是0，则是不限制；默认是1，限领一张.',
+  `type` smallint(6) DEFAULT '0' COMMENT '优惠券赠送类型，如果是0则通用券，用户领取；如果是1，则是注册赠券；',
+  `status` smallint(6) DEFAULT '0' COMMENT '优惠券状态，如果是0则是正常可用；如果是1则是过期; 如果是2则是下架。',
+  `goods_type` smallint(6) DEFAULT '0' COMMENT '商品限制类型，如果0则全商品，如果是1则是类目限制，如果是2则是商品限制。',
+  `goods_value` varchar(1023) DEFAULT '[]' COMMENT '商品限制值，goods_type如果是0则空集合，如果是1则是类目集合，如果是2则是商品集合。',
+  `days` smallint(6) DEFAULT '0' COMMENT '如果是0，则start_time和end_time是优惠券有效期；如果是非0，则基于领取时间的有效天数。',
+  `start_time` datetime DEFAULT NULL COMMENT '使用券开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '使用券截至时间',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='优惠券信息及规则表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_coupon_user`
+--
+
+DROP TABLE IF EXISTS `litemall_coupon_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_coupon_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `coupon_id` int(11) NOT NULL COMMENT '优惠券ID',
+  `status` smallint(6) DEFAULT '0' COMMENT '使用状态, 如果是0则未使用；如果是1则已使用；如果是2则已过期；如果是3则已经下架；',
+  `used_time` datetime DEFAULT NULL COMMENT '使用时间',
+  `order_id` int(11) DEFAULT '0' COMMENT '订单ID',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='优惠券用户使用表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `litemall_feedback`
 --
 
@@ -657,4 +708,4 @@ CREATE TABLE `litemall_user_formid` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-09 19:40:48
+-- Dump completed on 2018-12-10 16:59:09
