@@ -75,5 +75,4 @@ public class LitemallAdminService {
     public LitemallAdmin findById(Integer id) {
         return adminMapper.selectByPrimaryKeySelective(id, result);
     }
-
 }

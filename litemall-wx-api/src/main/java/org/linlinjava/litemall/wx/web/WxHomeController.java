@@ -40,7 +40,8 @@ public class WxHomeController {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallGrouponRulesService grouponRulesService;
-
+    @Autowired
+    private LitemallCouponService couponService;
 
     @GetMapping("/cache")
     public Object cache(@NotNull String key) {
@@ -73,6 +74,9 @@ public class WxHomeController {
 
         List<LitemallCategory> channel = categoryService.queryChannel();
         data.put("channel", channel);
+
+        List<LitemallCoupon> couponList = couponService.queryList(0, 3);
+        data.put("couponList", couponList);
 
         List<LitemallGoods> newGoods = goodsService.queryByNew(0, SystemConfig.getNewLimit());
         data.put("newGoodsList", newGoods);

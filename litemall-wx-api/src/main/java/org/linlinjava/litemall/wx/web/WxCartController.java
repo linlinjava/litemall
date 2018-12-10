@@ -41,6 +41,12 @@ public class WxCartController {
     private LitemallAddressService addressService;
     @Autowired
     private LitemallGrouponRulesService grouponRulesService;
+    @Autowired
+    private LitemallCouponService couponService;
+    @Autowired
+    private LitemallCouponUserService couponUserService;
+    @Autowired
+    private CouponVerifyService couponVerifyService;
 
     /**
      * 用户购物车信息
@@ -367,7 +373,7 @@ public class WxCartController {
      * @param addressId 收货地址ID：
      *                  如果收货地址ID是空，则查询当前用户的默认地址。
      * @param couponId  优惠券ID：
-     *                  目前不支持
+     *                  如果优惠券ID是空，则自动选择合适的优惠券。
      * @return 购物车操作结果
      */
     @GetMapping("checkout")
@@ -398,10 +404,6 @@ public class WxCartController {
             }
         }
 
-        // 获取可用的优惠券信息
-        // 使用优惠券减免的金额
-        BigDecimal couponPrice = new BigDecimal(0.00);
-
         // 团购优惠
         BigDecimal grouponPrice = new BigDecimal(0.00);
         LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponRulesId);
@@ -431,6 +433,46 @@ public class WxCartController {
             }
         }
 
+        // 计算优惠券可用情况
+        BigDecimal tmpCouponPrice = new BigDecimal(0.00);
+        Integer tmpCouponId = 0;
+        int tmpCouponLength = 0;
+        List<LitemallCouponUser> couponUserList = couponUserService.queryAll(userId);
+        for(LitemallCouponUser couponUser : couponUserList){
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponUser.getCouponId(), checkedGoodsPrice);
+            if(coupon == null){
+                continue;
+            }
+
+            tmpCouponLength++;
+            if(tmpCouponPrice.compareTo(coupon.getDiscount()) == -1){
+                tmpCouponPrice = coupon.getDiscount();
+                tmpCouponId = coupon.getId();
+            }
+        }
+        // 获取优惠券减免金额，优惠券可用数量
+        int availableCouponLength = tmpCouponLength;
+        BigDecimal couponPrice = new BigDecimal(0);
+        // 这里存在三种情况
+        // 1. 用户不想使用优惠券，则不处理
+        // 2. 用户想自动使用优惠券，则选择合适优惠券
+        // 3. 用户已选择优惠券，则测试优惠券是否合适
+        if (couponId == null || couponId.equals(-1)){
+            couponId = -1;
+        }
+        else if (couponId.equals(0)) {
+            couponPrice = tmpCouponPrice;
+            couponId = tmpCouponId;
+        }
+        else {
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, checkedGoodsPrice);
+            // 用户选择的优惠券有问题
+            if(coupon == null){
+                return ResponseUtil.badArgumentValue();
+            }
+            couponPrice = coupon.getDiscount();
+        }
+
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
         BigDecimal freightPrice = new BigDecimal(0.00);
         if (checkedGoodsPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
@@ -450,8 +492,7 @@ public class WxCartController {
         data.put("grouponPrice", grouponPrice);
         data.put("checkedAddress", checkedAddress);
         data.put("couponId", couponId);
-        data.put("checkedCoupon", 0);
-        data.put("couponList", "");
+        data.put("availableCouponLength", availableCouponLength);
         data.put("goodsTotalPrice", checkedGoodsPrice);
         data.put("freightPrice", freightPrice);
         data.put("couponPrice", couponPrice);
