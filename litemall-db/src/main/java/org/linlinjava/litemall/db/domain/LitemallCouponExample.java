@@ -199,19 +199,50 @@ public class LitemallCouponExample {
      * @mbg.generated
      */
     protected abstract static class GeneratedCriteria {
+        protected List<Criterion> goodsValueCriteria;
+
+        protected List<Criterion> allCriteria;
+
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
             criteria = new ArrayList<Criterion>();
+            goodsValueCriteria = new ArrayList<Criterion>();
+        }
+
+        public List<Criterion> getGoodsValueCriteria() {
+            return goodsValueCriteria;
+        }
+
+        protected void addGoodsValueCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            goodsValueCriteria.add(new Criterion(condition, value, "org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler"));
+            allCriteria = null;
+        }
+
+        protected void addGoodsValueCriterion(String condition, Integer[] value1, Integer[] value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            goodsValueCriteria.add(new Criterion(condition, value1, value2, "org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler"));
+            allCriteria = null;
         }
 
         public boolean isValid() {
-            return criteria.size() > 0;
+            return criteria.size() > 0
+                || goodsValueCriteria.size() > 0;
         }
 
         public List<Criterion> getAllCriteria() {
-            return criteria;
+            if (allCriteria == null) {
+                allCriteria = new ArrayList<Criterion>();
+                allCriteria.addAll(criteria);
+                allCriteria.addAll(goodsValueCriteria);
+            }
+            return allCriteria;
         }
 
         public List<Criterion> getCriteria() {
@@ -223,6 +254,7 @@ public class LitemallCouponExample {
                 throw new RuntimeException("Value for condition cannot be null");
             }
             criteria.add(new Criterion(condition));
+            allCriteria = null;
         }
 
         protected void addCriterion(String condition, Object value, String property) {
@@ -230,6 +262,7 @@ public class LitemallCouponExample {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value));
+            allCriteria = null;
         }
 
         protected void addCriterion(String condition, Object value1, Object value2, String property) {
@@ -237,6 +270,7 @@ public class LitemallCouponExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+            allCriteria = null;
         }
 
         public Criteria andIdIsNull() {
@@ -1731,8 +1765,8 @@ public class LitemallCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueEqualTo(String value) {
-            addCriterion("goods_value =", value, "goodsValue");
+        public Criteria andGoodsValueEqualTo(Integer[] value) {
+            addGoodsValueCriterion("goods_value =", value, "goodsValue");
             return (Criteria) this;
         }
 
@@ -1748,8 +1782,8 @@ public class LitemallCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueNotEqualTo(String value) {
-            addCriterion("goods_value <>", value, "goodsValue");
+        public Criteria andGoodsValueNotEqualTo(Integer[] value) {
+            addGoodsValueCriterion("goods_value <>", value, "goodsValue");
             return (Criteria) this;
         }
 
@@ -1765,8 +1799,8 @@ public class LitemallCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueGreaterThan(String value) {
-            addCriterion("goods_value >", value, "goodsValue");
+        public Criteria andGoodsValueGreaterThan(Integer[] value) {
+            addGoodsValueCriterion("goods_value >", value, "goodsValue");
             return (Criteria) this;
         }
 
@@ -1782,8 +1816,8 @@ public class LitemallCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueGreaterThanOrEqualTo(String value) {
-            addCriterion("goods_value >=", value, "goodsValue");
+        public Criteria andGoodsValueGreaterThanOrEqualTo(Integer[] value) {
+            addGoodsValueCriterion("goods_value >=", value, "goodsValue");
             return (Criteria) this;
         }
 
@@ -1799,8 +1833,8 @@ public class LitemallCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueLessThan(String value) {
-            addCriterion("goods_value <", value, "goodsValue");
+        public Criteria andGoodsValueLessThan(Integer[] value) {
+            addGoodsValueCriterion("goods_value <", value, "goodsValue");
             return (Criteria) this;
         }
 
@@ -1816,8 +1850,8 @@ public class LitemallCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueLessThanOrEqualTo(String value) {
-            addCriterion("goods_value <=", value, "goodsValue");
+        public Criteria andGoodsValueLessThanOrEqualTo(Integer[] value) {
+            addGoodsValueCriterion("goods_value <=", value, "goodsValue");
             return (Criteria) this;
         }
 
@@ -1833,33 +1867,33 @@ public class LitemallCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueLike(String value) {
-            addCriterion("goods_value like", value, "goodsValue");
+        public Criteria andGoodsValueLike(Integer[] value) {
+            addGoodsValueCriterion("goods_value like", value, "goodsValue");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueNotLike(String value) {
-            addCriterion("goods_value not like", value, "goodsValue");
+        public Criteria andGoodsValueNotLike(Integer[] value) {
+            addGoodsValueCriterion("goods_value not like", value, "goodsValue");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueIn(List<String> values) {
-            addCriterion("goods_value in", values, "goodsValue");
+        public Criteria andGoodsValueIn(List<Integer[]> values) {
+            addGoodsValueCriterion("goods_value in", values, "goodsValue");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueNotIn(List<String> values) {
-            addCriterion("goods_value not in", values, "goodsValue");
+        public Criteria andGoodsValueNotIn(List<Integer[]> values) {
+            addGoodsValueCriterion("goods_value not in", values, "goodsValue");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueBetween(String value1, String value2) {
-            addCriterion("goods_value between", value1, value2, "goodsValue");
+        public Criteria andGoodsValueBetween(Integer[] value1, Integer[] value2) {
+            addGoodsValueCriterion("goods_value between", value1, value2, "goodsValue");
             return (Criteria) this;
         }
 
-        public Criteria andGoodsValueNotBetween(String value1, String value2) {
-            addCriterion("goods_value not between", value1, value2, "goodsValue");
+        public Criteria andGoodsValueNotBetween(Integer[] value1, Integer[] value2) {
+            addGoodsValueCriterion("goods_value not between", value1, value2, "goodsValue");
             return (Criteria) this;
         }
 

@@ -17,7 +17,7 @@
     <result column="type" jdbcType="SMALLINT" property="type" />
     <result column="status" jdbcType="SMALLINT" property="status" />
     <result column="goods_type" jdbcType="SMALLINT" property="goodsType" />
-    <result column="goods_value" jdbcType="VARCHAR" property="goodsValue" />
+    <result column="goods_value" jdbcType="VARCHAR" property="goodsValue" typeHandler="org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler" />
     <result column="days" jdbcType="SMALLINT" property="days" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
@@ -53,6 +53,25 @@
                 </when>
               </choose>
             </foreach>
+            <foreach collection="criteria.goodsValueCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
           </trim>
         </if>
       </foreach>
@@ -82,6 +101,25 @@
                   and ${criterion.condition}
                   <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+            <foreach collection="criteria.goodsValueCriteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler} and #{criterion.secondValue,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler}
                   </foreach>
                 </when>
               </choose>
@@ -230,15 +268,17 @@
     insert into litemall_coupon (`name`, `desc`, tag, 
       total, discount, `min`, 
       `limit`, `type`, `status`, 
-      goods_type, goods_value, `days`, 
-      start_time, end_time, add_time, 
-      update_time, deleted)
+      goods_type, goods_value, 
+      `days`, start_time, end_time, 
+      add_time, update_time, deleted
+      )
     values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
       #{total,jdbcType=INTEGER}, #{discount,jdbcType=DECIMAL}, #{min,jdbcType=DECIMAL}, 
       #{limit,jdbcType=SMALLINT}, #{type,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT}, 
-      #{goodsType,jdbcType=SMALLINT}, #{goodsValue,jdbcType=VARCHAR}, #{days,jdbcType=SMALLINT}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+      #{goodsType,jdbcType=SMALLINT}, #{goodsValue,jdbcType=VARCHAR,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler}, 
+      #{days,jdbcType=SMALLINT}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallCoupon">
     <!--
@@ -334,7 +374,7 @@
         #{goodsType,jdbcType=SMALLINT},
       </if>
       <if test="goodsValue != null">
-        #{goodsValue,jdbcType=VARCHAR},
+        #{goodsValue,jdbcType=VARCHAR,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler},
       </if>
       <if test="days != null">
         #{days,jdbcType=SMALLINT},
@@ -407,7 +447,7 @@
         goods_type = #{record.goodsType,jdbcType=SMALLINT},
       </if>
       <if test="record.goodsValue != null">
-        goods_value = #{record.goodsValue,jdbcType=VARCHAR},
+        goods_value = #{record.goodsValue,jdbcType=VARCHAR,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler},
       </if>
       <if test="record.days != null">
         `days` = #{record.days,jdbcType=SMALLINT},
@@ -449,7 +489,7 @@
       `type` = #{record.type,jdbcType=SMALLINT},
       `status` = #{record.status,jdbcType=SMALLINT},
       goods_type = #{record.goodsType,jdbcType=SMALLINT},
-      goods_value = #{record.goodsValue,jdbcType=VARCHAR},
+      goods_value = #{record.goodsValue,jdbcType=VARCHAR,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler},
       `days` = #{record.days,jdbcType=SMALLINT},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
       end_time = #{record.endTime,jdbcType=TIMESTAMP},
@@ -498,7 +538,7 @@
         goods_type = #{goodsType,jdbcType=SMALLINT},
       </if>
       <if test="goodsValue != null">
-        goods_value = #{goodsValue,jdbcType=VARCHAR},
+        goods_value = #{goodsValue,jdbcType=VARCHAR,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler},
       </if>
       <if test="days != null">
         `days` = #{days,jdbcType=SMALLINT},
@@ -537,7 +577,7 @@
       `type` = #{type,jdbcType=SMALLINT},
       `status` = #{status,jdbcType=SMALLINT},
       goods_type = #{goodsType,jdbcType=SMALLINT},
-      goods_value = #{goodsValue,jdbcType=VARCHAR},
+      goods_value = #{goodsValue,jdbcType=VARCHAR,typeHandler=org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler},
       `days` = #{days,jdbcType=SMALLINT},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},

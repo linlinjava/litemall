@@ -160,6 +160,8 @@
         </table>
         <table tableName="litemall_coupon">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="goods_value" javaType="java.lang.Integer[]"
+                            typeHandler="org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler"/>
         </table>
         <table tableName="litemall_coupon_user">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>

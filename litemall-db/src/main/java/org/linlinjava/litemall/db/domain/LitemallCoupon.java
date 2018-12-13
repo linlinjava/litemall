@@ -130,7 +130,7 @@ public class LitemallCoupon {
      *
      * @mbg.generated
      */
-    private String goodsValue;
+    private Integer[] goodsValue;
 
     /**
      *
@@ -458,7 +458,7 @@ public class LitemallCoupon {
      *
      * @mbg.generated
      */
-    public String getGoodsValue() {
+    public Integer[] getGoodsValue() {
         return goodsValue;
     }
 
@@ -470,7 +470,7 @@ public class LitemallCoupon {
      *
      * @mbg.generated
      */
-    public void setGoodsValue(String goodsValue) {
+    public void setGoodsValue(Integer[] goodsValue) {
         this.goodsValue = goodsValue;
     }
 
@@ -681,7 +681,7 @@ public class LitemallCoupon {
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getGoodsType() == null ? other.getGoodsType() == null : this.getGoodsType().equals(other.getGoodsType()))
-            && (this.getGoodsValue() == null ? other.getGoodsValue() == null : this.getGoodsValue().equals(other.getGoodsValue()))
+            && (Arrays.equals(this.getGoodsValue(), other.getGoodsValue()))
             && (this.getDays() == null ? other.getDays() == null : this.getDays().equals(other.getDays()))
             && (this.getStartTime() == null ? other.getStartTime() == null : this.getStartTime().equals(other.getStartTime()))
             && (this.getEndTime() == null ? other.getEndTime() == null : this.getEndTime().equals(other.getEndTime()))
@@ -711,7 +711,7 @@ public class LitemallCoupon {
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getGoodsType() == null) ? 0 : getGoodsType().hashCode());
-        result = prime * result + ((getGoodsValue() == null) ? 0 : getGoodsValue().hashCode());
+        result = prime * result + (Arrays.hashCode(getGoodsValue()));
         result = prime * result + ((getDays() == null) ? 0 : getDays().hashCode());
         result = prime * result + ((getStartTime() == null) ? 0 : getStartTime().hashCode());
         result = prime * result + ((getEndTime() == null) ? 0 : getEndTime().hashCode());
