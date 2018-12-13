@@ -141,6 +141,14 @@ Page({
       grouponLinkId: this.data.grouponLinkId
     }, 'POST').then(res => {
       if (res.errno === 0) {
+        
+        // 下单成功，重置couponId
+        try {
+          wx.setStorageSync('couponId', 0);
+        } catch (error) {
+
+        }
+
         const orderId = res.data.orderId;
         util.request(api.OrderPrepay, {
           orderId: orderId
