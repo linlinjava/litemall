@@ -10,7 +10,11 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.4.0",
+<<<<<<< HEAD
 	"appid": "touristappid",
+=======
+	"appid": "wxa5b486c6b918ecfb",
+>>>>>>> 570fff521b73bcdd0d4ec16906f7fc55e385946d
 	"projectname": "litemall-wx",
 	"condition": {
 		"search": {
@@ -29,7 +33,11 @@
 			"list": []
 		},
 		"miniprogram": {
+<<<<<<< HEAD
 			"current": 0,
+=======
+			"current": 37,
+>>>>>>> 570fff521b73bcdd0d4ec16906f7fc55e385946d
 			"list": [
 				{
 					"id": -1,
@@ -240,6 +248,26 @@
 					"name": "团购专区",
 					"pathName": "pages/groupon/grouponList/grouponList",
 					"query": ""
+<<<<<<< HEAD
+=======
+				},
+				{
+					"id": -1,
+					"name": "选择优惠券",
+					"pathName": "pages/ucenter/couponSelect/couponSelect",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的优惠券列表",
+					"pathName": "pages/ucenter/couponList/couponList",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "优惠券列表",
+					"pathName": "pages/coupon/coupon"
+>>>>>>> 570fff521b73bcdd0d4ec16906f7fc55e385946d
 				}
 			]
 		}

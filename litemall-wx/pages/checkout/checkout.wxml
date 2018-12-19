@@ -24,11 +24,19 @@
   </view>
 
   <view class="coupon-box">
-    <view class="coupon-item">
-      <view class="l">
-        <text class="name">请选择优惠券</text>
-        <text class="txt">{{couponList.length}}张</text>
+    <view class="coupon-item" bindtap="selectCoupon">
+      <view class="l" wx:if="{{couponId == 0}}">
+        <text class="name">没有可用的优惠券</text>
+        <text class="txt">0张</text>
       </view>
+      <view class="l" wx:elif="{{couponId == -1}}">
+        <text class="name">优惠券</text>
+        <text class="txt">{{availableCouponLength}}张</text>
+      </view>
+      <view class="l" wx:else>
+        <text class="name">优惠券</text>
+        <text class="txt">-￥{{couponPrice}}元</text>
+      </view>      
       <view class="r">
         <image src="/static/images/address_right.png"></image>
       </view>

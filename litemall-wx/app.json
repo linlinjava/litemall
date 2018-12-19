@@ -11,7 +11,8 @@
     "pages/ucenter/footprint/footprint",
     "pages/ucenter/order/order",
     "pages/ucenter/orderDetail/orderDetail",
-    "pages/ucenter/coupon/coupon",
+    "pages/ucenter/couponList/couponList",
+    "pages/ucenter/couponSelect/couponSelect",
     "pages/ucenter/collect/collect",
     "pages/auth/login/login",
     "pages/auth/accountLogin/accountLogin",
@@ -34,7 +35,8 @@
     "pages/about/about",
     "pages/groupon/myGroupon/myGroupon",
     "pages/groupon/grouponDetail/grouponDetail",
-    "pages/groupon/grouponList/grouponList"
+    "pages/groupon/grouponList/grouponList",
+    "pages/coupon/coupon"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",

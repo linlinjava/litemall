@@ -21,6 +21,7 @@ import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.util.CouponUserConstant;
 import org.linlinjava.litemall.db.util.OrderHandleOption;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
@@ -106,6 +107,12 @@ public class WxOrderController {
     private ExpressService expressService;
     @Autowired
     private LitemallCommentService commentService;
+    @Autowired
+    private LitemallCouponService couponService;
+    @Autowired
+    private LitemallCouponUserService couponUserService;
+    @Autowired
+    private CouponVerifyService couponVerifyService;
 
     private String detailedAddress(LitemallAddress litemallAddress) {
         Integer provinceId = litemallAddress.getProvinceId();
@@ -241,7 +248,7 @@ public class WxOrderController {
      * <p>
      * 1. 创建订单表项和订单商品表项;
      * 2. 购物车清空;
-     * 3. TODO 优惠券设置已用;
+     * 3. 优惠券设置已用;
      * 4. 商品货品库存减少;
      * 5. 如果是团购商品，则创建团购活动表项。
      *
@@ -287,10 +294,6 @@ public class WxOrderController {
             return ResponseUtil.badArgument();
         }
 
-        // 获取可用的优惠券信息
-        // 使用优惠券减免的金额
-        BigDecimal couponPrice = new BigDecimal(0.00);
-
         // 团购优惠
         BigDecimal grouponPrice = new BigDecimal(0.00);
         LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponRulesId);
@@ -320,6 +323,19 @@ public class WxOrderController {
             }
         }
 
+        // 获取可用的优惠券信息
+        // 使用优惠券减免的金额
+        BigDecimal couponPrice = new BigDecimal(0.00);
+        // 如果couponId=0则没有优惠券，couponId=-1则不使用优惠券
+        if(couponId != 0 && couponId != -1){
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, checkedGoodsPrice);
+            if(coupon == null){
+                return ResponseUtil.badArgumentValue();
+            }
+            couponPrice = coupon.getDiscount();
+        }
+
+
         // 根据订单商品总价计算运费，满足条件（例如88元）则免运费，否则需要支付运费（例如8元）；
         BigDecimal freightPrice = new BigDecimal(0.00);
         if (checkedGoodsPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
@@ -331,6 +347,7 @@ public class WxOrderController {
 
         // 订单费用
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
+        // 最终支付费用
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
         // 开启事务管理
@@ -368,6 +385,7 @@ public class WxOrderController {
             orderService.add(order);
             orderId = order.getId();
 
+            // 添加订单商品表项
             for (LitemallCart cartGoods : checkedGoodsList) {
                 // 订单商品
                 LitemallOrderGoods orderGoods = new LitemallOrderGoods();
@@ -382,7 +400,6 @@ public class WxOrderController {
                 orderGoods.setSpecifications(cartGoods.getSpecifications());
                 orderGoods.setAddTime(LocalDateTime.now());
 
-                // 添加订单商品表项
                 orderGoodsService.add(orderGoods);
             }
 
@@ -401,6 +418,15 @@ public class WxOrderController {
                 if (productService.reduceStock(productId, checkGoods.getNumber()) == 0) {
                     throw new Exception("商品货品库存减少失败");
                 }
+            }
+
+            // 如果使用了优惠券，设置优惠券使用状态
+            if(couponId != 0 && couponId != -1){
+                LitemallCouponUser couponUser = couponUserService.queryOne(userId, couponId);
+                couponUser.setStatus(CouponUserConstant.STATUS_USED);
+                couponUser.setUsedTime(LocalDateTime.now());
+                couponUser.setOrderId(orderId);
+                couponUserService.update(couponUser);
             }
 
             //如果是团购项目，添加团购信息
