@@ -32,7 +32,7 @@ public class AdminAuthController {
     @Autowired
     private LitemallAdminService adminService;
 
-    /*
+    /**
      *  { username : value, password : value }
      */
     @PostMapping("/login")
@@ -63,8 +63,8 @@ public class AdminAuthController {
         return ResponseUtil.ok(adminToken.getToken());
     }
 
-    /*
-     *
+    /**
+     * 登出
      */
     @PostMapping("/logout")
     public Object login(@LoginAdmin Integer adminId) {

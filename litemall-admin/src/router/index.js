@@ -267,6 +267,12 @@ export const asyncRouterMap = [
         meta: { title: '管理员', noCache: true }
       },
       {
+        path: 'role',
+        component: () => import('@/views/sys/role'),
+        name: 'role',
+        meta: { title: '角色管理', noCache: true }
+      },
+      {
         path: 'os',
         component: () => import('@/views/sys/os'),
         name: 'os',
@@ -349,6 +355,7 @@ export const asyncRouterMap = [
     path: '/profile',
     component: Layout,
     redirect: 'noredirect',
+    name: 'profileManage',
     children: [
       {
         path: 'password',

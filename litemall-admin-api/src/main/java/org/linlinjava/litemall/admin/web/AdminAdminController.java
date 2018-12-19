@@ -49,9 +49,9 @@ public class AdminAdminController {
         data.put("avatar", admin.getAvatar());
 
         // 目前roles不支持，这里简单设置admin
-        List<String> roles = new ArrayList<>();
-        roles.add("admin");
-        data.put("roles", roles);
+//        List<String> roles = new ArrayList<>();
+//        roles.add("admin66");
+        data.put("roles", adminService.querySelective(adminId));
         data.put("introduction", "admin introduction");
         return ResponseUtil.ok(data);
     }

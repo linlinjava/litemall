@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.domain.LitemallAdminExample;
+import org.linlinjava.litemall.db.domain.LitemallResource;
 
 public interface LitemallAdminMapper {
     /**
@@ -156,4 +157,5 @@ public interface LitemallAdminMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
+
 }

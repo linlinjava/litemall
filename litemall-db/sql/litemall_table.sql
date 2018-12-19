@@ -658,3 +658,55 @@ CREATE TABLE `litemall_user_formid` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-11-09 19:40:48
+
+
+DROP TABLE IF EXISTS `litemall_resource`;
+
+CREATE TABLE `litemall_resource` (
+  `id` int(11) NOT NULL,
+  `router_text` varchar(32) DEFAULT NULL COMMENT '路由名称',
+  `router_url` varchar(100) DEFAULT NULL COMMENT '路由地址',
+  `pid` int(11) DEFAULT NULL COMMENT '父菜单Id',
+  `description` varchar(200) DEFAULT NULL COMMENT '菜单中文名',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='资源列表';
+
+
+DROP TABLE IF EXISTS `litemall_role`;
+
+CREATE TABLE `litemall_role` (
+  `id` int(11)  NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `description` varchar(200) DEFAULT NULL COMMENT '角色备注',
+  `is_builtin` int(1) DEFAULT '0' COMMENT '是否内置角色',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='角色列表';
+
+
+DROP TABLE IF EXISTS `litemall_role_resource`;
+
+CREATE TABLE `litemall_role_resource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL COMMENT '角色Id',
+  `resource_id` int(11) NOT NULL COMMENT '资源Id',
+  PRIMARY KEY (`id`),
+  KEY `fk_litemall_role_resource_litemall_role2_idx` (`role_id`),
+  KEY `fk_litemall_role_resource_litemall_resource1_idx` (`resource_id`),
+  CONSTRAINT `fk_litemall_role_resource_litemall_resource1` FOREIGN KEY (`resource_id`) REFERENCES `litemall_resource` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_litemall_role_resource_litemall_role2` FOREIGN KEY (`role_id`) REFERENCES `litemall_role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='角色资源列表';
+
+DROP TABLE IF EXISTS `litemall_admin_role`;
+
+CREATE TABLE `litemall_admin_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_litemall_role_resource_litemall_role1_idx` (`role_id`),
+  KEY `fk_litemall_role_resource_litemall_user1_idx` (`admin_id`),
+  CONSTRAINT `fk_litemall_role_resource_litemall_role1` FOREIGN KEY (`role_id`) REFERENCES `litemall_role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_litemall_role_resource_litemall_user1` FOREIGN KEY (`admin_id`) REFERENCES `litemall_admin` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='角色用户列表';
+
+

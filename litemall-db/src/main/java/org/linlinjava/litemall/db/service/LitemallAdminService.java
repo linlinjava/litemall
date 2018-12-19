@@ -2,14 +2,17 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallAdminMapper;
-import org.linlinjava.litemall.db.domain.LitemallAdmin;
+import org.linlinjava.litemall.db.dao.LitemallAdminRoleMapper;
+import org.linlinjava.litemall.db.dao.LitemallResourceMapper;
+import org.linlinjava.litemall.db.dao.LitemallRoleResourceMapper;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.domain.LitemallAdmin.Column;
-import org.linlinjava.litemall.db.domain.LitemallAdminExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +20,15 @@ public class LitemallAdminService {
     private final Column[] result = new Column[]{Column.id, Column.username, Column.avatar};
     @Resource
     private LitemallAdminMapper adminMapper;
+
+    @Resource
+    private LitemallAdminRoleMapper adminRoleMapper;
+
+    @Resource
+    private LitemallRoleResourceMapper roleResourceMapper;
+
+    @Resource
+    private LitemallResourceMapper resourceMapper;
 
     public List<LitemallAdmin> findAdmin(String username) {
         LitemallAdminExample example = new LitemallAdminExample();
@@ -74,6 +86,34 @@ public class LitemallAdminService {
 
     public LitemallAdmin findById(Integer id) {
         return adminMapper.selectByPrimaryKeySelective(id, result);
+    }
+
+    public  List<LitemallResource> querySelective(Integer adminId){
+//        LitemallAdminRoleExample example = new LitemallAdminRoleExample();
+//        example.createCriteria().andAdminIdEqualTo(adminId);
+//        List<LitemallAdminRole> litemallAdminRoles = adminRoleMapper.selectByExampleSelective(example);
+//
+//        List<Integer> integers = new ArrayList<>();
+//        for (LitemallAdminRole lar : litemallAdminRoles){
+//            integers.add(lar.getRoleId());
+//        }
+//        LitemallRoleResourceExample example1 = new LitemallRoleResourceExample();
+//        example1.createCriteria().andRoleIdIn(integers);
+//        example1.setDistinct(true);
+//        List<LitemallRoleResource> roleResources = roleResourceMapper.selectByExampleSelective(example1,new LitemallRoleResource.Column[]{ LitemallRoleResource.Column.resourceId });
+//        integers.clear();
+//        for (LitemallRoleResource roleRes : roleResources){
+//            integers.add(roleRes.getResourceId());
+//        }
+//        LitemallResourceExample resourceExample = new LitemallResourceExample();
+//        resourceExample.createCriteria().andIdIn(integers);
+//        List<LitemallResource>  resourceList = resourceMapper.selectByExampleSelective(resourceExample,new LitemallResource.Column[]{LitemallResource.Column.routerText});
+
+
+        List<LitemallResource>  resourceList = resourceMapper.getUserRoles(adminId);
+
+
+        return  resourceList;
     }
 
 }

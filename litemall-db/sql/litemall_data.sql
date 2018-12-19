@@ -286,3 +286,49 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-11-09 19:41:07
+
+-- init resource
+
+INSERT INTO `litemall_resource` (`id`, `router_text`, `router_url`, `pid`, `description`)
+VALUES
+	(101, 'userManage', NULL, NULL, '用户管理'),
+	(10101, 'user', NULL, 101, '会员管理'),
+	(10102, 'address', NULL, 101, '收货地址'),
+	(10103, 'collect', NULL, 101, '会员收藏'),
+	(10104, 'footprint', NULL, 101, '会员足迹'),
+	(10105, 'history', NULL, 101, '搜索历史'),
+	(10106, 'feedback', NULL, 101, '意见反馈'),
+	(102, 'mallManage', NULL, NULL, '商场管理'),
+	(10201, 'region', NULL, 102, '行政区域'),
+	(10202, 'brand', NULL, 102, '品牌制造商'),
+	(10203, 'category', NULL, 102, '商品类目'),
+	(10204, 'order', NULL, 102, '订单管理'),
+	(10205, 'issue', NULL, 102, '通用问题'),
+	(10206, 'keyword', NULL, 102, '关键词'),
+	(103, 'goodsManage', NULL, NULL, '商品管理'),
+	(10301, 'goodsList', NULL, 103, '商品列表'),
+	(10302, 'goodsCreate', NULL, 103, '商品上架'),
+	(10303, 'goodsEdit', NULL, 103, '商品编辑'),
+	(10304, 'goodsComment', NULL, 103, '商品评论'),
+	(104, 'promotionManage', NULL, NULL, '推广管理'),
+	(10401, 'ad', NULL, 104, '广告列表'),
+	(10402, 'topic', NULL, 104, '专题管理'),
+	(10403, 'grouponRule', NULL, 104, '团购规则'),
+	(10404, 'grouponActivity', NULL, 104, '团购活动'),
+	(105, 'sysManage', NULL, NULL, '系统管理'),
+	(10501, 'admin', NULL, 105, '管理员'),
+	(10502, 'role', NULL, 105, '角色管理'),
+	(10503, 'os', NULL, 105, '对象存储'),
+	(106, 'statManage', NULL, NULL, '统计'),
+	(10601, 'statUser', NULL, 106, '用户统计'),
+	(10602, 'statOrder', NULL, 106, '订单统计'),
+	(10603, 'statGoods', NULL, 106, '商品统计'),
+	(107, 'profileManage', NULL, NULL, '个人信息'),
+	(10701, 'password', NULL, 107, '修改密码');
+
+
+-- init role
+INSERT INTO `litemall_role` (`id`, `role_name`, `description`, `is_builtin`)
+VALUES
+	(1, '管理员', NULL, 1),
+	(2, '产品管理', NULL, 0);
