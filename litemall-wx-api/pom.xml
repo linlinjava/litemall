@@ -52,6 +52,7 @@
     </dependencies>
 
     <build>
+        <finalName>litemall-wx-api</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
