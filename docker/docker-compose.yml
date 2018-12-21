@@ -1,0 +1,89 @@
+version: '2'
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+    - "88:80"
+    volumes:
+    - /opt1/nginx/conf.d:/etc/nginx/conf.d
+    - /opt1/htmladmin:/opt1/htmladmin
+    external_links:
+    - litemall_admin_api_1:litemall_admin_api_1
+    - litemall_wx_api_1:litemall_wx_api_1
+    networks:
+      vpcbr:
+        ipv4_address: 10.17.0.10
+    restart: always
+  mysql57:
+    image: mysql:5.7
+    container_name: mysql57
+    ports:
+    - "13306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+    - /opt1/mysql/conf.d:/etc/mysql/conf.d
+    - /opt1/mysql/data:/var/lib/mysql
+    - /opt1/mysql/init-sql:/docker-entrypoint-initdb.d
+    - /etc/localtime:/etc/localtime
+    environment:
+      MYSQL_ROOT_PASSWORD: xxxxxx
+    networks:
+      vpcbr:
+        ipv4_address: 10.17.0.11
+    restart: always
+  litemall_admin_api_1:
+    image: openjdk:8-jre
+    container_name: litemall_admin_api_1
+    ports:
+    - "18080:8083"
+    volumes:
+    - /opt1/litemall/:/opt1/litemall
+    - /opt1/storage:/opt1/storage
+    - /etc/localtime:/etc/localtime
+    command:
+    - /bin/sh
+    - -c
+    - |
+      java -jar /opt1/litemall/litemall-admin-api-exec.jar
+    environment:
+    - TZ=Asia/Shanghai
+    depends_on:
+    - mysql57
+    external_links:
+    - mysql57:mysql57
+    networks:
+      vpcbr:
+        ipv4_address: 10.17.0.21
+    restart: always
+  litemall_wx_api_1:
+    image: openjdk:8-jre
+    container_name: litemall_wx_api_1
+    ports:
+    - "18081:8082"
+    volumes:
+    - /opt1/litemall/:/opt1/litemall
+    - /opt1/storage:/opt1/storage
+    - /etc/localtime:/etc/localtime
+    command:
+    - /bin/sh
+    - -c
+    - |
+      java -jar /opt1/litemall/litemall-wx-api-exec.jar
+    environment:
+    - TZ=Asia/Shanghai
+    depends_on:
+    - mysql57
+    external_links:
+    - mysql57:mysql57
+    networks:
+      vpcbr:
+        ipv4_address: 10.17.0.31
+    restart: always
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.17.0.0/16
+        gateway: 10.17.0.1
