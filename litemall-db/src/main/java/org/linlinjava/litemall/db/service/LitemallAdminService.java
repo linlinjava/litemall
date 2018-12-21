@@ -83,30 +83,7 @@ public class LitemallAdminService {
 
 
     public  List<LitemallResource> querySelective(Integer adminId){
-//        LitemallAdminRoleExample example = new LitemallAdminRoleExample();
-//        example.createCriteria().andAdminIdEqualTo(adminId);
-//        List<LitemallAdminRole> litemallAdminRoles = adminRoleMapper.selectByExampleSelective(example);
-//
-//        List<Integer> integers = new ArrayList<>();
-//        for (LitemallAdminRole lar : litemallAdminRoles){
-//            integers.add(lar.getRoleId());
-//        }
-//        LitemallRoleResourceExample example1 = new LitemallRoleResourceExample();
-//        example1.createCriteria().andRoleIdIn(integers);
-//        example1.setDistinct(true);
-//        List<LitemallRoleResource> roleResources = roleResourceMapper.selectByExampleSelective(example1,new LitemallRoleResource.Column[]{ LitemallRoleResource.Column.resourceId });
-//        integers.clear();
-//        for (LitemallRoleResource roleRes : roleResources){
-//            integers.add(roleRes.getResourceId());
-//        }
-//        LitemallResourceExample resourceExample = new LitemallResourceExample();
-//        resourceExample.createCriteria().andIdIn(integers);
-//        List<LitemallResource>  resourceList = resourceMapper.selectByExampleSelective(resourceExample,new LitemallResource.Column[]{LitemallResource.Column.routerText});
 
-
-        List<LitemallResource>  resourceList = resourceMapper.getUserRoles(adminId);
-
-
-        return  resourceList;
+        return  resourceMapper.getUserRoles(adminId);
     }
 }
