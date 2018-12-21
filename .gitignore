@@ -4,3 +4,4 @@
 /litemall.iml
 .idea
 /docker/litemall.tar.gz
+/docker/mysql/init-sql/init.sql
