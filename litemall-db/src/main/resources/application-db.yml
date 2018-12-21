@@ -8,8 +8,6 @@ spring:
   datasource:
     druid:
       driver-class-name:  com.mysql.jdbc.Driver
-      username:  litemall
-      password:  litemall123456
       initial-size:  10
       max-active:  50
       min-idle:  10
