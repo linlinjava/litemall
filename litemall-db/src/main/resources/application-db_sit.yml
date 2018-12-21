@@ -1,0 +1,4 @@
+spring:
+  datasource:
+    druid:
+      url:  jdbc:mysql://10.10.10.10:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false

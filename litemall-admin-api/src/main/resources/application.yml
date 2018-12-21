@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: db, core, admin
+    active: db, db_@profileActive@, core, core_@profileActive@, admin, admin_@profileActive@
   message:
     encoding: UTF-8
 
