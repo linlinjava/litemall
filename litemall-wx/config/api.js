@@ -93,6 +93,7 @@ module.exports = {
   CouponMyList: WxApiRoot + 'coupon/mylist', //我的优惠券列表
   CouponSelectList: WxApiRoot + 'coupon/selectlist', //当前订单可用优惠券列表
   CouponReceive: WxApiRoot + 'coupon/receive', //优惠券领取
+  CouponExchange: WxApiRoot + 'coupon/exchange', //优惠券兑换
 
   StorageUpload: WxApiRoot + 'storage/upload', //图片上传,
 

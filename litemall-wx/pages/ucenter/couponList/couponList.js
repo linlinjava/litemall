@@ -6,6 +6,7 @@ var app = getApp();
 Page({
   data: {
     couponList: [],
+    code: '',
     status: 0,
     page: 1,
     size: 10,
@@ -78,13 +79,6 @@ Page({
       showPage: false,
       couponList: []
     });
-    // 页面渲染完成
-    wx.showToast({
-      title: '加载中...',
-      icon: 'loading',
-      duration: 2000
-    });
-
     util.request(api.CouponMyList, {
       status: that.data.status,
       page: that.data.page,
@@ -99,20 +93,40 @@ Page({
           count: res.data.count
         });
       }
-      wx.hideToast();
     });
 
   },
-  goExchange: function() {
-    wx.showToast({
-      title: '目前不支持',
-      icon: 'none',
-      duration: 2000
+  bindExchange: function (e) {
+    this.setData({
+      code: e.detail.value
     });
   },
-  goUse: function() {
-    wx.reLaunch({
-      url: '/pages/index/index'
+  clearExchange: function () {
+    this.setData({
+      code: ''
+    });
+  },
+  goExchange: function() {
+    if (this.data.code.length === 0) {
+      util.showErrorToast("请输入兑换码");
+      return;
+    }
+
+    let that = this;
+    util.request(api.CouponExchange, {
+      code: that.data.code
+    }, 'POST').then(function (res) {
+      if (res.errno === 0) {
+        that.getCouponList();
+        that.clearExchange();
+        wx.showToast({
+          title: "领取成功",
+          duration: 2000
+        })
+      }
+      else{
+        util.showErrorToast(res.errmsg);
+      }
     });
   },
   nextPage: function(event) {

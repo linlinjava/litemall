@@ -39,6 +39,16 @@ public class CouponAssignService {
                 LitemallCouponUser couponUser = new LitemallCouponUser();
                 couponUser.setCouponId(couponId);
                 couponUser.setUserId(userId);
+                Short timeType = coupon.getTimeType();
+                if (timeType.equals(CouponConstant.TIME_TYPE_TIME)) {
+                    couponUser.setStartTime(coupon.getStartTime());
+                    couponUser.setEndTime(coupon.getEndTime());
+                }
+                else{
+                    LocalDateTime now = LocalDateTime.now();
+                    couponUser.setStartTime(now);
+                    couponUser.setEndTime(now.plusDays(coupon.getDays()));
+                }
                 couponUserService.add(couponUser);
 
                 limit--;

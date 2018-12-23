@@ -34,10 +34,14 @@
 		},
 		"miniprogram": {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			"current": 0,
 =======
 			"current": 37,
 >>>>>>> 570fff521b73bcdd0d4ec16906f7fc55e385946d
+=======
+			"current": 22,
+>>>>>>> upstream/master
 			"list": [
 				{
 					"id": -1,
@@ -172,9 +176,9 @@
 					"query": "orderId=2&type=0&valueId=1116011"
 				},
 				{
-					"id": -1,
+					"id": 22,
 					"name": "我的优惠券",
-					"pathName": "pages/ucenter/coupon/coupon",
+					"pathName": "pages/ucenter/couponList/couponList",
 					"query": ""
 				},
 				{
@@ -266,8 +270,13 @@
 				{
 					"id": -1,
 					"name": "优惠券列表",
+<<<<<<< HEAD
 					"pathName": "pages/coupon/coupon"
 >>>>>>> 570fff521b73bcdd0d4ec16906f7fc55e385946d
+=======
+					"pathName": "pages/coupon/coupon",
+					"query": ""
+>>>>>>> upstream/master
 				}
 			]
 		}
