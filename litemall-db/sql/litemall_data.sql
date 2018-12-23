@@ -98,8 +98,18 @@ UNLOCK TABLES;
 
 LOCK TABLES `litemall_coupon` WRITE;
 /*!40000 ALTER TABLE `litemall_coupon` DISABLE KEYS */;
-INSERT INTO `litemall_coupon` VALUES (1,'限时满减券','全场通用','无限制',0,5.00,99.00,1,0,0,0,'[]',10,NULL,NULL,'2018-02-01 00:00:00','2018-02-01 00:00:00',0),(2,'限时满减券','全场通用','无限制',0,10.00,99.00,1,0,0,0,'[]',10,NULL,NULL,'2018-02-01 00:00:00','2018-02-01 00:00:00',0),(3,'新用户优惠券','全场通用','无限制',0,10.00,99.00,1,1,0,0,'[]',10,NULL,NULL,'2018-02-01 00:00:00','2018-02-01 00:00:00',0);
+INSERT INTO `litemall_coupon` VALUES (1,'限时满减券','全场通用','无限制',0,5.00,99.00,1,0,0,0,'[]',NULL,0,10,NULL,NULL,'2018-02-01 00:00:00','2018-02-01 00:00:00',0),(2,'限时满减券','全场通用','无限制',0,10.00,99.00,1,0,0,0,'[]',NULL,0,10,NULL,NULL,'2018-02-01 00:00:00','2018-02-01 00:00:00',0),(3,'新用户优惠券','全场通用','无限制',0,10.00,99.00,1,1,0,0,'[]',NULL,0,10,NULL,NULL,'2018-02-01 00:00:00','2018-02-01 00:00:00',0),(8,'可兑换优惠券','全场通用','仅兑换领券',0,15.00,99.00,1,2,0,0,'[]','DC6FF8SE',0,7,NULL,NULL,'2018-12-23 09:29:57','2018-12-23 09:29:57',0);
 /*!40000 ALTER TABLE `litemall_coupon` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `litemall_coupon_user`
+--
+
+LOCK TABLES `litemall_coupon_user` WRITE;
+/*!40000 ALTER TABLE `litemall_coupon_user` DISABLE KEYS */;
+INSERT INTO `litemall_coupon_user` VALUES (2,1,8,0,NULL,NULL,'2018-12-23 09:30:14','2018-12-23 09:30:14',0);
+/*!40000 ALTER TABLE `litemall_coupon_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
