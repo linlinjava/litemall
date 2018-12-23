@@ -12,6 +12,29 @@
     <result column="pid" jdbcType="VARCHAR" property="pid" />
     <result column="description" jdbcType="VARCHAR" property="description" />
   </resultMap>
+
+
+  <resultMap id="BaseTreeResultMap" type="org.linlinjava.litemall.db.domain.LitemallResourceNode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="router_text" jdbcType="VARCHAR" property="routerText" />
+    <result column="router_url" jdbcType="VARCHAR" property="routerUrl" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <collection column="id" property="next" javaType="java.util.ArrayList"
+                ofType="org.linlinjava.litemall.db.domain.LitemallResourceNode" select="getNextNodeTree"/>
+  </resultMap>
+
+  <resultMap id="NextTreeResultMap" type="org.linlinjava.litemall.db.domain.LitemallResourceNode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="router_text" jdbcType="VARCHAR" property="routerText" />
+    <result column="router_url" jdbcType="VARCHAR" property="routerUrl" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <collection column="id" property="next" javaType="java.util.ArrayList"
+                ofType="org.linlinjava.litemall.db.domain.LitemallResourceNode" select="getNextNodeTree"/>
+  </resultMap>
+
+
   <sql id="Example_Where_Clause">
     <!--
       WARNING - @mbg.generated
@@ -370,5 +393,19 @@
         select lar.role_id from litemall_admin_role lar where lar.admin_id = #{adminId,jdbcType=INTEGER}
       )
     )
+  </select>
+
+  <select id="getNextNodeTree" resultMap="NextTreeResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM litemall_resource
+    WHERE pid = #{id}
+  </select>
+
+  <select id="listResourceTree" resultMap="BaseTreeResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM litemall_resource
+    WHERE pid is null
   </select>
 </mapper>

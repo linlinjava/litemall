@@ -3,22 +3,28 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
+import org.linlinjava.litemall.db.domain.LitemallAdmin;
+import org.linlinjava.litemall.db.domain.LitemallResource;
+import org.linlinjava.litemall.db.domain.LitemallResourceNode;
 import org.linlinjava.litemall.db.domain.LitemallRole;
+import org.linlinjava.litemall.db.service.LitemallResourceService;
 import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_NAME;
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_PASSWORD;
 
 /**
  * @author ulongx
@@ -32,6 +38,9 @@ public class AdminRoleController {
     @Autowired
     private LitemallRoleService roleService;
 
+    @Autowired
+    private LitemallResourceService resourceService;
+
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
         if (adminId == null) {
@@ -39,6 +48,7 @@ public class AdminRoleController {
         }
 
         LitemallRole brand = roleService.findById(id);
+
         return ResponseUtil.ok(brand);
     }
 
@@ -60,6 +70,41 @@ public class AdminRoleController {
         data.put("items", roleList);
 
         return ResponseUtil.ok(data);
+    }
+
+    private Object validate(LitemallRole role) {
+        String name = role.getRoleName();
+        if (StringUtils.isEmpty(name)) {
+            return ResponseUtil.badArgument();
+        }
+        if (!RegexUtil.isUsername(name)) {
+            return ResponseUtil.fail(ADMIN_INVALID_NAME, "角色名称不符合规定");
+        }
+        return null;
+    }
+
+    @PostMapping("/update")
+    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallRole role) {
+        if (adminId == null) {
+            return ResponseUtil.unlogin();
+        }
+        Object error = validate(role);
+        if (error != null) {
+            return error;
+        }
+
+        return ResponseUtil.ok();
+    }
+
+    @GetMapping("/listSrc")
+    public Object listResource(@LoginAdmin Integer adminId){
+        if (adminId == null) {
+            return ResponseUtil.unlogin();
+        }
+
+        List<LitemallResourceNode> resourceNodes = resourceService.queryResorceTree();
+
+        return ResponseUtil.ok(resourceNodes);
     }
 //
 //    private Object validate(LitemallAdmin admin) {

@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.linlinjava.litemall.db.domain.LitemallResource;
 import org.linlinjava.litemall.db.domain.LitemallResourceExample;
+import org.linlinjava.litemall.db.domain.LitemallResourceNode;
 
 public interface LitemallResourceMapper {
     /**
@@ -136,4 +137,10 @@ public interface LitemallResourceMapper {
      * @return
      */
     List<LitemallResource> getUserRoles(Integer adminId);
+
+    /**
+     * 查询资源树
+     * @return
+     */
+    List<LitemallResourceNode> listResourceTree();
 }

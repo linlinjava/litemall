@@ -10,7 +10,7 @@
 
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="角色名称" prop="rolename" sortable/>
+      <el-table-column align="center" label="角色名称" prop="roleName" sortable/>
 
       <el-table-column align="center" label="说明" prop="description"/>
 
@@ -27,13 +27,22 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="角色名称" prop="rolename">
-          <el-input v-model="dataForm.rolename"/>
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="dataForm.roleName"/>
         </el-form-item>
         <el-form-item label="说明" prop="description">
           <el-input v-model="dataForm.description"/>
         </el-form-item>
-        <el-form-item label="授权" prop="roles"/>
+        <el-form-item label="授权" prop="roles">
+          <treeselect
+            :multiple="true"
+            :load-options="loadOptions"
+            :auto-load-root-options="false"
+            :options="roleMap.options"
+            :value-consists-of="roleMap.valueConsistsOf"
+            v-model="roleMap.roleValue"
+            :placeholder="roleMap.placeholder"/>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -70,12 +79,14 @@
 }
 </style>
 <script>
-import Treeselect from '@riophae/vue-treeselect'
+import { Treeselect, LOAD_ROOT_OPTIONS } from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
-import { listRole, createRole, updateRole, deleteRole } from '@/api/role'
+import { listRole, createRole, updateRole, deleteRole, listSrc } from '@/api/role'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
+
+let called = false
 
 export default {
   name: 'Role',
@@ -88,13 +99,13 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        rolename: undefined,
-        sort: 'add_time',
+        roleName: undefined,
+        sort: 'id',
         order: 'desc'
       },
       dataForm: {
         id: undefined,
-        rolename: undefined,
+        roleName: undefined,
         description: undefined,
         roles: undefined
       },
@@ -105,9 +116,15 @@ export default {
         create: '创建'
       },
       rules: {
-        rolename: [
+        roleName: [
           { required: true, message: '角色名称不能为空', trigger: 'blur' }
         ]
+      },
+      roleMap: {
+        options: null,
+        roleValue: null,
+        valueConsistsOf: 'BRANCH_PRIORITY',
+        placeholder: '请选择权限'
       }
     }
   },
@@ -122,6 +139,35 @@ export default {
     this.getList()
   },
   methods: {
+    loadOptions({ action, callback }) {
+      if (action === LOAD_ROOT_OPTIONS) {
+        if (!called) {
+          listSrc()
+            .then(response => {
+              called = true
+              this.roleMap.options = this.handerleOptions(response.data.data)
+              callback()
+            })
+            .catch(() => {
+              called = false
+              callback()
+            })
+        }
+      }
+    },
+    handerleOptions(data) {
+      const options = data.map(d => {
+        const opts = {
+          id: d.id,
+          label: d.description
+        }
+        if (d.next && d.next.length > 0) {
+          opts['children'] = this.handerleOptions(d.next)
+        }
+        return opts
+      })
+      return options
+    },
     getList() {
       this.listLoading = true
       listRole(this.listQuery)
@@ -129,6 +175,7 @@ export default {
           this.list = response.data.data.items
           this.total = response.data.data.total
           this.listLoading = false
+          console.log(response.data.data.items)
         })
         .catch(() => {
           this.list = []
@@ -179,6 +226,7 @@ export default {
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
+      this.roleMap.roleValue = null
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
