@@ -124,7 +124,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
 ## 开发计划
 
-当前版本[v1.0.0](./CHANGELOG.md)
+当前版本[v1.1.0](./CHANGELOG.md)
 
 目前项目开发中，存在诸多不足，以下是目前规划的开发计划。
 
