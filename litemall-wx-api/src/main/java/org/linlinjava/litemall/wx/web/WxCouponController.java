@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,14 +114,14 @@ public class WxCouponController {
             couponVo.setMin(coupon.getMin().toPlainString());
             couponVo.setDiscount(coupon.getDiscount().toPlainString());
 
-            Short days = coupon.getDays();
-            if (days == 0) {
+            Short timeType = coupon.getTimeType();
+            if (timeType.equals(CouponConstant.TIME_TYPE_TIME)) {
                 couponVo.setStartTime(coupon.getStartTime());
                 couponVo.setEndTime(coupon.getEndTime());
             }
             else{
                 couponVo.setStartTime(coupon.getAddTime());
-                couponVo.setEndTime(coupon.getAddTime().plusDays(days));
+                couponVo.setEndTime(coupon.getAddTime().plusDays(coupon.getDays()));
             }
             couponVoList.add(couponVo);
         }
@@ -231,6 +232,9 @@ public class WxCouponController {
         if(type.equals(CouponConstant.TYPE_REGISTER)){
             return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "新用户优惠券自动发送");
         }
+        else if(type.equals(CouponConstant.TYPE_CODE)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "优惠券只能兑换");
+        }
         else if(!type.equals(CouponConstant.TYPE_COMMON)){
             return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "优惠券类型不支持");
         }
@@ -240,7 +244,77 @@ public class WxCouponController {
         if(status.equals(CouponConstant.STATUS_OUT)){
             return ResponseUtil.fail(WxResponseCode.COUPON_EXCEED_LIMIT, "优惠券已领完");
         }
-        if(status.equals(CouponConstant.STATUS_EXPIRED)){
+        else if(status.equals(CouponConstant.STATUS_EXPIRED)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "优惠券已经过期");
+        }
+
+        // 用户领券记录
+        LitemallCouponUser couponUser = new LitemallCouponUser();
+        couponUser.setCouponId(couponId);
+        couponUser.setUserId(userId);
+
+        couponUserService.add(couponUser);
+
+        return ResponseUtil.ok();
+    }
+
+    /**
+     * 优惠券兑换
+     *
+     * @param userId 用户ID
+     * @param body 请求内容， { code: xxx }
+     * @return 操作结果
+     */
+    @PostMapping("exchange")
+    public Object exchange(@LoginUser Integer userId, @RequestBody String body) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+
+        String code = JacksonUtil.parseString(body, "code");
+        if(code == null){
+            return ResponseUtil.badArgument();
+        }
+
+        LitemallCoupon coupon = couponService.findByCode(code);
+        if(coupon == null){
+            return ResponseUtil.fail(WxResponseCode.COUPON_CODE_INVALID, "优惠券不正确");
+        }
+        Integer couponId = coupon.getId();
+
+        // 当前已领取数量和总数量比较
+        Integer total = coupon.getTotal();
+        Integer totalCoupons = couponUserService.countCoupon(couponId);
+        if((total != 0) && (totalCoupons >= total)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_EXCEED_LIMIT, "优惠券已兑换");
+        }
+
+        // 当前用户已领取数量和用户限领数量比较
+        Integer limit = coupon.getLimit().intValue();
+        Integer userCounpons = couponUserService.countUserAndCoupon(userId, couponId);
+        if((limit != 0) && (userCounpons >= limit)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_EXCEED_LIMIT, "优惠券已兑换");
+        }
+
+        // 优惠券分发类型
+        // 例如注册赠券类型的优惠券不能领取
+        Short type = coupon.getType();
+        if(type.equals(CouponConstant.TYPE_REGISTER)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "新用户优惠券自动发送");
+        }
+        else if(type.equals(CouponConstant.TYPE_COMMON)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "优惠券只能领取，不能兑换");
+        }
+        else if(!type.equals(CouponConstant.TYPE_CODE)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "优惠券类型不支持");
+        }
+
+        // 优惠券状态，已下架或者过期不能领取
+        Short status = coupon.getStatus();
+        if(status.equals(CouponConstant.STATUS_OUT)){
+            return ResponseUtil.fail(WxResponseCode.COUPON_EXCEED_LIMIT, "优惠券已兑换");
+        }
+        else if(status.equals(CouponConstant.STATUS_EXPIRED)){
             return ResponseUtil.fail(WxResponseCode.COUPON_RECEIVE_FAIL, "优惠券已经过期");
         }
 

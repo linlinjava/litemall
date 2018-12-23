@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 37,
+			"current": 22,
 			"list": [
 				{
 					"id": -1,
@@ -164,9 +164,9 @@
 					"query": "orderId=2&type=0&valueId=1116011"
 				},
 				{
-					"id": -1,
+					"id": 22,
 					"name": "我的优惠券",
-					"pathName": "pages/ucenter/coupon/coupon",
+					"pathName": "pages/ucenter/couponList/couponList",
 					"query": ""
 				},
 				{
@@ -256,7 +256,8 @@
 				{
 					"id": -1,
 					"name": "优惠券列表",
-					"pathName": "pages/coupon/coupon"
+					"pathName": "pages/coupon/coupon",
+					"query": ""
 				}
 			]
 		}
