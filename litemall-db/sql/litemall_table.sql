@@ -248,6 +248,8 @@ CREATE TABLE `litemall_coupon_user` (
   `coupon_id` int(11) NOT NULL COMMENT '优惠券ID',
   `status` smallint(6) DEFAULT '0' COMMENT '使用状态, 如果是0则未使用；如果是1则已使用；如果是2则已过期；如果是3则已经下架；',
   `used_time` datetime DEFAULT NULL COMMENT '使用时间',
+  `start_time` datetime DEFAULT NULL COMMENT '有效期开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '有效期截至时间',
   `order_id` int(11) DEFAULT NULL COMMENT '订单ID',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',

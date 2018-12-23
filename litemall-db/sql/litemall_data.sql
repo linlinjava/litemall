@@ -108,7 +108,6 @@ UNLOCK TABLES;
 
 LOCK TABLES `litemall_coupon_user` WRITE;
 /*!40000 ALTER TABLE `litemall_coupon_user` DISABLE KEYS */;
-INSERT INTO `litemall_coupon_user` VALUES (2,1,8,0,NULL,NULL,'2018-12-23 09:30:14','2018-12-23 09:30:14',0);
 /*!40000 ALTER TABLE `litemall_coupon_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
