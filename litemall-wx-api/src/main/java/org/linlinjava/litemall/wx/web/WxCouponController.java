@@ -113,16 +113,9 @@ public class WxCouponController {
             couponVo.setTag(coupon.getTag());
             couponVo.setMin(coupon.getMin().toPlainString());
             couponVo.setDiscount(coupon.getDiscount().toPlainString());
+            couponVo.setStartTime(couponUser.getStartTime());
+            couponVo.setEndTime(couponUser.getEndTime());
 
-            Short timeType = coupon.getTimeType();
-            if (timeType.equals(CouponConstant.TIME_TYPE_TIME)) {
-                couponVo.setStartTime(coupon.getStartTime());
-                couponVo.setEndTime(coupon.getEndTime());
-            }
-            else{
-                couponVo.setStartTime(coupon.getAddTime());
-                couponVo.setEndTime(coupon.getAddTime().plusDays(coupon.getDays()));
-            }
             couponVoList.add(couponVo);
         }
 
@@ -252,7 +245,16 @@ public class WxCouponController {
         LitemallCouponUser couponUser = new LitemallCouponUser();
         couponUser.setCouponId(couponId);
         couponUser.setUserId(userId);
-
+        Short timeType = coupon.getTimeType();
+        if (timeType.equals(CouponConstant.TIME_TYPE_TIME)) {
+            couponUser.setStartTime(coupon.getStartTime());
+            couponUser.setEndTime(coupon.getEndTime());
+        }
+        else{
+            LocalDateTime now = LocalDateTime.now();
+            couponUser.setStartTime(now);
+            couponUser.setEndTime(now.plusDays(coupon.getDays()));
+        }
         couponUserService.add(couponUser);
 
         return ResponseUtil.ok();
@@ -322,7 +324,16 @@ public class WxCouponController {
         LitemallCouponUser couponUser = new LitemallCouponUser();
         couponUser.setCouponId(couponId);
         couponUser.setUserId(userId);
-
+        Short timeType = coupon.getTimeType();
+        if (timeType.equals(CouponConstant.TIME_TYPE_TIME)) {
+            couponUser.setStartTime(coupon.getStartTime());
+            couponUser.setEndTime(coupon.getEndTime());
+        }
+        else{
+            LocalDateTime now = LocalDateTime.now();
+            couponUser.setStartTime(now);
+            couponUser.setEndTime(now.plusDays(coupon.getDays()));
+        }
         couponUserService.add(couponUser);
 
         return ResponseUtil.ok();

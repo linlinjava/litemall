@@ -167,4 +167,16 @@ public class LitemallCouponService {
         }
         return code;
     }
+
+    /**
+     * 查询过期的优惠券:
+     * 注意：如果timeType=0, 即基于领取时间有效期的优惠券，则优惠券不会过期
+     *
+     * @return
+     */
+    public List<LitemallCoupon> queryExpired() {
+        LitemallCouponExample example = new LitemallCouponExample();
+        example.or().andStatusEqualTo(CouponConstant.STATUS_NORMAL).andTimeTypeEqualTo(CouponConstant.TIME_TYPE_TIME).andEndTimeLessThan(LocalDateTime.now()).andDeletedEqualTo(false);
+        return couponMapper.selectByExample(example);
+    }
 }

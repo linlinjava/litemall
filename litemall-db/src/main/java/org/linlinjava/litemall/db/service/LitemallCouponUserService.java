@@ -111,4 +111,10 @@ public class LitemallCouponUserService {
         couponUser.setUpdateTime(LocalDateTime.now());
         return couponUserMapper.updateByPrimaryKeySelective(couponUser);
     }
+
+    public List<LitemallCouponUser> queryExpired() {
+        LitemallCouponUserExample example = new LitemallCouponUserExample();
+        example.or().andStatusEqualTo(CouponUserConstant.STATUS_USABLE).andEndTimeLessThan(LocalDateTime.now()).andDeletedEqualTo(false);
+        return couponUserMapper.selectByExample(example);
+    }
 }
