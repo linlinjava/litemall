@@ -790,11 +790,13 @@ sudo apt-get install mysql-client
     mvn clean package
     cp -f ./litemall-all/target/litemall-all-*-exec.jar ./deploy/litemall/litemall.jar
     ```
-    这里的工作是：
-    1. 把数据库文件拷贝到deploy/db文件夹
-    2. 编译litemall-admin项目
+    
+    这里脚本的作用是：
+    
+    1. 把数据库文件拷贝到deploy/db文件夹；
+    2. 编译litemall-admin项目；
     3. 编译litemall-all模块，同时把litemall-admin编译得到的静态文件拷贝到
-       litemall-all模块的static目录
+       litemall-all模块的static目录。
        
 2. 修改litemall文件夹下面的*.yml外部配置文件，当litemall-all模块启动时会
     加载外部配置文件，而覆盖默认jar包内部的配置文件。
@@ -835,6 +837,11 @@ sudo apt-get install mysql-client
     http://xxx.xxx.xxx.xxx:8080/admin/index/index
     http://xxx.xxx.xxx.xxx:8080/#/login
     ```
+
+注意：
+> 开发者访问以上三个地址都能成功，但是管理后台点击登录时会报错网络连接不成功。
+> 这里很可能是开发者litemall-admin模块的`config/dep.env.js`或者`condig/prod.env.js`
+> 没有设置正确的管理后台后端地址，例如这里的`http://xxx.xxx.xxx.xxx:8080/admin`
 
 #### 1.5.1.6 项目辅助脚本
 

@@ -37,6 +37,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * 分类列表、分类详情
 * 品牌列表、品牌详情
 * 新品首发、人气推荐
+* 优惠券列表、优惠券选择
 * 团购
 * 搜索
 * 商品详情、商品评价、商品分享
@@ -153,11 +154,26 @@ V 3.0.0 完成以下目标：
 ## 致谢
 
 本项目基于或参考以下项目：
-> 1. [nideshop-mini-program](https://github.com/tumobi/nideshop-mini-program)
-> 如果后端希望采用nodejs，开发者可以访问nideshop项目；
-> 此外，数据库原始数据也是来自nideshop项目。
-> 2. [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
-> 一个基于Vue和Element的后台集成方案
+
+1. [nideshop-mini-program](https://github.com/tumobi/nideshop-mini-program)
+
+   项目介绍：基于Node.js+MySQL开发的开源微信小程序商城（微信小程序）
+
+   项目参考：
+    （1）litemall项目数据库基于nideshop-mini-program项目数据库；
+    （2）litemall项目的litemall-wx模块基于nideshop-mini-program开发。
+
+2. [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+  
+   项目介绍： 一个基于Vue和Element的后台集成方案
+  
+   项目参考：litemall项目的litemall-admin模块的前端框架基于该项目修改扩展。
+
+3. [mall-admin-web](https://github.com/macrozheng/mall-admin-web)
+
+   项目介绍：mall-admin-web是一个电商后台管理系统的前端项目，基于Vue+Element实现。
+
+   项目参考：litemall项目的litemall-admin模块的一些页面布局样式参考了该项目。
 
 ## 问题
 
