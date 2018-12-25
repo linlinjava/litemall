@@ -33,14 +33,14 @@
         <el-form-item label="说明" prop="description">
           <el-input v-model="dataForm.description"/>
         </el-form-item>
-        <el-form-item label="授权" prop="roles">
+        <el-form-item label="授权" prop="resources">
           <treeselect
             :multiple="true"
             :load-options="loadOptions"
             :auto-load-root-options="false"
             :options="roleMap.options"
             :value-consists-of="roleMap.valueConsistsOf"
-            v-model="roleMap.roleValue"
+            v-model="dataForm.resources"
             :placeholder="roleMap.placeholder"/>
         </el-form-item>
       </el-form>
@@ -107,7 +107,7 @@ export default {
         id: undefined,
         roleName: undefined,
         description: undefined,
-        roles: undefined
+        resources: null
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -122,7 +122,6 @@ export default {
       },
       roleMap: {
         options: null,
-        roleValue: null,
         valueConsistsOf: 'BRANCH_PRIORITY',
         placeholder: '请选择权限'
       }
@@ -190,9 +189,9 @@ export default {
     resetForm() {
       this.dataForm = {
         id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined
+        roleName: undefined,
+        description: undefined,
+        resources: null
       }
     },
     handleCreate() {
@@ -212,7 +211,7 @@ export default {
               this.dialogFormVisible = false
               this.$notify.success({
                 title: '成功',
-                message: '添加管理员成功'
+                message: '添加角色成功'
               })
             })
             .catch(response => {
@@ -226,7 +225,6 @@ export default {
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
-      this.roleMap.roleValue = null
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {

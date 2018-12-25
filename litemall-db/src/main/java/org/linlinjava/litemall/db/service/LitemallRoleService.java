@@ -62,4 +62,27 @@ public class LitemallRoleService {
 
         return (int) roleMapper.countByExample(example);
     }
+
+    /**
+     * 根据角色找到对应角色
+     * @param roleName
+     * @return
+     */
+    public List<LitemallRole> findByRoleName(String roleName) {
+        LitemallRoleExample roleExample = new LitemallRoleExample();
+        roleExample.or().andRoleNameEqualTo(roleName);
+        return roleMapper.selectByExample(roleExample);
+    }
+
+    /**
+     * 新增角色, 并保持权限
+     * @param role
+     */
+    public void add(LitemallRole role, String[] resources) {
+        roleMapper.insert(role);
+
+        if (resources != null && resources.length > 0){
+
+        }
+    }
 }

@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.admin.util.RoleVo;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_NAME;
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_PASSWORD;
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_NAME_EXIST;
 
 /**
  * @author ulongx
@@ -83,6 +85,31 @@ public class AdminRoleController {
         return null;
     }
 
+    /**
+     * 角色增加
+     * @param adminId
+     * @param role
+     * @return
+     */
+    @PostMapping("/create")
+    public Object create(@LoginAdmin Integer adminId, @RequestBody RoleVo role) {
+        if (adminId == null) {
+            return ResponseUtil.unlogin();
+        }
+        Object error = validate(role);
+        if (error != null) {
+            return error;
+        }
+
+        List<LitemallRole> roleList = roleService.findByRoleName(role.getRoleName());
+        if (roleList.size() > 0){
+            return ResponseUtil.fail(ADMIN_NAME_EXIST, "该角色已经存在");
+        }
+
+        roleService.add(role, role.getResources());
+
+        return ResponseUtil.ok(role);
+    }
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallRole role) {
         if (adminId == null) {
