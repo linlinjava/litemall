@@ -115,7 +115,7 @@ Page({
       page: that.data.page + 1
     });
 
-    this.getTopic();
+    this.getGrouponList();
 
   },
   prevPage: function(event) {
@@ -127,6 +127,6 @@ Page({
     that.setData({
       page: that.data.page - 1
     });
-    this.getTopic();
+    this.getGrouponList();
   }
 })

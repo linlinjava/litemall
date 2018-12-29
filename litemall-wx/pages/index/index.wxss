@@ -121,6 +121,79 @@
   height: 253rpx;
 }
 
+.a-coupon {
+  width: 750rpx;
+  height: auto;
+  overflow: hidden;
+}
+
+.a-coupon .b .item {
+  position: relative;
+  height: 200rpx;
+  width: 700rpx;
+  background: linear-gradient(to right, #cfa568, #e3bf79);
+  margin-bottom: 10rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+  padding-top: 30rpx;
+}
+
+.a-coupon .b .tag {
+  height: 32rpx;
+  background: #a48143;
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+  position: absolute;
+  left: 20rpx;
+  color: #fff;
+  top: 20rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 32rpx;
+}
+
+.a-coupon .b .content {
+  margin-top: 24rpx;
+  margin-left: 40rpx;
+  display: flex;
+  margin-right: 40rpx;
+  flex-direction: row;
+}
+
+.a-coupon .b .content .left {
+  flex: 1;
+}
+
+.a-coupon .b .discount {
+  font-size: 50rpx;
+  color: #b4282d;
+}
+
+.a-coupon .b .min {
+  color: #fff;
+}
+
+.a-coupon .b .content .right {
+  width: 400rpx;
+}
+
+.a-coupon .b .name {
+  font-size: 44rpx;
+  color: #fff;
+  margin-bottom: 14rpx;
+}
+
+.a-coupon .b .desc {
+  font-size: 24rpx;
+  color: #fff;
+}
+
+.a-coupon .b .time {
+  font-size: 24rpx;
+  color: #fff;
+  line-height: 30rpx;
+}
+
 .a-groupon {
   width: 750rpx;
   height: auto;

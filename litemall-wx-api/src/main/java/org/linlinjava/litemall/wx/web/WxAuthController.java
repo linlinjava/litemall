@@ -13,6 +13,7 @@ import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
 import org.linlinjava.litemall.db.domain.LitemallUser;
+import org.linlinjava.litemall.db.service.CouponAssignService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.dao.UserInfo;
@@ -54,6 +55,9 @@ public class WxAuthController {
 
     @Autowired
     private NotifyService notifyService;
+
+    @Autowired
+    private CouponAssignService couponAssignService;
 
     /**
      * 账号登录
@@ -144,6 +148,9 @@ public class WxAuthController {
             user.setLastLoginIp(IpUtil.client(request));
 
             userService.add(user);
+
+            // 新用户发送注册优惠券
+            couponAssignService.assignForRegister(user.getId());
         } else {
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.client(request));
@@ -288,6 +295,9 @@ public class WxAuthController {
         user.setLastLoginTime(LocalDateTime.now());
         user.setLastLoginIp(IpUtil.client(request));
         userService.add(user);
+
+        // 给新用户发送注册优惠券
+        couponAssignService.assignForRegister(user.getId());
 
         // userInfo
         UserInfo userInfo = new UserInfo();

@@ -17,6 +17,8 @@ public class WxProperties {
 
     private String notifyUrl;
 
+    private String keyPath;
+
     public String getNotifyUrl() {
         return notifyUrl;
     }
@@ -57,4 +59,11 @@ public class WxProperties {
         this.mchId = mchId;
     }
 
+    public String getKeyPath() {
+        return keyPath;
+    }
+
+    public void setKeyPath(String keyPath) {
+        this.keyPath = keyPath;
+    }
 }

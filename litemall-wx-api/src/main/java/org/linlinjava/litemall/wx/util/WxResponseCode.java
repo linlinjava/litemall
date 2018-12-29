@@ -28,4 +28,10 @@ public class WxResponseCode {
     public static final Integer ORDER_COMMENT_EXPIRED = 727;
 
     public static final Integer GROUPON_EXPIRED = 730;
+
+    public static final int COUPON_EXCEED_LIMIT = 740;
+    public static final int COUPON_RECEIVE_FAIL= 741;
+    public static final int COUPON_CODE_INVALID= 742;
+
+
 }

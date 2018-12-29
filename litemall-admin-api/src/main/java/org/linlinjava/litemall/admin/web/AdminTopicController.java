@@ -83,8 +83,8 @@ public class AdminTopicController {
             return ResponseUtil.unlogin();
         }
 
-        LitemallTopic brand = topicService.findById(id);
-        return ResponseUtil.ok(brand);
+        LitemallTopic topic = topicService.findById(id);
+        return ResponseUtil.ok(topic);
     }
 
     @PostMapping("/update")

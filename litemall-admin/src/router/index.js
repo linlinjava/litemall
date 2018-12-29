@@ -227,7 +227,20 @@ export const asyncRouterMap = [
         path: 'ad',
         component: () => import('@/views/promotion/ad'),
         name: 'ad',
-        meta: { title: '广告列表', noCache: true }
+        meta: { title: '广告管理', noCache: true }
+      },
+      {
+        path: 'coupon',
+        component: () => import('@/views/promotion/coupon'),
+        name: 'coupon',
+        meta: { title: '优惠券管理', noCache: true }
+      },
+      {
+        path: 'couponDetail',
+        component: () => import('@/views/promotion/couponDetail'),
+        name: 'couponDetail',
+        meta: { title: '优惠券详情', noCache: true },
+        hidden: true
       },
       {
         path: 'topic',
