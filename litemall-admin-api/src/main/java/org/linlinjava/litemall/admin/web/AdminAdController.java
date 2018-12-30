@@ -52,7 +52,7 @@ public class AdminAdController {
         if (StringUtils.isEmpty(name)) {
             return ResponseUtil.badArgument();
         }
-        String content = ad.getName();
+        String content = ad.getContent();
         if (StringUtils.isEmpty(content)) {
             return ResponseUtil.badArgument();
         }
