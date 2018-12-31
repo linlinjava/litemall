@@ -3,7 +3,6 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.admin.service.AdminTokenManager;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
@@ -32,29 +31,6 @@ public class AdminAdminController {
 
     @Autowired
     private LitemallAdminService adminService;
-
-    @GetMapping("/info")
-    public Object info(String token) {
-        Integer adminId = AdminTokenManager.getUserId(token);
-        if (adminId == null) {
-            return ResponseUtil.badArgumentValue();
-        }
-        LitemallAdmin admin = adminService.findById(adminId);
-        if (admin == null) {
-            return ResponseUtil.badArgumentValue();
-        }
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", admin.getUsername());
-        data.put("avatar", admin.getAvatar());
-
-        // 目前roles不支持，这里简单设置admin
-        List<String> roles = new ArrayList<>();
-        roles.add("admin");
-        data.put("roles", roles);
-        data.put("introduction", "admin introduction");
-        return ResponseUtil.ok(data);
-    }
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,

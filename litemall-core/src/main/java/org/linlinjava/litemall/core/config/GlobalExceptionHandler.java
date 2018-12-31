@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.core.config;
 
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -43,6 +45,13 @@ public class GlobalExceptionHandler {
     public Object badArgumentHandler(HttpMessageNotReadableException e) {
         e.printStackTrace();
         return ResponseUtil.badArgumentValue();
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseBody
+    public Object unauthorizedHandler(AuthorizationException e) {
+        e.printStackTrace();
+        return ResponseUtil.unauthz();
     }
 
     @ExceptionHandler(ValidationException.class)

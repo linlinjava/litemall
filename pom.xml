@@ -69,6 +69,12 @@
                 <version>1.2.5</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring-boot-web-starter</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+
             <!-- MySQL 连接驱动依赖 -->
             <dependency>
                 <groupId>mysql</groupId>

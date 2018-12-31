@@ -101,5 +101,9 @@ public class ResponseUtil {
     public static Object updatedDataFailed() {
         return fail(505, "更新数据失败");
     }
+
+    public static Object unauthz() {
+        return fail(506, "无操作权限");
+    }
 }
 
