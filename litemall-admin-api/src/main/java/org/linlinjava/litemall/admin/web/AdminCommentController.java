@@ -32,10 +32,6 @@ public class AdminCommentController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallComment> brandList = commentService.querySelective(userId, valueId, page, limit, sort, order);
         int total = commentService.countSelective(userId, valueId, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -47,9 +43,6 @@ public class AdminCommentController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Integer id = comment.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

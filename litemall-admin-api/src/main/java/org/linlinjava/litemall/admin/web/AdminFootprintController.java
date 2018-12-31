@@ -35,10 +35,6 @@ public class AdminFootprintController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallFootprint> footprintList = footprintService.querySelective(userId, goodsId, page, limit, sort, order);
         int total = footprintService.countSelective(userId, goodsId, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();

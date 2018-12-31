@@ -33,10 +33,6 @@ public class AdminHistoryController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallSearchHistory> footprintList = searchHistoryService.querySelective(userId, keyword, page, limit, sort, order);
         int total = searchHistoryService.countSelective(userId, keyword, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();

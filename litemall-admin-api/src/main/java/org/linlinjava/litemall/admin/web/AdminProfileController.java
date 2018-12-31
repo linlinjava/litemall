@@ -30,10 +30,6 @@ public class AdminProfileController {
 
     @PostMapping("/password")
     public Object create(@LoginAdmin Integer adminId, @RequestBody String body) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         String oldPassword = JacksonUtil.parseString(body, "oldPassword");
         String newPassword = JacksonUtil.parseString(body, "newPassword");
         if (StringUtils.isEmpty(oldPassword)) {

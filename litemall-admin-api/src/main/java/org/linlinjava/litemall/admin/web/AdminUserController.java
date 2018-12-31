@@ -38,9 +38,6 @@ public class AdminUserController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         List<LitemallUser> userList = userService.querySelective(username, mobile, page, limit, sort, order);
         int total = userService.countSeletive(username, mobile, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -52,10 +49,6 @@ public class AdminUserController {
 
     @GetMapping("/username")
     public Object username(@LoginAdmin Integer adminId, @NotEmpty String username) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         int total = userService.countSeletive(username, null, null, null, null, null);
         if (total == 0) {
             return ResponseUtil.ok("不存在");
@@ -87,9 +80,6 @@ public class AdminUserController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallUser user) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(user);
         if (error != null) {
             return error;
@@ -119,9 +109,6 @@ public class AdminUserController {
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallUser user) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(user);
         if (error != null) {
             return error;

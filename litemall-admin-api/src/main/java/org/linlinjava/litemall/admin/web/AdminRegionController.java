@@ -31,12 +31,7 @@ public class AdminRegionController {
 
     @GetMapping("/clist")
     public Object clist(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallRegion> regionList = regionService.queryByPid(id);
-
         return ResponseUtil.ok(regionList);
     }
 
@@ -47,10 +42,6 @@ public class AdminRegionController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort(accepts = {"id"}) @RequestParam(defaultValue = "id") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallRegion> regionList = regionService.querySelective(name, code, page, limit, sort, order);
         int total = regionService.countSelective(name, code, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();

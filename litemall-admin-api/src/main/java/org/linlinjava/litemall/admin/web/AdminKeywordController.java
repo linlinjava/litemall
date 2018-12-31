@@ -34,10 +34,6 @@ public class AdminKeywordController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallKeyword> brandList = keywordService.querySelective(keyword, url, page, limit, sort, order);
         int total = keywordService.countSelective(keyword, url, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -61,9 +57,6 @@ public class AdminKeywordController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(keywords);
         if (error != null) {
             return error;
@@ -74,19 +67,12 @@ public class AdminKeywordController {
 
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallKeyword brand = keywordService.findById(id);
         return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(keywords);
         if (error != null) {
             return error;
@@ -99,9 +85,6 @@ public class AdminKeywordController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keyword) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Integer id = keyword.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

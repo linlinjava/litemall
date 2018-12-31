@@ -68,9 +68,6 @@ public class AdminOrderController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
         int total = orderService.countSelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
 
@@ -83,10 +80,6 @@ public class AdminOrderController {
 
     @GetMapping("/detail")
     public Object detail(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallOrder order = orderService.findById(id);
         List<LitemallOrderGoods> orderGoods = orderGoodsService.queryByOid(id);
         UserVo user = userService.findUserVoById(order.getUserId());
@@ -117,9 +110,6 @@ public class AdminOrderController {
      */
     @PostMapping("refund")
     public Object refund(@LoginAdmin Integer adminId, @RequestBody String body) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         String refundMoney = JacksonUtil.parseString(body, "refundMoney");
         if (orderId == null) {
@@ -217,9 +207,6 @@ public class AdminOrderController {
      */
     @PostMapping("ship")
     public Object ship(@LoginAdmin Integer adminId, @RequestBody String body) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         String shipSn = JacksonUtil.parseString(body, "shipSn");
         String shipChannel = JacksonUtil.parseString(body, "shipChannel");
@@ -265,10 +252,6 @@ public class AdminOrderController {
      */
     @PostMapping("reply")
     public Object reply(@LoginAdmin Integer adminId, @RequestBody String body) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Integer commentId = JacksonUtil.parseInteger(body, "commentId");
         if (commentId == null || commentId == 0) {
             return ResponseUtil.badArgument();

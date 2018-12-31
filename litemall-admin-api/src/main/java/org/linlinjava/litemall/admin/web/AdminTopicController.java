@@ -35,10 +35,6 @@ public class AdminTopicController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallTopic> topicList = topicService.querySelective(title, subtitle, page, limit, sort, order);
         int total = topicService.countSelective(title, subtitle, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -66,9 +62,6 @@ public class AdminTopicController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(topic);
         if (error != null) {
             return error;
@@ -79,19 +72,12 @@ public class AdminTopicController {
 
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallTopic topic = topicService.findById(id);
         return ResponseUtil.ok(topic);
     }
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(topic);
         if (error != null) {
             return error;
@@ -104,9 +90,6 @@ public class AdminTopicController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         topicService.deleteById(topic.getId());
         return ResponseUtil.ok();
     }

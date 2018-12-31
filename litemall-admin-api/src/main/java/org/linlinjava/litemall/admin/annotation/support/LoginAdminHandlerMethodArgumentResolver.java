@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.admin.annotation.support;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
@@ -23,6 +24,9 @@ public class LoginAdminHandlerMethodArgumentResolver implements HandlerMethodArg
                                   NativeWebRequest request, WebDataBinderFactory factory) throws Exception {
         Subject currentUser = SecurityUtils.getSubject();
         LitemallAdmin admin = (LitemallAdmin) currentUser.getPrincipal();
+        if (admin == null) {
+            throw new AuthenticationException();
+        }
 
         return admin.getId();
     }

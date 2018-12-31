@@ -39,9 +39,6 @@ public class AdminFeedbackController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         List<LitemallFeedback> feedbackList = feedbackService.querySelective(userId, username, page, limit, sort, order);
         int total = feedbackService.countSelective(userId, username, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();

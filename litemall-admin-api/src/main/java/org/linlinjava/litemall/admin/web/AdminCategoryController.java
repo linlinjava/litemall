@@ -35,10 +35,6 @@ public class AdminCategoryController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallCategory> collectList = categoryService.querySelective(id, name, page, limit, sort, order);
         int total = categoryService.countSelective(id, name, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -72,9 +68,6 @@ public class AdminCategoryController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(category);
         if (error != null) {
             return error;
@@ -85,19 +78,12 @@ public class AdminCategoryController {
 
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallCategory category = categoryService.findById(id);
         return ResponseUtil.ok(category);
     }
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(category);
         if (error != null) {
             return error;
@@ -111,9 +97,6 @@ public class AdminCategoryController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Integer id = category.getId();
         if (id == null) {
             return ResponseUtil.badArgument();
@@ -124,10 +107,6 @@ public class AdminCategoryController {
 
     @GetMapping("/l1")
     public Object catL1(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
         List<Map<String, Object>> data = new ArrayList<>(l1CatList.size());

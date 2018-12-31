@@ -26,25 +26,16 @@ public class AdminStatController {
 
     @GetMapping("/user")
     public Object statUser(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<Map> rows = statService.statUser();
         String[] columns = new String[]{"day", "users"};
         StatVo statVo = new StatVo();
         statVo.setColumns(columns);
         statVo.setRows(rows);
-
         return ResponseUtil.ok(statVo);
     }
 
     @GetMapping("/order")
     public Object statOrder(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<Map> rows = statService.statOrder();
         String[] columns = new String[]{"day", "orders", "customers", "amount", "pcr"};
         StatVo statVo = new StatVo();
@@ -56,17 +47,11 @@ public class AdminStatController {
 
     @GetMapping("/goods")
     public Object statGoods(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<Map> rows = statService.statGoods();
         String[] columns = new String[]{"day", "orders", "products", "amount"};
         StatVo statVo = new StatVo();
         statVo.setColumns(columns);
         statVo.setRows(rows);
-
-
         return ResponseUtil.ok(statVo);
     }
 

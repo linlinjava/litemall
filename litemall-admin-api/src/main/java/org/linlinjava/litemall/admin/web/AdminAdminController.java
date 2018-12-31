@@ -39,10 +39,6 @@ public class AdminAdminController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallAdmin> adminList = adminService.querySelective(username, page, limit, sort, order);
         int total = adminService.countSelective(username, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -69,9 +65,6 @@ public class AdminAdminController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(admin);
         if (error != null) {
             return error;
@@ -93,19 +86,12 @@ public class AdminAdminController {
 
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallAdmin admin = adminService.findById(id);
         return ResponseUtil.ok(admin);
     }
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(admin);
         if (error != null) {
             return error;
@@ -130,10 +116,6 @@ public class AdminAdminController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Integer anotherAdminId = admin.getId();
         if (anotherAdminId == null) {
             return ResponseUtil.badArgument();

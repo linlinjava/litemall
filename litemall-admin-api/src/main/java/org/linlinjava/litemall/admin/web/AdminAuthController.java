@@ -62,10 +62,6 @@ public class AdminAuthController {
      */
     @PostMapping("/logout")
     public Object login(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
         return ResponseUtil.ok();

@@ -35,10 +35,6 @@ public class AdminCollectController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallCollect> collectList = collectService.querySelective(userId, valueId, page, limit, sort, order);
         int total = collectService.countSelective(userId, valueId, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();

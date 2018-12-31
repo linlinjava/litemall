@@ -66,10 +66,6 @@ public class AdminGoodsController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, order);
         int total = goodsService.countSelective(goodsSn, name, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -167,10 +163,6 @@ public class AdminGoodsController {
      */
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Object error = validate(goodsAllinone);
         if (error != null) {
             return error;
@@ -242,9 +234,6 @@ public class AdminGoodsController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Integer id = goods.getId();
         if (id == null) {
             return ResponseUtil.badArgument();
@@ -272,10 +261,6 @@ public class AdminGoodsController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Object error = validate(goodsAllinone);
         if (error != null) {
             return error;
@@ -339,10 +324,6 @@ public class AdminGoodsController {
 
     @GetMapping("/catAndBrand")
     public Object list2(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         // http://element-cn.eleme.io/#/zh-CN/component/cascader
         // 管理员设置“所属分类”
         List<LitemallCategory> l1CatList = categoryService.queryL1();
@@ -385,10 +366,6 @@ public class AdminGoodsController {
 
     @GetMapping("/detail")
     public Object detail(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallGoods goods = goodsService.findById(id);
         List<LitemallGoodsProduct> products = productService.queryByGid(id);
         List<LitemallGoodsSpecification> specifications = specificationService.queryByGid(id);

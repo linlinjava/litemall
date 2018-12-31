@@ -43,10 +43,6 @@ public class AdminGrouponController {
                              @RequestParam(defaultValue = "10") Integer limit,
                              @Sort @RequestParam(defaultValue = "add_time") String sort,
                              @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallGroupon> grouponList = grouponService.querySelective(grouponId, page, limit, sort, order);
         int total = grouponService.countSelective(grouponId, page, limit, sort, order);
 
@@ -83,10 +79,6 @@ public class AdminGrouponController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallGrouponRules> rulesList = rulesService.querySelective(goodsId, page, limit, sort, order);
         int total = rulesService.countSelective(goodsId, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -119,10 +111,6 @@ public class AdminGrouponController {
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Object error = validate(grouponRules);
         if (error != null) {
             return error;
@@ -147,10 +135,6 @@ public class AdminGrouponController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Object error = validate(grouponRules);
         if (error != null) {
             return error;
@@ -173,10 +157,6 @@ public class AdminGrouponController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         Integer id = grouponRules.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

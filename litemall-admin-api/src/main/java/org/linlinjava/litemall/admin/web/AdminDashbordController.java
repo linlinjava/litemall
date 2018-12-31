@@ -34,10 +34,6 @@ public class AdminDashbordController {
 
     @GetMapping("")
     public Object info(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         int userTotal = userService.count();
         int goodsTotal = goodsService.count();
         int productTotal = productService.count();

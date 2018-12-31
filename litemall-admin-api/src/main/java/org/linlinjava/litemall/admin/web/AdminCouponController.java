@@ -41,10 +41,6 @@ public class AdminCouponController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallCoupon> couponList = couponService.querySelective(name, type, status, page, limit, sort, order);
         int total = couponService.countSelective(name, type, status, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -61,10 +57,6 @@ public class AdminCouponController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallCouponUser> couponList = couponUserService.queryList(userId, couponId, status, page, limit, sort, order);
         int total = couponUserService.countList(userId, couponId, status, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -84,9 +76,6 @@ public class AdminCouponController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCoupon coupon) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(coupon);
         if (error != null) {
             return error;
@@ -104,19 +93,12 @@ public class AdminCouponController {
 
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallCoupon coupon = couponService.findById(id);
         return ResponseUtil.ok(coupon);
     }
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCoupon coupon) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(coupon);
         if (error != null) {
             return error;
@@ -129,9 +111,6 @@ public class AdminCouponController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCoupon coupon) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         couponService.deleteById(coupon.getId());
         return ResponseUtil.ok();
     }

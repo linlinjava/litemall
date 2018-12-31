@@ -34,10 +34,6 @@ public class AdminAdController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallAd> adList = adService.querySelective(name, content, page, limit, sort, order);
         int total = adService.countSelective(name, content, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -61,9 +57,6 @@ public class AdminAdController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(ad);
         if (error != null) {
             return error;
@@ -74,19 +67,12 @@ public class AdminAdController {
 
     @GetMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         LitemallAd brand = adService.findById(id);
         return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Object error = validate(ad);
         if (error != null) {
             return error;
@@ -100,9 +86,6 @@ public class AdminAdController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         Integer id = ad.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

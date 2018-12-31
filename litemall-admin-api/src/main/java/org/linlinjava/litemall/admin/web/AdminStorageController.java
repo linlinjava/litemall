@@ -50,9 +50,6 @@ public class AdminStorageController {
 
     @PostMapping("/create")
     public Object create(@LoginAdmin Integer adminId, @RequestParam("file") MultipartFile file) throws IOException {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         String originalFilename = file.getOriginalFilename();
         String url = storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
         Map<String, Object> data = new HashMap<>();
@@ -62,9 +59,6 @@ public class AdminStorageController {
 
     @PostMapping("/read")
     public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         LitemallStorage storageInfo = litemallStorageService.findById(id);
         if (storageInfo == null) {
             return ResponseUtil.badArgumentValue();
@@ -74,9 +68,6 @@ public class AdminStorageController {
 
     @PostMapping("/update")
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallStorage litemallStorage) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         if (litemallStorageService.update(litemallStorage) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
@@ -85,9 +76,6 @@ public class AdminStorageController {
 
     @PostMapping("/delete")
     public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallStorage litemallStorage) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         String key = litemallStorage.getKey();
         if (StringUtils.isEmpty(key)) {
             return ResponseUtil.badArgument();

@@ -59,9 +59,6 @@ public class AdminAddressController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
 
         List<LitemallAddress> addressList = addressService.querySelective(userId, name, page, limit, sort, order);
         int total = addressService.countSelective(userId, name, page, limit, sort, order);
