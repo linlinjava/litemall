@@ -46,7 +46,6 @@
             :headers="headers"
             :on-success="uploadPicUrl"
             class="avatar-uploader"
-            list-type="picture-card"
             accept=".jpg,.jpeg,.png,.gif">
             <img v-if="goods.picUrl" :src="goods.picUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
@@ -169,7 +168,6 @@
               :headers="headers"
               :on-success="uploadSpecPicUrl"
               class="avatar-uploader"
-              list-type="picture-card"
               accept=".jpg,.jpeg,.png,.gif">
               <img v-if="specForm.picUrl" :src="specForm.picUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"/>
@@ -233,7 +231,6 @@
               :headers="headers"
               :on-success="uploadProductUrl"
               class="avatar-uploader"
-              list-type="picture-card"
               accept=".jpg,.jpeg,.png,.gif">
               <img v-if="productForm.url" :src="productForm.url" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"/>
@@ -306,6 +303,8 @@
   }
 
   .avatar-uploader .el-upload {
+    width: 145px;
+    height: 145px;
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -327,8 +326,8 @@
   }
 
   .avatar {
-    width: 120px;
-    height: 120px;
+    width: 145px;
+    height: 145px;
     display: block;
   }
 </style>
