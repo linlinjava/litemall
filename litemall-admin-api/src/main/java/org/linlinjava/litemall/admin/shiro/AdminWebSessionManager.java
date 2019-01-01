@@ -9,7 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.Serializable;
 
-public class ShiroWebSessionManager extends DefaultWebSessionManager {
+public class AdminWebSessionManager extends DefaultWebSessionManager {
 
     public static final String LOGIN_TOKEN_KEY = "X-Litemall-Admin-Token";
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";

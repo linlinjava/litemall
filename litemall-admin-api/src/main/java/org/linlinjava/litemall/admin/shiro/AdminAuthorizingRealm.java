@@ -18,9 +18,9 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-public class ShiroAdminRealm extends AuthorizingRealm {
+public class AdminAuthorizingRealm extends AuthorizingRealm {
 
-    private static final Logger log = LoggerFactory.getLogger(ShiroAdminRealm.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminAuthorizingRealm.class);
     @Autowired
     private LitemallAdminService adminService;
 
@@ -32,7 +32,7 @@ public class ShiroAdminRealm extends AuthorizingRealm {
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRole("admin");
-        info.addStringPermission("user");
+        info.addStringPermission("*");
         return info;
     }
 
@@ -61,7 +61,6 @@ public class ShiroAdminRealm extends AuthorizingRealm {
         if (!encoder.matches(password, admin.getPassword())) {
             throw new UnknownAccountException("找不到用户（"+username+"）的帐号信息");
         }
-
 
         return new SimpleAuthenticationInfo(admin,password,getName());
     }

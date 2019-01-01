@@ -4,16 +4,13 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
-import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.linlinjava.litemall.admin.shiro.ShiroAdminRealm;
-import org.linlinjava.litemall.admin.shiro.ShiroWebSessionManager;
+import org.linlinjava.litemall.admin.shiro.AdminAuthorizingRealm;
+import org.linlinjava.litemall.admin.shiro.AdminWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,7 +20,7 @@ public class ShiroConfig {
 
     @Bean
     public Realm realm() {
-        return new ShiroAdminRealm();
+        return new AdminAuthorizingRealm();
     }
 
 //    @Bean
@@ -55,7 +52,7 @@ public class ShiroConfig {
 
     @Bean
     public SessionManager sessionManager() {
-        ShiroWebSessionManager mySessionManager = new ShiroWebSessionManager();
+        AdminWebSessionManager mySessionManager = new AdminWebSessionManager();
         return mySessionManager;
     }
 
@@ -67,10 +64,17 @@ public class ShiroConfig {
         return securityManager;
     }
 
-     @Bean
+    @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
+        creator.setUsePrefix(true);
+        return creator;
     }
 }
