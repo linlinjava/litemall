@@ -354,6 +354,10 @@ export default {
             url: this.goods.gallery[i]
           })
         }
+        const keywords = response.data.data.goods.keywords
+        if (keywords !== null) {
+          this.keywords = keywords.split(',')
+        }
       })
 
       listCatAndBrand().then(response => {
