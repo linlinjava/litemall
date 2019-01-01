@@ -47,7 +47,13 @@
           <el-input v-model="dataForm.password" type="password" auto-complete="off"/>
         </el-form-item>
         <el-form-item label="管理员头像" prop="avatar">
-          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAvatar" class="avatar-uploader" list-type="picture-card" accept=".jpg,.jpeg,.png,.gif">
+          <el-upload
+            :headers="headers"
+            :action="uploadPath"
+            :show-file-list="false"
+            :on-success="uploadAvatar"
+            class="avatar-uploader"
+            accept=".jpg,.jpeg,.png,.gif">
             <img v-if="dataForm.avatar" :src="dataForm.avatar" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
@@ -92,8 +98,8 @@
   text-align: center;
 }
 .avatar {
-  width: 120px;
-  height: 120px;
+  width: 145px;
+  height: 145px;
   display: block;
 }
 </style>

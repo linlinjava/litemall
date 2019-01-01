@@ -40,14 +40,30 @@
         </el-form-item>
 
         <el-form-item label="商品图片">
-          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl" class="avatar-uploader" list-type="picture-card" accept=".jpg,.jpeg,.png,.gif">
+          <el-upload
+            :headers="headers"
+            :action="uploadPath"
+            :show-file-list="false"
+            :on-success="uploadPicUrl"
+            class="avatar-uploader"
+            accept=".jpg,.jpeg,.png,.gif">
             <img v-if="goods.picUrl" :src="goods.picUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </el-form-item>
 
         <el-form-item label="宣传画廊">
-          <el-upload :action="uploadPath" :headers="headers" :limit="5" :file-list="galleryFileList" :on-exceed="uploadOverrun" :on-success="handleGalleryUrl" :on-remove="handleRemove" multiple accept=".jpg,.jpeg,.png,.gif" list-type="picture-card">
+          <el-upload
+            :action="uploadPath"
+            :headers="headers"
+            :limit="5"
+            :file-list="galleryFileList"
+            :on-exceed="uploadOverrun"
+            :on-success="handleGalleryUrl"
+            :on-remove="handleRemove"
+            multiple
+            accept=".jpg,.jpeg,.png,.gif"
+            list-type="picture-card">
             <i class="el-icon-plus"/>
           </el-upload>
         </el-form-item>
@@ -118,7 +134,13 @@
             <el-input v-model="specForm.value"/>
           </el-form-item>
           <el-form-item label="规格图片" prop="picUrl">
-            <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadSpecPicUrl" class="avatar-uploader" list-type="picture-card" accept=".jpg,.jpeg,.png,.gif">
+            <el-upload
+              :headers="headers"
+              :action="uploadPath"
+              :show-file-list="false"
+              :on-success="uploadSpecPicUrl"
+              class="avatar-uploader"
+              accept=".jpg,.jpeg,.png,.gif">
               <img v-if="specForm.picUrl" :src="specForm.picUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"/>
             </el-upload>
@@ -169,7 +191,13 @@
             <el-input v-model="productForm.number"/>
           </el-form-item>
           <el-form-item label="货品图片" prop="url">
-            <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadProductUrl" class="avatar-uploader" list-type="picture-card" accept=".jpg,.jpeg,.png,.gif">
+            <el-upload
+              :headers="headers"
+              :action="uploadPath"
+              :show-file-list="false"
+              :on-success="uploadProductUrl"
+              class="avatar-uploader"
+              accept=".jpg,.jpeg,.png,.gif">
               <img v-if="productForm.url" :src="productForm.url" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"/>
             </el-upload>
@@ -250,8 +278,8 @@
   text-align: center;
 }
 .avatar {
-  width: 120px;
-  height: 120px;
+  width: 145px;
+  height: 145px;
   display: block;
 }
 </style>
