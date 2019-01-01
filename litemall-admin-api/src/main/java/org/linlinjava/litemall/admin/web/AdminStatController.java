@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.util.StatVo;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.service.StatService;
@@ -24,8 +24,9 @@ public class AdminStatController {
     @Autowired
     private StatService statService;
 
+    @RequiresPermissions("admin:stat:user")
     @GetMapping("/user")
-    public Object statUser(@LoginAdmin Integer adminId) {
+    public Object statUser() {
         List<Map> rows = statService.statUser();
         String[] columns = new String[]{"day", "users"};
         StatVo statVo = new StatVo();
@@ -34,8 +35,9 @@ public class AdminStatController {
         return ResponseUtil.ok(statVo);
     }
 
+    @RequiresPermissions("admin:stat:order")
     @GetMapping("/order")
-    public Object statOrder(@LoginAdmin Integer adminId) {
+    public Object statOrder() {
         List<Map> rows = statService.statOrder();
         String[] columns = new String[]{"day", "orders", "customers", "amount", "pcr"};
         StatVo statVo = new StatVo();
@@ -45,8 +47,9 @@ public class AdminStatController {
         return ResponseUtil.ok(statVo);
     }
 
+    @RequiresPermissions("admin:stat:goods")
     @GetMapping("/goods")
-    public Object statGoods(@LoginAdmin Integer adminId) {
+    public Object statGoods() {
         List<Map> rows = statService.statGoods();
         String[] columns = new String[]{"day", "orders", "products", "amount"};
         StatVo statVo = new StatVo();

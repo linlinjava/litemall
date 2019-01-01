@@ -11,6 +11,7 @@ import org.linlinjava.litemall.admin.shiro.AdminWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -72,9 +73,9 @@ public class ShiroConfig {
     }
 
     @Bean
-    public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+    @DependsOn("lifecycleBeanPostProcessor")
+    public static DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
-        creator.setUsePrefix(true);
         return creator;
     }
 }

@@ -2,16 +2,14 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallCoupon;
 import org.linlinjava.litemall.db.domain.LitemallCouponUser;
-import org.linlinjava.litemall.db.domain.LitemallTopic;
 import org.linlinjava.litemall.db.service.LitemallCouponService;
 import org.linlinjava.litemall.db.service.LitemallCouponUserService;
-import org.linlinjava.litemall.db.service.LitemallTopicService;
 import org.linlinjava.litemall.db.util.CouponConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -34,9 +32,9 @@ public class AdminCouponController {
     @Autowired
     private LitemallCouponUserService couponUserService;
 
+    @RequiresPermissions("admin:coupon:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String name, Short type, Short status,
+    public Object list(String name, Short type, Short status,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -50,9 +48,9 @@ public class AdminCouponController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:coupon:list")
     @GetMapping("/listuser")
-    public Object listuser(@LoginAdmin Integer adminId,
-                       Integer userId, Integer couponId, Short status,
+    public Object listuser(Integer userId, Integer couponId, Short status,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -74,8 +72,9 @@ public class AdminCouponController {
         return null;
     }
 
+    @RequiresPermissions("admin:coupon:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCoupon coupon) {
+    public Object create(@RequestBody LitemallCoupon coupon) {
         Object error = validate(coupon);
         if (error != null) {
             return error;
@@ -91,14 +90,16 @@ public class AdminCouponController {
         return ResponseUtil.ok(coupon);
     }
 
+    @RequiresPermissions("admin:coupon:read")
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object read(@NotNull Integer id) {
         LitemallCoupon coupon = couponService.findById(id);
         return ResponseUtil.ok(coupon);
     }
 
+    @RequiresPermissions("admin:coupon:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCoupon coupon) {
+    public Object update(@RequestBody LitemallCoupon coupon) {
         Object error = validate(coupon);
         if (error != null) {
             return error;
@@ -109,8 +110,9 @@ public class AdminCouponController {
         return ResponseUtil.ok(coupon);
     }
 
+    @RequiresPermissions("admin:coupon:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCoupon coupon) {
+    public Object delete(@RequestBody LitemallCoupon coupon) {
         couponService.deleteById(coupon.getId());
         return ResponseUtil.ok();
     }

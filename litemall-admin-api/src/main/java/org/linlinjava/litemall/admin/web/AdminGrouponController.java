@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -36,9 +36,9 @@ public class AdminGrouponController {
     @Autowired
     private LitemallGrouponService grouponService;
 
+    @RequiresPermissions("admin:groupon:read")
     @GetMapping("/listRecord")
-    public Object listRecord(@LoginAdmin Integer adminId,
-                             String grouponId,
+    public Object listRecord(String grouponId,
                              @RequestParam(defaultValue = "1") Integer page,
                              @RequestParam(defaultValue = "10") Integer limit,
                              @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -72,9 +72,9 @@ public class AdminGrouponController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:groupon:delete")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String goodsId,
+    public Object list(String goodsId,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -109,8 +109,9 @@ public class AdminGrouponController {
         return null;
     }
 
+    @RequiresPermissions("admin:groupon:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
+    public Object update(@RequestBody LitemallGrouponRules grouponRules) {
         Object error = validate(grouponRules);
         if (error != null) {
             return error;
@@ -132,9 +133,9 @@ public class AdminGrouponController {
         return ResponseUtil.ok();
     }
 
-
+    @RequiresPermissions("admin:groupon:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
+    public Object create(@RequestBody LitemallGrouponRules grouponRules) {
         Object error = validate(grouponRules);
         if (error != null) {
             return error;
@@ -154,9 +155,9 @@ public class AdminGrouponController {
         return ResponseUtil.ok(grouponRules);
     }
 
-
+    @RequiresPermissions("admin:groupon:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGrouponRules grouponRules) {
+    public Object delete(@RequestBody LitemallGrouponRules grouponRules) {
         Integer id = grouponRules.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

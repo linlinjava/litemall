@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -27,9 +27,9 @@ public class AdminKeywordController {
     @Autowired
     private LitemallKeywordService keywordService;
 
+    @RequiresPermissions("admin:keyword:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String keyword, String url,
+    public Object list(String keyword, String url,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -55,8 +55,9 @@ public class AdminKeywordController {
         return null;
     }
 
+    @RequiresPermissions("admin:keyword:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords) {
+    public Object create(@RequestBody LitemallKeyword keywords) {
         Object error = validate(keywords);
         if (error != null) {
             return error;
@@ -65,14 +66,16 @@ public class AdminKeywordController {
         return ResponseUtil.ok(keywords);
     }
 
+    @RequiresPermissions("admin:keyword:read")
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object read(@NotNull Integer id) {
         LitemallKeyword brand = keywordService.findById(id);
         return ResponseUtil.ok(brand);
     }
 
+    @RequiresPermissions("admin:keyword:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords) {
+    public Object update(@RequestBody LitemallKeyword keywords) {
         Object error = validate(keywords);
         if (error != null) {
             return error;
@@ -83,8 +86,9 @@ public class AdminKeywordController {
         return ResponseUtil.ok(keywords);
     }
 
+    @RequiresPermissions("admin:keyword:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keyword) {
+    public Object delete(@RequestBody LitemallKeyword keyword) {
         Integer id = keyword.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

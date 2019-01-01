@@ -3,9 +3,12 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
@@ -60,20 +63,20 @@ public class AdminAuthController {
     /*
      *
      */
+    @RequiresAuthentication
     @PostMapping("/logout")
-    public Object login(@LoginAdmin Integer adminId) {
+    public Object login() {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
         return ResponseUtil.ok();
     }
 
 
+    @RequiresAuthentication
     @GetMapping("/info")
-    public Object info(@LoginAdmin Integer adminId) {
-        LitemallAdmin admin = adminService.findById(adminId);
-        if (admin == null) {
-            return ResponseUtil.badArgumentValue();
-        }
+    public Object info() {
+        Subject currentUser = SecurityUtils.getSubject();
+        LitemallAdmin admin = (LitemallAdmin) currentUser.getPrincipal();
 
         Map<String, Object> data = new HashMap<>();
         data.put("name", admin.getUsername());
@@ -83,6 +86,7 @@ public class AdminAuthController {
         List<String> roles = new ArrayList<>();
         roles.add("admin");
         data.put("roles", roles);
+        data.put("perms", "*");
         data.put("introduction", "admin introduction");
         return ResponseUtil.ok(data);
     }

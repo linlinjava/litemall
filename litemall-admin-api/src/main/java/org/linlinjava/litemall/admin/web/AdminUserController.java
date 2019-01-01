@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
@@ -31,9 +31,9 @@ public class AdminUserController {
     @Autowired
     private LitemallUserService userService;
 
+    @RequiresPermissions("admin:user:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String username, String mobile,
+    public Object list(String username, String mobile,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -47,8 +47,9 @@ public class AdminUserController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:user:list")
     @GetMapping("/username")
-    public Object username(@LoginAdmin Integer adminId, @NotEmpty String username) {
+    public Object username(@NotEmpty String username) {
         int total = userService.countSeletive(username, null, null, null, null, null);
         if (total == 0) {
             return ResponseUtil.ok("不存在");
@@ -78,8 +79,9 @@ public class AdminUserController {
         return null;
     }
 
+    @RequiresPermissions("admin:user:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallUser user) {
+    public Object create(@RequestBody LitemallUser user) {
         Object error = validate(user);
         if (error != null) {
             return error;
@@ -107,8 +109,9 @@ public class AdminUserController {
         return ResponseUtil.ok(user);
     }
 
+    @RequiresPermissions("admin:user:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallUser user) {
+    public Object update(@RequestBody LitemallUser user) {
         Object error = validate(user);
         if (error != null) {
             return error;

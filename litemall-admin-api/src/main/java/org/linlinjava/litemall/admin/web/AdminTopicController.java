@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -28,9 +28,9 @@ public class AdminTopicController {
     @Autowired
     private LitemallTopicService topicService;
 
+    @RequiresPermissions("admin:topic:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String title, String subtitle,
+    public Object list(String title, String subtitle,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -60,8 +60,9 @@ public class AdminTopicController {
         return null;
     }
 
+    @RequiresPermissions("admin:topic:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
+    public Object create(@RequestBody LitemallTopic topic) {
         Object error = validate(topic);
         if (error != null) {
             return error;
@@ -70,14 +71,16 @@ public class AdminTopicController {
         return ResponseUtil.ok(topic);
     }
 
+    @RequiresPermissions("admin:topic:read")
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object read(@NotNull Integer id) {
         LitemallTopic topic = topicService.findById(id);
         return ResponseUtil.ok(topic);
     }
 
+    @RequiresPermissions("admin:topic:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
+    public Object update(@RequestBody LitemallTopic topic) {
         Object error = validate(topic);
         if (error != null) {
             return error;
@@ -88,8 +91,9 @@ public class AdminTopicController {
         return ResponseUtil.ok(topic);
     }
 
+    @RequiresPermissions("admin:topic:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallTopic topic) {
+    public Object delete(@RequestBody LitemallTopic topic) {
         topicService.deleteById(topic.getId());
         return ResponseUtil.ok();
     }

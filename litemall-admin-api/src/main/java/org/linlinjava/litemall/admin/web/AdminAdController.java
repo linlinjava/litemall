@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -27,9 +27,9 @@ public class AdminAdController {
     @Autowired
     private LitemallAdService adService;
 
-    @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String name, String content,
+    @RequiresPermissions("admin:ad:list")
+    @RequestMapping("/list")
+    public Object list(String name, String content,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -55,8 +55,9 @@ public class AdminAdController {
         return null;
     }
 
+    @RequiresPermissions("admin:ad:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad) {
+    public Object create(@RequestBody LitemallAd ad) {
         Object error = validate(ad);
         if (error != null) {
             return error;
@@ -65,14 +66,16 @@ public class AdminAdController {
         return ResponseUtil.ok(ad);
     }
 
+    @RequiresPermissions("admin:ad:read")
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object read(@NotNull Integer id) {
         LitemallAd brand = adService.findById(id);
         return ResponseUtil.ok(brand);
     }
 
+    @RequiresPermissions("admin:ad:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad) {
+    public Object update(@RequestBody LitemallAd ad) {
         Object error = validate(ad);
         if (error != null) {
             return error;
@@ -84,8 +87,9 @@ public class AdminAdController {
         return ResponseUtil.ok(ad);
     }
 
+    @RequiresPermissions("admin:ad:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad) {
+    public Object delete(@RequestBody LitemallAd ad) {
         Integer id = ad.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

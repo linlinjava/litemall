@@ -6,19 +6,20 @@ import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
-import org.linlinjava.litemall.core.util.CharUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.LitemallComment;
+import org.linlinjava.litemall.db.domain.LitemallOrder;
+import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
+import org.linlinjava.litemall.db.domain.UserVo;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -60,9 +61,9 @@ public class AdminOrderController {
     @Autowired
     private NotifyService notifyService;
 
+    @RequiresPermissions("admin:order:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String orderSn,
+    public Object list(Integer userId, String orderSn,
                        @RequestParam(required = false) List<Short> orderStatusArray,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
@@ -78,8 +79,9 @@ public class AdminOrderController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:order:read")
     @GetMapping("/detail")
-    public Object detail(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object detail(@NotNull Integer id) {
         LitemallOrder order = orderService.findById(id);
         List<LitemallOrderGoods> orderGoods = orderGoodsService.queryByOid(id);
         UserVo user = userService.findUserVoById(order.getUserId());
@@ -108,8 +110,9 @@ public class AdminOrderController {
      * @param body    订单信息，{ orderId：xxx }
      * @return 订单退款操作结果
      */
+    @RequiresPermissions("admin:order:refund")
     @PostMapping("refund")
-    public Object refund(@LoginAdmin Integer adminId, @RequestBody String body) {
+    public Object refund(@RequestBody String body) {
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         String refundMoney = JacksonUtil.parseString(body, "refundMoney");
         if (orderId == null) {
@@ -205,8 +208,9 @@ public class AdminOrderController {
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
      */
+    @RequiresPermissions("admin:order:ship")
     @PostMapping("ship")
-    public Object ship(@LoginAdmin Integer adminId, @RequestBody String body) {
+    public Object ship(@RequestBody String body) {
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         String shipSn = JacksonUtil.parseString(body, "shipSn");
         String shipChannel = JacksonUtil.parseString(body, "shipChannel");
@@ -250,8 +254,9 @@ public class AdminOrderController {
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
      */
+    @RequiresPermissions("admin:order:reply")
     @PostMapping("reply")
-    public Object reply(@LoginAdmin Integer adminId, @RequestBody String body) {
+    public Object reply(@RequestBody String body) {
         Integer commentId = JacksonUtil.parseInteger(body, "commentId");
         if (commentId == null || commentId == 0) {
             return ResponseUtil.badArgument();

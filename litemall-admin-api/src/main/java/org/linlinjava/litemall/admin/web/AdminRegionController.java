@@ -2,7 +2,6 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -30,14 +29,13 @@ public class AdminRegionController {
     private LitemallRegionService regionService;
 
     @GetMapping("/clist")
-    public Object clist(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object clist(@NotNull Integer id) {
         List<LitemallRegion> regionList = regionService.queryByPid(id);
         return ResponseUtil.ok(regionList);
     }
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String name, Integer code,
+    public Object list(String name, Integer code,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort(accepts = {"id"}) @RequestParam(defaultValue = "id") String sort,

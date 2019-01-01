@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -25,9 +25,9 @@ public class AdminCommentController {
     @Autowired
     private LitemallCommentService commentService;
 
+    @RequiresPermissions("admin:comment:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String userId, String valueId,
+    public Object list(String userId, String valueId,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -41,8 +41,9 @@ public class AdminCommentController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:comment:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment) {
+    public Object delete(@RequestBody LitemallComment comment) {
         Integer id = comment.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

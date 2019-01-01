@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -28,9 +28,9 @@ public class AdminBrandController {
     @Autowired
     private LitemallBrandService brandService;
 
+    @RequiresPermissions("admin:brand:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String id, String name,
+    public Object list(String id, String name,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -62,8 +62,9 @@ public class AdminBrandController {
         return null;
     }
 
+    @RequiresPermissions("admin:brand:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand) {
+    public Object create(@RequestBody LitemallBrand brand) {
         Object error = validate(brand);
         if (error != null) {
             return error;
@@ -72,14 +73,16 @@ public class AdminBrandController {
         return ResponseUtil.ok(brand);
     }
 
+    @RequiresPermissions("admin:brand:read")
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object read(@NotNull Integer id) {
         LitemallBrand brand = brandService.findById(id);
         return ResponseUtil.ok(brand);
     }
 
+    @RequiresPermissions("admin:brand:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand) {
+    public Object update(@RequestBody LitemallBrand brand) {
         Object error = validate(brand);
         if (error != null) {
             return error;
@@ -90,8 +93,9 @@ public class AdminBrandController {
         return ResponseUtil.ok(brand);
     }
 
+    @RequiresPermissions("admin:brand:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand) {
+    public Object delete(@RequestBody LitemallBrand brand) {
         Integer id = brand.getId();
         if (id == null) {
             return ResponseUtil.badArgument();

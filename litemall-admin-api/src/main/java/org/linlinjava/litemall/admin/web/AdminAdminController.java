@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +31,9 @@ public class AdminAdminController {
     @Autowired
     private LitemallAdminService adminService;
 
+    @RequiresPermissions("admin:admin:list")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String username,
+    public Object list(String username,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -63,8 +62,9 @@ public class AdminAdminController {
         return null;
     }
 
+    @RequiresPermissions("admin:admin:create")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
+    public Object create(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
         if (error != null) {
             return error;
@@ -84,14 +84,16 @@ public class AdminAdminController {
         return ResponseUtil.ok(admin);
     }
 
+    @RequiresPermissions("admin:admin:read")
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
+    public Object read(@NotNull Integer id) {
         LitemallAdmin admin = adminService.findById(id);
         return ResponseUtil.ok(admin);
     }
 
+    @RequiresPermissions("admin:admin:update")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
+    public Object update(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
         if (error != null) {
             return error;
@@ -114,8 +116,9 @@ public class AdminAdminController {
         return ResponseUtil.ok(admin);
     }
 
+    @RequiresPermissions("admin:admin:delete")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
+    public Object delete(@RequestBody LitemallAdmin admin) {
         Integer anotherAdminId = admin.getId();
         if (anotherAdminId == null) {
             return ResponseUtil.badArgument();
