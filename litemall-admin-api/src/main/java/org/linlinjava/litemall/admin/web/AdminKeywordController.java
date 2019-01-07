@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -28,6 +29,7 @@ public class AdminKeywordController {
     private LitemallKeywordService keywordService;
 
     @RequiresPermissions("admin:keyword:list")
+    @RequiresPermissionsDesc(menu={"商城管理" , "关键词"}, button="查询")
     @GetMapping("/list")
     public Object list(String keyword, String url,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -56,6 +58,7 @@ public class AdminKeywordController {
     }
 
     @RequiresPermissions("admin:keyword:create")
+    @RequiresPermissionsDesc(menu={"商城管理" , "关键词"}, button="添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallKeyword keywords) {
         Object error = validate(keywords);
@@ -67,6 +70,7 @@ public class AdminKeywordController {
     }
 
     @RequiresPermissions("admin:keyword:read")
+    @RequiresPermissionsDesc(menu={"商城管理" , "关键词"}, button="详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallKeyword brand = keywordService.findById(id);
@@ -74,6 +78,7 @@ public class AdminKeywordController {
     }
 
     @RequiresPermissions("admin:keyword:update")
+    @RequiresPermissionsDesc(menu={"商城管理" , "关键词"}, button="编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallKeyword keywords) {
         Object error = validate(keywords);
@@ -87,6 +92,7 @@ public class AdminKeywordController {
     }
 
     @RequiresPermissions("admin:keyword:delete")
+    @RequiresPermissionsDesc(menu={"商城管理" , "关键词"}, button="删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallKeyword keyword) {
         Integer id = keyword.getId();

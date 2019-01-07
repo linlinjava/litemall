@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -28,6 +29,7 @@ public class AdminIssueController {
     private LitemallIssueService issueService;
 
     @RequiresPermissions("admin:issue:list")
+    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="查询")
     @GetMapping("/list")
     public Object list(String question,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -56,6 +58,7 @@ public class AdminIssueController {
     }
 
     @RequiresPermissions("admin:issue:create")
+    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallIssue issue) {
         Object error = validate(issue);
@@ -74,6 +77,7 @@ public class AdminIssueController {
     }
 
     @RequiresPermissions("admin:issue:update")
+    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallIssue issue) {
         Object error = validate(issue);
@@ -88,6 +92,7 @@ public class AdminIssueController {
     }
 
     @RequiresPermissions("admin:issue:delete")
+    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallIssue issue) {
         Integer id = issue.getId();

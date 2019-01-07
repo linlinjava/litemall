@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -37,6 +38,7 @@ public class AdminGrouponController {
     private LitemallGrouponService grouponService;
 
     @RequiresPermissions("admin:groupon:read")
+    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="查询")
     @GetMapping("/listRecord")
     public Object listRecord(String grouponId,
                              @RequestParam(defaultValue = "1") Integer page,
@@ -72,7 +74,8 @@ public class AdminGrouponController {
         return ResponseUtil.ok(data);
     }
 
-    @RequiresPermissions("admin:groupon:delete")
+    @RequiresPermissions("admin:groupon:list")
+    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="查询")
     @GetMapping("/list")
     public Object list(String goodsId,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -110,6 +113,7 @@ public class AdminGrouponController {
     }
 
     @RequiresPermissions("admin:groupon:update")
+    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallGrouponRules grouponRules) {
         Object error = validate(grouponRules);
@@ -134,6 +138,7 @@ public class AdminGrouponController {
     }
 
     @RequiresPermissions("admin:groupon:create")
+    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallGrouponRules grouponRules) {
         Object error = validate(grouponRules);
@@ -156,6 +161,7 @@ public class AdminGrouponController {
     }
 
     @RequiresPermissions("admin:groupon:delete")
+    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallGrouponRules grouponRules) {
         Integer id = grouponRules.getId();

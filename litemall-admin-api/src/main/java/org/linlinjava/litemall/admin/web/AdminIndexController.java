@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.*;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,12 +49,14 @@ public class AdminIndexController {
     }
 
     @RequiresPermissions("index:permission:read")
+    @RequiresPermissionsDesc(menu={"其他" , "权限测试"}, button="权限读")
     @RequestMapping("/read")
     public Object read() {
         return ResponseUtil.ok("hello world, this is admin service");
     }
 
     @RequiresPermissions("index:permission:write")
+    @RequiresPermissionsDesc(menu={"其他" , "权限测试"}, button="权限写")
     @RequestMapping("/write")
     public Object write() {
         return ResponseUtil.ok("hello world, this is admin service");

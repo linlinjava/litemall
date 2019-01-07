@@ -3,34 +3,22 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入管理员名称"/>
+      <el-input v-model="listQuery.rolename" clearable class="filter-item" style="width: 200px;" placeholder="请输入角色名称"/>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="管理员ID" prop="id" sortable/>
+      <el-table-column align="center" label="角色名称" prop="name" sortable/>
 
-      <el-table-column align="center" label="管理员名称" prop="username"/>
-
-      <el-table-column align="center" label="管理员头像" prop="avatar">
-        <template slot-scope="scope">
-          <img v-if="scope.row.avatar" :src="scope.row.avatar" width="40">
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="管理员角色" prop="roleIds">
-        <template slot-scope="scope">
-          <el-tag v-for="roleId in scope.row.roleIds" :key="roleId" type="primary" style="margin-right: 20px;"> {{ formatRole(roleId) }} </el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="说明" prop="desc"/>
 
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handlePermission(scope.row)">授权</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -40,26 +28,11 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="管理员名称" prop="username">
-          <el-input v-model="dataForm.username"/>
+        <el-form-item label="角色名称" prop="name">
+          <el-input v-model="dataForm.name"/>
         </el-form-item>
-        <el-form-item label="管理员密码" prop="password">
-          <el-input v-model="dataForm.password" type="password" auto-complete="off"/>
-        </el-form-item>
-        <el-form-item label="管理员头像" prop="avatar">
-          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAvatar" class="avatar-uploader" list-type="picture-card" accept=".jpg,.jpeg,.png,.gif">
-            <img v-if="dataForm.avatar" :src="dataForm.avatar" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="管理员角色" prop="roleIds">
-          <el-select v-model="dataForm.roleIds" multiple placeholder="请选择">
-            <el-option
-              v-for="item in roleOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-          </el-select>
+        <el-form-item label="说明" prop="desc">
+          <el-input v-model="dataForm.desc"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -69,65 +42,46 @@
       </div>
     </el-dialog>
 
+    <!-- 权限配置对话框 -->
+    <el-dialog :visible.sync="permissionDialogFormVisible" title="权限配置">
+      <el-tree
+        ref="tree"
+        :data="systemPermissions"
+        :default-checked-keys="assignedPermissions"
+        show-checkbox
+        node-key="id"
+        highlight-current/>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="permissionDialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="updatePermission">确定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
-<style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #20a0ff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-}
-.avatar {
-  width: 120px;
-  height: 120px;
-  display: block;
-}
-</style>
-
 <script>
-import { listAdmin, createAdmin, updateAdmin, deleteAdmin } from '@/api/admin'
-import { roleOptions } from '@/api/role'
-import { uploadPath } from '@/api/storage'
-import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-
+import { listRole, createRole, updateRole, deleteRole, getPermission, updatePermission } from '@/api/role'
+import Pagination from '@/components/Pagination'
 export default {
-  name: 'Admin',
+  name: 'Role',
   components: { Pagination },
   data() {
     return {
-      uploadPath,
       list: null,
       total: 0,
-      roleOptions: null,
       listLoading: true,
       listQuery: {
         page: 1,
         limit: 20,
-        username: undefined,
+        name: undefined,
         sort: 'add_time',
         order: 'desc'
       },
       dataForm: {
         id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined,
-        roleIds: []
+        name: undefined,
+        desc: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -136,41 +90,26 @@ export default {
         create: '创建'
       },
       rules: {
-        username: [
-          { required: true, message: '管理员名称不能为空', trigger: 'blur' }
-        ],
-        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+        name: [
+          { required: true, message: '角色名称不能为空', trigger: 'blur' }
+        ]
       },
-      downloadLoading: false
-    }
-  },
-  computed: {
-    headers() {
-      return {
-        'X-Litemall-Admin-Token': getToken()
+      permissionDialogFormVisible: false,
+      systemPermissions: null,
+      assignedPermissions: null,
+      permissionForm: {
+        roleId: undefined,
+        permissions: []
       }
     }
   },
   created() {
     this.getList()
-
-    roleOptions()
-      .then(response => {
-        this.roleOptions = response.data.data
-      })
   },
   methods: {
-    formatRole(roleId) {
-      for (let i = 0; i < this.roleOptions.length; i++) {
-        if (roleId === this.roleOptions[i].value) {
-          return this.roleOptions[i].label
-        }
-      }
-      return ''
-    },
     getList() {
       this.listLoading = true
-      listAdmin(this.listQuery)
+      listRole(this.listQuery)
         .then(response => {
           this.list = response.data.data.items
           this.total = response.data.data.total
@@ -189,14 +128,9 @@ export default {
     resetForm() {
       this.dataForm = {
         id: undefined,
-        username: undefined,
-        password: undefined,
-        avatar: undefined,
-        roleIds: []
+        name: undefined,
+        desc: undefined
       }
-    },
-    uploadAvatar: function(response) {
-      this.dataForm.avatar = response.data.url
     },
     handleCreate() {
       this.resetForm()
@@ -209,13 +143,13 @@ export default {
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          createAdmin(this.dataForm)
+          createRole(this.dataForm)
             .then(response => {
               this.list.unshift(response.data.data)
               this.dialogFormVisible = false
               this.$notify.success({
                 title: '成功',
-                message: '添加管理员成功'
+                message: '添加角色成功'
               })
             })
             .catch(response => {
@@ -238,7 +172,7 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          updateAdmin(this.dataForm)
+          updateRole(this.dataForm)
             .then(() => {
               for (const v of this.list) {
                 if (v.id === this.dataForm.id) {
@@ -263,7 +197,7 @@ export default {
       })
     },
     handleDelete(row) {
-      deleteAdmin(row)
+      deleteRole(row)
         .then(response => {
           this.$notify.success({
             title: '成功',
@@ -279,19 +213,31 @@ export default {
           })
         })
     },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['管理员ID', '管理员名称', '管理员头像']
-        const filterVal = ['id', 'username', 'avatar']
-        excel.export_json_to_excel2(
-          tHeader,
-          this.list,
-          filterVal,
-          '管理员信息'
-        )
-        this.downloadLoading = false
-      })
+    handlePermission(row) {
+      this.permissionDialogFormVisible = true
+      this.permissionForm.roleId = row.id
+      getPermission({ roleId: row.id })
+        .then(response => {
+          this.systemPermissions = response.data.data.systemPermissions
+          this.assignedPermissions = response.data.data.assignedPermissions
+        })
+    },
+    updatePermission() {
+      this.permissionForm.permissions = this.$refs.tree.getCheckedKeys(true)
+      updatePermission(this.permissionForm)
+        .then(response => {
+          this.permissionDialogFormVisible = false
+          this.$notify.success({
+            title: '成功',
+            message: '授权成功'
+          })
+        })
+        .catch(response => {
+          this.$notify.error({
+            title: '失败',
+            message: response.data.errmsg
+          })
+        })
     }
   }
 }

@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.dao.GoodsAllinone;
 import org.linlinjava.litemall.admin.util.CatVo;
 import org.linlinjava.litemall.core.qcode.QCodeService;
@@ -60,6 +61,7 @@ public class AdminGoodsController {
     private QCodeService qCodeService;
 
     @RequiresPermissions("admin:goods:list")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="查询")
     @GetMapping("/list")
     public Object list(String goodsSn, String name,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -162,6 +164,7 @@ public class AdminGoodsController {
      * 所以这里可能需要重新设计。
      */
     @RequiresPermissions("admin:goods:update")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="编辑")
     @PostMapping("/update")
     public Object update(@RequestBody GoodsAllinone goodsAllinone) {
         Object error = validate(goodsAllinone);
@@ -234,6 +237,7 @@ public class AdminGoodsController {
     }
 
     @RequiresPermissions("admin:goods:delete")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallGoods goods) {
         Integer id = goods.getId();
@@ -262,6 +266,7 @@ public class AdminGoodsController {
     }
 
     @RequiresPermissions("admin:goods:create")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品上架"}, button="上架")
     @PostMapping("/create")
     public Object create(@RequestBody GoodsAllinone goodsAllinone) {
         Object error = validate(goodsAllinone);
@@ -325,6 +330,7 @@ public class AdminGoodsController {
     }
 
     @RequiresPermissions("admin:goods:list")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="查询")
     @GetMapping("/catAndBrand")
     public Object list2() {
         // http://element-cn.eleme.io/#/zh-CN/component/cascader
@@ -368,6 +374,7 @@ public class AdminGoodsController {
     }
 
     @RequiresPermissions("admin:goods:read")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="编辑")
     @GetMapping("/detail")
     public Object detail(@NotNull Integer id) {
         LitemallGoods goods = goodsService.findById(id);

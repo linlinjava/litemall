@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -28,6 +29,7 @@ public class AdminAdController {
     private LitemallAdService adService;
 
     @RequiresPermissions("admin:ad:list")
+    @RequiresPermissionsDesc(menu={"推广管理" , "广告管理"}, button="查询")
     @RequestMapping("/list")
     public Object list(String name, String content,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -56,6 +58,7 @@ public class AdminAdController {
     }
 
     @RequiresPermissions("admin:ad:create")
+    @RequiresPermissionsDesc(menu={"推广管理" , "广告管理"}, button="添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallAd ad) {
         Object error = validate(ad);
@@ -67,6 +70,7 @@ public class AdminAdController {
     }
 
     @RequiresPermissions("admin:ad:read")
+    @RequiresPermissionsDesc(menu={"推广管理" , "广告管理"}, button="详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallAd brand = adService.findById(id);
@@ -74,6 +78,7 @@ public class AdminAdController {
     }
 
     @RequiresPermissions("admin:ad:update")
+    @RequiresPermissionsDesc(menu={"推广管理" , "广告管理"}, button="编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallAd ad) {
         Object error = validate(ad);
@@ -88,6 +93,7 @@ public class AdminAdController {
     }
 
     @RequiresPermissions("admin:ad:delete")
+    @RequiresPermissionsDesc(menu={"推广管理" , "广告管理"}, button="删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallAd ad) {
         Integer id = ad.getId();

@@ -10,6 +10,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
+import org.linlinjava.litemall.db.service.LitemallPermissionService;
+import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,17 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Set;
 
 public class AdminAuthorizingRealm extends AuthorizingRealm {
 
     private static final Logger log = LoggerFactory.getLogger(AdminAuthorizingRealm.class);
     @Autowired
     private LitemallAdminService adminService;
+    @Autowired
+    private LitemallRoleService roleService;
+    @Autowired
+    private LitemallPermissionService permissionService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -30,9 +37,13 @@ public class AdminAuthorizingRealm extends AuthorizingRealm {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
 
+        LitemallAdmin admin = (LitemallAdmin) getAvailablePrincipal(principals);
+        Integer[] roleIds = admin.getRoleIds();
+        Set<String> roles = roleService.queryByIds(roleIds);
+        Set<String> permissions = permissionService.queryByRoleIds(roleIds);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.addRole("admin");
-        info.addStringPermission("*");
+        info.setRoles(roles);
+        info.setStringPermissions(permissions);
         return info;
     }
 

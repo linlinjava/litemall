@@ -2,7 +2,6 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
@@ -32,7 +31,6 @@ public class AdminDashbordController {
     @Autowired
     private LitemallOrderService orderService;
 
-    @RequiresPermissions("admin:dashboard:info")
     @GetMapping("")
     public Object info() {
         int userTotal = userService.count();

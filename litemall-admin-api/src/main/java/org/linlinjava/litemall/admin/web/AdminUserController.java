@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +33,7 @@ public class AdminUserController {
     private LitemallUserService userService;
 
     @RequiresPermissions("admin:user:list")
+    @RequiresPermissionsDesc(menu={"用户管理" , "会员管理"}, button="查询")
     @GetMapping("/list")
     public Object list(String username, String mobile,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -48,6 +50,7 @@ public class AdminUserController {
     }
 
     @RequiresPermissions("admin:user:list")
+    @RequiresPermissionsDesc(menu={"用户管理" , "会员管理"}, button="查询")
     @GetMapping("/username")
     public Object username(@NotEmpty String username) {
         int total = userService.countSeletive(username, null, null, null, null, null);
@@ -80,6 +83,7 @@ public class AdminUserController {
     }
 
     @RequiresPermissions("admin:user:create")
+    @RequiresPermissionsDesc(menu={"用户管理" , "会员管理"}, button="添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallUser user) {
         Object error = validate(user);
@@ -110,6 +114,7 @@ public class AdminUserController {
     }
 
     @RequiresPermissions("admin:user:update")
+    @RequiresPermissionsDesc(menu={"用户管理" , "会员管理"}, button="编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallUser user) {
         Object error = validate(user);

@@ -13,15 +13,14 @@ import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
+import org.linlinjava.litemall.db.service.LitemallPermissionService;
+import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
 
@@ -33,6 +32,10 @@ public class AdminAuthController {
 
     @Autowired
     private LitemallAdminService adminService;
+    @Autowired
+    private LitemallRoleService roleService;
+    @Autowired
+    private LitemallPermissionService permissionService;
 
     /*
      *  { username : value, password : value }
@@ -82,12 +85,11 @@ public class AdminAuthController {
         data.put("name", admin.getUsername());
         data.put("avatar", admin.getAvatar());
 
-        // 目前roles不支持，这里简单设置admin
-        List<String> roles = new ArrayList<>();
-        roles.add("admin");
+        Integer[] roleIds = admin.getRoleIds();
+        Set<String> roles = roleService.queryByIds(roleIds);
+        Set<String> permissions = permissionService.queryByRoleIds(roleIds);
         data.put("roles", roles);
-        data.put("perms", "*");
-        data.put("introduction", "admin introduction");
+        data.put("perms", permissions);
         return ResponseUtil.ok(data);
     }
 
