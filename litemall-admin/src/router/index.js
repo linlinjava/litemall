@@ -370,12 +370,6 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     children: [
       {
-        path: 'my',
-        component: () => import('@/views/profile/my'),
-        name: 'my',
-        meta: { title: '个人信息', noCache: true }
-      },
-      {
         path: 'password',
         component: () => import('@/views/profile/password'),
         name: 'password',
