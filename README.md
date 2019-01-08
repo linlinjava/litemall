@@ -175,6 +175,12 @@ V 3.0.0 完成以下目标：
 
    项目参考：litemall项目的litemall-admin模块的一些页面布局样式参考了该项目。
 
+4. [biu](https://github.com/CaiBaoHong/biu)
+
+   项目介绍：管理后台项目开发脚手架，基于vue-element-admin和springboot搭建，前后端分离方式开发和部署。
+
+   项目参考：litemall项目的权限管理功能参考了该项目。
+
 ## 问题
 
 ![](doc/pic/qq.png)
