@@ -26,7 +26,6 @@ import java.util.Map;
 @RequestMapping("/wx/home")
 @Validated
 public class WxHomeController {
-    private final Log logger = LogFactory.getLog(WxHomeController.class);
 
     @Autowired
     private LitemallAdService adService;
