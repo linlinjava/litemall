@@ -21,6 +21,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="管理员角色" prop="roleIds">
+        <template slot-scope="scope">
+          <el-tag v-for="roleId in scope.row.roleIds" :key="roleId" type="primary" style="margin-right: 20px;"> {{ formatRole(roleId) }} </el-tag>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -41,10 +47,25 @@
           <el-input v-model="dataForm.password" type="password" auto-complete="off"/>
         </el-form-item>
         <el-form-item label="管理员头像" prop="avatar">
-          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAvatar" class="avatar-uploader" list-type="picture-card" accept=".jpg,.jpeg,.png,.gif">
+          <el-upload
+            :headers="headers"
+            :action="uploadPath"
+            :show-file-list="false"
+            :on-success="uploadAvatar"
+            class="avatar-uploader"
+            accept=".jpg,.jpeg,.png,.gif">
             <img v-if="dataForm.avatar" :src="dataForm.avatar" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
+        </el-form-item>
+        <el-form-item label="管理员角色" prop="roleIds">
+          <el-select v-model="dataForm.roleIds" multiple placeholder="请选择">
+            <el-option
+              v-for="item in roleOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"/>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -77,14 +98,15 @@
   text-align: center;
 }
 .avatar {
-  width: 120px;
-  height: 120px;
+  width: 145px;
+  height: 145px;
   display: block;
 }
 </style>
 
 <script>
 import { listAdmin, createAdmin, updateAdmin, deleteAdmin } from '@/api/admin'
+import { roleOptions } from '@/api/role'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -97,6 +119,7 @@ export default {
       uploadPath,
       list: null,
       total: 0,
+      roleOptions: null,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -109,7 +132,8 @@ export default {
         id: undefined,
         username: undefined,
         password: undefined,
-        avatar: undefined
+        avatar: undefined,
+        roleIds: []
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -135,8 +159,21 @@ export default {
   },
   created() {
     this.getList()
+
+    roleOptions()
+      .then(response => {
+        this.roleOptions = response.data.data
+      })
   },
   methods: {
+    formatRole(roleId) {
+      for (let i = 0; i < this.roleOptions.length; i++) {
+        if (roleId === this.roleOptions[i].value) {
+          return this.roleOptions[i].label
+        }
+      }
+      return ''
+    },
     getList() {
       this.listLoading = true
       listAdmin(this.listQuery)
@@ -160,7 +197,8 @@ export default {
         id: undefined,
         username: undefined,
         password: undefined,
-        avatar: undefined
+        avatar: undefined,
+        roleIds: []
       }
     },
     uploadAvatar: function(response) {

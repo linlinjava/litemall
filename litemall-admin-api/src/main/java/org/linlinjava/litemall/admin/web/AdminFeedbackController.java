@@ -2,7 +2,8 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -32,16 +33,14 @@ public class AdminFeedbackController {
     @Autowired
     private LitemallFeedbackService feedbackService;
 
+    @RequiresPermissions("admin:feedback:list")
+    @RequiresPermissionsDesc(menu={"用户管理" , "意见反馈"}, button="查询")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String username,
+    public Object list(Integer userId, String username,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         List<LitemallFeedback> feedbackList = feedbackService.querySelective(userId, username, page, limit, sort, order);
         int total = feedbackService.countSelective(userId, username, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();

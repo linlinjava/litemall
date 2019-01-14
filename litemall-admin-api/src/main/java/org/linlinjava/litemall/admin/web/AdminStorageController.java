@@ -2,7 +2,8 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
@@ -32,9 +33,10 @@ public class AdminStorageController {
     @Autowired
     private LitemallStorageService litemallStorageService;
 
+    @RequiresPermissions("admin:storage:list")
+    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="查询")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String key, String name,
+    public Object list(String key, String name,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
@@ -48,11 +50,10 @@ public class AdminStorageController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:storage:create")
+    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="上传")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestParam("file") MultipartFile file) throws IOException {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object create(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String url = storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
         Map<String, Object> data = new HashMap<>();
@@ -60,11 +61,10 @@ public class AdminStorageController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:storage:read")
+    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="详情")
     @PostMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object read(@NotNull Integer id) {
         LitemallStorage storageInfo = litemallStorageService.findById(id);
         if (storageInfo == null) {
             return ResponseUtil.badArgumentValue();
@@ -72,22 +72,20 @@ public class AdminStorageController {
         return ResponseUtil.ok(storageInfo);
     }
 
+    @RequiresPermissions("admin:storage:update")
+    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="编辑")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallStorage litemallStorage) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object update(@RequestBody LitemallStorage litemallStorage) {
         if (litemallStorageService.update(litemallStorage) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
         return ResponseUtil.ok(litemallStorage);
     }
 
+    @RequiresPermissions("admin:storage:delete")
+    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="删除")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallStorage litemallStorage) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object delete(@RequestBody LitemallStorage litemallStorage) {
         String key = litemallStorage.getKey();
         if (StringUtils.isEmpty(key)) {
             return ResponseUtil.badArgument();

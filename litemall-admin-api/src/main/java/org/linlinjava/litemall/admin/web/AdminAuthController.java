@@ -2,35 +2,40 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.admin.dao.AdminToken;
-import org.linlinjava.litemall.admin.service.AdminTokenManager;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
+import org.linlinjava.litemall.db.service.LitemallPermissionService;
+import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
 
 @RestController
-@RequestMapping("/admin/login")
+@RequestMapping("/admin/auth")
 @Validated
 public class AdminAuthController {
     private final Log logger = LogFactory.getLog(AdminAuthController.class);
 
     @Autowired
     private LitemallAdminService adminService;
+    @Autowired
+    private LitemallRoleService roleService;
+    @Autowired
+    private LitemallPermissionService permissionService;
 
     /*
      *  { username : value, password : value }
@@ -44,34 +49,62 @@ public class AdminAuthController {
             return ResponseUtil.badArgument();
         }
 
-        List<LitemallAdmin> adminList = adminService.findAdmin(username);
-        Assert.state(adminList.size() < 2, "同一个用户名存在两个账户");
-        if (adminList.size() == 0) {
-            return ResponseUtil.badArgumentValue();
+        Subject currentUser = SecurityUtils.getSubject();
+        try {
+            currentUser.login(new UsernamePasswordToken(username, password));
+        } catch (UnknownAccountException uae) {
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号或密码不正确");
+        } catch (LockedAccountException lae) {
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号已锁定不可用");
+
+        } catch (AuthenticationException ae) {
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, ae.getMessage());
         }
-        LitemallAdmin admin = adminList.get(0);
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(password, admin.getPassword())) {
-            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "账号密码不对");
-        }
-
-        Integer adminId = admin.getId();
-        // token
-        AdminToken adminToken = AdminTokenManager.generateToken(adminId);
-
-        return ResponseUtil.ok(adminToken.getToken());
+        return ResponseUtil.ok(currentUser.getSession().getId());
     }
 
     /*
      *
      */
+    @RequiresAuthentication
     @PostMapping("/logout")
-    public Object login(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object login() {
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
         return ResponseUtil.ok();
+    }
+
+
+    @RequiresAuthentication
+    @GetMapping("/info")
+    public Object info() {
+        Subject currentUser = SecurityUtils.getSubject();
+        LitemallAdmin admin = (LitemallAdmin) currentUser.getPrincipal();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", admin.getUsername());
+        data.put("avatar", admin.getAvatar());
+
+        Integer[] roleIds = admin.getRoleIds();
+        Set<String> roles = roleService.queryByIds(roleIds);
+        Set<String> permissions = permissionService.queryByRoleIds(roleIds);
+        data.put("roles", roles);
+        data.put("perms", permissions);
+        return ResponseUtil.ok(data);
+    }
+
+    @GetMapping("/401")
+    public Object page401() {
+        return ResponseUtil.unlogin();
+    }
+
+    @GetMapping("/index")
+    public Object pageIndex() {
+        return ResponseUtil.ok();
+    }
+
+    @GetMapping("/403")
+    public Object page403() {
+        return ResponseUtil.unauthz();
     }
 }

@@ -2,7 +2,8 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.dao.GoodsAllinone;
 import org.linlinjava.litemall.admin.util.CatVo;
 import org.linlinjava.litemall.core.qcode.QCodeService;
@@ -59,17 +60,14 @@ public class AdminGoodsController {
     @Autowired
     private QCodeService qCodeService;
 
+    @RequiresPermissions("admin:goods:list")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="查询")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String goodsSn, String name,
+    public Object list(String goodsSn, String name,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, order);
         int total = goodsService.countSelective(goodsSn, name, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -165,12 +163,10 @@ public class AdminGoodsController {
      * 因此这里会拒绝管理员编辑商品，如果订单或购物车中存在商品。
      * 所以这里可能需要重新设计。
      */
+    @RequiresPermissions("admin:goods:update")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="编辑")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object update(@RequestBody GoodsAllinone goodsAllinone) {
         Object error = validate(goodsAllinone);
         if (error != null) {
             return error;
@@ -240,11 +236,10 @@ public class AdminGoodsController {
         return ResponseUtil.ok();
     }
 
+    @RequiresPermissions("admin:goods:delete")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="删除")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object delete(@RequestBody LitemallGoods goods) {
         Integer id = goods.getId();
         if (id == null) {
             return ResponseUtil.badArgument();
@@ -270,12 +265,10 @@ public class AdminGoodsController {
         return ResponseUtil.ok();
     }
 
+    @RequiresPermissions("admin:goods:create")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品上架"}, button="上架")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody GoodsAllinone goodsAllinone) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object create(@RequestBody GoodsAllinone goodsAllinone) {
         Object error = validate(goodsAllinone);
         if (error != null) {
             return error;
@@ -336,13 +329,10 @@ public class AdminGoodsController {
         return ResponseUtil.ok();
     }
 
-
+    @RequiresPermissions("admin:goods:list")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="查询")
     @GetMapping("/catAndBrand")
-    public Object list2(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object list2() {
         // http://element-cn.eleme.io/#/zh-CN/component/cascader
         // 管理员设置“所属分类”
         List<LitemallCategory> l1CatList = categoryService.queryL1();
@@ -383,12 +373,10 @@ public class AdminGoodsController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:goods:read")
+    @RequiresPermissionsDesc(menu={"商品管理" , "商品列表"}, button="编辑")
     @GetMapping("/detail")
-    public Object detail(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object detail(@NotNull Integer id) {
         LitemallGoods goods = goodsService.findById(id);
         List<LitemallGoodsProduct> products = productService.queryByGid(id);
         List<LitemallGoodsSpecification> specifications = specificationService.queryByGid(id);

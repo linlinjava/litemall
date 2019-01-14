@@ -6,19 +6,21 @@ import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
-import org.linlinjava.litemall.core.util.CharUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.LitemallComment;
+import org.linlinjava.litemall.db.domain.LitemallOrder;
+import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
+import org.linlinjava.litemall.db.domain.UserVo;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -60,17 +62,15 @@ public class AdminOrderController {
     @Autowired
     private NotifyService notifyService;
 
+    @RequiresPermissions("admin:order:list")
+    @RequiresPermissionsDesc(menu={"商城管理" , "订单管理"}, button="查询")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String orderSn,
+    public Object list(Integer userId, String orderSn,
                        @RequestParam(required = false) List<Short> orderStatusArray,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
         List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
         int total = orderService.countSelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
 
@@ -81,12 +81,10 @@ public class AdminOrderController {
         return ResponseUtil.ok(data);
     }
 
+    @RequiresPermissions("admin:order:read")
+    @RequiresPermissionsDesc(menu={"商城管理" , "订单管理"}, button="详情")
     @GetMapping("/detail")
-    public Object detail(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object detail(@NotNull Integer id) {
         LitemallOrder order = orderService.findById(id);
         List<LitemallOrderGoods> orderGoods = orderGoodsService.queryByOid(id);
         UserVo user = userService.findUserVoById(order.getUserId());
@@ -111,15 +109,13 @@ public class AdminOrderController {
      * 1. 管理员登录微信官方支付平台点击退款操作进行退款
      * 2. 管理员登录litemall管理后台点击退款操作进行订单状态修改和商品库存回库
      *
-     * @param adminId 管理员ID
      * @param body    订单信息，{ orderId：xxx }
      * @return 订单退款操作结果
      */
+    @RequiresPermissions("admin:order:refund")
+    @RequiresPermissionsDesc(menu={"商城管理" , "订单管理"}, button="订单退款")
     @PostMapping("refund")
-    public Object refund(@LoginAdmin Integer adminId, @RequestBody String body) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object refund(@RequestBody String body) {
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         String refundMoney = JacksonUtil.parseString(body, "refundMoney");
         if (orderId == null) {
@@ -209,17 +205,15 @@ public class AdminOrderController {
      * 1. 检测当前订单是否能够发货
      * 2. 设置订单发货状态
      *
-     * @param adminId 管理员ID
      * @param body    订单信息，{ orderId：xxx, shipSn: xxx, shipChannel: xxx }
      * @return 订单操作结果
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
      */
+    @RequiresPermissions("admin:order:ship")
+    @RequiresPermissionsDesc(menu={"商城管理" , "订单管理"}, button="订单发货")
     @PostMapping("ship")
-    public Object ship(@LoginAdmin Integer adminId, @RequestBody String body) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object ship(@RequestBody String body) {
         Integer orderId = JacksonUtil.parseInteger(body, "orderId");
         String shipSn = JacksonUtil.parseString(body, "shipSn");
         String shipChannel = JacksonUtil.parseString(body, "shipChannel");
@@ -257,18 +251,15 @@ public class AdminOrderController {
     /**
      * 回复订单商品
      *
-     * @param adminId 管理员ID
      * @param body    订单信息，{ orderId：xxx }
      * @return 订单操作结果
      * 成功则 { errno: 0, errmsg: '成功' }
      * 失败则 { errno: XXX, errmsg: XXX }
      */
+    @RequiresPermissions("admin:order:reply")
+    @RequiresPermissionsDesc(menu={"商城管理" , "订单管理"}, button="订单商品回复")
     @PostMapping("reply")
-    public Object reply(@LoginAdmin Integer adminId, @RequestBody String body) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object reply(@RequestBody String body) {
         Integer commentId = JacksonUtil.parseInteger(body, "commentId");
         if (commentId == null || commentId == 0) {
             return ResponseUtil.badArgument();

@@ -80,39 +80,9 @@
 
 ### 4.1.8 安全
 
-#### 4.1.8.1 Token
+这里的安全基于Shiro。
 
-管理员登录成功以后，后端会返回token，之后管理员的请求都会携带token。
-
-见AdminWebMvcConfiguration类、LoginAdmin和LoginAdminHandlerMethodArgumentResolver类。
-
-管理后台后端服务每次请求都会检测是否存在HTTP头部域`X-Litemall-Admin-Token`。
-如果存在，则内部查询转换成LoginAdmin，然后作为请求参数。
-如果不存在，则作为null请求参数。
-
-而具体的后端服务controller中，则可以利用LoginAdmin来检查。
-
-例如管理员地址服务中：
-```
-@RestController
-@RequestMapping("/admin/address")
-@Validated
-public class AdminAddressController {
-    @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String name,
-                       @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer limit,
-                       @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-        
-        ...
-    }
-```
-如果检测`adminId`是null，则返回错误信息“管理员未登录”。
+#### 4.1.8.1 认证
 
 #### 4.1.8.2 账号密码加盐
 
@@ -120,12 +90,17 @@ public class AdminAddressController {
 
 而如果用户采用了账号和密码的形式登录，那么后端需要把用户密码加盐。
 
+#### 4.1.8.3 权限管理
+
 ### 4.1.9 定时任务
 
-AdminOrderController类存在以下三个方法，其实是三个定时任务：
-* checkOrderUnpaid
-* checkOrderUnconfirm
-* checkOrderComment
+job子包存在以下定时任务：
+* OrderJob类
+  * checkOrderUnpaid
+  * checkOrderUnconfirm
+  * checkOrderComment
+* CouponJob类
+  * checkCouponExpired
 
 注意：
 > 虽然定时任务放在AdminOrderController类中，但是可能这里不是很合适，
