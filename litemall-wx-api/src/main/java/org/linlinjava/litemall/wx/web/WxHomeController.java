@@ -130,7 +130,7 @@ public class WxHomeController {
             data.put("brandList", brandListTask.get());
             data.put("topicList", topicListTask.get());
             data.put("grouponList", grouponListTask.get());
-            data.put("floorGoodsList", floorGoodsListTask);
+            data.put("floorGoodsList", floorGoodsListTask.get());
         }
         catch (Exception e) {
             e.printStackTrace();
