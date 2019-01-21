@@ -189,13 +189,12 @@ public class AdminOrderController {
             logger.error("系统内部错误", ex);
             return ResponseUtil.fail(ORDER_REFUND_FAILED, "订单退款失败");
         }
+        txManager.commit(status);
 
         //TODO 发送邮件和短信通知，这里采用异步发送
         // 退款成功通知用户, 例如“您申请的订单退款 [ 单号:{1} ] 已成功，请耐心等待到账。”
         // 注意订单号只发后6位
         notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND, new String[]{order.getOrderSn().substring(8, 14)});
-
-        txManager.commit(status);
 
         return ResponseUtil.ok();
     }
