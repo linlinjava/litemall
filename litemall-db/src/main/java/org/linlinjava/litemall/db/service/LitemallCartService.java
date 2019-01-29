@@ -114,7 +114,7 @@ public class LitemallCartService {
 
     public boolean checkExist(Integer goodsId) {
         LitemallCartExample example = new LitemallCartExample();
-        example.or().andGoodsIdEqualTo(goodsId).andCheckedEqualTo(true);
+        example.or().andGoodsIdEqualTo(goodsId).andCheckedEqualTo(true).andDeletedEqualTo(false);
         return cartMapper.countByExample(example) != 0;
     }
 }
