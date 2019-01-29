@@ -13,6 +13,7 @@ import java.util.List;
  **/
 @Component
 public class GetRegionService {
+
 	@Autowired
 	private LitemallRegionService regionService;
 

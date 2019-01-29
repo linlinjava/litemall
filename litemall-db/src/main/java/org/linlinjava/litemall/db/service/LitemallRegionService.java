@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 public class LitemallRegionService {
+
     @Resource
     private LitemallRegionMapper regionMapper;
 
