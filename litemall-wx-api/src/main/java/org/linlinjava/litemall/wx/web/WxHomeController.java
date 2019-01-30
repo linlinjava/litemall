@@ -7,6 +7,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.HomeCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -70,11 +71,11 @@ public class WxHomeController {
 
     /**
      * 首页数据
-     *
+     * @param userId 当用户已经登录时，非空。为登录状态为null
      * @return 首页数据
      */
     @GetMapping("/index")
-    public Object index() {
+    public Object index(@LoginUser Integer userId) {
         //优先从缓存中读取
         if (HomeCacheManager.hasData(HomeCacheManager.INDEX)) {
             return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.INDEX));
@@ -87,7 +88,13 @@ public class WxHomeController {
 
         Callable<List> channelListCallable = () -> categoryService.queryChannel();
 
-        Callable<List> couponListCallable = () -> couponService.queryList(0, 3);
+        Callable<List> couponListCallable;
+        if(userId == null){
+            couponListCallable = () -> couponService.queryList(0, 3);
+        } else {
+            couponListCallable = () -> couponService.queryAvailableList(userId,0, 3);
+        }
+
 
         Callable<List> newGoodsListCallable = () -> goodsService.queryByNew(0, SystemConfig.getNewLimit());
 
