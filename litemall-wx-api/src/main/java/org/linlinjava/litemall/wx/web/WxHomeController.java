@@ -80,6 +80,7 @@ public class WxHomeController {
         if (HomeCacheManager.hasData(HomeCacheManager.INDEX)) {
             return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.INDEX));
         }
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         Map<String, Object> data = new HashMap<>();
 
@@ -144,6 +145,7 @@ public class WxHomeController {
         }
         //缓存数据
         HomeCacheManager.loadData(HomeCacheManager.INDEX, data);
+        executorService.shutdown();
         return ResponseUtil.ok(data);
     }
 

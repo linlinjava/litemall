@@ -12,8 +12,16 @@ import java.util.List;
 
 @Service
 public class LitemallRegionService {
+
     @Resource
     private LitemallRegionMapper regionMapper;
+
+    public List<LitemallRegion> getAll(){
+        LitemallRegionExample example = new LitemallRegionExample();
+        byte b = 4;
+        example.or().andTypeNotEqualTo(b);
+        return regionMapper.selectByExample(example);
+    }
 
     public List<LitemallRegion> queryByPid(Integer parentId) {
         LitemallRegionExample example = new LitemallRegionExample();
