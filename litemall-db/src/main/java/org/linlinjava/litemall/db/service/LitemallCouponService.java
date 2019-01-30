@@ -3,10 +3,9 @@ package org.linlinjava.litemall.db.service;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallCouponMapper;
-import org.linlinjava.litemall.db.domain.LitemallCoupon;
+import org.linlinjava.litemall.db.dao.LitemallCouponUserMapper;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.domain.LitemallCoupon.Column;
-import org.linlinjava.litemall.db.domain.LitemallCouponExample;
-import org.linlinjava.litemall.db.domain.LitemallCouponUser;
 import org.linlinjava.litemall.db.util.CouponConstant;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +13,21 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class LitemallCouponService {
     @Resource
     private LitemallCouponMapper couponMapper;
+    @Resource
+    private LitemallCouponUserMapper couponUserMapper;
 
     private Column[] result = new Column[]{Column.id, Column.name, Column.desc, Column.tag,
                                             Column.days, Column.startTime, Column.endTime,
                                             Column.discount, Column.min};
 
     /**
-     * 查询
+     * 查询，空参数
      *
      * @param offset
      * @param limit
@@ -34,17 +36,43 @@ public class LitemallCouponService {
      * @return
      */
     public List<LitemallCoupon> queryList(int offset, int limit, String sort, String order) {
-        LitemallCouponExample example = new LitemallCouponExample();
-        example.or().andTypeEqualTo(CouponConstant.TYPE_COMMON).andStatusEqualTo(CouponConstant.STATUS_NORMAL).andDeletedEqualTo(false);
-        example.setOrderByClause(sort + " " + order);
+        return queryList(LitemallCouponExample.newAndCreateCriteria(), offset, limit, sort, order);
+    }
+
+    /**
+     * 查询
+     *
+     * @param criteria 可扩展的条件
+     * @param offset
+     * @param limit
+     * @param sort
+     * @param order
+     * @return
+     */
+    public List<LitemallCoupon> queryList(LitemallCouponExample.Criteria criteria, int offset, int limit, String sort, String order) {
+        criteria.andTypeEqualTo(CouponConstant.TYPE_COMMON).andStatusEqualTo(CouponConstant.STATUS_NORMAL).andDeletedEqualTo(false);
+        criteria.example().setOrderByClause(sort + " " + order);
         PageHelper.startPage(offset, limit);
-        return couponMapper.selectByExampleSelective(example, result);
+        return couponMapper.selectByExampleSelective(criteria.example(), result);
     }
 
     public int queryTotal() {
         LitemallCouponExample example = new LitemallCouponExample();
         example.or().andTypeEqualTo(CouponConstant.TYPE_COMMON).andStatusEqualTo(CouponConstant.STATUS_NORMAL).andDeletedEqualTo(false);
         return (int) couponMapper.countByExample(example);
+    }
+
+    public List<LitemallCoupon> queryAvailableList(Integer userId, int offset, int limit) {
+        assert userId != null;
+        // 过滤掉登录账号已经领取过的coupon
+        LitemallCouponExample.Criteria c = LitemallCouponExample.newAndCreateCriteria();
+        List<LitemallCouponUser> used = couponUserMapper.selectByExample(
+                LitemallCouponUserExample.newAndCreateCriteria().andUserIdEqualTo(userId).example()
+        );
+        if(used!=null && !used.isEmpty()){
+            c.andIdNotIn(used.stream().map(LitemallCouponUser::getCouponId).collect(Collectors.toList()));
+        }
+        return queryList(c, offset, limit, "add_time", "desc");
     }
 
     public List<LitemallCoupon> queryList(int offset, int limit) {
