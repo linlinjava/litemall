@@ -87,6 +87,7 @@ export default {
   },
   permission: {
     roles: 'Your roles',
+    perms: 'Your permissions',
     switchRoles: 'Switch roles'
   },
   guide: {

@@ -86,8 +86,9 @@ export default {
     github: 'Github 地址'
   },
   permission: {
-    roles: '你的权限',
-    switchRoles: '切换权限'
+    roles: '你的角色',
+    perms: '你的权限',
+    switchRoles: '切换角色'
   },
   guide: {
     description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
