@@ -38,7 +38,7 @@ public class AdminGrouponController {
     private LitemallGrouponService grouponService;
 
     @RequiresPermissions("admin:groupon:read")
-    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="查询")
+    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="详情")
     @GetMapping("/listRecord")
     public Object listRecord(String grouponId,
                              @RequestParam(defaultValue = "1") Integer page,

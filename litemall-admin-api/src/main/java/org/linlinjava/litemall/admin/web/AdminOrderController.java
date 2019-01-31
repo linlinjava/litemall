@@ -36,7 +36,7 @@ public class AdminOrderController {
      * @return
      */
     @RequiresPermissions("admin:order:list")
-    @RequiresPermissionsDesc(menu = {"商城管理", "订单管理"}, button = "查询")
+    @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(Integer userId, String orderSn,
                        @RequestParam(required = false) List<Short> orderStatusArray,
@@ -54,7 +54,7 @@ public class AdminOrderController {
      * @return
      */
     @RequiresPermissions("admin:order:read")
-    @RequiresPermissionsDesc(menu = {"商城管理", "订单管理"}, button = "详情")
+    @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "详情")
     @GetMapping("/detail")
     public Object detail(@NotNull Integer id) {
         return adminOrderService.detail(id);
@@ -67,7 +67,7 @@ public class AdminOrderController {
      * @return 订单退款操作结果
      */
     @RequiresPermissions("admin:order:refund")
-    @RequiresPermissionsDesc(menu = {"商城管理", "订单管理"}, button = "订单退款")
+    @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单退款")
     @PostMapping("refund")
     public Object refund(@RequestBody String body) {
         return adminOrderService.refund(body);
@@ -80,7 +80,7 @@ public class AdminOrderController {
      * @return 订单操作结果
      */
     @RequiresPermissions("admin:order:ship")
-    @RequiresPermissionsDesc(menu = {"商城管理", "订单管理"}, button = "订单发货")
+    @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单发货")
     @PostMapping("ship")
     public Object ship(@RequestBody String body) {
         return adminOrderService.ship(body);
@@ -94,7 +94,7 @@ public class AdminOrderController {
      * @return 订单操作结果
      */
     @RequiresPermissions("admin:order:reply")
-    @RequiresPermissionsDesc(menu = {"商城管理", "订单管理"}, button = "订单商品回复")
+    @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单商品回复")
     @PostMapping("reply")
     public Object reply(@RequestBody String body) {
         return adminOrderService.reply(body);
