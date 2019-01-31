@@ -50,7 +50,12 @@
         :default-checked-keys="assignedPermissions"
         show-checkbox
         node-key="id"
-        highlight-current/>
+        highlight-current>
+        <span slot-scope="{ node, data }" class="custom-tree-node">
+          <span>{{ data.label }}</span>
+          <el-tag v-if="data.api" type="success" size="mini">{{ data.api }}</el-tag>
+        </span>
+      </el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button @click="permissionDialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="updatePermission">确定</el-button>
