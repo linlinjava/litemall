@@ -30,7 +30,7 @@ public class AdminAdController {
 
     @RequiresPermissions("admin:ad:list")
     @RequiresPermissionsDesc(menu={"推广管理" , "广告管理"}, button="查询")
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public Object list(String name, String content,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
