@@ -8,6 +8,7 @@ import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.util.AdminResponseCode;
 import org.linlinjava.litemall.admin.util.PermVo;
+import org.linlinjava.litemall.admin.util.Permission;
 import org.linlinjava.litemall.admin.util.PermissionUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -138,22 +139,16 @@ public class AdminRoleController {
     @Autowired
     private ApplicationContext context;
     private List<PermVo> systemPermissions = null;
+    private Set<String> systemPermissionsString = null;
+
     private List<PermVo> getSystemPermissions(){
         final String basicPackage = "org.linlinjava.litemall.admin";
         if(systemPermissions == null){
-            systemPermissions = PermissionUtil.listPermissions(context, basicPackage);
+            List<Permission> permissions = PermissionUtil.listPermission(context, basicPackage);
+            systemPermissions = PermissionUtil.listPermVo(permissions);
+            systemPermissionsString = PermissionUtil.listPermissionString(permissions);
         }
         return systemPermissions;
-    }
-
-    private Set<String> getSystemPermissionsString(){
-        getSystemPermissions();
-
-        Set<String> permissions = new HashSet<String>();
-        for(PermVo permVo : systemPermissions){
-            permissions.add(permVo.getId());
-        }
-        return permissions;
     }
 
     private Set<String> getAssignedPermissions(Integer roleId){
@@ -161,7 +156,8 @@ public class AdminRoleController {
         // 之所以这么做，是因为前端不能识别超级权限，所以这里需要转换一下。
         Set<String> assignedPermissions = null;
         if(permissionService.checkSuperPermission(roleId)){
-            assignedPermissions = getSystemPermissionsString();
+            getSystemPermissions();
+            assignedPermissions = systemPermissionsString;
         }
         else{
             assignedPermissions = permissionService.queryByRoleId(roleId);
@@ -175,7 +171,7 @@ public class AdminRoleController {
      *
      * @return 系统所有权限列表和管理员已分配权限
      */
-    @RequiresPermissions("admin:role:permission")
+    @RequiresPermissions("admin:role:permission:get")
     @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="权限详情")
     @GetMapping("/permissions")
     public Object getPermissions(Integer roleId) {
@@ -195,7 +191,7 @@ public class AdminRoleController {
      * @param body
      * @return
      */
-    @RequiresPermissions("admin:role:permission")
+    @RequiresPermissions("admin:role:permission:update")
     @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="权限变更")
     @PostMapping("/permissions")
     public Object updatePermissions(@RequestBody String body) {

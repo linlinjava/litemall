@@ -13,15 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PermissionUtil {
 
-    public static List<PermVo> listPermissions(ApplicationContext context, String basicPackage) {
+    public static List<PermVo> listPermVo(List<Permission> permissions) {
         List<PermVo> root = new ArrayList<>();
-        List<Permission> permissions = findPermissions(context, basicPackage);
         for (Permission permission : permissions) {
             RequiresPermissions requiresPermissions = permission.getRequiresPermissions();
             RequiresPermissionsDesc requiresPermissionsDesc = permission.getRequiresPermissionsDesc();
@@ -88,7 +85,7 @@ public class PermissionUtil {
         return root;
     }
 
-    public static List<Permission> findPermissions(ApplicationContext context, String basicPackage) {
+    public static List<Permission> listPermission(ApplicationContext context, String basicPackage) {
         Map<String, Object> map = context.getBeansWithAnnotation(Controller.class);
         List<Permission> permissions = new ArrayList<>();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -143,4 +140,11 @@ public class PermissionUtil {
         return permissions;
     }
 
+    public static Set<String> listPermissionString(List<Permission> permissions) {
+        Set<String> permissionsString = new HashSet<>();
+        for(Permission permission : permissions){
+            permissionsString.add(permission.getRequiresPermissions().value()[0]);
+        }
+        return permissionsString;
+    }
 }
