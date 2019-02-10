@@ -10,9 +10,15 @@ export default function checkPermission(value) {
     const perms = store.getters && store.getters.perms
     const permissions = value
 
-    const hasPermission = perms.some(perm => {
-      return permissions.includes(perm)
-    })
+    var hasPermission = false
+
+    if (perms.indexOf('*') >= 0) {
+      hasPermission = true
+    } else {
+      hasPermission = perms.some(perm => {
+        return permissions.includes(perm)
+      })
+    }
 
     if (!hasPermission) {
       return false

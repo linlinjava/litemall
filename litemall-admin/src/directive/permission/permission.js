@@ -9,9 +9,15 @@ export default{
     if (value && value instanceof Array && value.length > 0) {
       const permissions = value
 
-      const hasPermission = perms.some(perm => {
-        return permissions.includes(perm)
-      })
+      var hasPermission = false
+
+      if (perms.indexOf('*') >= 0) {
+        hasPermission = true
+      } else {
+        hasPermission = perms.some(perm => {
+          return permissions.includes(perm)
+        })
+      }
 
       if (!hasPermission) {
         el.parentNode && el.parentNode.removeChild(el)
