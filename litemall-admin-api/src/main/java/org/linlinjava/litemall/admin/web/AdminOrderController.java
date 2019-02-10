@@ -68,7 +68,7 @@ public class AdminOrderController {
      */
     @RequiresPermissions("admin:order:refund")
     @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单退款")
-    @PostMapping("refund")
+    @PostMapping("/refund")
     public Object refund(@RequestBody String body) {
         return adminOrderService.refund(body);
     }
@@ -81,7 +81,7 @@ public class AdminOrderController {
      */
     @RequiresPermissions("admin:order:ship")
     @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单发货")
-    @PostMapping("ship")
+    @PostMapping("/ship")
     public Object ship(@RequestBody String body) {
         return adminOrderService.ship(body);
     }
@@ -95,7 +95,7 @@ public class AdminOrderController {
      */
     @RequiresPermissions("admin:order:reply")
     @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单商品回复")
-    @PostMapping("reply")
+    @PostMapping("/reply")
     public Object reply(@RequestBody String body) {
         return adminOrderService.reply(body);
     }
