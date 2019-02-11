@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.dao.LitemallTopicMapper;
 import org.linlinjava.litemall.db.domain.LitemallTopic;
 import org.linlinjava.litemall.db.domain.LitemallTopic.Column;
 import org.linlinjava.litemall.db.domain.LitemallTopicExample;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -97,6 +98,7 @@ public class LitemallTopicService {
         return (int) topicMapper.countByExample(example);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public int updateById(LitemallTopic topic) {
         topic.setUpdateTime(LocalDateTime.now());
         LitemallTopicExample example = new LitemallTopicExample();
@@ -104,10 +106,12 @@ public class LitemallTopicService {
         return topicMapper.updateByExampleSelective(topic, example);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public void deleteById(Integer id) {
         topicMapper.logicalDeleteByPrimaryKey(id);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public void add(LitemallTopic topic) {
         topic.setAddTime(LocalDateTime.now());
         topic.setUpdateTime(LocalDateTime.now());

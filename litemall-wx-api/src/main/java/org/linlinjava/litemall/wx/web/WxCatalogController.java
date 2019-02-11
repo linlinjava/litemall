@@ -5,8 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
-import org.linlinjava.litemall.wx.service.HomeCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,12 +75,8 @@ public class WxCatalogController {
      * @return 所有分类数据
      */
     @GetMapping("all")
+    @Cacheable(value = "catalog")
     public Object queryAll() {
-        //优先从缓存中读取
-        if (HomeCacheManager.hasData(HomeCacheManager.CATALOG)) {
-            return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.CATALOG));
-        }
-
 
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
@@ -108,8 +104,6 @@ public class WxCatalogController {
         data.put("currentCategory", currentCategory);
         data.put("currentSubCategory", currentSubCategory);
 
-        //缓存数据
-        HomeCacheManager.loadData(HomeCacheManager.CATALOG, data);
         return ResponseUtil.ok(data);
     }
 
@@ -120,6 +114,7 @@ public class WxCatalogController {
      * @return 当前分类栏目
      */
     @GetMapping("current")
+    @Cacheable(value = "category", key = "#p0")
     public Object current(@NotNull Integer id) {
         // 当前分类
         LitemallCategory currentCategory = categoryService.findById(id);

@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: cache
+  messages:
+    encoding: UTF-8
+logging:
+  level:
+    root:  ERROR
+    org.springframework:  ERROR

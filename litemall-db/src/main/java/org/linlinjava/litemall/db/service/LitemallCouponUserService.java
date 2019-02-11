@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.dao.LitemallCouponUserMapper;
 import org.linlinjava.litemall.db.domain.LitemallCouponUser;
 import org.linlinjava.litemall.db.domain.LitemallCouponUserExample;
 import org.linlinjava.litemall.db.util.CouponUserConstant;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -29,6 +30,12 @@ public class LitemallCouponUserService {
         return (int)couponUserMapper.countByExample(example);
     }
 
+    /**
+     * 用户领取优惠券
+     * todo 检查重复领取
+     * @param couponUser
+     */
+    @CacheEvict(value = "homepage", key = "#couponUser.userId")
     public void add(LitemallCouponUser couponUser) {
         couponUser.setAddTime(LocalDateTime.now());
         couponUser.setUpdateTime(LocalDateTime.now());
@@ -106,7 +113,7 @@ public class LitemallCouponUserService {
         return couponUserMapper.selectByPrimaryKey(id);
     }
 
-
+    @CacheEvict(value = "homepage", key = "#couponUser.userId", condition = "#couponUser.userId != null")
     public int update(LitemallCouponUser couponUser) {
         couponUser.setUpdateTime(LocalDateTime.now());
         return couponUserMapper.updateByPrimaryKeySelective(couponUser);

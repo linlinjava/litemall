@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.dao.LitemallCouponUserMapper;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.domain.LitemallCoupon.Column;
 import org.linlinjava.litemall.db.util.CouponConstant;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -161,11 +162,13 @@ public class LitemallCouponService {
         couponMapper.insertSelective(coupon);
     }
 
+    @CacheEvict(value = "homepage")
     public int updateById(LitemallCoupon coupon) {
         coupon.setUpdateTime(LocalDateTime.now());
         return couponMapper.updateByPrimaryKeySelective(coupon);
     }
 
+    @CacheEvict(value = "homepage")
     public void deleteById(Integer id) {
         couponMapper.logicalDeleteByPrimaryKey(id);
     }

@@ -1,0 +1,29 @@
+# 查看spring-configuration-metadata.json
+spring:
+  redis:
+    # 集群配置
+#    sentinel:
+#      master: #
+#      nodes: #
+
+    # 使用jedis管理redis client
+    jedis:
+      pool:
+        max-idle: 20
+        min-idle: 1
+        max-active: 10
+        max-wait: 0
+    password:
+    host: 127.0.0.1
+    timeout: 5000
+    port: 6379
+    database: 0
+  cache:
+    redis:
+      use-key-prefix: true
+      key-prefix: dev
+      cache-null-values: false
+      time-to-live: 20s
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false

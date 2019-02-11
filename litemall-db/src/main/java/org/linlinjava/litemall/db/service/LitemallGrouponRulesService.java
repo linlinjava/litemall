@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.dao.LitemallGrouponRulesMapper;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallGrouponRules;
 import org.linlinjava.litemall.db.domain.LitemallGrouponRulesExample;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -141,10 +142,12 @@ public class LitemallGrouponRulesService {
         return (int) mapper.countByExample(example);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public void delete(Integer id) {
         mapper.logicalDeleteByPrimaryKey(id);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public int updateById(LitemallGrouponRules grouponRules) {
         grouponRules.setUpdateTime(LocalDateTime.now());
         return mapper.updateByPrimaryKeySelective(grouponRules);
