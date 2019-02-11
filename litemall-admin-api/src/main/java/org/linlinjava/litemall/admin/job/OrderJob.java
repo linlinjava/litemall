@@ -5,15 +5,14 @@ import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.LitemallGoodsProduct;
 import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
-import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
+import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
+import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,9 +23,6 @@ import java.util.List;
 @Component
 public class OrderJob {
     private final Log logger = LogFactory.getLog(OrderJob.class);
-
-    @Autowired
-    private PlatformTransactionManager txManager;
 
     @Autowired
     private LitemallOrderGoodsService orderGoodsService;
@@ -46,6 +42,7 @@ public class OrderJob {
      * 这里可以进一步地配合用户订单查询时订单未付款检查，如果订单超时半小时则取消。
      */
     @Scheduled(fixedDelay = 30 * 60 * 1000)
+    @Transactional
     public void checkOrderUnpaid() {
         logger.info("系统开启任务检查订单是否已经超期自动取消订单");
 
@@ -58,35 +55,24 @@ public class OrderJob {
                 continue;
             }
 
-            // 开启事务管理
-            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-            TransactionStatus status = txManager.getTransaction(def);
-            try {
-                // 设置订单已取消状态
-                order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
-                order.setEndTime(LocalDateTime.now());
-                if (orderService.updateWithOptimisticLocker(order) == 0) {
-                    throw new Exception("更新数据已失效");
-                }
-
-                // 商品货品数量增加
-                Integer orderId = order.getId();
-                List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
-                for (LitemallOrderGoods orderGoods : orderGoodsList) {
-                    Integer productId = orderGoods.getProductId();
-                    LitemallGoodsProduct product = productService.findById(productId);
-                    Short number = orderGoods.getNumber();
-                    if (productService.addStock(productId, number) == 0) {
-                        throw new Exception("商品货品库存增加失败");
-                    }
-                }
-            } catch (Exception ex) {
-                txManager.rollback(status);
-                logger.info("订单 ID=" + order.getId() + " 数据更新失败，放弃自动确认收货");
-                return;
+            // 设置订单已取消状态
+            order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
+            order.setEndTime(LocalDateTime.now());
+            if (orderService.updateWithOptimisticLocker(order) == 0) {
+                throw new RuntimeException("更新数据已失效");
             }
-            txManager.commit(status);
+
+            // 商品货品数量增加
+            Integer orderId = order.getId();
+            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
+                Integer productId = orderGoods.getProductId();
+                LitemallGoodsProduct product = productService.findById(productId);
+                Short number = orderGoods.getNumber();
+                if (productService.addStock(productId, number) == 0) {
+                    throw new RuntimeException("商品货品库存增加失败");
+                }
+            }
             logger.info("订单 ID=" + order.getId() + " 已经超期自动取消订单");
         }
     }

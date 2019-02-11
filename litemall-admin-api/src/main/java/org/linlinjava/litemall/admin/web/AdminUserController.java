@@ -49,8 +49,6 @@ public class AdminUserController {
         return ResponseUtil.ok(data);
     }
 
-    @RequiresPermissions("admin:user:list")
-    @RequiresPermissionsDesc(menu={"用户管理" , "会员管理"}, button="查询")
     @GetMapping("/username")
     public Object username(@NotEmpty String username) {
         int total = userService.countSeletive(username, null, null, null, null, null);

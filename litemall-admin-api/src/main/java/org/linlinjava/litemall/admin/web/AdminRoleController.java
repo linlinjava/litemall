@@ -8,6 +8,7 @@ import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.util.AdminResponseCode;
 import org.linlinjava.litemall.admin.util.PermVo;
+import org.linlinjava.litemall.admin.util.Permission;
 import org.linlinjava.litemall.admin.util.PermissionUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -42,7 +43,7 @@ public class AdminRoleController {
     private LitemallPermissionService permissionService;
 
     @RequiresPermissions("admin:role:list")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="查询")
+    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色查询")
     @GetMapping("/list")
     public Object list(String name,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -58,8 +59,6 @@ public class AdminRoleController {
         return ResponseUtil.ok(data);
     }
 
-    @RequiresPermissions("admin:role:list")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="查询")
     @GetMapping("/options")
     public Object options(){
         List<LitemallRole> roleList = roleService.queryAll();
@@ -76,7 +75,7 @@ public class AdminRoleController {
     }
 
     @RequiresPermissions("admin:role:read")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="详情")
+    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallRole role = roleService.findById(id);
@@ -94,7 +93,7 @@ public class AdminRoleController {
     }
 
     @RequiresPermissions("admin:role:create")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="添加")
+    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallRole role) {
         Object error = validate(role);
@@ -112,7 +111,7 @@ public class AdminRoleController {
     }
 
     @RequiresPermissions("admin:role:update")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallRole role) {
         Object error = validate(role);
@@ -125,7 +124,7 @@ public class AdminRoleController {
     }
 
     @RequiresPermissions("admin:role:delete")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="删除")
+    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallRole role) {
         Integer id = role.getId();
@@ -140,22 +139,16 @@ public class AdminRoleController {
     @Autowired
     private ApplicationContext context;
     private List<PermVo> systemPermissions = null;
+    private Set<String> systemPermissionsString = null;
+
     private List<PermVo> getSystemPermissions(){
         final String basicPackage = "org.linlinjava.litemall.admin";
         if(systemPermissions == null){
-            systemPermissions = PermissionUtil.listPermissions(context, basicPackage);
+            List<Permission> permissions = PermissionUtil.listPermission(context, basicPackage);
+            systemPermissions = PermissionUtil.listPermVo(permissions);
+            systemPermissionsString = PermissionUtil.listPermissionString(permissions);
         }
         return systemPermissions;
-    }
-
-    private Set<String> getSystemPermissionsString(){
-        getSystemPermissions();
-
-        Set<String> permissions = new HashSet<String>();
-        for(PermVo permVo : systemPermissions){
-            permissions.add(permVo.getId());
-        }
-        return permissions;
     }
 
     private Set<String> getAssignedPermissions(Integer roleId){
@@ -163,7 +156,8 @@ public class AdminRoleController {
         // 之所以这么做，是因为前端不能识别超级权限，所以这里需要转换一下。
         Set<String> assignedPermissions = null;
         if(permissionService.checkSuperPermission(roleId)){
-            assignedPermissions = getSystemPermissionsString();
+            getSystemPermissions();
+            assignedPermissions = systemPermissionsString;
         }
         else{
             assignedPermissions = permissionService.queryByRoleId(roleId);
@@ -177,8 +171,8 @@ public class AdminRoleController {
      *
      * @return 系统所有权限列表和管理员已分配权限
      */
-    @RequiresPermissions("admin:role:permission")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="授权")
+    @RequiresPermissions("admin:role:permission:get")
+    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="权限详情")
     @GetMapping("/permissions")
     public Object getPermissions(Integer roleId) {
         List<PermVo> systemPermissions = getSystemPermissions();
@@ -197,12 +191,15 @@ public class AdminRoleController {
      * @param body
      * @return
      */
-    @RequiresPermissions("admin:role:permission")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="授权")
+    @RequiresPermissions("admin:role:permission:update")
+    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="权限变更")
     @PostMapping("/permissions")
     public Object updatePermissions(@RequestBody String body) {
         Integer roleId = JacksonUtil.parseInteger(body, "roleId");
         List<String> permissions = JacksonUtil.parseStringList(body, "permissions");
+        if(roleId == null || permissions == null){
+            return ResponseUtil.badArgument();
+        }
 
         // 如果修改的角色是超级权限，则拒绝修改。
         if(permissionService.checkSuperPermission(roleId)){

@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.linlinjava.litemall.admin.util.PermVo;
+import org.linlinjava.litemall.admin.util.Permission;
 import org.linlinjava.litemall.admin.util.PermissionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +24,8 @@ public class PermissionTest {
     @Test
     public void test() {
         final String basicPackage = "org.linlinjava.litemall.admin";
-        List<PermVo> permVoList = PermissionUtil.listPermissions(context, basicPackage);
+        List<Permission> permissionList = PermissionUtil.listPermission(context, basicPackage);
+        List<PermVo> permVoList = PermissionUtil.listPermVo(permissionList);
         permVoList.stream().forEach(System.out::println);
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 public class PermVo {
     private String id;
     private String label;
+    private String api;
     private List<PermVo> children;
 
     public String getId() {
@@ -21,6 +22,14 @@ public class PermVo {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public void setApi(String api) {
+        this.api = api;
+    }
+
+    public String getApi() {
+        return api;
     }
 
     public List<PermVo> getChildren() {
