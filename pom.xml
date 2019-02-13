@@ -25,6 +25,9 @@
         <module>litemall-wx-api</module>
         <module>litemall-admin-api</module>
         <module>litemall-all</module>
+        <module>litemall-cache</module>
+        <module>litemall-cache/litemall-redis</module>
+        <module>litemall-cache/litemall-ehcache</module>
     </modules>
 
     <dependencyManagement>
@@ -52,6 +55,21 @@
             <dependency>
                 <groupId>org.linlinjava</groupId>
                 <artifactId>litemall-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.linlinjava</groupId>
+                <artifactId>litemall-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.linlinjava</groupId>
+                <artifactId>litemall-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.linlinjava</groupId>
+                <artifactId>litemall-ehcache</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -141,11 +159,11 @@
     <dependencies>
 
         <!-- 热部署模块 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+            <!--<optional>true</optional>-->
+        <!--</dependency>-->
 
         <!-- 测试模块 -->
         <dependency>

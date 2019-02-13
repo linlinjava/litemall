@@ -42,7 +42,7 @@
       <el-select v-model="listQuery.status" clearable style="width: 200px" class="filter-item" placeholder="请选择使用状态">
         <el-option v-for="type in useStatusOptions" :key="type.value" :label="type.label" :value="type.value"/>
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['GET /admin/coupon/listuser']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
 
     <!-- 查询结果 -->

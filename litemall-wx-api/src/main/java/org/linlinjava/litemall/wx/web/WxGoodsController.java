@@ -10,8 +10,8 @@ import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
-import org.linlinjava.litemall.wx.service.GetRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -242,6 +242,8 @@ public class WxGoodsController {
 	 * @return 根据条件搜素的商品详情
 	 */
 	@GetMapping("list")
+	// 目前的拉取策略是拉取100项（全部），只根据，可缓存 by mail@dongguochao.com
+	@Cacheable(value = "category", key = "#categoryId + #brandId + #isNew + #isHot", condition = "#keyword != null && #keyword.length() != 0")
 	public Object list(
 		Integer categoryId,
 		Integer brandId,

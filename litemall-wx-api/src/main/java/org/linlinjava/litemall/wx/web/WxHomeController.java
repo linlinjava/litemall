@@ -7,8 +7,10 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.*;
-import org.linlinjava.litemall.wx.service.HomeCacheManager;
+import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,28 +59,28 @@ public class WxHomeController {
 
     private static ThreadPoolExecutor executorService = new ThreadPoolExecutor(9, 9, 1000, TimeUnit.MILLISECONDS, WORK_QUEUE, HANDLER);
 
+    /**
+     * todo 建议重写
+     * by blackdog1987@gmail.com
+     * @param key
+     * @return
+     */
     @GetMapping("/cache")
+    @CacheEvict(value = {"homepage", "category"}, allEntries = true)
     public Object cache(@NotNull String key) {
-        if (!key.equals("litemall_cache")) {
-            return ResponseUtil.fail();
-        }
-
-        // 清除缓存
-        HomeCacheManager.clearAll();
+        logger.warn("缓存已经由cacheable实现，不再需要清除缓存");
         return ResponseUtil.ok("缓存已清除");
     }
 
     /**
-     * 首页数据
-     *
+     * 首页数据。获取内容包含：广告Ad，分类category，优惠券coupon，couponUser，商品goods，品牌brand，主题topic，团购groupon。
+     * 获取首页添加了缓存，在对缓存内容进行写操作的时候，需要对缓存进行evict操作。
+     * @param userId 当用户已经登录时，非空。为登录状态为null
      * @return 首页数据
      */
     @GetMapping("/index")
-    public Object index() {
-        //优先从缓存中读取
-        if (HomeCacheManager.hasData(HomeCacheManager.INDEX)) {
-            return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.INDEX));
-        }
+    @Cacheable(value = "homepage", key = "'' +#p0")
+    public Object index(@LoginUser Integer userId) {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         Map<String, Object> data = new HashMap<>();
@@ -87,7 +89,14 @@ public class WxHomeController {
 
         Callable<List> channelListCallable = () -> categoryService.queryChannel();
 
-        Callable<List> couponListCallable = () -> couponService.queryList(0, 3);
+        Callable<List> couponListCallable;
+        if(userId == null){
+            couponListCallable = () -> couponService.queryList(0, 3);
+        } else {
+            // 获取登录用户可以领取的优惠券列表
+            couponListCallable = () -> couponService.queryAvailableList(userId,0, 3);
+        }
+
 
         Callable<List> newGoodsListCallable = () -> goodsService.queryByNew(0, SystemConfig.getNewLimit());
 
@@ -136,8 +145,6 @@ public class WxHomeController {
         catch (Exception e) {
             e.printStackTrace();
         }
-        //缓存数据
-        HomeCacheManager.loadData(HomeCacheManager.INDEX, data);
         executorService.shutdown();
         return ResponseUtil.ok(data);
     }

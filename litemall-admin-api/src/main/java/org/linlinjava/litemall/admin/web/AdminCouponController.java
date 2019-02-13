@@ -50,8 +50,8 @@ public class AdminCouponController {
         return ResponseUtil.ok(data);
     }
 
-    @RequiresPermissions("admin:coupon:list")
-    @RequiresPermissionsDesc(menu={"推广管理" , "优惠券管理"}, button="查询")
+    @RequiresPermissions("admin:coupon:listuser")
+    @RequiresPermissionsDesc(menu={"推广管理" , "优惠券管理"}, button="查询用户")
     @GetMapping("/listuser")
     public Object listuser(Integer userId, Integer couponId, Short status,
                        @RequestParam(defaultValue = "1") Integer page,

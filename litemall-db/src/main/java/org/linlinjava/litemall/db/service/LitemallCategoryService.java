@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallCategoryMapper;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.domain.LitemallCategoryExample;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -88,15 +89,18 @@ public class LitemallCategoryService {
         return (int) categoryMapper.countByExample(example);
     }
 
+    @CacheEvict(value = {"category", "homepage"}, allEntries = true)
     public int updateById(LitemallCategory category) {
         category.setUpdateTime(LocalDateTime.now());
         return categoryMapper.updateByPrimaryKeySelective(category);
     }
 
+    @CacheEvict(value = "category", allEntries = true)
     public void deleteById(Integer id) {
         categoryMapper.logicalDeleteByPrimaryKey(id);
     }
 
+    @CacheEvict(value = "category", allEntries = true)
     public void add(LitemallCategory category) {
         category.setAddTime(LocalDateTime.now());
         category.setUpdateTime(LocalDateTime.now());

@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -53,6 +54,7 @@ public class AdminAddressController {
     }
 
     @RequiresPermissions("admin:address:list")
+    @RequiresPermissionsDesc(menu={"用户管理" , "收货地址"}, button="查询")
     @GetMapping("/list")
     public Object list(Integer userId, String name,
                        @RequestParam(defaultValue = "1") Integer page,

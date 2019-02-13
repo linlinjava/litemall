@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.dao.LitemallGoodsMapper;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallGoods.Column;
 import org.linlinjava.litemall.db.domain.LitemallGoodsExample;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -232,15 +233,18 @@ public class LitemallGoodsService {
         return (int) goodsMapper.countByExample(example);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public int updateById(LitemallGoods goods) {
         goods.setUpdateTime(LocalDateTime.now());
         return goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public void deleteById(Integer id) {
         goodsMapper.logicalDeleteByPrimaryKey(id);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public void add(LitemallGoods goods) {
         goods.setAddTime(LocalDateTime.now());
         goods.setUpdateTime(LocalDateTime.now());

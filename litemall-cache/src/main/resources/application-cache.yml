@@ -1,0 +1,7 @@
+#litemall:
+#  cache:
+#    # 默认缓存最大时间，6个小时
+#    expiration: 3600
+#spring:
+#  cache:
+#    cache-names: litemall

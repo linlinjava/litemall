@@ -8,7 +8,7 @@
       <el-select v-model="listQuery.orderStatusArray" multiple style="width: 200px" class="filter-item" placeholder="请选择订单状态">
         <el-option v-for="(key, value) in statusMap" :key="key" :label="key" :value="value"/>
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['GET /admin/order/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
@@ -37,9 +37,9 @@
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
-          <el-button v-if="scope.row.orderStatus==201" type="primary" size="mini" @click="handleShip(scope.row)">发货</el-button>
-          <el-button v-if="scope.row.orderStatus==202" type="primary" size="mini" @click="handleRefund(scope.row)">退款</el-button>
+          <el-button v-permission="['GET /admin/order/detail']" type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
+          <el-button v-permission="['POST /admin/order/ship']" v-if="scope.row.orderStatus==201" type="primary" size="mini" @click="handleShip(scope.row)">发货</el-button>
+          <el-button v-permission="['POST /admin/order/refund']" v-if="scope.row.orderStatus==202" type="primary" size="mini" @click="handleRefund(scope.row)">退款</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -55,7 +55,7 @@
         </el-form-item>
         <el-form-item label="订单状态">
           <template slot-scope="scope">
-            <el-tag>{{ orderDetail.order.orderStatus | orderStatusFilter }}</el-tag>
+            <el-tag>{{ scope.order.orderStatus | orderStatusFilter }}</el-tag>
           </template>
         </el-form-item>
         <el-form-item label="订单用户">
@@ -146,6 +146,7 @@
 <script>
 import { listOrder, shipOrder, refundOrder, detailOrder } from '@/api/order'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import checkPermission from '@/utils/permission' // 权限判断函数
 
 const statusMap = {
   101: '未付款',
@@ -206,6 +207,7 @@ export default {
     this.getList()
   },
   methods: {
+    checkPermission,
     getList() {
       this.listLoading = true
       listOrder(this.listQuery).then(response => {

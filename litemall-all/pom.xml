@@ -19,6 +19,22 @@
 
         <dependency>
             <groupId>org.linlinjava</groupId>
+            <artifactId>litemall-cache</artifactId>
+        </dependency>
+        <!-- 开启redis -->
+        <!--<dependency>-->
+            <!--<groupId>org.linlinjava</groupId>-->
+            <!--<artifactId>litemall-redis</artifactId>-->
+        <!--</dependency>-->
+
+        <!-- 开启ehcache -->
+        <!--<dependency>-->
+            <!--<groupId>org.linlinjava</groupId>-->
+            <!--<artifactId>litemall-ehcache</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.linlinjava</groupId>
             <artifactId>litemall-db</artifactId>
         </dependency>
 

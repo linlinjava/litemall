@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallGrouponMapper;
 import org.linlinjava.litemall.db.domain.LitemallGroupon;
 import org.linlinjava.litemall.db.domain.LitemallGrouponExample;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -91,6 +92,7 @@ public class LitemallGrouponService {
         return (int) mapper.countByExample(example);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public int updateById(LitemallGroupon groupon) {
         groupon.setUpdateTime(LocalDateTime.now());
         return mapper.updateByPrimaryKeySelective(groupon);
@@ -102,6 +104,7 @@ public class LitemallGrouponService {
      * @param groupon
      * @return
      */
+    @CacheEvict(value = "homepage", allEntries = true)
     public int createGroupon(LitemallGroupon groupon) {
         groupon.setAddTime(LocalDateTime.now());
         groupon.setUpdateTime(LocalDateTime.now());

@@ -24,15 +24,6 @@ public class ShiroConfig {
         return new AdminAuthorizingRealm();
     }
 
-//    @Bean
-//    public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-//        DefaultShiroFilterChainDefinition chain = new DefaultShiroFilterChainDefinition();
-//        chain.addPathDefinition("/admin/login/login", "anon");
-//        chain.addPathDefinition("/admin/login/unauth", "anon");
-//        chain.addPathDefinition("/admin/**", "authc");
-//        return chain;
-//    }
-
     @Bean
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();

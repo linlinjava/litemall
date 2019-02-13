@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallAdMapper;
 import org.linlinjava.litemall.db.domain.LitemallAd;
 import org.linlinjava.litemall.db.domain.LitemallAdExample;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -57,15 +58,18 @@ public class LitemallAdService {
         return (int) adMapper.countByExample(example);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public int updateById(LitemallAd ad) {
         ad.setUpdateTime(LocalDateTime.now());
         return adMapper.updateByPrimaryKeySelective(ad);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public void deleteById(Integer id) {
         adMapper.logicalDeleteByPrimaryKey(id);
     }
 
+    @CacheEvict(value = "homepage", allEntries = true)
     public void add(LitemallAd ad) {
         ad.setAddTime(LocalDateTime.now());
         ad.setUpdateTime(LocalDateTime.now());
