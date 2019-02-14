@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
@@ -41,7 +42,7 @@ public class AdminRegionController {
                        @Sort(accepts = {"id"}) @RequestParam(defaultValue = "id") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallRegion> regionList = regionService.querySelective(name, code, page, limit, sort, order);
-        int total = regionService.countSelective(name, code, page, limit, sort, order);
+        long total = PageInfo.of(regionList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", regionList);

@@ -54,23 +54,6 @@ public class LitemallRoleService {
         return roleMapper.selectByExample(example);
     }
 
-    public int countSelective(String roleName, Integer page, Integer size, String sort, String order) {
-        LitemallRoleExample example = new LitemallRoleExample();
-        LitemallRoleExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(roleName)) {
-            criteria.andNameEqualTo("%" + roleName + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
-            example.setOrderByClause(sort + " " + order);
-        }
-
-        PageHelper.startPage(page, size);
-        return (int)roleMapper.countByExample(example);
-    }
-
     public LitemallRole findById(Integer id) {
         return roleMapper.selectByPrimaryKey(id);
     }

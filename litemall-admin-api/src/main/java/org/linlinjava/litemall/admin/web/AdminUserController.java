@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -41,7 +42,7 @@ public class AdminUserController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallUser> userList = userService.querySelective(username, mobile, page, limit, sort, order);
-        int total = userService.countSeletive(username, mobile, page, limit, sort, order);
+        long total = PageInfo.of(userList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", userList);
@@ -51,11 +52,11 @@ public class AdminUserController {
 
     @GetMapping("/username")
     public Object username(@NotEmpty String username) {
-        int total = userService.countSeletive(username, null, null, null, null, null);
-        if (total == 0) {
-            return ResponseUtil.ok("不存在");
+        boolean exist = userService.checkByUsername(username);
+        if (exist) {
+            return ResponseUtil.ok("已存在");
         }
-        return ResponseUtil.ok("已存在");
+        return ResponseUtil.ok("不存在");
     }
 
     private Object validate(LitemallUser user) {

@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -42,7 +43,7 @@ public class AdminCouponController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallCoupon> couponList = couponService.querySelective(name, type, status, page, limit, sort, order);
-        int total = couponService.countSelective(name, type, status, page, limit, sort, order);
+        long total = PageInfo.of(couponList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", couponList);
@@ -59,7 +60,7 @@ public class AdminCouponController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallCouponUser> couponList = couponUserService.queryList(userId, couponId, status, page, limit, sort, order);
-        int total = couponUserService.countList(userId, couponId, status, page, limit, sort, order);
+        long total = PageInfo.of(couponList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", couponList);

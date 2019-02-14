@@ -49,18 +49,6 @@ public class LitemallIssueService {
         return issueMapper.selectByExample(example);
     }
 
-    public int countSelective(String question, Integer page, Integer size, String sort, String order) {
-        LitemallIssueExample example = new LitemallIssueExample();
-        LitemallIssueExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(question)) {
-            criteria.andQuestionLike("%" + question + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) issueMapper.countByExample(example);
-    }
-
     public int updateById(LitemallIssue issue) {
         issue.setUpdateTime(LocalDateTime.now());
         return issueMapper.updateByPrimaryKeySelective(issue);

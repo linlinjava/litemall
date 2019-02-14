@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -110,8 +111,8 @@ public class WxCommentController {
      */
     @GetMapping("count")
     public Object count(@NotNull Byte type, @NotNull Integer valueId) {
-        int allCount = commentService.count(type, valueId, 0, 0, 0);
-        int hasPicCount = commentService.count(type, valueId, 1, 0, 0);
+        int allCount = commentService.count(type, valueId, 0);
+        int hasPicCount = commentService.count(type, valueId, 1);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("allCount", allCount);
         data.put("hasPicCount", hasPicCount);
@@ -135,7 +136,7 @@ public class WxCommentController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size) {
         List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, size);
-        int count = commentService.count(type, valueId, showType, page, size);
+        long count = PageInfo.of(commentList).getTotal();
 
         List<Map<String, Object>> commentVoList = new ArrayList<>(commentList.size());
         for (LitemallComment comment : commentList) {

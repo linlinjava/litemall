@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.express.ExpressService;
@@ -66,8 +67,8 @@ public class WxGrouponController {
                        @RequestParam(defaultValue = "10") Integer size,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        Object topicList = grouponRulesService.queryList(page, size, sort, order);
-        int total = grouponRulesService.countList(page, size, sort, order);
+        List<Map<String, Object>> topicList = grouponRulesService.queryList(page, size, sort, order);
+        long total = PageInfo.of(topicList).getTotal();
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("data", topicList);
         data.put("count", total);

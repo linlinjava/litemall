@@ -115,21 +115,6 @@ public class LitemallOrderService {
         return litemallOrderMapper.selectByExample(example);
     }
 
-    public int countSelective(Integer userId, String orderSn, List<Short> orderStatusArray, Integer page, Integer size, String sort, String order) {
-        LitemallOrderExample example = new LitemallOrderExample();
-        LitemallOrderExample.Criteria criteria = example.createCriteria();
-
-        if (userId != null) {
-            criteria.andUserIdEqualTo(userId);
-        }
-        if (!StringUtils.isEmpty(orderSn)) {
-            criteria.andOrderSnEqualTo(orderSn);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) litemallOrderMapper.countByExample(example);
-    }
-
     public int updateWithOptimisticLocker(LitemallOrder order) {
         LocalDateTime preUpdateTime = order.getUpdateTime();
         order.setUpdateTime(LocalDateTime.now());

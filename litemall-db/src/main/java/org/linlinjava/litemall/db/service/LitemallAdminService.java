@@ -45,18 +45,6 @@ public class LitemallAdminService {
         return adminMapper.selectByExampleSelective(example, result);
     }
 
-    public int countSelective(String username, Integer page, Integer size, String sort, String order) {
-        LitemallAdminExample example = new LitemallAdminExample();
-        LitemallAdminExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(username)) {
-            criteria.andUsernameLike("%" + username + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) adminMapper.countByExample(example);
-    }
-
     public int updateById(LitemallAdmin admin) {
         admin.setUpdateTime(LocalDateTime.now());
         return adminMapper.updateByPrimaryKeySelective(admin);

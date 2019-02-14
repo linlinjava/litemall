@@ -82,21 +82,6 @@ public class LitemallTopicService {
         return topicMapper.selectByExampleWithBLOBs(example);
     }
 
-    public int countSelective(String title, String subtitle, Integer page, Integer size, String sort, String order) {
-        LitemallTopicExample example = new LitemallTopicExample();
-        LitemallTopicExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(title)) {
-            criteria.andTitleLike("%" + title + "%");
-        }
-        if (!StringUtils.isEmpty(subtitle)) {
-            criteria.andSubtitleLike("%" + subtitle + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) topicMapper.countByExample(example);
-    }
-
     public int updateById(LitemallTopic topic) {
         topic.setUpdateTime(LocalDateTime.now());
         LitemallTopicExample example = new LitemallTopicExample();

@@ -24,12 +24,6 @@ public class LitemallFootprintService {
         return footprintMapper.selectByExample(example);
     }
 
-    public int countByAddTime(Integer userId, Integer page, Integer size) {
-        LitemallFootprintExample example = new LitemallFootprintExample();
-        example.or().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        return (int) footprintMapper.countByExample(example);
-    }
-
     public LitemallFootprint findById(Integer id) {
         return footprintMapper.selectByPrimaryKey(id);
     }
@@ -62,20 +56,5 @@ public class LitemallFootprintService {
 
         PageHelper.startPage(page, size);
         return footprintMapper.selectByExample(example);
-    }
-
-    public int countSelective(String userId, String goodsId, Integer page, Integer size, String sort, String order) {
-        LitemallFootprintExample example = new LitemallFootprintExample();
-        LitemallFootprintExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        }
-        if (!StringUtils.isEmpty(goodsId)) {
-            criteria.andGoodsIdEqualTo(Integer.valueOf(goodsId));
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) footprintMapper.countByExample(example);
     }
 }

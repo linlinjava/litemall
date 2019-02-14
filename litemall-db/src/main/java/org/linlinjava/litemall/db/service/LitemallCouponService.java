@@ -133,28 +133,6 @@ public class LitemallCouponService {
         return couponMapper.selectByExample(example);
     }
 
-    public int countSelective(String name, Short type, Short status, Integer page, Integer limit, String sort, String order) {
-        LitemallCouponExample example = new LitemallCouponExample();
-        LitemallCouponExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        if (type != null) {
-            criteria.andTypeEqualTo(type);
-        }
-        if (status != null) {
-            criteria.andStatusEqualTo(status);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
-            example.setOrderByClause(sort + " " + order);
-        }
-
-        return (int)couponMapper.countByExample(example);
-    }
-
     public void add(LitemallCoupon coupon) {
         coupon.setAddTime(LocalDateTime.now());
         coupon.setUpdateTime(LocalDateTime.now());

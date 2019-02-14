@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.mysql.jdbc.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,7 +12,6 @@ import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
-import org.linlinjava.litemall.wx.service.GetRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -122,7 +123,7 @@ public class WxGoodsController {
 		Callable<Map> commentsCallable = () -> {
 			List<LitemallComment> comments = commentService.queryGoodsByGid(id, 0, 2);
 			List<Map<String, Object>> commentsVo = new ArrayList<>(comments.size());
-			int commentCount = commentService.countGoodsByGid(id, 0, 2);
+			long commentCount = PageInfo.of(comments).getTotal();
 			for (LitemallComment comment : comments) {
 				Map<String, Object> c = new HashMap<>();
 				c.put("id", comment.getId());
@@ -265,7 +266,6 @@ public class WxGoodsController {
 
 		//查询列表数据
 		List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, size, sort, order);
-		int total = goodsService.countSelective(categoryId, brandId, keyword, isHot, isNew, page, size, sort, order);
 
 		// 查询商品所属类目列表。
 		List<Integer> goodsCatIds = goodsService.getCatIds(brandId, keyword, isHot, isNew);
@@ -278,8 +278,9 @@ public class WxGoodsController {
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("goodsList", goodsList);
+		data.put("count", PageInfo.of(goodsList).getTotal());
 		data.put("filterCategoryList", categoryList);
-		data.put("count", total);
+
 		return ResponseUtil.ok(data);
 	}
 

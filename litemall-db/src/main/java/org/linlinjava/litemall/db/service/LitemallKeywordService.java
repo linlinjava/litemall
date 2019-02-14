@@ -56,22 +56,6 @@ public class LitemallKeywordService {
         return keywordsMapper.selectByExample(example);
     }
 
-    public int countSelective(String keyword, String url, Integer page, Integer limit, String sort, String order) {
-        LitemallKeywordExample example = new LitemallKeywordExample();
-        LitemallKeywordExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(keyword)) {
-            criteria.andKeywordLike("%" + keyword + "%");
-        }
-        if (!StringUtils.isEmpty(url)) {
-            criteria.andUrlLike("%" + url + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        PageHelper.startPage(page, limit);
-        return (int) keywordsMapper.countByExample(example);
-    }
-
     public void add(LitemallKeyword keywords) {
         keywords.setAddTime(LocalDateTime.now());
         keywords.setUpdateTime(LocalDateTime.now());

@@ -121,44 +121,9 @@ public class LitemallGoodsService {
             example.setOrderByClause(sort + " " + order);
         }
 
-        if (!StringUtils.isEmpty(limit) && !StringUtils.isEmpty(offset)) {
-            PageHelper.startPage(offset, limit);
-        }
+        PageHelper.startPage(offset, limit);
 
         return goodsMapper.selectByExampleSelective(example, columns);
-    }
-
-    public int countSelective(Integer catId, Integer brandId, String keywords, Boolean isHot, Boolean isNew, Integer offset, Integer limit, String sort, String order) {
-        LitemallGoodsExample example = new LitemallGoodsExample();
-        LitemallGoodsExample.Criteria criteria1 = example.or();
-        LitemallGoodsExample.Criteria criteria2 = example.or();
-
-        if (!StringUtils.isEmpty(catId) && catId != 0) {
-            criteria1.andCategoryIdEqualTo(catId);
-            criteria2.andCategoryIdEqualTo(catId);
-        }
-        if (!StringUtils.isEmpty(brandId)) {
-            criteria1.andBrandIdEqualTo(brandId);
-            criteria2.andBrandIdEqualTo(brandId);
-        }
-        if (!StringUtils.isEmpty(isNew)) {
-            criteria1.andIsNewEqualTo(isNew);
-            criteria2.andIsNewEqualTo(isNew);
-        }
-        if (!StringUtils.isEmpty(isHot)) {
-            criteria1.andIsHotEqualTo(isHot);
-            criteria2.andIsHotEqualTo(isHot);
-        }
-        if (!StringUtils.isEmpty(keywords)) {
-            criteria1.andKeywordsLike("%" + keywords + "%");
-            criteria2.andNameLike("%" + keywords + "%");
-        }
-        criteria1.andIsOnSaleEqualTo(true);
-        criteria2.andIsOnSaleEqualTo(true);
-        criteria1.andDeletedEqualTo(false);
-        criteria2.andDeletedEqualTo(false);
-
-        return (int) goodsMapper.countByExample(example);
     }
 
     public List<LitemallGoods> querySelective(String goodsSn, String name, Integer page, Integer size, String sort, String order) {
@@ -179,21 +144,6 @@ public class LitemallGoodsService {
 
         PageHelper.startPage(page, size);
         return goodsMapper.selectByExampleWithBLOBs(example);
-    }
-
-    public int countSelective(String goodsSn, String name, Integer page, Integer size, String sort, String order) {
-        LitemallGoodsExample example = new LitemallGoodsExample();
-        LitemallGoodsExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(goodsSn)) {
-            criteria.andGoodsSnEqualTo(goodsSn);
-        }
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) goodsMapper.countByExample(example);
     }
 
     /**
