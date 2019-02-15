@@ -36,14 +36,10 @@ public class WxCatalogController {
      * @param id   分类类目ID。
      *             如果分类类目ID是空，则选择第一个分类类目。
      *             需要注意，这里分类类目是一级类目
-     * @param page 分页页数
-     * @param size 分页大小
      * @return 分类详情
      */
     @GetMapping("index")
-    public Object index(Integer id,
-                        @RequestParam(defaultValue = "1") Integer page,
-                        @RequestParam(defaultValue = "10") Integer size) {
+    public Object index(Integer id) {
 
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
