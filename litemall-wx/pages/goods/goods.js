@@ -30,7 +30,8 @@ Page({
     collectImage: '/static/images/icon_collect.png',
     shareImage: '',
     isGroupon: false, //标识是否是一个参团购买
-    soldout: false
+    soldout: false,
+    canWrite: false, //用户是否获取了保存相册的权限
   },
 
   // 页面分享
@@ -53,7 +54,27 @@ Page({
       return false;
     }
   },
-
+  handleSetting: function(e) {
+      var that = this;
+      // console.log(e)
+      if (!e.detail.authSetting['scope.writePhotosAlbum']) {
+          wx.showModal({
+              title: '警告',
+              content: '不授权无法保存',
+              showCancel: false
+          })
+          that.setData({
+              canWrite: false
+          })
+      } else {
+          wx.showToast({
+              title: '保存成功'
+          })
+          that.setData({
+              canWrite: true
+          })
+      }
+  },
   // 保存分享图
   saveShare: function() {
     let that = this;
@@ -399,6 +420,32 @@ Page({
       });
       this.getGrouponInfo(options.grouponId);
     }
+    let that = this;
+    wx.getSetting({
+        success: function (res) {
+            console.log(res)
+            //不存在相册授权
+            if (!res.authSetting['scope.writePhotosAlbum']) {
+                wx.authorize({
+                    scope: 'scope.writePhotosAlbum',
+                    success: function () {
+                        that.setData({
+                            canWrite: true
+                        })
+                    },
+                    fail: function (err) {
+                        that.setData({
+                            canWrite: false
+                        })
+                    }
+                })
+            } else {
+                that.setData({
+                    canWrite: true
+                });
+            }
+        }
+    })
   },
   onShow: function() {
     // 页面显示
