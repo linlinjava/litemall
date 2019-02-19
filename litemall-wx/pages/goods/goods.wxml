@@ -19,7 +19,11 @@
           <image class='sharebtn_image' src='/static/images/wechat.png'></image>
           <view class='sharebtn_text'>分享给好友</view>
         </button>
-        <button class="savesharebtn" bindtap="saveShare" wx:if="{{!isGroupon}}">
+        <button  class="savesharebtn" open-type="openSetting" bindopensetting="handleSetting" wx:if="{{(!isGroupon) && (!canWrite)}}" >
+          <image class='sharebtn_image' src='/static/images/friend.png'></image>
+          <view class='sharebtn_text'>发朋友圈</view>
+        </button>
+        <button class="savesharebtn" bindtap="saveShare" wx:if="{{!isGroupon && canWrite}}">
           <image class='sharebtn_image' src='/static/images/friend.png'></image>
           <view class='sharebtn_text'>发朋友圈</view>
         </button>
