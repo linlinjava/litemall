@@ -33,12 +33,7 @@
 
       <el-table-column align="center" min-width="100" label="简介" prop="desc"/>
 
-      <el-table-column
-        :filters="[{ text: '一级类目', value: 'L1' }, { text: '二级类目', value: 'L2' }]"
-        :filter-method="filterLevel"
-        align="center"
-        label="级别"
-        prop="level">
+      <el-table-column align="center" label="级别" prop="level">
         <template slot-scope="scope">
           <el-tag :type="scope.row.level === 'L1' ? 'primary' : 'info' ">{{ scope.row.level === 'L1' ? '一级类目' : '二级类目' }}</el-tag>
         </template>
@@ -232,9 +227,6 @@ export default {
         iconUrl: undefined,
         picUrl: undefined
       }
-    },
-    filterLevel: function(value, row) {
-      return row.level === value
     },
     onLevelChange: function(value) {
       if (value === 'L1') {
