@@ -7,6 +7,7 @@ import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.BaseWxPayResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -135,8 +136,9 @@ public class WxOrderService {
         }
 
         List<Short> orderStatus = OrderUtil.orderStatus(showType);
-        List<LitemallOrder> orderList = orderService.queryByOrderStatus(userId, orderStatus);
-        int count = orderService.countByOrderStatus(userId, orderStatus);
+        List<LitemallOrder> orderList = orderService.queryByOrderStatus(userId, orderStatus, page, size);
+        long count = PageInfo.of(orderList).getTotal();
+        int totalPages = (int) Math.ceil((double) count / size);
 
         List<Map<String, Object>> orderVoList = new ArrayList<>(orderList.size());
         for (LitemallOrder order : orderList) {
@@ -172,6 +174,7 @@ public class WxOrderService {
         Map<String, Object> result = new HashMap<>();
         result.put("count", count);
         result.put("data", orderVoList);
+        result.put("totalPages", totalPages);
 
         return ResponseUtil.ok(result);
     }

@@ -69,7 +69,7 @@ public class LitemallOrderService {
         return orderSn;
     }
 
-    public List<LitemallOrder> queryByOrderStatus(Integer userId, List<Short> orderStatus) {
+    public List<LitemallOrder> queryByOrderStatus(Integer userId, List<Short> orderStatus, Integer page, Integer size) {
         LitemallOrderExample example = new LitemallOrderExample();
         example.setOrderByClause(LitemallOrder.Column.addTime.desc());
         LitemallOrderExample.Criteria criteria = example.or();
@@ -78,18 +78,8 @@ public class LitemallOrderService {
             criteria.andOrderStatusIn(orderStatus);
         }
         criteria.andDeletedEqualTo(false);
+        PageHelper.startPage(page, size);
         return litemallOrderMapper.selectByExample(example);
-    }
-
-    public int countByOrderStatus(Integer userId, List<Short> orderStatus) {
-        LitemallOrderExample example = new LitemallOrderExample();
-        LitemallOrderExample.Criteria criteria = example.or();
-        criteria.andUserIdEqualTo(userId);
-        if (orderStatus != null) {
-            criteria.andOrderStatusIn(orderStatus);
-        }
-        criteria.andDeletedEqualTo(false);
-        return (int) litemallOrderMapper.countByExample(example);
     }
 
     public List<LitemallOrder> querySelective(Integer userId, String orderSn, List<Short> orderStatusArray, Integer page, Integer size, String sort, String order) {
