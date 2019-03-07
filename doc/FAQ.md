@@ -173,7 +173,7 @@ SQL: select id, key_name, key_value, add_time, update_time, deleted from litemal
 Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'add_time' in 'field list'
 ```
 
-原因是：
+原因：
 
 系统处在开发中，所以数据库表根据业务会不断调整，因此如果开发者更新代码以后直接运行，有可能导致当前代码
 操作数据库失败，因为开发者当前的数据库表已经过时。
@@ -181,6 +181,39 @@ Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column
 解决：
 
 如果出现数据库方面的报错，建议开发者重新导入数据库。
+
+### 3.3 数据库导入失败
+
+现象：
+
+开发者直接（或使用Navicat）运行litemall_schema.sql时运行失败。
+
+原因：
+
+可能是`drop user if exists`在MySQL低版本不支持，也可能是Navicat不支持。
+
+解决:
+
+首先，请开发者请直接打开litemall_schema.sql文件，可以看到
+```
+drop database if exists litemall;
+drop user if exists 'litemall'@'localhost';
+create database litemall default character set utf8mb4 collate utf8mb4_unicode_ci;
+use litemall;
+create user 'litemall'@'localhost' identified by 'litemall123456';
+grant all privileges on litemall.* to 'litemall'@'localhost';
+flush privileges;
+```
+
+可以看到，这里主要是完成三个工作
+* 创建数据库
+* 创建数据库用户
+* 分配该用户所有操作权限
+
+因此，如果开发者运行litemall_schema.sql失败，开发者可以自行使用
+相关SQL命令或者使用SQL工具创建数据库、用户和分配权限工作。
+
+此外实际上，**开发者也不应该在部署或者上线阶段运行litemall_schema.sql**
 
 ## 4. 项目
 
