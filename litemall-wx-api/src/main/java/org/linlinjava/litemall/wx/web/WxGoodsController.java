@@ -285,39 +285,6 @@ public class WxGoodsController {
 	}
 
 	/**
-	 * 新品首发页面的横幅
-	 *
-	 * @return 新品首发页面的横幅
-	 */
-	@GetMapping("new")
-	public Object newGoods() {
-		Map<String, String> bannerInfo = new HashMap<>();
-		bannerInfo.put("url", "");
-		bannerInfo.put("name", SystemConfig.getNewBannerTitle());
-		bannerInfo.put("imgUrl", SystemConfig.getNewImageUrl());
-
-		Map<String, Object> data = new HashMap<>();
-		data.put("bannerInfo", bannerInfo);
-		return ResponseUtil.ok(data);
-	}
-
-	/**
-	 * 人气推荐页面的横幅
-	 *
-	 * @return 人气推荐页面的横幅
-	 */
-	@GetMapping("hot")
-	public Object hotGoods() {
-		Map<String, String> bannerInfo = new HashMap<>();
-		bannerInfo.put("url", "");
-		bannerInfo.put("name", SystemConfig.getHotBannerTitle());
-		bannerInfo.put("imgUrl", SystemConfig.getHotImageUrl());
-		Map<String, Object> data = new HashMap<>();
-		data.put("bannerInfo", bannerInfo);
-		return ResponseUtil.ok(data);
-	}
-
-	/**
 	 * 商品详情页面“大家都在看”推荐商品
 	 *
 	 * @param id, 商品ID

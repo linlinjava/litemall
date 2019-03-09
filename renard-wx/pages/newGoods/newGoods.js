@@ -5,8 +5,8 @@ var app = getApp();
 Page({
   data: {
     bannerInfo: {
-      'imgUrl': '',
-      'name': ''
+      'imgUrl': 'http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png',
+      'name': '大家都在买的'
     },
     categoryFilter: false,
     filterCategory: [],
@@ -20,20 +20,8 @@ Page({
   },
 
   onPullDownRefresh() {
-    this.getBanner();
     this.getGoodsList();
     wx.stopPullDownRefresh() //停止下拉刷新
-  },
-
-  getBanner: function() {
-    let that = this;
-    util.request(api.GoodsNew).then(function(res) {
-      if (res.errno === 0) {
-        that.setData({
-          bannerInfo: res.data.bannerInfo,
-        });
-      }
-    });
   },
   getGoodsList: function() {
     var that = this;
