@@ -73,8 +73,8 @@
   <view class="order-express" bindtap="expandDetail" wx:if="{{ handleOption.confirm }}">
     <view class="expand">
       <view class="title">
-        <view class="t">快递公司：{{expressInfo.expName}}</view>
-        <view class="b">物流单号：{{expressInfo.expCode}}</view>
+        <view class="t">快递公司：{{expressInfo.shipperName}}</view>
+        <view class="b">物流单号：{{expressInfo.logisticCode}}</view>
       </view>
       <image class="ti" src="/static/images/address_right.png" background-size="cover"></image>
     </view>

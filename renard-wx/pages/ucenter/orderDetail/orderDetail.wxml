@@ -73,7 +73,7 @@
     <view class="expand">
       <view class="title">
         <view class="t">快递公司：{{expressInfo.shipperName}}</view>
-        <view class="b">物流单号：{{expressInfo.shipperCode}}</view>
+        <view class="b">物流单号：{{expressInfo.logisticCode}}</view>
       </view>
       <image class="ti" src="/static/images/address_right.png" background-size="cover"></image>
     </view>

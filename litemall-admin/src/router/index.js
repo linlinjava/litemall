@@ -94,7 +94,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/user/user'),
         name: 'user',
         meta: {
-          perms: ['GET /admin/user/list', 'POST /admin/user/create', 'POST /admin/user/update'],
+          perms: ['GET /admin/user/list'],
           title: '会员管理',
           noCache: true
         }
