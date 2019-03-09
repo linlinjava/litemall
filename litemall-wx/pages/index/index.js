@@ -15,7 +15,8 @@ Page({
     floorGoods: [],
     banner: [],
     channel: [],
-    coupon: []
+    coupon: [],
+    goodsCount: 0
   },
 
   onShareAppMessage: function() {
@@ -49,6 +50,11 @@ Page({
           coupon: res.data.couponList
         });
       }
+    });
+    util.request(api.GoodsCount).then(function (res) {
+      that.setData({
+        goodsCount: res.data.goodsCount
+      });
     });
   },
   onLoad: function(options) {
