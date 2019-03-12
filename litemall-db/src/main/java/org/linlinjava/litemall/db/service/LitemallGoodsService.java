@@ -154,7 +154,7 @@ public class LitemallGoodsService {
      */
     public LitemallGoods findById(Integer id) {
         LitemallGoodsExample example = new LitemallGoodsExample();
-        example.or().andIdEqualTo(id).andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         return goodsMapper.selectOneByExampleWithBLOBs(example);
     }
 
