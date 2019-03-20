@@ -13,13 +13,6 @@ Page({
     // 页面初始化 options为页面跳转所带来的参数
   },
 
-  onPullDownRefresh() {
-    // wx.showNavigationBarLoading() //在标题栏中显示加载
-    this.getOrderList();
-    // wx.hideNavigationBarLoading() //完成停止加载
-    wx.stopPullDownRefresh() //停止下拉刷新
-  },
-
   getOrderList() {
     wx.showLoading({
       title: '加载中',
