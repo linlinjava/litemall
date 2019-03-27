@@ -316,7 +316,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
     // 局域网测试使用
     // var WxApiRoot = 'http://192.168.0.101:8080/wx/';
     // 云平台部署时使用
-    // var WxApiRoot = 'http://122.152.206.172:8080/wx/';
+    // var WxApiRoot = 'http://118.24.0.153:8080/wx/';
     // 云平台上线时使用
     // var WxApiRoot = 'https://www.menethil.com.cn/wx/';
 
