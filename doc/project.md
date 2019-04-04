@@ -167,6 +167,8 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 先不开发和测试这样业务功能，等其他功能开发完毕和部署测试成功以后，再来开发这些线上环境才能
 运行的功能，此时会有一个好的基础。
 
+接下来，分别从开发阶段、部署阶段和上线阶段三种阶段，分别介绍不同的方案实践要点。
+
 ## 1.4 开发方案
 
 ![](pic1/1-2.png)
@@ -184,14 +186,30 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 
 数据库环境设置过程如下：
 
-1. 安装MySQL
+1. 安装MySQL;
 
-2. 创建数据库、用户权限、数据库表和测试数据
+2. 创建数据库、用户权限、数据库表和测试数据;
+   数据库文件存放在litemall-db/sql文件夹中，请开发者在MySQL中
+   按照顺序运行以下脚本:
+   * litemall_schema.sql，用于创建数据库、用户和权限;
+   * litemall_table.sql，用于创建表;
+   * litemall_data.sql，用于导入测试数据。
 
-   数据库文件存放在litemall-db/sql文件夹中，其中litemall_schema.sql创建数据库和用户权限，
-   litemall_table.sql则创建表，litemall_data.sql则是测试数据。
+注意：
+> 建议采用命令行或者MySQL Workbench。如果采用Navicat可能导入失败。
 
-   注意：建议采用命令行或者MySQL Workbench。如果采用navicat可能导入失败。
+如果开发者运行litemall_schema.sql失败，可以打开该文件：
+```
+drop database if exists litemall;
+drop user if exists 'litemall'@'localhost';
+create database litemall default character set utf8mb4 collate utf8mb4_unicode_ci;
+use litemall;
+create user 'litemall'@'localhost' identified by 'litemall123456';
+grant all privileges on litemall.* to 'litemall'@'localhost';
+flush privilege
+```
+可以看到几个命令，用于创建数据库、用户和访问权限，因此开发者可以利用
+命令或者工具完成这里的功能即可。
 
 ### 1.4.2 Spring Boot开发环境
 
@@ -249,12 +267,11 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
     如果出现JSON数据，则litemall-all模块运行正常。
     
 注意：
-> 1. 在上述开发步骤中，既介绍了Maven命令方式，也介绍了IDEA方式，
->    但是仍然建议开发者开发阶段采用IDEA。
-> 2. 以上是本人开发过程中采用的一些步骤，开发者可不拘泥于这些步骤。
->    如果开发者没有按照本人步骤开发而出现相关问题，也请**不要**咨询，
->    本人**没有**相关解决经验。
-> 3. 开发者使用IDEA导入项目或者运行项目的时候会出现软件卡顿的现象，这通常是litemall-admin的
+> 1. 上述步骤中，既介绍了Maven命令方式，也介绍了IDEA方式，
+>    但是建议开发者开发阶段采用IDEA。
+> 2. 上述步骤只是一种实践方式，开发者可不拘泥于这些步骤，多实践。
+>    当然，如果开发者不采用这里步骤而出现问题，请自行解决。
+> 3. 开发者使用IDEA导入项目或者运行项目时可能会出现**软件卡顿**的现象，这通常是litemall-admin的
 >    node_modules文件夹内自动下载了大量的litemall-admin的依赖库，当IDEA尝试索引该文件夹内的大量文件时
 >    则出现IDEA卡顿的现象，具体解决方式可以参见[FAQ](./FAQ.md)
 
@@ -290,7 +307,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
     
 4. 请确定litemall-all模块已经运行，然后点击`登录`，如果能够成功登录，则表明管理后台的前端和后端对接成功，运行正常。
 
-目前本人采用VSC（Visual Studio Code）来开发litemall-admin项目，开发者也可以采用其他熟悉的IDE。
+本项目采用VSC（Visual Studio Code）开发litemall-admin模块，开发者也可以采用其他熟悉的IDE。
 
 ### 1.4.5 项目配置
 
@@ -1044,7 +1061,6 @@ http://www.example.com
 3. 重启nginx
 
 注意：
-> 本人对nginx也不了解，仅仅依靠网络知识配置了简单的效果。
 > 更多配置方法和功能，请开发者自行学习。
 
 ### 1.6.3 小商场上线
@@ -1124,8 +1140,7 @@ litemall-admin编译得到的前端文件在第一次加载时相当耗时，这
 
 #### 1.6.6.4 nginx优化
 
-本人对nginx不是很熟悉，而nginx还存在很多可以调整优化的部分，这里建议开发者
-根据自己业务或架构情况优化。
+建议开发者根据自己业务或架构情况优化。
 
 ## 1.7 项目管理
 

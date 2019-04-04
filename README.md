@@ -6,7 +6,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
 * [文档](https://linlinjava.gitbook.io/litemall)
 * [贡献](https://linlinjava.gitbook.io/litemall/contribute)
-* [FAQ](https://linlinjava.gitbook.io/litemall/7)
+* [FAQ](https://linlinjava.gitbook.io/litemall/faq)
 
 ## 上架实例
 
@@ -120,11 +120,12 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
    这里存在两套小商场前端litemall-wx和renard-wx，开发者可以分别导入和测试。
    
 注意：
-> 这里只是最简启动方式，而且小商场的微信登录会失败，更详细方案请参考文档。
+> 这里只是最简启动方式，而小商场的微信登录、微信支付等功能需要开发者进行相应设置才能运行，
+> 更详细方案请参考[文档](https://linlinjava.gitbook.io/litemall/project)。
 
 ## 开发计划
 
-当前版本[v1.2.0](./CHANGELOG.md)
+当前版本[v1.2.0](https://linlinjava.gitbook.io/litemall/changelog)
 
 目前项目开发中，存在诸多不足，以下是目前规划的开发计划。
 
@@ -149,8 +150,8 @@ V 3.0.0 完成以下目标：
 ## 警告
 
 > 1. 本项目仅用于学习练习
-> 2. 项目目前还不完善，仍处在开发中，不承担任何使用后果
-> 3. 项目代码开源[MIT](./LICENSE)，项目文档采用 [署名-禁止演绎 4.0 国际协议许可](https://creativecommons.org/licenses/by-nd/4.0/deed.zh)
+> 2. 本项目目前还不完善，仍处在开发中，不承担任何使用后果
+> 3. 本项目代码开源[MIT](./LICENSE)，项目文档采用 [署名-禁止演绎 4.0 国际协议许可](https://creativecommons.org/licenses/by-nd/4.0/deed.zh)
 
 ## 致谢
 
@@ -189,7 +190,7 @@ V 3.0.0 完成以下目标：
  * 开发者有问题或者好的建议可以用Issues反馈交流，请给出详细信息
  * 在开发交流群中应讨论开发、业务和合作问题
  * 如果真的需要QQ群里提问，请在提问前先完成以下过程：
-    * 请仔细阅读本项目文档，特别是是[**FAQ**](./doc/FAQ.md)，查看能否解决；
+    * 请仔细阅读本项目文档，特别是是[**FAQ**](https://linlinjava.gitbook.io/litemall/faq)，查看能否解决；
     * 请阅读[提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md)；
     * 请百度或谷歌相关技术；
     * 请查看相关技术的官方文档，例如微信小程序的官方文档；
