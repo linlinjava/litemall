@@ -499,7 +499,17 @@ export default {
       for (var i = 0; i < this.specifications.length; i++) {
         const v = this.specifications[i]
         if (v.specification === this.specForm.specification) {
-          index = i
+          if (v.value === this.specForm.value) {
+            this.$message({
+              type: 'warning',
+              message: '已经存在规格值:' + v.value
+            })
+            this.specForm = {}
+            this.specVisiable = false
+            return
+          } else {
+            index = i
+          }
         }
       }
 
