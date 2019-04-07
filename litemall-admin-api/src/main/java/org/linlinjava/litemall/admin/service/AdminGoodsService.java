@@ -197,7 +197,6 @@ public class AdminGoodsService {
             product.setGoodsId(goods.getId());
             productService.add(product);
         }
-        qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
 
         return ResponseUtil.ok();
     }
