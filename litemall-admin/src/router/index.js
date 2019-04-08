@@ -65,7 +65,7 @@ export const constantRouterMap = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+        meta: { title: '首页', icon: 'dashboard', noCache: true }
       }
     ]
   }
@@ -392,6 +392,60 @@ export const asyncRouterMap = [
         meta: {
           perms: ['GET /admin/os/list', 'POST /admin/os/create', 'POST /admin/os/update', 'POST /admin/os/delete'],
           title: '对象存储',
+          noCache: true
+        }
+      }
+    ]
+  },
+
+  {
+    path: '/config',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    name: 'sysManage',
+    meta: {
+      title: '配置管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'mall',
+        component: () => import('@/views/config/mall'),
+        name: 'configMall',
+        meta: {
+          perms: ['GET /admin/config/mall', 'POST /admin/config/mall'],
+          title: '商场配置',
+          noCache: true
+        }
+      },
+      {
+        path: 'express',
+        component: () => import('@/views/config/express'),
+        name: 'configExpress',
+        meta: {
+          perms: ['GET /admin/config/express', 'POST /admin/config/express'],
+          title: '运费配置',
+          noCache: true
+        }
+      },
+      {
+        path: 'order',
+        component: () => import('@/views/config/order'),
+        name: 'configOrder',
+        meta: {
+          perms: ['GET /admin/config/order', 'POST /admin/config/order'],
+          title: '订单配置',
+          noCache: true
+        }
+      },
+      {
+        path: 'wx',
+        component: () => import('@/views/config/wx'),
+        name: 'configWx',
+        meta: {
+          perms: ['GET /admin/config/wx', 'POST /admin/config/wx'],
+          title: '小程序配置',
           noCache: true
         }
       }

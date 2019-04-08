@@ -38,7 +38,6 @@
     "screenfull": "3.3.3",
     "vue": "2.5.17",
     "vue-count-to": "1.0.13",
-    "vue-i18n": "7.3.2",
     "vue-router": "3.0.1",
     "vuex": "3.0.1",
     "xlsx": "^0.11.16"
