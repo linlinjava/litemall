@@ -15,9 +15,6 @@
           <size-select class="international right-menu-item"/>
         </el-tooltip>
 
-        <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
-          <theme-picker class="theme-switch right-menu-item"/>
-        </el-tooltip>
       </template>
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
@@ -61,15 +58,13 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
-import ThemePicker from '@/components/ThemePicker'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger,
     Screenfull,
-    SizeSelect,
-    ThemePicker
+    SizeSelect
   },
   computed: {
     ...mapGetters([
@@ -125,9 +120,6 @@ export default {
     }
     .international{
       vertical-align: top;
-    }
-    .theme-switch {
-      vertical-align: 15px;
     }
     .avatar-container {
       height: 50px;
