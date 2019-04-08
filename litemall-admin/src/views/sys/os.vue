@@ -41,7 +41,7 @@
 
     <!-- 添加对话框 -->
     <el-dialog :visible.sync="createDialogVisible" title="上传对象">
-      <el-upload :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
+      <el-upload ref="upload" :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
     </el-dialog>
@@ -124,6 +124,8 @@ export default {
       this.createDialogVisible = true
     },
     handleUpload(item) {
+      this.$refs.upload.clearFiles()
+
       const formData = new FormData()
       formData.append('file', item.file)
       createStorage(formData).then(response => {
