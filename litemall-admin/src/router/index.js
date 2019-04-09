@@ -403,7 +403,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     alwaysShow: true,
-    name: 'sysManage',
+    name: 'configManage',
     meta: {
       title: '配置管理',
       icon: 'chart'
@@ -459,7 +459,7 @@ export const asyncRouterMap = [
     alwaysShow: true,
     name: 'statManage',
     meta: {
-      title: '统计',
+      title: '统计报表',
       icon: 'chart'
     },
     children: [

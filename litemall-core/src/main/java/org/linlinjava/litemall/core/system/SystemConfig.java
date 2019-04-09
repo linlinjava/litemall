@@ -1,72 +1,119 @@
 package org.linlinjava.litemall.core.system;
 
+import org.linlinjava.litemall.db.domain.LitemallSystem;
+import org.linlinjava.litemall.db.service.LitemallSystemConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 系统设置,其他配置请参考该类的实现
+ * 系统设置
  */
-public class SystemConfig extends BaseConfig {
-    public static final String PRE_FIX = "litemall.system.";
+public class SystemConfig {
+    // 小程序相关配置
+    public final static String LITEMALL_WX_INDEX_NEW = "litemall_wx_index_new";
+    public final static String LITEMALL_WX_INDEX_HOT = "litemall_wx_index_hot";
+    public final static String LITEMALL_WX_INDEX_BRAND = "litemall_wx_index_brand";
+    public final static String LITEMALL_WX_INDEX_TOPIC = "litemall_wx_index_topic";
+    public final static String LITEMALL_WX_INDEX_CATLOG_LIST = "litemall_wx_catlog_list";
+    public final static String LITEMALL_WX_INDEX_CATLOG_GOODS = "litemall_wx_catlog_goods";
+    public final static String LITEMALL_WX_SHARE = "litemall_wx_share";
+    // 运费相关配置
+    public final static String LITEMALL_EXPRESS_FREIGHT_VALUE = "litemall_express_freight_value";
+    public final static String LITEMALL_EXPRESS_FREIGHT_MIN = "litemall_express_freight_min";
+    // 订单相关配置
+    public final static String LITEMALL_ORDER_UNPAID = "litemall_order_unpaid";
+    public final static String LITEMALL_ORDER_UNCONFIRM = "litemall_order_unconfirm";
+    public final static String LITEMALL_ORDER_COMMENT = "litemall_order_comment";
+    // 商场相关配置
+    public final static String LITEMALL_MALL_NAME = "litemall_mall_name";
+    public final static String LITEMALL_MALL_ADDRESS = "litemall_mall_address";
+    public final static String LITEMALL_MALL_PHONE = "litemall_mall_phone";
+    public final static String LITEMALL_MALL_QQ = "litemall_mall_qq";
+
+    //所有的配置均保存在该 HashMap 中
+    private static Map<String, String> SYSTEM_CONFIGS = new HashMap<>();
+
+    private static String getConfig(String keyName) {
+        return SYSTEM_CONFIGS.get(keyName);
+    }
+
+    private static Integer getConfigInt(String keyName) {
+        return Integer.parseInt(SYSTEM_CONFIGS.get(keyName));
+    }
+
+    private static Boolean getConfigBoolean(String keyName) {
+        return Boolean.valueOf(SYSTEM_CONFIGS.get(keyName));
+    }
+
+    private static BigDecimal getConfigBigDec(String keyName) {
+        return new BigDecimal(SYSTEM_CONFIGS.get(keyName));
+    }
 
     public static Integer getNewLimit() {
-        return getConfigInt(PRE_FIX + "indexlimit.new");
+        return getConfigInt(LITEMALL_WX_INDEX_NEW);
     }
 
     public static Integer getHotLimit() {
-        return getConfigInt(PRE_FIX + "indexlimit.hot");
+        return getConfigInt(LITEMALL_WX_INDEX_HOT);
     }
 
     public static Integer getBrandLimit() {
-        return getConfigInt(PRE_FIX + "indexlimit.brand");
+        return getConfigInt(LITEMALL_WX_INDEX_BRAND);
     }
 
     public static Integer getTopicLimit() {
-        return getConfigInt(PRE_FIX + "indexlimit.topic");
+        return getConfigInt(LITEMALL_WX_INDEX_TOPIC);
     }
 
     public static Integer getCatlogListLimit() {
-        return getConfigInt(PRE_FIX + "indexlimit.catloglist");
+        return getConfigInt(LITEMALL_WX_INDEX_CATLOG_LIST);
     }
 
     public static Integer getCatlogMoreLimit() {
-        return getConfigInt(PRE_FIX + "indexlimit.catloggood");
-    }
-
-    public static String getHotBannerTitle() {
-        return getConfig(PRE_FIX + "banner.hot.title");
-    }
-
-    public static String getNewBannerTitle() {
-        return getConfig(PRE_FIX + "banner.new.title");
-    }
-
-    public static String getHotImageUrl() {
-        return getConfig(PRE_FIX + "banner.hot.imageurl");
-    }
-
-    public static String getNewImageUrl() {
-        return getConfig(PRE_FIX + "banner.new.imageurl");
-    }
-
-    public static BigDecimal getFreight() {
-        return getConfigBigDec(PRE_FIX + "freight.value");
-    }
-
-    public static BigDecimal getFreightLimit() {
-        return getConfigBigDec(PRE_FIX + "freight.limit");
-    }
-
-    public static String getMallName() {
-        return getConfig(PRE_FIX + "mallname");
+        return getConfigInt(LITEMALL_WX_INDEX_CATLOG_GOODS);
     }
 
     public static boolean isAutoCreateShareImage() {
-        int autoCreate = getConfigInt(PRE_FIX + "shareimage.autocreate");
-        return autoCreate == 0 ? false : true;
+        return getConfigBoolean(LITEMALL_WX_SHARE);
     }
 
-    @Override
-    public String getPrefix() {
-        return PRE_FIX;
+    public static BigDecimal getFreight() {
+        return getConfigBigDec(LITEMALL_EXPRESS_FREIGHT_VALUE);
+    }
+
+    public static BigDecimal getFreightLimit() {
+        return getConfigBigDec(LITEMALL_EXPRESS_FREIGHT_MIN);
+    }
+
+    public static String getMallName() {
+        return getConfig(LITEMALL_MALL_NAME);
+    }
+
+    public static String getMallAddress() {
+        return getConfig(LITEMALL_MALL_ADDRESS);
+    }
+
+    public static String getMallPhone() {
+        return getConfig(LITEMALL_MALL_PHONE);
+    }
+
+    public static String getMallQQ() {
+        return getConfig(LITEMALL_MALL_QQ);
+    }
+
+    public static void setConfigs(Map<String, String> configs) {
+        SYSTEM_CONFIGS = configs;
+    }
+
+    public static void updateConfigs(Map<String, String> data) {
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            SYSTEM_CONFIGS.put(entry.getKey(), entry.getValue());
+        }
     }
 }
