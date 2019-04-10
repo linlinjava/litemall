@@ -5,6 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
+import org.linlinjava.litemall.admin.vo.CategoryVO;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -33,18 +34,40 @@ public class AdminCategoryController {
     @RequiresPermissions("admin:category:list")
     @RequiresPermissionsDesc(menu={"商场管理" , "类目管理"}, button="查询")
     @GetMapping("/list")
-    public Object list(String id, String name,
-                       @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer limit,
-                       @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order) {
-        List<LitemallCategory> collectList = categoryService.querySelective(id, name, page, limit, sort, order);
-        long total = PageInfo.of(collectList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", collectList);
+    public Object list() {
+        List<CategoryVO> categoryVOList = new ArrayList<>();
 
-        return ResponseUtil.ok(data);
+        List<LitemallCategory> categoryList = categoryService.queryByPid(0);
+        for(LitemallCategory category : categoryList){
+            CategoryVO categoryVO = new CategoryVO();
+            categoryVO.setId(category.getId());
+            categoryVO.setDesc(category.getDesc());
+            categoryVO.setIconUrl(category.getIconUrl());
+            categoryVO.setPicUrl(category.getPicUrl());
+            categoryVO.setKeywords(category.getKeywords());
+            categoryVO.setName(category.getName());
+            categoryVO.setLevel(category.getLevel());
+
+            List<CategoryVO> children = new ArrayList<>();
+            List<LitemallCategory> subCategoryList = categoryService.queryByPid(category.getId());
+            for(LitemallCategory subCategory : subCategoryList){
+                CategoryVO subCategoryVO = new CategoryVO();
+                subCategoryVO.setId(subCategory.getId());
+                subCategoryVO.setDesc(subCategory.getDesc());
+                subCategoryVO.setIconUrl(subCategory.getIconUrl());
+                subCategoryVO.setPicUrl(subCategory.getPicUrl());
+                subCategoryVO.setKeywords(subCategory.getKeywords());
+                subCategoryVO.setName(subCategory.getName());
+                subCategoryVO.setLevel(subCategory.getLevel());
+
+                children.add(subCategoryVO);
+            }
+
+            categoryVO.setChildren(children);
+            categoryVOList.add(categoryVO);
+        }
+
+        return ResponseUtil.ok(categoryVOList);
     }
 
     private Object validate(LitemallCategory category) {
