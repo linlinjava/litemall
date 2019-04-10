@@ -3,6 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.admin.vo.RegionVO;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,17 +38,44 @@ public class AdminRegionController {
     }
 
     @GetMapping("/list")
-    public Object list(String name, Integer code,
-                       @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer limit,
-                       @Sort(accepts = {"id"}) @RequestParam(defaultValue = "id") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order) {
-        List<LitemallRegion> regionList = regionService.querySelective(name, code, page, limit, sort, order);
-        long total = PageInfo.of(regionList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", regionList);
+    public Object list() {
+        List<RegionVO> regionVOList = new ArrayList<>();
 
-        return ResponseUtil.ok(data);
+        List<LitemallRegion> provinceList = regionService.queryByPid(0);
+        for(LitemallRegion province : provinceList){
+            RegionVO provinceVO = new RegionVO();
+            provinceVO.setId(province.getId());
+            provinceVO.setName(province.getName());
+            provinceVO.setCode(province.getCode());
+            provinceVO.setType(province.getType());
+
+            List<LitemallRegion> cityList = regionService.queryByPid(province.getId());
+            List<RegionVO> cityVOList = new ArrayList<>();
+            for(LitemallRegion city : cityList){
+                RegionVO cityVO = new RegionVO();
+                cityVO.setId(city.getId());
+                cityVO.setName(city.getName());
+                cityVO.setCode(city.getCode());
+                cityVO.setType(city.getType());
+
+                List<LitemallRegion> areaList = regionService.queryByPid(city.getId());
+                List<RegionVO> areaVOList = new ArrayList<>();
+                for(LitemallRegion area : areaList){
+                    RegionVO areaVO = new RegionVO();
+                    areaVO.setId(area.getId());
+                    areaVO.setName(area.getName());
+                    areaVO.setCode(area.getCode());
+                    areaVO.setType(area.getType());
+                    areaVOList.add(areaVO);
+                }
+
+                cityVO.setChildren(areaVOList);
+                cityVOList.add(cityVO);
+            }
+            provinceVO.setChildren(cityVOList);
+            regionVOList.add(provinceVO);
+        }
+
+        return ResponseUtil.ok(regionVOList);
     }
 }
