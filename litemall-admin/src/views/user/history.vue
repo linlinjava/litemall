@@ -10,7 +10,7 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" width="100px" label="搜索ID" prop="id" sortable/>
 
       <el-table-column align="center" min-width="100px" label="用户ID" prop="userId"/>
