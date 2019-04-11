@@ -124,7 +124,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 
 ## 开发计划
 
-当前版本[v1.2.0](https://linlinjava.gitbook.io/litemall/changelog)
+当前版本[v1.3.0](https://linlinjava.gitbook.io/litemall/changelog)
 
 目前项目开发中，存在诸多不足，以下是目前规划的开发计划。
 
@@ -161,6 +161,7 @@ V 3.0.0 完成以下目标：
    项目介绍：基于Node.js+MySQL开发的开源微信小程序商城（微信小程序）
 
    项目参考：
+   
    1. litemall项目数据库基于nideshop-mini-program项目数据库；
    2. litemall项目的litemall-wx模块基于nideshop-mini-program开发。
 
