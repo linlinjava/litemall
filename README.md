@@ -8,9 +8,25 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * [贡献](https://linlinjava.gitbook.io/litemall/contribute)
 * [FAQ](https://linlinjava.gitbook.io/litemall/faq)
 
-## 上架实例
+## 项目实例
 
-![](./doc/pic/demo.png)    
+### 小商场实例
+
+* renard-wx模块实例
+![](./doc/pic/renard_wx_demo.png)    
+> 注意：此实例是真实小商场，开发者可以购买商品和付款，但请不要尝试退款操作。
+
+* litemall-wx模块实例
+![](./doc/pic/litemall_wx_demo.png)    
+> 注意：此实例是测试小商场，开发者请不要尝试购买商品、付款、退款操作。
+
+### 管理后台实例
+
+![](./doc/pic/4.png)    
+
+1. 浏览器打开，输入以下网址: [http://118.24.0.153:8080/#/login](http://118.24.0.153:8080/#/login)
+2. 管理员用户名`admin123`，管理员密码`admin123`
+> 注意：此实例只是测试管理后台，不是前两个小商城的管理后台。
 
 ## 项目代码
 
@@ -38,7 +54,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * 品牌列表、品牌详情
 * 新品首发、人气推荐
 * 优惠券列表、优惠券选择
-* 团购
+* 团购（团购业务有待完善）
 * 搜索
 * 商品详情、商品评价、商品分享
 * 购物车
@@ -56,28 +72,6 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * 系统管理
 * 配置管理
 * 统计报表
-
-## 云演示
-
-### 小商城演示访问
-
-由于没有上线，只能在微信开发工具中测试运行：
-
-1. 微信开发工具导入litemall-wx项目;
-2. 项目配置，启用“不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书”
-3. 点击“编译”，即可在微信开发工具预览效果；
-4. 也可以点击“预览”，然后手机扫描登录。
-   注意，手机需要打开调试功能。
-
-![](./doc/pic/3.png)    
-
-
-### 管理平台演示访问
-
-1. 浏览器打开，输入以下网址[http://118.24.0.153:8080/#/login](http://118.24.0.153:8080/#/login)
-2. 管理员名称`admin123`，管理员密码`admin123`
-
-![](doc/pic/4.png)
 
 ## 快速启动
 
@@ -117,13 +111,16 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
     
 5. 启动小商城前端
    
-   打开微信开发者工具，导入litemall-wx模块,点击`编译`即可，此时可以预览小商场效果。
-
-   这里存在两套小商场前端litemall-wx和renard-wx，开发者可以分别导入和测试。
+   这里存在两套小商场前端litemall-wx和renard-wx，开发者可以分别导入和测试：
    
-注意：
-> 这里只是最简启动方式，而小商场的微信登录、微信支付等功能需要开发者进行相应设置才能运行，
-> 更详细方案请参考[文档](https://linlinjava.gitbook.io/litemall/project)。
+   1. 微信开发工具导入litemall-wx项目;
+   2. 项目配置，启用“不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书”
+   3. 点击“编译”，即可在微信开发工具预览效果；
+   4. 也可以点击“预览”，然后手机扫描登录（但是手机需开启调试功能）。
+      
+   注意：
+   > 这里只是最简启动方式，而小商场的微信登录、微信支付等功能需开发者设置才能运行，
+   > 更详细方案请参考[文档](https://linlinjava.gitbook.io/litemall/project)。
 
 ## 开发计划
 
@@ -152,7 +149,7 @@ V 3.0.0 完成以下目标：
 ## 警告
 
 > 1. 本项目仅用于学习练习
-> 2. 本项目目前还不完善，仍处在开发中，不承担任何使用后果
+> 2. 本项目还不完善，仍处在开发中，不承担任何使用后果
 > 3. 本项目代码开源[MIT](./LICENSE)，项目文档采用 [署名-禁止演绎 4.0 国际协议许可](https://creativecommons.org/licenses/by-nd/4.0/deed.zh)
 
 ## 致谢
@@ -164,8 +161,8 @@ V 3.0.0 完成以下目标：
    项目介绍：基于Node.js+MySQL开发的开源微信小程序商城（微信小程序）
 
    项目参考：
-    （1）litemall项目数据库基于nideshop-mini-program项目数据库；
-    （2）litemall项目的litemall-wx模块基于nideshop-mini-program开发。
+   1. litemall项目数据库基于nideshop-mini-program项目数据库；
+   2. litemall项目的litemall-wx模块基于nideshop-mini-program开发。
 
 2. [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
   
