@@ -121,15 +121,19 @@ public class LitemallOrderService {
         return (int) litemallOrderMapper.countByExample(example);
     }
 
-    public List<LitemallOrder> queryUnpaid() {
+    public List<LitemallOrder> queryUnpaid(int minutes) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expired = now.minusMinutes(minutes);
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_CREATE).andDeletedEqualTo(false);
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_CREATE).andAddTimeLessThan(expired).andDeletedEqualTo(false);
         return litemallOrderMapper.selectByExample(example);
     }
 
-    public List<LitemallOrder> queryUnconfirm() {
+    public List<LitemallOrder> queryUnconfirm(int days) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expired = now.minusDays(days);
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_SHIP).andShipTimeIsNotNull().andDeletedEqualTo(false);
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_SHIP).andShipTimeLessThan(expired).andDeletedEqualTo(false);
         return litemallOrderMapper.selectByExample(example);
     }
 
@@ -171,9 +175,11 @@ public class LitemallOrderService {
 
     }
 
-    public List<LitemallOrder> queryComment() {
+    public List<LitemallOrder> queryComment(int days) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expired = now.minusDays(days);
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andCommentsGreaterThan((short) 0).andDeletedEqualTo(false);
+        example.or().andCommentsGreaterThan((short) 0).andConfirmTimeLessThan(expired).andDeletedEqualTo(false);
         return litemallOrderMapper.selectByExample(example);
     }
 }

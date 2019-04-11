@@ -1,14 +1,7 @@
 package org.linlinjava.litemall.core.system;
 
-import org.linlinjava.litemall.db.domain.LitemallSystem;
-import org.linlinjava.litemall.db.service.LitemallSystemConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,6 +82,18 @@ public class SystemConfig {
 
     public static BigDecimal getFreightLimit() {
         return getConfigBigDec(LITEMALL_EXPRESS_FREIGHT_MIN);
+    }
+
+    public static Integer getOrderUnpaid() {
+        return getConfigInt(LITEMALL_ORDER_UNPAID);
+    }
+
+    public static Integer getOrderUnconfirm() {
+        return getConfigInt(LITEMALL_ORDER_UNCONFIRM);
+    }
+
+    public static Integer getOrderComment() {
+        return getConfigInt(LITEMALL_ORDER_COMMENT);
     }
 
     public static String getMallName() {

@@ -2,6 +2,7 @@ package org.linlinjava.litemall.admin.job;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.db.domain.LitemallGoodsProduct;
 import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
@@ -34,27 +35,19 @@ public class OrderJob {
     /**
      * 自动取消订单
      * <p>
-     * 定时检查订单未付款情况，如果超时半个小时则自动取消订单
+     * 定时检查订单未付款情况，如果超时 LITEMALL_ORDER_UNPAID 分钟则自动取消订单
      * 定时时间是每次相隔半个小时。
      * <p>
-     * 注意，因为是相隔半小时检查，因此导致有订单是超时一个小时以后才设置取消状态。
      * TODO
-     * 这里可以进一步地配合用户订单查询时订单未付款检查，如果订单超时半小时则取消。
+     * 注意，因为是相隔半小时检查，因此导致订单真正超时时间是 [LITEMALL_ORDER_UNPAID, 30 + LITEMALL_ORDER_UNPAID]
      */
     @Scheduled(fixedDelay = 30 * 60 * 1000)
     @Transactional
     public void checkOrderUnpaid() {
         logger.info("系统开启任务检查订单是否已经超期自动取消订单");
 
-        List<LitemallOrder> orderList = orderService.queryUnpaid();
+        List<LitemallOrder> orderList = orderService.queryUnpaid(SystemConfig.getOrderUnpaid());
         for (LitemallOrder order : orderList) {
-            LocalDateTime add = order.getAddTime();
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expired = add.plusMinutes(30);
-            if (expired.isAfter(now)) {
-                continue;
-            }
-
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
             order.setEndTime(LocalDateTime.now());
@@ -67,7 +60,6 @@ public class OrderJob {
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Integer productId = orderGoods.getProductId();
-                LitemallGoodsProduct product = productService.findById(productId);
                 Short number = orderGoods.getNumber();
                 if (productService.addStock(productId, number) == 0) {
                     throw new RuntimeException("商品货品库存增加失败");
@@ -80,30 +72,22 @@ public class OrderJob {
     /**
      * 自动确认订单
      * <p>
-     * 定时检查订单未确认情况，如果超时七天则自动确认订单
+     * 定时检查订单未确认情况，如果超时 LITEMALL_ORDER_UNCONFIRM 天则自动确认订单
      * 定时时间是每天凌晨3点。
      * <p>
-     * 注意，因为是相隔一天检查，因此导致有订单是超时八天以后才设置自动确认。
-     * 这里可以进一步地配合用户订单查询时订单未确认检查，如果订单超时7天则自动确认。
-     * 但是，这里可能不是非常必要。相比订单未付款检查中存在商品资源有限所以应该
-     * 早点清理未付款情况，这里八天再确认是可以的。。
+     * TODO
+     * 注意，因为是相隔一天检查，因此导致订单真正超时时间是 [LITEMALL_ORDER_UNCONFIRM, 1 + LITEMALL_ORDER_UNCONFIRM]
      */
     @Scheduled(cron = "0 0 3 * * ?")
     public void checkOrderUnconfirm() {
         logger.info("系统开启任务检查订单是否已经超期自动确认收货");
 
-        List<LitemallOrder> orderList = orderService.queryUnconfirm();
+        List<LitemallOrder> orderList = orderService.queryUnconfirm(SystemConfig.getOrderUnconfirm());
         for (LitemallOrder order : orderList) {
-            LocalDateTime ship = order.getShipTime();
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime expired = ship.plusDays(7);
-            if (expired.isAfter(now)) {
-                continue;
-            }
 
             // 设置订单已取消状态
             order.setOrderStatus(OrderUtil.STATUS_AUTO_CONFIRM);
-            order.setConfirmTime(now);
+            order.setConfirmTime(LocalDateTime.now());
             if (orderService.updateWithOptimisticLocker(order) == 0) {
                 logger.info("订单 ID=" + order.getId() + " 数据已经更新，放弃自动确认收货");
             } else {
@@ -115,22 +99,19 @@ public class OrderJob {
     /**
      * 可评价订单商品超期
      * <p>
-     * 定时检查订单商品评价情况，如果确认商品超时七天则取消可评价状态
+     * 定时检查订单商品评价情况，如果确认商品超时 LITEMALL_ORDER_COMMENT 天则取消可评价状态
      * 定时时间是每天凌晨4点。
+     * <p>
+     * TODO
+     * 注意，因为是相隔一天检查，因此导致订单真正超时时间是 [LITEMALL_ORDER_COMMENT, 1 + LITEMALL_ORDER_COMMENT]
      */
     @Scheduled(cron = "0 0 4 * * ?")
     public void checkOrderComment() {
         logger.info("系统开启任务检查订单是否已经超期未评价");
 
         LocalDateTime now = LocalDateTime.now();
-        List<LitemallOrder> orderList = orderService.queryComment();
+        List<LitemallOrder> orderList = orderService.queryComment(SystemConfig.getOrderComment());
         for (LitemallOrder order : orderList) {
-            LocalDateTime confirm = order.getConfirmTime();
-            LocalDateTime expired = confirm.plusDays(7);
-            if (expired.isAfter(now)) {
-                continue;
-            }
-
             order.setComments((short) 0);
             orderService.updateWithOptimisticLocker(order);
 

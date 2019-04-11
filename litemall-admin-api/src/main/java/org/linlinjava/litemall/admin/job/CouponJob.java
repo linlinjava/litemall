@@ -27,6 +27,8 @@ public class CouponJob {
 
     /**
      * 每隔一个小时检查
+     * TODO
+     * 注意，因为是相隔一个小时检查，因此导致优惠券真正超时时间可能比设定时间延迟1个小时
      */
     @Scheduled(fixedDelay = 60 * 60 * 1000)
     public void checkCouponExpired() {
