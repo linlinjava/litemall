@@ -37,11 +37,11 @@ public class AdminKeywordController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        List<LitemallKeyword> brandList = keywordService.querySelective(keyword, url, page, limit, sort, order);
-        long total = PageInfo.of(brandList).getTotal();
+        List<LitemallKeyword> keywordList = keywordService.querySelective(keyword, url, page, limit, sort, order);
+        long total = PageInfo.of(keywordList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", brandList);
+        data.put("items", keywordList);
 
         return ResponseUtil.ok(data);
     }
@@ -74,8 +74,8 @@ public class AdminKeywordController {
     @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
-        LitemallKeyword brand = keywordService.findById(id);
-        return ResponseUtil.ok(brand);
+        LitemallKeyword keyword = keywordService.findById(id);
+        return ResponseUtil.ok(keyword);
     }
 
     @RequiresPermissions("admin:keyword:update")
