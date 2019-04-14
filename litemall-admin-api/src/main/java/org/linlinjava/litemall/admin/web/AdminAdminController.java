@@ -3,7 +3,9 @@ package org.linlinjava.litemall.admin.web;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.service.LogHelper;
 import org.linlinjava.litemall.core.util.RegexUtil;
@@ -134,6 +136,13 @@ public class AdminAdminController {
         Integer anotherAdminId = admin.getId();
         if (anotherAdminId == null) {
             return ResponseUtil.badArgument();
+        }
+
+        // 管理员不能删除自身账号
+        Subject currentUser = SecurityUtils.getSubject();
+        LitemallAdmin currentAdmin = (LitemallAdmin) currentUser.getPrincipal();
+        if (currentAdmin.getId().equals(anotherAdminId)) {
+            return ResponseUtil.fail(ADMIN_DELETE_NOT_ALLOWED, "管理员不能删除自己账号");
         }
 
         adminService.deleteById(anotherAdminId);
