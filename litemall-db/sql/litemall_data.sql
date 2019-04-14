@@ -210,6 +210,15 @@ INSERT INTO `litemall_keyword` VALUES (1,'母亲节','',0,0,100,'2018-02-01 00:0
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `litemall_log`
+--
+
+LOCK TABLES `litemall_log` WRITE;
+/*!40000 ALTER TABLE `litemall_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `litemall_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `litemall_order`
 --
 
@@ -281,7 +290,6 @@ UNLOCK TABLES;
 
 LOCK TABLES `litemall_system` WRITE;
 /*!40000 ALTER TABLE `litemall_system` DISABLE KEYS */;
-INSERT INTO `litemall_system` VALUES (1,'litemall.system.banner.new.title','大家都在买的','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(2,'litemall.system.banner.new.imageurl','http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(3,'litemall.system.banner.hot.title','大家都在买的','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(4,'litemall.system.banner.hot.imageurl','http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(5,'litemall.system.freight.value','8','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(6,'litemall.system.freight.limit','88','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(7,'litemall.system.indexlimit.new','6','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(8,'litemall.system.indexlimit.hot','6','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(9,'litemall.system.indexlimit.brand','4','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(10,'litemall.system.indexlimit.topic','4','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(11,'litemall.system.indexlimit.catloglist','4','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(12,'litemall.system.indexlimit.catloggood','4','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(13,'litemall.system.mallname','litemall','2018-02-01 00:00:00','2018-02-01 00:00:00',0),(14,'litemall.system.shareimage.autocreate','0','2018-02-01 00:00:00','2018-02-01 00:00:00',0);
 /*!40000 ALTER TABLE `litemall_system` ENABLE KEYS */;
 UNLOCK TABLES;
 
