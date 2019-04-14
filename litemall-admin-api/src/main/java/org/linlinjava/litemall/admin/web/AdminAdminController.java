@@ -5,6 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
+import org.linlinjava.litemall.admin.service.LogHelper;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +33,8 @@ public class AdminAdminController {
 
     @Autowired
     private LitemallAdminService adminService;
+    @Autowired
+    private LogHelper logHelper;
 
     @RequiresPermissions("admin:admin:list")
     @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="查询")
@@ -85,6 +88,7 @@ public class AdminAdminController {
         String encodedPassword = encoder.encode(rawPassword);
         admin.setPassword(encodedPassword);
         adminService.add(admin);
+        logHelper.logAuthSucceed("添加管理员", username);
         return ResponseUtil.ok(admin);
     }
 
@@ -119,6 +123,7 @@ public class AdminAdminController {
             return ResponseUtil.updatedDataFailed();
         }
 
+        logHelper.logAuthSucceed("编辑管理员", admin.getUsername());
         return ResponseUtil.ok(admin);
     }
 
@@ -132,6 +137,7 @@ public class AdminAdminController {
         }
 
         adminService.deleteById(anotherAdminId);
+        logHelper.logAuthSucceed("删除管理员", admin.getUsername());
         return ResponseUtil.ok();
     }
 }

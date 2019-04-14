@@ -21,7 +21,7 @@ import org.linlinjava.litemall.wx.dao.UserToken;
 import org.linlinjava.litemall.wx.dao.WxLoginInfo;
 import org.linlinjava.litemall.wx.service.CaptchaCodeManager;
 import org.linlinjava.litemall.wx.service.UserTokenManager;
-import org.linlinjava.litemall.wx.util.IpUtil;
+import org.linlinjava.litemall.core.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -145,7 +145,7 @@ public class WxAuthController {
             user.setUserLevel((byte) 0);
             user.setStatus((byte) 0);
             user.setLastLoginTime(LocalDateTime.now());
-            user.setLastLoginIp(IpUtil.client(request));
+            user.setLastLoginIp(IpUtil.getIpAddr(request));
 
             userService.add(user);
 
@@ -153,7 +153,7 @@ public class WxAuthController {
             couponAssignService.assignForRegister(user.getId());
         } else {
             user.setLastLoginTime(LocalDateTime.now());
-            user.setLastLoginIp(IpUtil.client(request));
+            user.setLastLoginIp(IpUtil.getIpAddr(request));
             if (userService.updateById(user) == 0) {
                 return ResponseUtil.updatedDataFailed();
             }
@@ -293,7 +293,7 @@ public class WxAuthController {
         user.setUserLevel((byte) 0);
         user.setStatus((byte) 0);
         user.setLastLoginTime(LocalDateTime.now());
-        user.setLastLoginIp(IpUtil.client(request));
+        user.setLastLoginIp(IpUtil.getIpAddr(request));
         userService.add(user);
 
         // 给新用户发送注册优惠券

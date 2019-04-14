@@ -376,6 +376,16 @@ export const asyncRouterMap = [
         }
       },
       {
+        path: 'log',
+        component: () => import('@/views/sys/log'),
+        name: 'log',
+        meta: {
+          perms: ['GET /admin/admin/log'],
+          title: '操作日志',
+          noCache: true
+        }
+      },
+      {
         path: 'role',
         component: () => import('@/views/sys/role'),
         name: 'role',

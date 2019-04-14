@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.wx.util;
+package org.linlinjava.litemall.core.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -8,13 +8,6 @@ import java.net.UnknownHostException;
  * IP地址相关工具类
  */
 public class IpUtil {
-    public static String client(HttpServletRequest request) {
-        String xff = request.getHeader("x-forwarded-for");
-        if (xff == null) {
-            xff = request.getRemoteAddr();
-        }
-        return xff;
-    }
 
     public static String getIpAddr(HttpServletRequest request) {
         String ipAddress = null;
