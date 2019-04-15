@@ -54,9 +54,7 @@
           <span>{{ orderDetail.order.orderSn }}</span>
         </el-form-item>
         <el-form-item label="订单状态">
-          <template slot-scope="scope">
-            <el-tag>{{ scope.order.orderStatus | orderStatusFilter }}</el-tag>
-          </template>
+          <el-tag>{{ orderDetail.order.orderStatus | orderStatusFilter }}</el-tag>
         </el-form-item>
         <el-form-item label="订单用户">
           <span>{{ orderDetail.user.nickname }}</span>
