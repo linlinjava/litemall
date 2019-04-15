@@ -1,0 +1,40 @@
+{
+  "name": "lite-mall",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "mock": "json-server ./mock/db.json"
+  },
+  "dependencies": {
+    "@xkeshi/vue-countdown": "^1.0.1",
+    "axios": "^0.18.0",
+    "dayjs": "^1.7.7",
+    "js-md5": "^0.7.3",
+    "lodash": "^4.17.11",
+    "vant": "^1.4.4",
+    "vee-validate": "^2.1.4",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "protobufjs": "^6.8.6",
+    "vuelidation": "^1.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
+    "@vue/eslint-config-prettier": "^3.0.5",
+    "babel-plugin-import": "^1.9.1",
+    "babel-plugin-lodash": "^3.3.4",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
