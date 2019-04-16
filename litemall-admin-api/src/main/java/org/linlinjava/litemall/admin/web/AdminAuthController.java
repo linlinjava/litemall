@@ -12,6 +12,7 @@ import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.service.LogHelper;
 import org.linlinjava.litemall.admin.util.Permission;
 import org.linlinjava.litemall.admin.util.PermissionUtil;
+import org.linlinjava.litemall.core.util.IpUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
@@ -26,6 +27,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
@@ -49,7 +52,7 @@ public class AdminAuthController {
      *  { username : value, password : value }
      */
     @PostMapping("/login")
-    public Object login(@RequestBody String body) {
+    public Object login(@RequestBody String body, HttpServletRequest request) {
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
 
@@ -72,6 +75,12 @@ public class AdminAuthController {
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "认证失败");
         }
 
+        currentUser = SecurityUtils.getSubject();
+        LitemallAdmin admin = (LitemallAdmin) currentUser.getPrincipal();
+        admin.setLastLoginIp(IpUtil.getIpAddr(request));
+        admin.setLastLoginTime(LocalDateTime.now());
+        adminService.updateById(admin);
+
         logHelper.logAuthSucceed("登录");
         return ResponseUtil.ok(currentUser.getSession().getId());
     }
@@ -81,7 +90,7 @@ public class AdminAuthController {
      */
     @RequiresAuthentication
     @PostMapping("/logout")
-    public Object login() {
+    public Object logout() {
         Subject currentUser = SecurityUtils.getSubject();
 
         logHelper.logAuthSucceed("退出");
