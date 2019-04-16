@@ -466,11 +466,14 @@ public class WxCartController {
         }
         else {
             LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, checkedGoodsPrice);
-            // 用户选择的优惠券有问题
+            // 用户选择的优惠券有问题，则选择合适优惠券，否则使用用户选择的优惠券
             if(coupon == null){
-                return ResponseUtil.badArgumentValue();
+                couponPrice = tmpCouponPrice;
+                couponId = tmpCouponId;
             }
-            couponPrice = coupon.getDiscount();
+            else {
+                couponPrice = coupon.getDiscount();
+            }
         }
 
         // 根据订单商品总价计算运费，满88则免运费，否则8元；
