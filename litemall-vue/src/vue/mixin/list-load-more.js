@@ -16,7 +16,7 @@ export default {
   methods: {
     async resetInit() {
       this.resetData();
-      debugger;
+      // debugger;
       const page = await this.initData();
       this.$nextTick(() => {
         this.setPages(page);

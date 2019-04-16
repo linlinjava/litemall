@@ -89,7 +89,7 @@ export default {
         'background_image',
         'avatar'
       );
-      debugger;
+      // debugger;
       this.avatar = infoData.avatar;
       this.nickName = infoData.nickName;
       // this.gender = infoData.gender;

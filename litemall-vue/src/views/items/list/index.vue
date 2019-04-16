@@ -164,7 +164,7 @@ export default {
       const { tabActive: i } = this;
       this.tabsItem[i].items = [];
       const targetScroll = this.$refs[`tabScrolls${i}`][0];
-      debugger;
+      // debugger;
       targetScroll && targetScroll.resetInit();
     },
     toggleFilterModal(status) {

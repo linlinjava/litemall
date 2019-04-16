@@ -72,7 +72,7 @@ export default {
           hideLoading: true
         }
       ).then(res => {
-        debugger;
+        // debugger;
         const { collectList, page } = res.data.data;
         this.items.push(...collectList);
         return page;

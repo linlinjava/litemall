@@ -80,7 +80,7 @@ export default {
 
   methods: {
     initData() {
-      debugger;
+      // debugger;
       this.items = [];
 
       return this.$reqGet(

@@ -20,7 +20,7 @@ export default {
       this.isSkuBuy && this.$emit('skuBuy', data);
     },
     selectSkuData(data) {
-      debugger
+      // debugger
       if (data.selectedSkuComb) {
         data.selectedSkuComb.sku_str = data.selectedSkuComb.props_str_arr
           .map(str => str.match(/[^:]*:([^:]*)/)[1])
