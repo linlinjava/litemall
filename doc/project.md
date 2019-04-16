@@ -608,6 +608,10 @@ litemall:
 当配置好信息以后，开发者可以litemall-core模块的`ExpressTest`测试类中设置快递公司编码和
 真实测试快递单号，独立启动`ExpressTest`测试类查询物流信息。
 
+注意：
+> 一部分快递公司（例如顺丰速运、申通快递等）的轨迹查询在开发环境下不支持，
+> 具体支持情况或者使用限制请阅读[官方资料](http://www.kdniao.com/UserCenter/v2/UserHome.aspx)
+
 #### 1.4.5.9 对象存储配置
 
 对象存储，即存储和下载文件。
