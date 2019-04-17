@@ -51,10 +51,6 @@ public class AdminKeywordController {
         if (StringUtils.isEmpty(keyword)) {
             return ResponseUtil.badArgument();
         }
-        String url = keywords.getUrl();
-        if (StringUtils.isEmpty(url)) {
-            return ResponseUtil.badArgument();
-        }
         return null;
     }
 
