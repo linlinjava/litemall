@@ -26,7 +26,7 @@ public class LitemallIssueService {
         issueMapper.insertSelective(issue);
     }
 
-    public List<LitemallIssue> querySelective(String question, Integer page, Integer size, String sort, String order) {
+    public List<LitemallIssue> querySelective(String question, Integer page, Integer limit, String sort, String order) {
         LitemallIssueExample example = new LitemallIssueExample();
         LitemallIssueExample.Criteria criteria = example.createCriteria();
 
@@ -39,7 +39,7 @@ public class LitemallIssueService {
             example.setOrderByClause(sort + " " + order);
         }
 
-        PageHelper.startPage(page, size);
+        PageHelper.startPage(page, limit);
         return issueMapper.selectByExample(example);
     }
 

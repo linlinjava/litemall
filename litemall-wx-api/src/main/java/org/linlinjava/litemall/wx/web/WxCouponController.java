@@ -51,18 +51,18 @@ public class WxCouponController {
      * 优惠券列表
      *
      * @param page
-     * @param size
+     * @param limit
      * @param sort
      * @param order
      * @return
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
 
-        List<LitemallCoupon> couponList = couponService.queryList(page, size, sort, order);
+        List<LitemallCoupon> couponList = couponService.queryList(page, limit, sort, order);
         int total = couponService.queryTotal();
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("data", couponList);
@@ -76,7 +76,7 @@ public class WxCouponController {
      * @param userId
      * @param status
      * @param page
-     * @param size
+     * @param limit
      * @param sort
      * @param order
      * @return
@@ -85,14 +85,14 @@ public class WxCouponController {
     public Object mylist(@LoginUser Integer userId,
                        @NotNull Short status,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallCouponUser> couponUserList = couponUserService.queryList(userId, null, status, page, size, sort, order);
+        List<LitemallCouponUser> couponUserList = couponUserService.queryList(userId, null, status, page, limit, sort, order);
         List<CouponVo> couponVoList = change(couponUserList);
         int total = couponService.queryTotal();
         Map<String, Object> data = new HashMap<String, Object>();

@@ -27,15 +27,15 @@ public class WxOrderController {
      * @param userId   用户ID
      * @param showType 订单信息
      * @param page     分页页数
-     * @param size     分页大小
+     * @param limit     分页大小
      * @return 订单列表
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,
                        @RequestParam(defaultValue = "0") Integer showType,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size) {
-        return wxOrderService.list(userId, showType, page, size);
+                       @RequestParam(defaultValue = "10") Integer limit) {
+        return wxOrderService.list(userId, showType, page, limit);
     }
 
     /**

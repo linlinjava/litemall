@@ -1090,7 +1090,7 @@ public interface Storage {
     public class WxTopicController {
         @GetMapping("list")
         public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
          ...
@@ -1144,7 +1144,7 @@ public interface Storage {
     public class WxTopicController {
         @GetMapping("list")
         public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
          ...

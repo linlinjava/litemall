@@ -127,18 +127,18 @@ public class WxOrderService {
      *                 3，待收货；
      *                 4，待评价。
      * @param page     分页页数
-     * @param size     分页大小
+     * @param limit     分页大小
      * @return 订单列表
      */
-    public Object list(Integer userId, Integer showType, Integer page, Integer size) {
+    public Object list(Integer userId, Integer showType, Integer page, Integer limit) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
         List<Short> orderStatus = OrderUtil.orderStatus(showType);
-        List<LitemallOrder> orderList = orderService.queryByOrderStatus(userId, orderStatus, page, size);
+        List<LitemallOrder> orderList = orderService.queryByOrderStatus(userId, orderStatus, page, limit);
         long count = PageInfo.of(orderList).getTotal();
-        int totalPages = (int) Math.ceil((double) count / size);
+        int totalPages = (int) Math.ceil((double) count / limit);
 
         List<Map<String, Object>> orderVoList = new ArrayList<>(orderList.size());
         for (LitemallOrder order : orderList) {

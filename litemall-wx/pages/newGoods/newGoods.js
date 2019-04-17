@@ -16,7 +16,7 @@ Page({
     currentSort: 'add_time',
     currentSortOrder: 'desc',
     page: 1,
-    size: 100
+    limit: 100
   },
   getGoodsList: function() {
     var that = this;
