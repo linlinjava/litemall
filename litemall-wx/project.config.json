@@ -258,6 +258,13 @@
 					"name": "优惠券列表",
 					"pathName": "pages/coupon/coupon",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "帮助中心",
+					"pathName": "pages/help/help",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

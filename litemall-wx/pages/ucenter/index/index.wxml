@@ -35,6 +35,10 @@
         <image class='user_column_item_image' src='/static/images/comment.png'></image>
         <view class='user_column_item_text'>待评价</view>
       </view>
+      <view class='user_column_item' bindtap='goAfterSale'>
+        <image class='user_column_item_image' src='/static/images/aftersale.png'></image>
+        <view class='user_column_item_text'>售后</view>
+      </view>
     </view>
   </view>
 
@@ -61,9 +65,10 @@
       <image class='user_column_item_image' src='/static/images/group.png'></image>
       <view class='user_column_item_text'>我的拼团</view>
     </view>
-    <view class='user_column_item' bindtap='goAfterSale'>
-      <image class='user_column_item_image' src='/static/images/aftersale.png'></image>
-      <view class='user_column_item_text'>售后</view>
+
+    <view class='user_column_item' bindtap='goAddress'>
+      <image class='user_column_item_image' src='/static/images/address.png'></image>
+      <view class='user_column_item_text'>地址管理</view>
     </view>
   </view>
   <view class='separate'></view>
@@ -72,14 +77,15 @@
     <view class='user_row_left'>必备工具</view>
   </view>
   <view class='user_column'>
-    <view class='user_column_item' bindtap='goAddress'>
-      <image class='user_column_item_image' src='/static/images/address.png'></image>
-      <view class='user_column_item_text'>地址管理</view>
-    </view>
+
     <button class="user_column_item_phone" open-type="getPhoneNumber" bindgetphonenumber="bindPhoneNumber">
       <image class='user_column_item_image' src='/static/images/mobile.png'></image>
       <view class='user_column_item_text'>绑定手机</view>
     </button>
+    <view class='user_column_item' bindtap='goHelp'>
+      <image class='user_column_item_image' src='/static/images/ic_menu_topic_nor.png'></image>
+      <view class='user_column_item_text'>帮助中心</view>
+    </view>
     <view class='user_column_item' bindtap='goFeedback'>
       <image class='user_column_item_image' src='/static/images/feedback.png'></image>
       <view class='user_column_item_text'>意见反馈</view>

@@ -16,12 +16,6 @@ public class LitemallIssueService {
     @Resource
     private LitemallIssueMapper issueMapper;
 
-    public List<LitemallIssue> query() {
-        LitemallIssueExample example = new LitemallIssueExample();
-        example.or().andDeletedEqualTo(false);
-        return issueMapper.selectByExample(example);
-    }
-
     public void deleteById(Integer id) {
         issueMapper.logicalDeleteByPrimaryKey(id);
     }

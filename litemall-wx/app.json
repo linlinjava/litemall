@@ -36,7 +36,8 @@
     "pages/groupon/myGroupon/myGroupon",
     "pages/groupon/grouponDetail/grouponDetail",
     "pages/groupon/grouponList/grouponList",
-    "pages/coupon/coupon"
+    "pages/coupon/coupon",
+    "pages/help/help"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
