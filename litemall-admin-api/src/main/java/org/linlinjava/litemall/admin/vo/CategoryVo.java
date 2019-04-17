@@ -2,7 +2,7 @@ package org.linlinjava.litemall.admin.vo;
 
 import java.util.List;
 
-public class CategoryVO {
+public class CategoryVo {
     private Integer id;
     private String name;
     private String keywords;
@@ -10,13 +10,13 @@ public class CategoryVO {
     private String iconUrl;
     private String picUrl;
     private String level;
-    private List<CategoryVO> children;
+    private List<CategoryVo> children;
 
-    public List<CategoryVO> getChildren() {
+    public List<CategoryVo> getChildren() {
         return children;
     }
 
-    public void setChildren(List<CategoryVO> children) {
+    public void setChildren(List<CategoryVo> children) {
         this.children = children;
     }
 

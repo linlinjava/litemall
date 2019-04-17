@@ -2,13 +2,13 @@ package org.linlinjava.litemall.admin.vo;
 
 import java.util.List;
 
-public class RegionVO {
+public class RegionVo {
     private Integer id;
     private String name;
     private Byte type;
     private Integer code;
 
-    private List<RegionVO> children;
+    private List<RegionVo> children;
 
     public Integer getId() {
         return id;
@@ -18,7 +18,7 @@ public class RegionVO {
         this.id = id;
     }
 
-    public List<RegionVO> getChildren() {
+    public List<RegionVo> getChildren() {
         return children;
     }
 
@@ -46,7 +46,7 @@ public class RegionVO {
         this.code = code;
     }
 
-    public void setChildren(List<RegionVO> children) {
+    public void setChildren(List<RegionVo> children) {
         this.children = children;
     }
 }

@@ -1,9 +1,16 @@
-package org.linlinjava.litemall.wx.dao;
+package org.linlinjava.litemall.wx.vo;
 
 import java.time.LocalDateTime;
 
 public class CouponVo {
     private Integer id;
+    private String name;
+    private String desc;
+    private String tag;
+    private String min;
+    private String discount;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     public Integer getId() {
         return id;
@@ -12,14 +19,6 @@ public class CouponVo {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    private String name;
-    private String desc;
-    private String tag;
-    private String min;
-    private String discount;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
 
     public String getName() {
         return name;

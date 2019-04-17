@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.admin.util;
+package org.linlinjava.litemall.admin.vo;
 
 import java.util.ArrayList;
 import java.util.Arrays;

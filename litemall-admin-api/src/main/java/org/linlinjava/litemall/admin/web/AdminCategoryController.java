@@ -1,14 +1,11 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
-import org.linlinjava.litemall.admin.vo.CategoryVO;
+import org.linlinjava.litemall.admin.vo.CategoryVo;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.core.validator.Order;
-import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +32,11 @@ public class AdminCategoryController {
     @RequiresPermissionsDesc(menu={"商场管理" , "类目管理"}, button="查询")
     @GetMapping("/list")
     public Object list() {
-        List<CategoryVO> categoryVOList = new ArrayList<>();
+        List<CategoryVo> categoryVoList = new ArrayList<>();
 
         List<LitemallCategory> categoryList = categoryService.queryByPid(0);
         for(LitemallCategory category : categoryList){
-            CategoryVO categoryVO = new CategoryVO();
+            CategoryVo categoryVO = new CategoryVo();
             categoryVO.setId(category.getId());
             categoryVO.setDesc(category.getDesc());
             categoryVO.setIconUrl(category.getIconUrl());
@@ -48,26 +45,26 @@ public class AdminCategoryController {
             categoryVO.setName(category.getName());
             categoryVO.setLevel(category.getLevel());
 
-            List<CategoryVO> children = new ArrayList<>();
+            List<CategoryVo> children = new ArrayList<>();
             List<LitemallCategory> subCategoryList = categoryService.queryByPid(category.getId());
             for(LitemallCategory subCategory : subCategoryList){
-                CategoryVO subCategoryVO = new CategoryVO();
-                subCategoryVO.setId(subCategory.getId());
-                subCategoryVO.setDesc(subCategory.getDesc());
-                subCategoryVO.setIconUrl(subCategory.getIconUrl());
-                subCategoryVO.setPicUrl(subCategory.getPicUrl());
-                subCategoryVO.setKeywords(subCategory.getKeywords());
-                subCategoryVO.setName(subCategory.getName());
-                subCategoryVO.setLevel(subCategory.getLevel());
+                CategoryVo subCategoryVo = new CategoryVo();
+                subCategoryVo.setId(subCategory.getId());
+                subCategoryVo.setDesc(subCategory.getDesc());
+                subCategoryVo.setIconUrl(subCategory.getIconUrl());
+                subCategoryVo.setPicUrl(subCategory.getPicUrl());
+                subCategoryVo.setKeywords(subCategory.getKeywords());
+                subCategoryVo.setName(subCategory.getName());
+                subCategoryVo.setLevel(subCategory.getLevel());
 
-                children.add(subCategoryVO);
+                children.add(subCategoryVo);
             }
 
             categoryVO.setChildren(children);
-            categoryVOList.add(categoryVO);
+            categoryVoList.add(categoryVO);
         }
 
-        return ResponseUtil.ok(categoryVOList);
+        return ResponseUtil.ok(categoryVoList);
     }
 
     private Object validate(LitemallCategory category) {

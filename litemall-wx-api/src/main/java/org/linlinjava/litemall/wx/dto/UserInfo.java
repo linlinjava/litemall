@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.wx.dao;
+package org.linlinjava.litemall.wx.dto;
 
 public class UserInfo {
     private String nickName;

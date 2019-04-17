@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.admin.dao;
+package org.linlinjava.litemall.admin.dto;
 
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallGoodsAttribute;
@@ -9,7 +9,6 @@ public class GoodsAllinone {
     LitemallGoods goods;
     LitemallGoodsSpecification[] specifications;
     LitemallGoodsAttribute[] attributes;
-    // 这里采用 Product 再转换到 LitemallGoodsProduct
     LitemallGoodsProduct[] products;
 
     public LitemallGoods getGoods() {
