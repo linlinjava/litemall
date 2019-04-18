@@ -103,7 +103,7 @@ public class WxAddressController extends GetRegionService {
 			return ResponseUtil.unlogin();
 		}
 
-		LitemallAddress address = addressService.findById(id);
+		LitemallAddress address = addressService.query(userId, id);
 		if (address == null) {
 			return ResponseUtil.badArgumentValue();
 		}

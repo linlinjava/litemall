@@ -397,7 +397,7 @@ public class WxCartController {
             }
 
         } else {
-            checkedAddress = addressService.findById(addressId);
+            checkedAddress = addressService.query(userId, addressId);
             // 如果null, 则报错
             if (checkedAddress == null) {
                 return ResponseUtil.badArgumentValue();
