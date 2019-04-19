@@ -3,7 +3,7 @@
 		<div class="store_avatar">
 			<img src="../../assets/images/avatar_default.png" alt="头像" width="55" height="55">
 		</div>
-		<div class="store_name">我家的店</div>
+		<div class="store_name">litemall-vue</div>
 	</div>
 </template>
 

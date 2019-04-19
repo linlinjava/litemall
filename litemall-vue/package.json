@@ -1,13 +1,19 @@
 {
-  "name": "lite-mall",
+  "name": "litemall-vue",
   "version": "0.1.0",
+  "description": "litemall-vue basing on vant--mobile-mall 0.1.0",
+  "author": "litemall <linlinjava@163.com>",
+  "license": "MIT",
   "private": true,
   "scripts": {
+    "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "mock": "json-server ./mock/db.json"
+    "build:dep": "vue-cli-service build",
+    "build:prod": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
+
   "dependencies": {
     "@xkeshi/vue-countdown": "^1.0.1",
     "axios": "^0.18.0",
@@ -18,7 +24,6 @@
     "vee-validate": "^2.1.4",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
-    "protobufjs": "^6.8.6",
     "vuelidation": "^1.1.0"
   },
   "devDependencies": {

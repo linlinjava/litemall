@@ -1,5 +1,5 @@
 <template>
-  <div class="text-desc text-center bottom_positon">技术支持: liteMall</div>
+  <div class="text-desc text-center bottom_positon">技术支持: litemall</div>
 </template>
 
 <script>

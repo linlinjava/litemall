@@ -11,11 +11,6 @@ import zhCN from 'vee-validate/dist/locale/zh_CN';
 import axios from '@/vue/plugins/axios';
 import filters from '@/vue/filter';
 
-import psm from '@/core/utils/psm'
-import {
-  procJumpToken
-} from "@/core/utils/auth";
-
 Vue.use(VueCountdown);
 Vue.use(axios);
 Vue.use(filters);
@@ -41,10 +36,6 @@ Vue.use(Lazyload, {
   lazyComponent: true
 });
 
-Vue.prototype.PSMU = psm.psmu
-PSMU.setup()
-
-procJumpToken()
 
 Vue.config.productionTip = false;
 

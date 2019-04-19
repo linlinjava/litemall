@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: ['plugin:vue/essential', '@vue/prettier'],
+  // extends: ['plugin:vue/essential', '@vue/prettier'],
   // rules: {
   //   camelcase: 'off',
   //   quotes: ['error', 'single'],
