@@ -2,7 +2,7 @@
 
 又一个小商场系统。
 
-litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
+litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 + Vue用户移动端
 
 * [文档](https://linlinjava.gitbook.io/litemall)
 * [贡献](https://linlinjava.gitbook.io/litemall/contribute)
@@ -19,6 +19,12 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
 * litemall-wx模块实例
 ![](./doc/pic/litemall_wx_demo.png)    
 > 注意：此实例是测试小商场，开发者请不要尝试购买商品、付款、退款操作。
+
+### 轻商场实例
+
+目前未部署
+
+![](./doc/pic/5.gif)    
 
 ### 管理后台实例
 
@@ -122,6 +128,20 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端
    > 这里只是最简启动方式，而小商场的微信登录、微信支付等功能需开发者设置才能运行，
    > 更详细方案请参考[文档](https://linlinjava.gitbook.io/litemall/project)。
 
+6. 启动轻商城前端
+
+    打开命令行，输入以下命令
+    ```bash
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
+    cd litemall/litemall-vue
+    cnpm install
+    cnpm run dev
+    ```
+    此时，浏览器（建议采用chrome 手机模式）打开，输入网址`http://localhost:6255`, 此时进入轻商场。
+
+    注意：
+    > 现在功能很不稳定，处在开发阶段。
+        
 ## 开发计划
 
 当前版本[v1.3.0](https://linlinjava.gitbook.io/litemall/changelog)
@@ -139,6 +159,7 @@ V 2.0.0 完成以下目标：
 1. 小商城和管理后台完成所有基本业务；
 2. 管理后台实现统计功能、日志功能、权限功能；
 3. 业务代码和细节代码进行调整优化；
+4. 轻商城的开发；
 
 V 3.0.0 完成以下目标：
 
@@ -169,20 +190,26 @@ V 3.0.0 完成以下目标：
   
    项目介绍： 一个基于Vue和Element的后台集成方案
   
-   项目参考：litemall项目的litemall-admin模块的前端框架基于该项目修改扩展。
+   项目参考：litemall项目的litemall-admin模块的前端框架基于vue-element-admin项目修改扩展。
 
 3. [mall-admin-web](https://github.com/macrozheng/mall-admin-web)
 
    项目介绍：mall-admin-web是一个电商后台管理系统的前端项目，基于Vue+Element实现。
 
-   项目参考：litemall项目的litemall-admin模块的一些页面布局样式参考了该项目。
+   项目参考：litemall项目的litemall-admin模块的一些页面布局样式参考了mall-admin-web项目。
 
 4. [biu](https://github.com/CaiBaoHong/biu)
 
    项目介绍：管理后台项目开发脚手架，基于vue-element-admin和springboot搭建，前后端分离方式开发和部署。
 
-   项目参考：litemall项目的权限管理功能参考了该项目。
+   项目参考：litemall项目的权限管理功能参考了biu项目。
 
+5. [vant--mobile-mall](https://github.com/qianzhaoy/vant--mobile-mall)
+
+   项目介绍：基于有赞 vant 组件库的移动商城。
+
+   项目参考：litemall项目的litemall-vue模块基于vant--mobile-mall项目开发。
+   
 ## 问题
 
 ![](doc/pic/qq.png)
