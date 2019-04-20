@@ -42,7 +42,6 @@
     </div>
 
     <van-goods-action>
-      <!-- <van-goods-action-mini-btn @click="doContact" icon="wangwang" iconClass="red afterTag"/> -->
       <van-goods-action-mini-btn @click="toCart" icon="cart" :info="cartInfo"/>
       <van-goods-action-mini-btn
         :style="collectAdd ? 'color: #f7b444;':''"
@@ -53,9 +52,6 @@
       <van-goods-action-big-btn primary @click="openSku('buy')" text="立即购买"/>
     </van-goods-action>
 
-    <van-popup v-model="showContact">
-      <md-kefu mobile="16454193338"/>
-    </van-popup>
   </div>
 </template>
 
@@ -71,8 +67,6 @@ import {
   Popup
 } from 'vant';
 
-import md_kefu from '@/vue/components/md-kefu/';
-
 export default {
   props: {
     itemId: [String, Number]
@@ -84,9 +78,7 @@ export default {
       isLogin,
       itemImgs: [],
       collectAdd: false,
-      showContact: false,
       cartInfo: '0',
-      mobile: '13454193338',
       selectSku: {
         selectedNum: 1,
         selectedSkuComb: {}
@@ -170,9 +162,6 @@ export default {
       // });
       // }
     },
-    doContact() {
-      this.showContact = true;
-    },
     toCart() {
       this.$router.push({
         name: 'cart'
@@ -196,7 +185,6 @@ export default {
   },
 
   components: {
-    [md_kefu.name]: md_kefu,
     [Popup.name]: Popup,
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,

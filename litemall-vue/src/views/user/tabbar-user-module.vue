@@ -6,7 +6,7 @@
       <!-- <van-cell icon="gold-bean" title="我的金豆" isLink /> -->
       <van-cell icon="dingwei" title="收货地址" to="/user/address" isLink/>
       <!-- <van-cell icon="id-card" title="实名认证" to="/user/autonym" isLink /> -->
-      <!-- <van-cell icon="kefu" title="服务中心" to="/user/server" isLink/> -->
+      <van-cell icon="kefu" title="服务中心" to="/user/server" isLink/>
     </van-cell-group>
   </div>
 </template>
