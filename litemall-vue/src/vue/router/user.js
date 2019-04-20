@@ -6,8 +6,6 @@ const UserTeam = asyncLoader('user/module-team');
 const UserInvitation = asyncLoader('user/module-invitation');
 const UserAddress = asyncLoader('user/module-address');
 const UserAddressEdit = asyncLoader('user/module-address-edit');
-const UserAutonym = asyncLoader('user/module-autonym');
-const UserAutonymEdit = asyncLoader('user/module-autonym-edit');
 const UserServer = asyncLoader('user/module-server');
 
 const UserInformation = asyncLoader('user/user-information-set');
@@ -76,16 +74,6 @@ export default [
       login: true
     },
     component: UserAddressEdit
-  },
-  {
-    path: '/user/autonym',
-    name: 'autonym',
-    component: UserAutonym
-  },
-  {
-    path: '/user/autonym/edit',
-    name: 'autonym-edit',
-    component: UserAutonymEdit
   },
   {
     path: '/user/server',
