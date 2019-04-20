@@ -2,7 +2,6 @@ import asyncLoader from 'core/async-loader';
 
 const tab_user = asyncLoader('user/tabbar-user');
 const UserCollect = asyncLoader('user/module-collect');
-const UserTeam = asyncLoader('user/module-team');
 const UserInvitation = asyncLoader('user/module-invitation');
 const UserAddress = asyncLoader('user/module-address');
 const UserAddressEdit = asyncLoader('user/module-address-edit');
@@ -41,14 +40,6 @@ export default [
       login: true
     },
     component: UserCollect
-  },
-  {
-    path: '/user/team',
-    name: 'team',
-    meta: {
-      login: true
-    },
-    component: UserTeam
   },
   {
     path: '/user/invitation',
