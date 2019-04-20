@@ -79,7 +79,7 @@ public class WxAuthController {
         if (userList.size() > 1) {
             return ResponseUtil.serious();
         } else if (userList.size() == 0) {
-            return ResponseUtil.badArgumentValue();
+            return ResponseUtil.fail(AUTH_INVALID_ACCOUNT, "账号不存在");
         } else {
             user = userList.get(0);
         }
