@@ -1,4 +1,4 @@
-import request from '@/core/utils/request'
+import request from '@/utils/request'
 
 // export const GOODS_CATEGORY = '/category';
 export const GOODS_CATEGORY = '/wx/catalog/index';

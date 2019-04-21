@@ -49,7 +49,7 @@
 <script>
 import { Checkbox, CheckboxGroup, Card, SubmitBar, Stepper, Tag } from 'vant';
 
-import isEmpty from '@/vue/components/is-empty/';
+import isEmpty from '@/components/is-empty/';
 import _ from 'lodash';
 import { debug } from 'util';
 

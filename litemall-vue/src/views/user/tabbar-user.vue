@@ -14,7 +14,7 @@ import orderGroup from './tabbar-user-order';
 // import ecouponGroup from './tabbar-user-ecoupon';
 import userModule from './tabbar-user-module';
 
-import { removeLocalStorage } from 'core/utils/local-storage';
+import { removeLocalStorage } from '@/utils/local-storage';
 
 export default {
   data() {

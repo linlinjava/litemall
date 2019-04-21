@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import avatar_default from '../../assets/images/avatar_default.png';
-import bg_default from '../../assets/images/user_head_bg.png';
-import { getLocalStorage } from 'core/utils/local-storage';
+import avatar_default from '@/assets/images/avatar_default.png';
+import bg_default from '@/assets/images/user_head_bg.png';
+import { getLocalStorage } from '@/utils/local-storage';
 import _ from 'lodash';
 
 export default {

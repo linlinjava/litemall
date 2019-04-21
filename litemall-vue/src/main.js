@@ -1,15 +1,16 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './vue/router';
+import router from './router';
+import store from './store'
 import './assets/scss/global.scss';
 import '@/assets/scss/iconfont/iconfont.css';
 
 import VeeValidate, { Validator } from 'vee-validate';
-import VueCountdown from '@/vue/plugins/vue-countdown';
+import VueCountdown from '@/plugins/vue-countdown';
 import zhCN from 'vee-validate/dist/locale/zh_CN';
 
-import axios from '@/vue/plugins/axios';
-import filters from '@/vue/filter';
+import axios from '@/plugins/axios';
+import filters from '@/filter';
 
 Vue.use(VueCountdown);
 Vue.use(axios);
@@ -41,5 +42,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app');

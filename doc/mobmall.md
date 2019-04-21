@@ -23,7 +23,7 @@ litemall轻商城，是商城移动版本。
 
 可以阅读3.1
 
-## 3.2 litemall-vue
+## 5.2 litemall-vue
 
 这里的代码基于[vant--mobile-mall](https://github.com/qianzhaoy/vant--mobile-mall)
 

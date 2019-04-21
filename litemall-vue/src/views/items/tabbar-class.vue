@@ -20,10 +20,10 @@
 <script>
 import { GOODS_CATEGORY, GOODS_CHANNGE_CATEGORY } from '@/api/goods';
 
-import getLocationParam from 'core/utils/location-param';
+import getLocationParam from '@/utils/location-param';
 import { Search } from 'vant';
 import classTree from './tabbar-class-tree';
-import IsEmpty from '@/vue/components/is-empty';
+import IsEmpty from '@/components/is-empty';
 import _ from 'lodash';
 import { async } from 'q';
 

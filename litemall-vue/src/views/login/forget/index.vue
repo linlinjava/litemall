@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import field from '@/vue/components/field/';
-import fieldGroup from '@/vue/components/field-group/';
+import field from '@/components/field/';
+import fieldGroup from '@/components/field-group/';
 
 export default {
   data() {

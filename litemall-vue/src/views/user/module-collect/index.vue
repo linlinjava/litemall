@@ -40,13 +40,13 @@
 <script>
 import { GOODS_COLLECT_LIST } from '@/api/user';
 
-import ItemGroup from '@/vue/components/item-group/';
-import ItemCardHori from '@/vue/components/item-card-hori/';
-import IsEmpty from '@/vue/components/is-empty/';
+import ItemGroup from '@/components/item-group/';
+import ItemCardHori from '@/components/item-card-hori/';
+import IsEmpty from '@/components/is-empty/';
 import { Search, List } from 'vant';
 
-import loadMore from '@/vue/mixin/list-load-more';
-import scrollFixed from '@/vue/mixin/scroll-fixed';
+import loadMore from '@/mixin/list-load-more';
+import scrollFixed from '@/mixin/scroll-fixed';
 
 export default {
   mixins: [loadMore, scrollFixed],

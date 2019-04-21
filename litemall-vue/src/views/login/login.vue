@@ -50,12 +50,12 @@
 </template>
 
 <script>
-import field from '@/vue/components/field/';
-import fieldGroup from '@/vue/components/field-group/';
+import field from '@/components/field/';
+import fieldGroup from '@/components/field-group/';
 
-import { USER_LOGIN, USER_PROFILE } from '@/api/user';
-import { setLocalStorage } from 'core/utils/local-storage';
-import { emailReg, mobileReg } from '@/core/regexp';
+import { loginByUsername, USER_LOGIN, USER_PROFILE } from '@/api/user';
+import { setLocalStorage } from '@/utils/local-storage';
+import { emailReg, mobileReg } from '@/utils/validate';
 
 import { Toast } from 'vant';
 
@@ -93,6 +93,7 @@ export default {
 
     async login() {
       let loginData = this.getLoginData();
+      loginByUsername(loginData)
       let { data } = await this.$reqPost(USER_LOGIN, loginData);
       this.userInfo = data.data.userInfo;
       console.log(this.userInfo);
@@ -139,9 +140,9 @@ export default {
 
     getLoginData() {
       const password = this.password;
-      const username = this.getUserType(this.account);
+      const account = this.getUserType(this.account);
       return {
-        username: this.account,
+        [account]: this.account,
         password: password
       };
     },

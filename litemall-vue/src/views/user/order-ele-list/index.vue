@@ -55,7 +55,7 @@ import status110 from './handle-status-110';
 import status120 from './handle-status-120';
 import _ from 'lodash';
 
-import InfinityScroll from '@/vue/components/infinity-scroll';
+import InfinityScroll from '@/components/infinity-scroll';
 
 const STATUS_TEXT = {
   10: '待付款',

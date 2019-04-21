@@ -10,29 +10,17 @@
       </van-swipe-item>
     </van-swipe>
 
-    <van-tabbar active-color="#7d7e80" v-model="active" class="goods-channel">
-      <van-tabbar-item
-        @click="changeTabbar(iconJson)"
-        style="font-size:14px"
-        v-if="index < 5"
-        v-for="(iconJson, index) in  shopInfos.channel"
-        :key="index"
-        :icon="iconJson.iconUrl"
-      >{{iconJson.name}}</van-tabbar-item>
-    </van-tabbar>
-    <van-tabbar active-color="#7d7e80" v-model="active" class="goods-channel">
-      <van-tabbar-item
-        @click="changeTabbar(iconJson)"
-        style="font-size:14px"
-        v-if="index >= 5"
-        v-for="(iconJson, index) in  shopInfos.channel"
-        :key="index"
-        :icon="iconJson.iconUrl"
-      >{{iconJson.name}}</van-tabbar-item>
-      <van-tabbar-item></van-tabbar-item>
-    </van-tabbar>
+  <div class="goods-channel">
+    <div class="item" 
+        @click="changeTabbar(iconJson)"  
+        v-for="(iconJson, index) in shopInfos.channel"
+        :key="index">
+      <img :src="iconJson.iconUrl" background-size="cover"/>
+      <span>{{iconJson.name}}</span>
+    </div>
+  </div>
 
-    <!-- <van-panel title="优惠券" style=" padding-bottom: 10px;">
+    <van-panel title="优惠券" style=" padding-bottom: 10px;">
       <div
         class="van-coupon-item"
         v-for="(coupon,index) in shopInfos.couponList"
@@ -55,7 +43,8 @@
         </div>
          
       </div>
-    </van-panel>-->
+    </van-panel>
+
     <van-panel title="团购专区">
       <!-- {{shopInfos.grouponList}} -->
       <van-card
@@ -143,19 +132,19 @@
 
 <script>
 import { HOME_module, ALL_GOODS } from '@/api/shop';
-import getLocationParam from 'core/utils/location-param';
+import getLocationParam from '@/utils/location-param';
 
 import mx_be_to from '@/assets/images/mx_be_to.png';
 import mx_start from '@/assets/images/mx_start.png';
 
 import SignBoard from './tabbar-home-sign-board';
 import ShopInfoGroup from './tabbar-home-shop-info';
-import ItemGroup from '@/vue/components/item-group/';
-import ItemCardVert from '@/vue/components/item-card-vert/';
-import ItemCardHori from '@/vue/components/item-card-hori/';
+import ItemGroup from '@/components/item-group/';
+import ItemCardVert from '@/components/item-card-vert/';
+import ItemCardHori from '@/components/item-card-hori/';
 
-import loadMore from '@/vue/mixin/list-load-more';
-import scrollFixed from '@/vue/mixin/scroll-fixed';
+import loadMore from '@/mixin/list-load-more';
+import scrollFixed from '@/mixin/scroll-fixed';
 import _ from 'lodash';
 
 const coupon = {
@@ -379,10 +368,38 @@ export default {
 .interval_bot {
   margin-bottom: 10px;
 }
+
 .goods-channel {
-  position: sticky;
-  border-bottom-width: 0px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 0px;
+  padding-top: 10px;
 }
+
+.goods-channel .item {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+}
+
+.goods-channel img {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+}
+
+.goods-channel span {
+  display: block;
+  font-size: 15px;
+  text-align: center;
+  margin: 0 auto;
+  line-height: 1;
+  color: #333;
+}
+van-tabbar-item
 .van-coupon-cell--selected {
   color: #323233;
 }
@@ -444,6 +461,8 @@ export default {
   padding: 24px 0 0 15px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  border:1px solid red;
+
 }
 .van-coupon-item h2,
 .van-coupon-item p {
