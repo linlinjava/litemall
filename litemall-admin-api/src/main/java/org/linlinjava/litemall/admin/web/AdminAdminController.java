@@ -116,10 +116,8 @@ public class AdminAdminController {
             return ResponseUtil.badArgument();
         }
 
-        String rawPassword = admin.getPassword();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(rawPassword);
-        admin.setPassword(encodedPassword);
+        // 不允许管理员通过编辑接口修改密码
+        admin.setPassword(null);
 
         if (adminService.updateById(admin) == 0) {
             return ResponseUtil.updatedDataFailed();
