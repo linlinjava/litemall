@@ -36,6 +36,7 @@
 
 <script>
 import { Row, Col } from 'vant';
+import { userIndex } from '@/api/api';
 
 export default {
   name: 'order-group',
@@ -49,9 +50,10 @@ export default {
     this.init();
   },
   methods: {
-    async init() {
-      let { data } = await this.$reqGet('/wx/user/index');
-      this.order = data.data.order;
+    init() {
+      userIndex().then(res => {
+      this.order = res.data.data.order;
+      });
     }
   },
   components: {

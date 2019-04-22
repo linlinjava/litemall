@@ -9,14 +9,6 @@ module.exports = {
   assetsDir: 'static',
   productionSourceMap: false,
   devServer: {
-    proxy: {
-      '/wx': {
-        target: 'http://127.0.0.1:8080',
-        // pathRewrite: {
-        //   '/api': ''
-        // }
-      }
-    },
     //九键输入法的 「mall」= 「6255」
     port: 6255,
   },

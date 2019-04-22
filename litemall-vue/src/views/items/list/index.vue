@@ -49,14 +49,14 @@
       </ul>
     </van-popup>
 
-    <!-- <transition name="fade">
+    <transition name="fade">
 			<van-icon
 				name="arrowupcircle"
 				class="backTop"
 				@click.native="backTop"
 				v-show="showArrow"
 			/>
-    </transition>-->
+    </transition>
   </div>
 </template>
 

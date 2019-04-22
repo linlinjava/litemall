@@ -2,18 +2,17 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store'
-import './assets/scss/global.scss';
+import 'vant/lib/icon/local.css';
+import '@/assets/scss/global.scss';
 import '@/assets/scss/iconfont/iconfont.css';
 
 import VeeValidate, { Validator } from 'vee-validate';
-import VueCountdown from '@/plugins/vue-countdown';
+import VueCountdown from '@chenfengyuan/vue-countdown';
 import zhCN from 'vee-validate/dist/locale/zh_CN';
 
-import axios from '@/plugins/axios';
 import filters from '@/filter';
 
-Vue.use(VueCountdown);
-Vue.use(axios);
+Vue.component(VueCountdown.name, VueCountdown);
 Vue.use(filters);
 
 Validator.localize('zh-CN', zhCN);

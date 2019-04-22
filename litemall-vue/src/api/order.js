@@ -1,3 +1,5 @@
+import request from '@/utils/request'
+
 export const ORDER_LIST = '/order-list';
 
 export const ELE_COUPON_LIST = '/electronic-list';

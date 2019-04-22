@@ -8,19 +8,19 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build:dep": "vue-cli-service build",
-    "build:prod": "vue-cli-service build",
+    "build": "vue-cli-service build  --mode production",
+    "build:dep": "vue-cli-service build --mode deployment",
+    "build:prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint"
   },
 
   "dependencies": {
-    "@xkeshi/vue-countdown": "^1.0.1",
+    "@chenfengyuan/vue-countdown": "^1.1.2",
     "axios": "^0.18.0",
     "dayjs": "^1.7.7",
     "js-md5": "^0.7.3",
     "lodash": "^4.17.11",
-    "vant": "^1.4.4",
+    "vant": "^1.6.15",
     "vee-validate": "^2.1.4",
     "vue": "^2.5.17",
     "js-cookie": "2.2.0",

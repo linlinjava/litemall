@@ -53,7 +53,7 @@
 import field from '@/components/field/';
 import fieldGroup from '@/components/field-group/';
 
-import { loginByUsername, USER_LOGIN, USER_PROFILE } from '@/api/user';
+import { authLoginByAccount } from '@/api/api';
 import { setLocalStorage } from '@/utils/local-storage';
 import { emailReg, mobileReg } from '@/utils/validate';
 
@@ -91,16 +91,17 @@ export default {
       }
     },
 
-    async login() {
+    login() {
       let loginData = this.getLoginData();
-      loginByUsername(loginData)
-      let { data } = await this.$reqPost(USER_LOGIN, loginData);
-      this.userInfo = data.data.userInfo;
-      console.log(this.userInfo);
-      setLocalStorage({
-        Authorization: data.data.token
+      authLoginByAccount(loginData).then(res => {
+        this.userInfo = res.data.data.userInfo;
+        setLocalStorage({
+          Authorization: res.data.data.token
+        });
+        this.getUserProfile();
+      }).catch(error => {
+        Toast.fail(error.data.errmsg);
       });
-      this.getUserProfile();
     },
 
     async loginSubmit() {
@@ -121,7 +122,6 @@ export default {
       // } = await this.$reqGet(USER_PROFILE);
       setLocalStorage({
         avatar: this.userInfo.avatarUrl,
-        // user_id: data.user_id,
         // background_image: data.background_image,
         nickName: this.userInfo.nickName
       });

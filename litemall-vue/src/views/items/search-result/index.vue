@@ -30,8 +30,6 @@
 </template>
 
 <script>
-import { GOODS_SEARCH } from '@/api/goods';
-
 import ItemGroup from '@/components/item-group/';
 import IsEmpty from '@/components/is-empty/';
 import ItemCardHori from '@/components/item-card-hori/';

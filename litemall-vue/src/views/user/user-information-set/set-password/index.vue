@@ -58,7 +58,6 @@ export default {
           .then(() => {
             removeLocalStorage(
               'Authorization',
-              'user_id',
               'avatar',
               'background_image',
               'nickName'

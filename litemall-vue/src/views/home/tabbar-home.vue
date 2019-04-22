@@ -4,6 +4,7 @@
       <van-search placeholder="点击前往搜索" @click="$router.push({ name: 'search' })"/>
       <div class="tal_class_searchMask"></div>
     </div>
+    <!-- 品牌商 -->
     <van-swipe :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(image, index) in brandList" :key="index">
         <img :src="image" style="height:230px">
@@ -46,7 +47,6 @@
     </van-panel>
 
     <van-panel title="团购专区">
-      <!-- {{shopInfos.grouponList}} -->
       <van-card
         :thumb-link="goDetail(groupGood.goods.id)"
         v-for="(groupGood ,index) in shopInfos.grouponList"
@@ -64,7 +64,6 @@
     </van-panel>
 
     <van-panel title="新品首发">
-      <!-- {{shopInfos.grouponList}} -->
       <van-row gutter>
         <van-col span="12" v-for="(newGood ,index) in shopInfos.newGoodsList" :key="index">
           <router-link :to="{ path: `/items/detail/${newGood.id}`}">
@@ -81,7 +80,6 @@
     </van-panel>
 
     <van-panel title="人气推荐">
-      <!-- {{shopInfos.grouponList}} -->
       <van-card
         :thumb-link="goDetail(groupGood.id)"
         v-for="(groupGood ,index) in shopInfos.hotGoodsList"
@@ -96,68 +94,15 @@
         <!-- <div slot="footer">添加日期 {{item.addTime}}</div> -->
       </van-card>
     </van-panel>
-    <!-- <van-list
-      v-model="loading"
-      class="scroll-load"
-      :finished="finished"
-      :immediate-check="false"
-      :offset="100"
-      @load="loadMore"
-    >
-      <item-group
-        v-for="( group, key ) in itemGroup"
-        v-if="group"
-        :key="key"
-        class="interval_bot"
-        :setting="group.setting"
-      >
-        <component
-          v-for="item in group.items"
-          :goods="item"
-          :key="item.id"
-          :is="getStyle(group.setting.style)"
-          @click="toGoods(item)"
-        >
-          <div slot="mask" v-if="lootAll(item)">
-            <img src="../../assets/images/not_enough.png" alt="已抢光">
-          </div>
-          <div slot="leftTopIcon" v-if="item.as_status < 2">
-            <img :src="mxStatus(item.as_status)" alt="秒杀">
-          </div>
-        </component>
-      </item-group>
-    </van-list>-->
+
   </div>
 </template>
 
 <script>
-import { HOME_module, ALL_GOODS } from '@/api/shop';
-import getLocationParam from '@/utils/location-param';
-
-import mx_be_to from '@/assets/images/mx_be_to.png';
-import mx_start from '@/assets/images/mx_start.png';
-
-import SignBoard from './tabbar-home-sign-board';
-import ShopInfoGroup from './tabbar-home-shop-info';
-import ItemGroup from '@/components/item-group/';
-import ItemCardVert from '@/components/item-card-vert/';
-import ItemCardHori from '@/components/item-card-hori/';
-
+import { getHome, goodsCategory, couponReceive } from '@/api/api';
 import loadMore from '@/mixin/list-load-more';
 import scrollFixed from '@/mixin/scroll-fixed';
 import _ from 'lodash';
-
-const coupon = {
-  available: 1,
-  discount: 0,
-  denominations: 150,
-  originCondition: 0,
-  reason: '',
-  value: 150,
-  name: '优惠券名称',
-  startAt: 1489104000,
-  endAt: 1514592000
-};
 
 import {
   List,
@@ -179,102 +124,43 @@ export default {
   mixins: [loadMore, scrollFixed],
 
   data() {
-    const shop_id = getLocationParam('shop_id');
     return {
-      shop_id,
       brandList: [],
       shopInfos: [],
-      shopInfo: null,
-      coupons: [coupon],
-      itemGroup: {
-        mx_goods: null,
-        activity_seckill: null,
-        shop_recommend: null,
-        goods: null
-      },
-      mx_be_to,
-      mx_start,
       isLoading: false
     };
   },
 
-  computed: {
-    location() {
-      const shopInfo = this.shopInfo;
-      const local = {
-        name: shopInfo.shop_name,
-        lat: shopInfo.lat,
-        lng: shopInfo.lng
-      };
-      return local.lat && local.lng ? local : null;
-    }
-  },
-
   created() {
-    // this.initViews();
-    this.initNewViews();
+    this.initViews();
   },
 
   methods: {
     goDetail(id) {
       return `#/items/detail/${id}`;
     },
-    async getCoupon(id) {
-      let errmsg = await this.$reqPost('/wx/coupon/receive', {
-        couponId: id
-      });
-      Toast.success('领取成功');
+    getCoupon(id) {
+      couponReceive({couponId: id}).then(res => {
+        Toast.success('领取成功');
+      })
     },
-    async changeTabbar(o) {
-      let { data } = await this.$reqGet(
-        `/wx/goods/category?id=${o.id}`
-      );
-      let categoryId = data.data.currentCategory.id;
-      this.$router.push({
-        path: `items/list?keyword=&itemClass=${categoryId}`
-      });
+    changeTabbar(o) {
+      let that = this
+      goodsCategory({ id: o.id}).then(res => {
+          let categoryId = res.data.data.currentCategory.id;
+          this.$router.push({
+          path: `items/list?keyword=&itemClass=${categoryId}`
+        });
+      })
     },
     initViews() {
-      this.$reqGet(HOME_module, {
-        shop_id: this.shop_id,
-        'per-page': this.pages.perPage,
-        page: 1
-      }).then(res => {
-        const { shop_info, page } = res.data.data;
-        const {
-          mx_goods,
-          shop_recommend,
-          activity_seckill,
-          goods
-        } = this.decorate(res.data.data);
-        this.shopInfo = shop_info;
-        this.itemGroup.mx_goods = mx_goods;
-        this.itemGroup.shop_recommend = shop_recommend;
-        this.itemGroup.activity_seckill = activity_seckill;
-        this.itemGroup.goods = goods;
-        this.setPages(page);
-      });
-    },
-    initNewViews() {
-      this.$reqGet('/wx/home/index').then(res => {
+      getHome().then(res => {
         this.shopInfos = res.data.data;
         this.brandList = [];
         _.each(res.data.data.brandList, v => {
           this.brandList.push(v.picUrl);
         });
       });
-    },
-
-    initData() {
-      // return this.$reqGet(ALL_GOODS, {
-      //   shop_id: this.shop_id,
-      //   'per-page': this.pages.perPage,
-      //   page: this.pages.currPage
-      // }).then(res => {
-      //   const { items, page } = res.data.data;
-      //   this.itemGroup.goods && this.itemGroup.goods.items.push(...items);
-      //   return page;
-      // });
     },
 
     toGoods(item) {
@@ -300,42 +186,10 @@ export default {
       return style ? 'item-card-vert' : 'item-card-hori';
     },
 
-    decorate({ mx_goods, shop_recommend, activity_seckill, goods }) {
-      if (mx_goods) {
-        mx_goods.setting.icon = 'n4';
-        mx_goods.setting.title_desc = '分享得金豆';
-        mx_goods.setting.title_color = '#db3d3c';
-        mx_goods.setting.item_len = mx_goods.items.length;
-      }
-      if (shop_recommend) {
-        shop_recommend.setting.icon = 'good';
-        shop_recommend.setting.item_len = shop_recommend.items.length;
-      }
-      if (activity_seckill) {
-        activity_seckill.setting.icon = 'naozhong';
-        activity_seckill.setting.title_color = '#db3d3c';
-        activity_seckill.setting.item_len = activity_seckill.items.length;
-      }
-      if (goods) {
-        goods.setting.icon = 'list';
-        goods.setting.item_len = goods.items.length;
-      }
-      return {
-        mx_goods,
-        shop_recommend,
-        activity_seckill,
-        goods
-      };
-    },
-
     lootAll(item) {
       return (
         typeof item.as_status !== 'undefined' && item.sold_num == item.total
       );
-    },
-
-    mxStatus(as_status) {
-      return as_status ? this.mx_start : this.mx_be_to;
     }
   },
 
@@ -353,12 +207,7 @@ export default {
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
     [Tabbar.name]: Tabbar,
-    [TabbarItem.name]: TabbarItem,
-    [SignBoard.name]: SignBoard,
-    [ShopInfoGroup.name]: ShopInfoGroup,
-    [ItemGroup.name]: ItemGroup,
-    [ItemCardVert.name]: ItemCardVert,
-    [ItemCardHori.name]: ItemCardHori
+    [TabbarItem.name]: TabbarItem
   }
 };
 </script>
@@ -399,7 +248,6 @@ export default {
   line-height: 1;
   color: #333;
 }
-van-tabbar-item
 .van-coupon-cell--selected {
   color: #323233;
 }

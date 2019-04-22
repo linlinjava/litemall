@@ -11,10 +11,11 @@
 <script>
 import userHeader from './tabbar-user-header';
 import orderGroup from './tabbar-user-order';
-// import ecouponGroup from './tabbar-user-ecoupon';
+import ecouponGroup from './tabbar-user-ecoupon';
 import userModule from './tabbar-user-module';
 
 import { removeLocalStorage } from '@/utils/local-storage';
+import { authLogout } from '@/api/api';
 
 export default {
   data() {
@@ -29,9 +30,9 @@ export default {
 
   methods: {
     quit() {
+      authLogout();
       removeLocalStorage(
         'Authorization',
-        'user_id',
         'avatar',
         'background_image',
         'nickName'
@@ -40,15 +41,14 @@ export default {
     },
     getLoginStatus() {
       this.isLogin =
-        !!localStorage.getItem('Authorization') &&
-        !!localStorage.getItem('user_id');
+        !!localStorage.getItem('Authorization');
     }
   },
 
   components: {
     [userHeader.name]: userHeader,
     [orderGroup.name]: orderGroup,
-    // [ecouponGroup.name]: ecouponGroup,
+    [ecouponGroup.name]: ecouponGroup,
     [userModule.name]: userModule
   }
 };

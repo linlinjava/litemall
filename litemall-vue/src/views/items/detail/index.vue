@@ -1,71 +1,74 @@
 <template>
   <div class="item_detail">
     <van-swipe :autoplay="3000">
-      <van-swipe-item v-for="(image, index) in itemImgs" :key="index">
-        <!-- <img v-lazy="image" width="100%"> -->
-        <img :src="image" width="100%">
+      <van-swipe-item v-for="(image, index) in goods.info.gallery" :key="index">
+        <img v-lazy="image" width="100%">
       </van-swipe-item>
     </van-swipe>
     <van-cell-group class="item_cell_group" v-if="goods">
       <van-cell class="item_info">
         <div>
-          <span class="item_price">{{ goods.retailPrice*100 | yuan }}</span>
-          <span class="item_market_price">{{goods.counterPrice*100 | yuan}}</span>
+          <span class="item_price">{{ goods.info.retailPrice*100 | yuan }}</span>
+          <span class="item_market_price">{{goods.info.counterPrice*100 | yuan}}</span>
         </div>
         <div class="item-title">
-          <!-- <van-tag plain type="danger" v-if="goods.is_haitao">海淘</van-tag> -->
-          {{ goods.name }}
+          {{ goods.info.name }}
         </div>
-        <!-- <div class="item_intro">{{goods.sell_point}}</div> ???-->
-        <!-- <div class="item_dispatch">发货地: {{}}</div> -->
+        <div class="item_intro">{{goods.info.brief}}</div>
       </van-cell>
     </van-cell-group>
 
-    <component
-      v-if="goods"
-      ref="goodAction"
-      v-bind:is="'entity-group'"
-      :selectSku.sync="selectSku"
-      :addressVal.sync="addressVal"
-      :mobile="mobile"
-      :goods-info="goods"
-      @skuBuy="doBuyNow"
-      @cart-count="cartEvent"
+  <div class="item_cell_group">
+    <van-cell-group>
+      <van-cell
+        title="规格"
+        isLink
+        value="请选择"
+        @click.native="skuClick"
+      />
+      <van-cell title="属性" isLink @click.native="propsPopup = true"/>
+      <van-cell title="运费" value="满88免邮费"/>
+    </van-cell-group>
+    <van-sku
+      v-model="showSku"
+      :sku="sku"
+      :hide-stock="true"
+      :goods="skuGoods"
+      :goodsId="goods.info.id"
+      @buy-clicked="buyGoods"
+      @add-cart="addCart"    
     />
+    <van-popup v-model="propsPopup" position="bottom">
+      <popup-props :propsStr="props_str"></popup-props>
+    </van-popup>
+  </div>
 
-    <div class="item_desc" v-if="goods">
+    <div class="item_desc">
       <div class="item_desc_title">商品详情</div>
-      <div class="item_desc_wrap" v-if="goods.detail.length === 0" style="padding-left: 170px;">
+      <div class="item_desc_wrap" v-if="goods.info.detail" v-html="goods.info.detail"></div>
+      <div class="item_desc_wrap" v-else style="text-align: center;">
         <p>无详情</p>
       </div>
-      <div class="item_desc_wrap" v-html="goods.detail"></div>
     </div>
 
     <van-goods-action>
-      <van-goods-action-mini-btn @click="toCart" icon="cart" :info="cartInfo"/>
-      <van-goods-action-mini-btn
-        :style="collectAdd ? 'color: #f7b444;':''"
-        @click="addCollect"
-        icon="shoucang"
-      />
-      <van-goods-action-big-btn @click="openSku('cart')" text="加入购物车"/>
-      <van-goods-action-big-btn primary @click="openSku('buy')" text="立即购买"/>
+      <van-goods-action-mini-btn @click="toCart" icon="cart-o" :info="(cartInfo > 0) ? cartInfo : ''"/>
+      <van-goods-action-mini-btn @click="addCollect" icon="star-o" :style="(goods.userHasCollect !== 0) ? 'color: #f7b444;':''"/>
+      <van-goods-action-big-btn @click="skuClick" text="加入购物车"/>
+      <van-goods-action-big-btn primary @click="skuClick" text="立即购买"/>
     </van-goods-action>
 
   </div>
 </template>
 
 <script>
-import { GOODS_DETAIL } from '@/api/goods';
 
-import {
-  Swipe,
-  SwipeItem,
-  GoodsAction,
-  GoodsActionBigBtn,
-  GoodsActionMiniBtn,
-  Popup
-} from 'vant';
+import { goodsDetail, cartGoodsCount, collectAddOrDelete, cartAdd, cartFastAdd } from '@/api/api';
+
+import { Sku, Swipe, SwipeItem, GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn, Popup } from 'vant';
+
+import popupProps from './popup-props';
+import _ from 'lodash';
 
 export default {
   props: {
@@ -74,32 +77,47 @@ export default {
 
   data() {
     const isLogin = !!localStorage.getItem('Authorization');
+
     return {
       isLogin,
-      itemImgs: [],
-      collectAdd: false,
-      cartInfo: '0',
+      goods: {
+        userHasCollect: 0,
+        info: {
+          gallery:[]
+        }
+      },
+      sku: {
+        tree: [],
+        list: [],
+        price: '1.00', // 默认价格（单位元）
+      },
+      skuGoods: {
+        // 商品标题
+        title: '',
+        // 默认商品 sku 缩略图
+        picture: ''
+      },
+      cartInfo: 0,
       selectSku: {
         selectedNum: 1,
-        selectedSkuComb: {}
+        selectedSkuComb: {
+          sku_str: 'aa'
+        }
       },
-      addressVal: {
-        id: null,
-        area_name: '',
-        district: '',
-        city: '',
-        province: ''
-      },
-      goods: null,
-      productList: []
+      propsPopup: false,
+      showSku: false
     };
   },
 
-  computed: {
-    // itemImgs() {
-    //   debugger;
-    //   return this.goods.info.gallery;
-    // }
+
+computed: {
+    props_str() {
+      let props_arr = [];
+      _.each(this.goods.attribute, json => {
+        props_arr.push([json['attribute'], json['value']]);
+      });
+      return props_arr || [];
+    }
   },
 
   created() {
@@ -107,96 +125,230 @@ export default {
   },
 
   methods: {
-    async initData() {
-      // let a = this.$route.params.itemId;
-      this.$reqGet(`/wx/goods/detail?id=${this.itemId}`).then(
+    skuClick() {
+      this.showSku = true;
+    },
+    initData() {
+      goodsDetail({id: this.itemId}).then(
         res => {
-          this.goods = res.data.data.info;
-          this.goods.attribute = res.data.data.attribute;
-          this.goods.specificationList = res.data.data.specificationList;
-          this.goods.productList = res.data.data.productList;
-          this.productList = res.data.data.productList;
-          this.itemImgs = res.data.data.info.gallery || [];
-          this.collectAdd = res.data.data.userHasCollect === 1;
+          this.goods = res.data.data;
+          this.skuAdapter();
         }
       );
 
-      let { data } = await this.$reqGet('/wx/cart/goodscount');
-      this.cartInfo = data.data;
+      cartGoodsCount().then(res => {
+        this.cartInfo = res.data.data;
+      });
 
-      // this.$reqGet(GOODS_DETAIL).then(res => {
-      //   this.goods = res.data.data;
-      // });
-    },
-    openSku(status) {
-      const goodAction = this.$refs.goodAction;
-      goodAction.skuClick(status);
-    },
-    cartEvent(count) {
-      this.cartInfo = ~~this.cartInfo + ~~count + '';
-    },
-    doBuyNow() {
-      // if (
-      //   (this.goods.has_sku && this.selectSku.sku_id) ||
-      //   !this.goods.has_sku
-      // ) {
-      //   this.$router.push({ name: 'placeOrderEntity' });
-      // } else {
-      //   const goodAction = this.$refs.goodAction;
-      //   goodAction.showSku = true;
-      //   goodAction.isSkuBuy = true;
-      // }
-    },
-    addCart() {
-      // debugger;
-      // if (this.goods.has_sku && this.selectSku.sku_id) {
-      // this.$reqPost('/wx/cart/add', {
-      //   goodsId: this.itemId,
-      //   number: 1
-      // }).then(() => {
-      //   this.$toast({
-      //     message: '已添加至购物车',
-      //     duration: 1500
-      //   });
-      //   this.cartInfo = String(parseInt(this.cartInfo) + 1);
-      // });
-      // }
     },
     toCart() {
       this.$router.push({
         name: 'cart'
       });
     },
-    async addCollect() {
-      let { data } = await this.$reqPost(
-        '/wx/collect/addordelete',
-        {
-          valueId: this.itemId,
-          type: 0
-        }
-      );
-      let type = data.data.type;
-      this.collectAdd = type === 'add' ? true : false;
-      this.$toast({
-        message: this.collectAdd ? '添加成功' : '取消成功',
-        duration: 1500
+    addCollect() {
+      collectAddOrDelete({valueId: this.itemId, type: 0}).then(res => {
+        let type = res.data.data.type;
+        this.goods.userHasCollect = type === 'add' ? 1 : 0;
+        this.$toast({
+          message: type === 'add' ? '添加成功' : '取消成功',
+          duration: 1500
+        });
       });
+    },
+    getProductId(s1, s2) {
+      var productId;
+      var s1_name;
+      var s2_name;
+      _.each(this.goods.specificationList, specification => {
+        _.each(specification.valueList, specValue => {
+          if (specValue.id === s1) {
+            s1_name = specValue.value;
+          }
+          else if (specValue.id === s2) {
+            s2_name = specValue.value;
+          }
+        });
+      });
+
+      _.each(this.goods.productList, v => {
+        let result = _.without(v.specifications, s1_name, s2_name);
+        if (result.length === 0) {
+          productId = v.id;
+        }
+      });
+      return productId;
+    },
+    getProductIdByOne(s1) {
+      var productId;
+      var s1_name;
+      _.each(this.goods.specificationList, specification => {
+        _.each(specification.valueList, specValue => {
+          if (specValue.id === s1) {
+            s1_name = specValue.value;
+            return;
+          }
+        });
+      });
+
+      _.each(this.goods.productList, v => {
+        let result = _.without(v.specifications, s1_name);
+        if (result.length === 0) {
+          productId = v.id;
+        }
+      });
+      return productId;
+    },
+    addCart(data) {
+      let that = this;
+      let params = {
+        goodsId: data.goodsId,
+        number: data.selectedNum,
+        productId: 0
+      };
+      if (_.has(data.selectedSkuComb, 's3')) {
+        this.$toast({
+          message: '目前仅支持两规格',
+          duration: 1500
+        });
+        return
+      }
+      else if (_.has(data.selectedSkuComb, 's2')) {
+        params.productId = this.getProductId(
+          data.selectedSkuComb.s1,
+          data.selectedSkuComb.s2
+        );
+      }
+      else {
+        params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
+      }
+     cartAdd(params).then(() => {
+        this.cartInfo = this.cartInfo + data.selectedNum;
+        this.$toast({
+          message: '已添加至购物车',
+          duration: 1500
+        });
+        that.showSku = false;
+      });
+    },
+    buyGoods(data) {
+      let that = this;
+      let params = {
+        goodsId: data.goodsId,
+        number: data.selectedNum,
+        productId: 0
+      };
+      if (_.has(data.selectedSkuComb, 's3')) {
+        this.$toast({
+          message: '目前仅支持两规格',
+          duration: 1500
+        });
+        return
+      }
+      else if (_.has(data.selectedSkuComb, 's2')) {
+        params.productId = this.getProductId(
+          data.selectedSkuComb.s1,
+          data.selectedSkuComb.s2
+        );
+      }
+      else {
+        params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
+      }
+     cartFastAdd(params).then(() => {
+      that.showSku = false;
+      that.$router.push({
+        name: 'cart'
+      });
+      });
+    },
+    skuAdapter() {
+      const tree = this.setSkuTree();
+      const list = this.setSkuList();
+      const skuInfo = {
+        price: parseInt(this.goods.info.retailPrice), // 未选择规格时的价格
+        stock_num: 0, // TODO 总库存
+        collection_id: '', // 无规格商品skuId取collection_id，否则取所选sku组合对应的id
+        none_sku: false, // 是否无规格商品
+        hide_stock: true
+      };
+      this.sku = {
+        tree,
+        list,
+        ...skuInfo
+      };
+      this.skuGoods = {
+        title: this.goods.info.name,
+        picture: this.goods.info.picUrl
+      }
+    },
+    setSkuList() {
+      var sku_list = [];
+        _.each(this.goods.productList, v => {
+            var sku_list_obj = {};
+            _.each(v.specifications, (specificationName, index) => {
+              sku_list_obj[
+                's' + (~~index + 1)
+              ] = this.findSpecValueIdByName(specificationName);
+            });
+          
+          sku_list_obj.price = v.price * 100;
+          sku_list_obj.stock_num = v.number;
+          sku_list.push(sku_list_obj);
+        });
+    
+      return sku_list;
+    },
+    findSpecValueIdByName(name) {
+      let id = 0;
+      _.each(this.goods.specificationList, specification => {
+        _.each(specification.valueList, specValue => {
+          if (specValue.value === name) {
+            id = specValue.id;
+            return;
+          }
+        });
+        if(id !== 0){
+          return;
+        }
+      });
+      return id;
+    },
+    setSkuTree() {
+      let that = this;
+      let specifications = [];
+      _.each(this.goods.specificationList, (v, k) => {
+        let values = [];
+        _.each(v.valueList, vv => {
+          vv.name = vv.value;
+          values.push({
+            id: vv.id,
+            name: vv.value,
+            imUrl: vv.picUrl
+          })
+        });
+
+        specifications.push({
+          k: v.name,
+          v: values,
+          k_s: 's' + (~~k + 1)
+        });
+      });
+
+      return specifications;
     }
-  },
+  },    
 
   components: {
     [Popup.name]: Popup,
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
+    [Sku.name]: Sku,
     [GoodsAction.name]: GoodsAction,
     [GoodsActionBigBtn.name]: GoodsActionBigBtn,
     [GoodsActionMiniBtn.name]: GoodsActionMiniBtn,
-    'entity-group': () =>
-      import(/* webpackChunkName: "EntityGroup" */ './EntityGroup/index'),
-    'virtual-group': () =>
-      import(/* webpackChunkName: "VirtualGroup" */ './VirtualGroup/index.vue')
+    [popupProps.name]: popupProps    
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

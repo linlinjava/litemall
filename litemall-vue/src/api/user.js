@@ -1,3 +1,5 @@
+import request from '@/utils/request'
+
 // 登录
 export const USER_LOGIN = '/wx/auth/login';
 export const USER_LOGOUT = '';
@@ -16,8 +18,6 @@ export const ADDRESS_DEFAULT = '/address-default';
 
 // 收藏
 export const GOODS_COLLECT_LIST = '/moreGoods';
-
-import request from '@/utils/request'
 
 export function loginByUsername(data) {
   return request({

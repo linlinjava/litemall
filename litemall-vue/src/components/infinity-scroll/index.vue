@@ -19,6 +19,7 @@ import { List } from 'vant';
 import { get } from 'lodash';
 import IsEmpty from '@/components/is-empty';
 import loadMore from '@/mixin/load-more';
+import { goodsList } from '@/api/api';
 
 const DEFAULT_CONFIG = {
   params: {},
@@ -68,9 +69,7 @@ export default {
       const prePage = this.perPage || this.pages.perPage;
       console.log(params);
       console.log(headers);
-      const res = await this.$reqGet(
-        '/wx/goods/list',
-        {
+      goodsList({
           // 'per-page': prePage,
           page: this.pages.currPage,
           size: 100,

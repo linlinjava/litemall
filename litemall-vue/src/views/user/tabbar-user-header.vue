@@ -12,7 +12,6 @@
 import avatar_default from '@/assets/images/avatar_default.png';
 import bg_default from '@/assets/images/user_head_bg.png';
 import { getLocalStorage } from '@/utils/local-storage';
-import _ from 'lodash';
 
 export default {
   name: 'user-header',
@@ -45,13 +44,6 @@ export default {
       );
       this.avatar = avatar_default;
       this.nickName = infoData.nickName || '昵称';
-      if (!_.isEmpty(infoData.avatar)) {
-        this.avatar = `http://www.qmenhu.com${infoData.avatar}`;
-      }
-      console.log(this.avatar);
-      console.log('-----------');
-      console.log(infoData);
-
       this.background_image = infoData.background_image || bg_default;
     },
     toSetting() {

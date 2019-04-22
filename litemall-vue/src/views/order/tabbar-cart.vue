@@ -48,10 +48,10 @@
 
 <script>
 import { Checkbox, CheckboxGroup, Card, SubmitBar, Stepper, Tag } from 'vant';
+import { cartList, cartUpdate, cartChecked, cartDelete} from '@/api/api';
 
 import isEmpty from '@/components/is-empty/';
 import _ from 'lodash';
-import { debug } from 'util';
 
 export default {
   data() {
@@ -93,21 +93,22 @@ export default {
   },
 
   methods: {
-    async stepperEvent(item, arg) {
+    stepperEvent(item, arg) {
       let number = arg[0];
-      await this.$reqPost('/wx/cart/update', {
+      cartUpdate({
         number: number,
         goodsId: item.goodsId,
         id: item.id,
         productId: item.productId
       });
     },
-    async init() {
-      let { data } = await this.$reqGet('/wx/cart/index');
-      this.goods = data.data.cartList;
-      this.AllGoods = this.getAllList();
-      this.checkedGoods = this.getCheckedList(this.goods);
-      this.count = this.checkedGoods.length;
+    init() {
+      cartList().then(res => {
+        this.goods = res.data.data.cartList;
+        this.AllGoods = this.getAllList();
+        this.checkedGoods = this.getCheckedList(this.goods);
+        this.count = this.checkedGoods.length;
+      });
     },
     getAllList() {
       let result = [];
@@ -125,7 +126,7 @@ export default {
       });
       return result;
     },
-    async cartSubmit(data) {
+    cartSubmit(data) {
       let productIds = [];
       let checkedGoods = this.checkedGoods;
       _.each(checkedGoods, id => {
@@ -149,23 +150,20 @@ export default {
         // for (check in checkedGoods){
         // await this.doCheck(productIds);
         // }
-        let { data } = await this.$reqGet(
-          '/wx/cart/checkout?cartId=0&addressId=0&couponId=0&grouponRulesId=0'
-        );
+        // let { data } = await this.$reqGet(
+        //   '/wx/cart/checkout?cartId=0&addressId=0&couponId=0&grouponRulesId=0'
+        // );
         this.isSubmit = true;
         this.$router.push({ name: 'placeOrderEntity' });
       }
     },
-    async doCheck(productIds, isChecked) {
+    doCheck(productIds, isChecked) {
       // let good =  _.find(this.goods, vv => {
       //         return id === vv.id;
       //       })
       //       let productId = good.productId;
 
-      let { data } = await this.$reqPost('/wx/cart/checked', {
-        productIds: productIds,
-        isChecked: isChecked
-      });
+      cartChecked({productIds: productIds, isChecked: isChecked});
       // if (this.checkedGoods.length == this.AllGoods.length) {
       //   this.allCheckedStatus = true;
       // }
@@ -222,9 +220,9 @@ export default {
       } else {
         productIds.push(o);
       }
-      let { data } = await this.$reqPost('/wx/cart/delete', {
-        productIds: productIds
-      });
+
+      
+      cartDelete({productIds: productIds});
 
       this.count = this.count - productIds.length;
       this.goods = data.data.cartList;

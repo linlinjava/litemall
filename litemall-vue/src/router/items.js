@@ -1,5 +1,4 @@
-const Tabbar = () =>
-  import(/* webpackChunkName: "Tabbar" */ '@/components/Tabbar/');
+const Tabbar = () => import('@/components/Tabbar/');
 
 export default [
   {
