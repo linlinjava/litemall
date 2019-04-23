@@ -4,7 +4,7 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品编号"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['GET /admin/groupon/listRecord']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button
         :loading="downloadLoading"
         class="filter-item"
@@ -15,14 +15,7 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      size="small"
-      element-loading-text="正在查询中。。。"
-      border
-      fit
-      highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
       <el-table-column type="expand">
         <template slot-scope="scope">

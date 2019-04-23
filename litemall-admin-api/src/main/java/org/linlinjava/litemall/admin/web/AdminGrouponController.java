@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -38,7 +39,7 @@ public class AdminGrouponController {
     private LitemallGrouponService grouponService;
 
     @RequiresPermissions("admin:groupon:read")
-    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="查询")
+    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="详情")
     @GetMapping("/listRecord")
     public Object listRecord(String grouponId,
                              @RequestParam(defaultValue = "1") Integer page,
@@ -46,7 +47,7 @@ public class AdminGrouponController {
                              @Sort @RequestParam(defaultValue = "add_time") String sort,
                              @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallGroupon> grouponList = grouponService.querySelective(grouponId, page, limit, sort, order);
-        int total = grouponService.countSelective(grouponId, page, limit, sort, order);
+        long total = PageInfo.of(grouponList).getTotal();
 
         List<Map<String, Object>> records = new ArrayList<>();
         for (LitemallGroupon groupon : grouponList) {
@@ -83,7 +84,7 @@ public class AdminGrouponController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallGrouponRules> rulesList = rulesService.querySelective(goodsId, page, limit, sort, order);
-        int total = rulesService.countSelective(goodsId, page, limit, sort, order);
+        long total = PageInfo.of(rulesList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", rulesList);

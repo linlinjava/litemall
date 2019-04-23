@@ -9,17 +9,26 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+import org.linlinjava.litemall.admin.service.LogHelper;
+import org.linlinjava.litemall.admin.util.Permission;
+import org.linlinjava.litemall.admin.util.PermissionUtil;
+import org.linlinjava.litemall.core.util.IpUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
+import org.linlinjava.litemall.db.domain.LitemallLog;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
+import org.linlinjava.litemall.db.service.LitemallLogService;
 import org.linlinjava.litemall.db.service.LitemallPermissionService;
 import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
@@ -36,12 +45,14 @@ public class AdminAuthController {
     private LitemallRoleService roleService;
     @Autowired
     private LitemallPermissionService permissionService;
+    @Autowired
+    private LogHelper logHelper;
 
     /*
      *  { username : value, password : value }
      */
     @PostMapping("/login")
-    public Object login(@RequestBody String body) {
+    public Object login(@RequestBody String body, HttpServletRequest request) {
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
 
@@ -53,13 +64,24 @@ public class AdminAuthController {
         try {
             currentUser.login(new UsernamePasswordToken(username, password));
         } catch (UnknownAccountException uae) {
+            logHelper.logAuthFail("登录", "用户帐号或密码不正确");
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号或密码不正确");
         } catch (LockedAccountException lae) {
+            logHelper.logAuthFail("登录", "用户帐号已锁定不可用");
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号已锁定不可用");
 
         } catch (AuthenticationException ae) {
-            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, ae.getMessage());
+            logHelper.logAuthFail("登录", "认证失败");
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "认证失败");
         }
+
+        currentUser = SecurityUtils.getSubject();
+        LitemallAdmin admin = (LitemallAdmin) currentUser.getPrincipal();
+        admin.setLastLoginIp(IpUtil.getIpAddr(request));
+        admin.setLastLoginTime(LocalDateTime.now());
+        adminService.updateById(admin);
+
+        logHelper.logAuthSucceed("登录");
         return ResponseUtil.ok(currentUser.getSession().getId());
     }
 
@@ -68,8 +90,10 @@ public class AdminAuthController {
      */
     @RequiresAuthentication
     @PostMapping("/logout")
-    public Object login() {
+    public Object logout() {
         Subject currentUser = SecurityUtils.getSubject();
+
+        logHelper.logAuthSucceed("退出");
         currentUser.logout();
         return ResponseUtil.ok();
     }
@@ -89,8 +113,42 @@ public class AdminAuthController {
         Set<String> roles = roleService.queryByIds(roleIds);
         Set<String> permissions = permissionService.queryByRoleIds(roleIds);
         data.put("roles", roles);
-        data.put("perms", permissions);
+        // NOTE
+        // 这里需要转换perms结构，因为对于前端而已API形式的权限更容易理解
+        data.put("perms", toAPI(permissions));
         return ResponseUtil.ok(data);
+    }
+
+    @Autowired
+    private ApplicationContext context;
+    private HashMap<String, String> systemPermissionsMap = null;
+
+    private Collection<String> toAPI(Set<String> permissions) {
+        if (systemPermissionsMap == null) {
+            systemPermissionsMap = new HashMap<>();
+            final String basicPackage = "org.linlinjava.litemall.admin";
+            List<Permission> systemPermissions = PermissionUtil.listPermission(context, basicPackage);
+            for (Permission permission : systemPermissions) {
+                String perm = permission.getRequiresPermissions().value()[0];
+                String api = permission.getApi();
+                systemPermissionsMap.put(perm, api);
+            }
+        }
+
+        Collection<String> apis = new HashSet<>();
+        for (String perm : permissions) {
+            String api = systemPermissionsMap.get(perm);
+            apis.add(api);
+
+            if (perm.equals("*")) {
+                apis.clear();
+                apis.add("*");
+                return apis;
+//                return systemPermissionsMap.values();
+
+            }
+        }
+        return apis;
     }
 
     @GetMapping("/401")

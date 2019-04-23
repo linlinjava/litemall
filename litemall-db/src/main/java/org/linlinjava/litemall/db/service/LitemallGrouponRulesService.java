@@ -89,12 +89,6 @@ public class LitemallGrouponRulesService {
         return grouponList;
     }
 
-    public int countList(int offset, int limit, String sort, String order) {
-        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
-        example.or().andDeletedEqualTo(false);
-        return (int) mapper.countByExample(example);
-    }
-
     /**
      * 判断某个团购活动是否已经过期
      *
@@ -127,18 +121,6 @@ public class LitemallGrouponRulesService {
 
         PageHelper.startPage(page, size);
         return mapper.selectByExample(example);
-    }
-
-    public int countSelective(String goodsId, Integer page, Integer limit, String sort, String order) {
-        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
-        LitemallGrouponRulesExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(goodsId)) {
-            criteria.andGoodsIdEqualTo(Integer.parseInt(goodsId));
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) mapper.countByExample(example);
     }
 
     public void delete(Integer id) {

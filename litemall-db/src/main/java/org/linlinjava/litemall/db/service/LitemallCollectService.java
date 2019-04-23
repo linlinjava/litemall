@@ -71,19 +71,4 @@ public class LitemallCollectService {
         PageHelper.startPage(page, size);
         return collectMapper.selectByExample(example);
     }
-
-    public int countSelective(String userId, String valueId, Integer page, Integer size, String sort, String order) {
-        LitemallCollectExample example = new LitemallCollectExample();
-        LitemallCollectExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        }
-        if (!StringUtils.isEmpty(valueId)) {
-            criteria.andValueIdEqualTo(Integer.valueOf(valueId));
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) collectMapper.countByExample(example);
-    }
 }

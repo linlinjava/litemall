@@ -24,8 +24,6 @@ module.exports = {
   GoodsList: WxApiRoot + 'goods/list', //获得商品列表
   GoodsCategory: WxApiRoot + 'goods/category', //获得分类数据
   GoodsDetail: WxApiRoot + 'goods/detail', //获得商品的详情
-  GoodsNew: WxApiRoot + 'goods/new', //新品
-  GoodsHot: WxApiRoot + 'goods/hot', //热门
   GoodsRelated: WxApiRoot + 'goods/related', //商品详情页的关联商品（大家都在看）
 
   BrandList: WxApiRoot + 'brand/list', //品牌列表

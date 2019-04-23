@@ -4,7 +4,7 @@ var WxApiRoot = 'http://localhost:8080/wx/';
 // 局域网测试使用
 // var WxApiRoot = 'http://192.168.0.101:8080/wx/';
 // 云平台部署时使用
-// var WxApiRoot = 'http://122.152.206.172:8080/wx/';
+// var WxApiRoot = 'http://118.24.0.153:8080/wx/';
 // 云平台上线时使用
 // var WxApiRoot = 'https://www.menethil.com.cn/wx/';
 
@@ -25,8 +25,6 @@ module.exports = {
   GoodsList: WxApiRoot + 'goods/list', //获得商品列表
   GoodsCategory: WxApiRoot + 'goods/category', //获得分类数据
   GoodsDetail: WxApiRoot + 'goods/detail', //获得商品的详情
-  GoodsNew: WxApiRoot + 'goods/new', //新品
-  GoodsHot: WxApiRoot + 'goods/hot', //热门
   GoodsRelated: WxApiRoot + 'goods/related', //商品详情页的关联商品（大家都在看）
 
   BrandList: WxApiRoot + 'brand/list', //品牌列表
@@ -98,5 +96,6 @@ module.exports = {
   StorageUpload: WxApiRoot + 'storage/upload', //图片上传,
 
   UserIndex: WxApiRoot + 'user/index', //个人页面用户相关信息
+  IssueList: WxApiRoot + 'issue/list', //帮助信息
 
 };

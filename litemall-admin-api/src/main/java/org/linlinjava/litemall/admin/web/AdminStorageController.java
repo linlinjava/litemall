@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -42,7 +43,7 @@ public class AdminStorageController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallStorage> storageList = litemallStorageService.querySelective(key, name, page, limit, sort, order);
-        int total = litemallStorageService.countSelective(key, name, page, limit, sort, order);
+        long total = PageInfo.of(storageList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", storageList);
@@ -55,10 +56,8 @@ public class AdminStorageController {
     @PostMapping("/create")
     public Object create(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
-        String url = storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
-        Map<String, Object> data = new HashMap<>();
-        data.put("url", url);
-        return ResponseUtil.ok(data);
+        LitemallStorage litemallStorage = storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
+        return ResponseUtil.ok(litemallStorage);
     }
 
     @RequiresPermissions("admin:storage:read")

@@ -65,15 +65,6 @@ Page({
   onUnload: function() {
     // 页面关闭
   },
-  getList: function() {
-    var that = this;
-    util.request(api.ApiRootUrl + 'api/catalog/' + that.data.currentCategory.catId)
-      .then(function(res) {
-        that.setData({
-          categoryList: res.data,
-        });
-      });
-  },
   switchCate: function(event) {
     var that = this;
     var currentTarget = event.currentTarget;

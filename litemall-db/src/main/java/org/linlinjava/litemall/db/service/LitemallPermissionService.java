@@ -56,7 +56,6 @@ public class LitemallPermissionService {
     }
 
     public boolean checkSuperPermission(Integer roleId) {
-        Set<String> permissions = new HashSet<String>();
         if(roleId == null){
             return false;
         }

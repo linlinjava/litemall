@@ -4,14 +4,14 @@
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon" :title="generateTitle(onlyOneChild.meta.title)" />
+          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon" :title="onlyOneChild.meta.title" />
         </el-menu-item>
       </app-link>
     </template>
 
     <el-submenu v-else ref="submenu" :index="resolvePath(item.path)">
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta.icon" :title="generateTitle(item.meta.title)" />
+        <item v-if="item.meta" :icon="item.meta.icon" :title="item.meta.title" />
       </template>
 
       <template v-for="child in item.children" v-if="!child.hidden">
@@ -25,7 +25,7 @@
 
         <app-link v-else :to="resolvePath(child.path)" :key="child.name">
           <el-menu-item :index="resolvePath(child.path)">
-            <item v-if="child.meta" :icon="child.meta.icon" :title="generateTitle(child.meta.title)" />
+            <item v-if="child.meta" :icon="child.meta.icon" :title="child.meta.title" />
           </el-menu-item>
         </app-link>
       </template>
@@ -36,7 +36,6 @@
 
 <script>
 import path from 'path'
-import { generateTitle } from '@/utils/i18n'
 import { isExternal } from '@/utils'
 import Item from './Item'
 import AppLink from './Link'
@@ -99,8 +98,7 @@ export default {
     },
     isExternalLink(routePath) {
       return isExternal(routePath)
-    },
-    generateTitle
+    }
   }
 }
 </script>

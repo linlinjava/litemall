@@ -66,21 +66,6 @@ public class LitemallUserService {
         return userMapper.selectByExample(example);
     }
 
-    public int countSeletive(String username, String mobile, Integer page, Integer size, String sort, String order) {
-        LitemallUserExample example = new LitemallUserExample();
-        LitemallUserExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(username)) {
-            criteria.andUsernameLike("%" + username + "%");
-        }
-        if (!StringUtils.isEmpty(mobile)) {
-            criteria.andMobileEqualTo(mobile);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) userMapper.countByExample(example);
-    }
-
     public int count() {
         LitemallUserExample example = new LitemallUserExample();
         example.or().andDeletedEqualTo(false);
@@ -92,6 +77,12 @@ public class LitemallUserService {
         LitemallUserExample example = new LitemallUserExample();
         example.or().andUsernameEqualTo(username).andDeletedEqualTo(false);
         return userMapper.selectByExample(example);
+    }
+
+    public boolean checkByUsername(String username) {
+        LitemallUserExample example = new LitemallUserExample();
+        example.or().andUsernameEqualTo(username).andDeletedEqualTo(false);
+        return userMapper.countByExample(example) != 0;
     }
 
     public List<LitemallUser> queryByMobile(String mobile) {

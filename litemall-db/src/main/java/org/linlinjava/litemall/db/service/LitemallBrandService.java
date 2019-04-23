@@ -56,21 +56,6 @@ public class LitemallBrandService {
         return brandMapper.selectByExample(example);
     }
 
-    public int countSelective(String id, String name, Integer page, Integer size, String sort, String order) {
-        LitemallBrandExample example = new LitemallBrandExample();
-        LitemallBrandExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(id)) {
-            criteria.andIdEqualTo(Integer.valueOf(id));
-        }
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) brandMapper.countByExample(example);
-    }
-
     public int updateById(LitemallBrand brand) {
         brand.setUpdateTime(LocalDateTime.now());
         return brandMapper.updateByPrimaryKeySelective(brand);

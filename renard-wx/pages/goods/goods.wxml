@@ -134,7 +134,10 @@
 
 <!-- 底部按钮 -->
 <view class="bottom-btn">
-  <view class="l l-collect" bindtap="showShare" wx:if="{{!isGroupon}}">
+  <view class="l l-collect"open-type="openSetting" bindopensetting="handleSetting" wx:if="{{(!isGroupon) && (!canWrite) }}">
+    <image class="icon" src="../../images/goods-share.png" />
+  </view>
+  <view class="l l-collect" bindtap="showShare" wx:if="{{!isGroupon && canWrite}}">
     <image class="icon" src="../../images/goods-share.png" />
   </view>
   <view class="l l-cart" wx:if="{{!isGroupon}}">

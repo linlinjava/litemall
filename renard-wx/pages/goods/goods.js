@@ -30,7 +30,8 @@ Page({
     collectImage: '/static/images/icon_collect.png',
     shareImage: '',
     isGroupon: false, //标识是否是一个参团购买
-    soldout: false
+    soldout: false,
+    canWrite: false
   },
 
   // 页面分享
@@ -42,7 +43,27 @@ Page({
       path: '/pages/index/index?goodId=' + this.data.id
     }
   },
-
+  handleSetting: function(e) {
+      var that = this;
+      // console.log(e)
+      if (!e.detail.authSetting['scope.writePhotosAlbum']) {
+          wx.showModal({
+              title: '警告',
+              content: '不授权无法保存',
+              showCancel: false
+          })
+          that.setData({
+              canWrite: false
+          })
+      } else {
+          wx.showToast({
+              title: '保存成功'
+          })
+          that.setData({
+              canWrite: true
+          })
+      }
+  },
   showShare: function() {
     this.sharePop.togglePopup();
   },
@@ -375,6 +396,33 @@ Page({
       });
       this.getGrouponInfo(options.grouponId);
     }
+    let that = this;
+    wx.getSetting({
+        success: function (res) {
+            console.log(res)
+            //不存在相册授权
+            if (!res.authSetting['scope.writePhotosAlbum']) {
+                wx.authorize({
+                    scope: 'scope.writePhotosAlbum',
+                    success: function () {
+                        that.setData({
+                            canWrite: true
+                        })
+                    },
+                    fail: function (err) {
+                        that.setData({
+                            canWrite: false
+                        })
+                    }
+                })
+            } else {
+                that.setData({
+                    canWrite: true
+                });
+            }
+        }
+    })
+
   },
 
   onShow: function() {
@@ -613,14 +661,5 @@ Page({
     // 页面渲染完成
     this.sharePop = this.selectComponent("#sharePop");
     this.notify = this.selectComponent("#van-notify");
-  },
-  // 下拉刷新
-  onPullDownRefresh() {
-    wx.showNavigationBarLoading() //在标题栏中显示加载
-    this.getGoodsInfo();
-    wx.hideNavigationBarLoading() //完成停止加载
-    wx.stopPullDownRefresh() //停止下拉刷新
-  },
-  //根据已选的值，计算其它值的状态
-  setSpecValueStatus: function() {},
+  }
 })

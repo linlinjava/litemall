@@ -54,19 +54,4 @@ public class LitemallSearchHistoryService {
         PageHelper.startPage(page, size);
         return searchHistoryMapper.selectByExample(example);
     }
-
-    public int countSelective(String userId, String keyword, Integer page, Integer size, String sort, String order) {
-        LitemallSearchHistoryExample example = new LitemallSearchHistoryExample();
-        LitemallSearchHistoryExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        }
-        if (!StringUtils.isEmpty(keyword)) {
-            criteria.andKeywordLike("%" + keyword + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) searchHistoryMapper.countByExample(example);
-    }
 }

@@ -11,6 +11,7 @@ const user = {
     avatar: '',
     introduction: '',
     roles: [],
+    perms: [],
     setting: {
       articlePlatform: []
     }
@@ -40,6 +41,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_PERMS: (state, perms) => {
+      state.perms = perms
     }
   },
 
@@ -65,12 +69,13 @@ const user = {
         getUserInfo(state.token).then(response => {
           const data = response.data.data
 
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
+          if (data.perms && data.perms.length > 0) { // 验证返回的perms是否是一个非空数组
+            commit('SET_PERMS', data.perms)
           } else {
-            reject('getInfo: roles must be a non-null array !')
+            reject('getInfo: perms must be a non-null array !')
           }
 
+          commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
@@ -101,6 +106,7 @@ const user = {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
+          commit('SET_PERMS', [])
           removeToken()
           resolve()
         }).catch(error => {
@@ -126,6 +132,7 @@ const user = {
         getUserInfo(role).then(response => {
           const data = response.data
           commit('SET_ROLES', data.roles)
+          commit('SET_PERMS', data.perms)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)

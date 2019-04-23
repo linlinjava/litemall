@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.JacksonUtil;
@@ -69,20 +70,20 @@ public class WxFootprintController {
      * 用户足迹列表
      *
      * @param page 分页页数
-     * @param size 分页大小
+     * @param limit 分页大小
      * @return 用户足迹列表
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size) {
+                       @RequestParam(defaultValue = "10") Integer limit) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallFootprint> footprintList = footprintService.queryByAddTime(userId, page, size);
-        int count = footprintService.countByAddTime(userId, page, size);
-        int totalPages = (int) Math.ceil((double) count / size);
+        List<LitemallFootprint> footprintList = footprintService.queryByAddTime(userId, page, limit);
+        long count = PageInfo.of(footprintList).getTotal();
+        int totalPages = (int) Math.ceil((double) count / limit);
 
         List<Object> footprintVoList = new ArrayList<>(footprintList.size());
         for (LitemallFootprint footprint : footprintList) {

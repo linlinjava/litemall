@@ -37,12 +37,12 @@ public class LitemallRoleService {
 
     }
 
-    public List<LitemallRole> querySelective(String roleName, Integer page, Integer size, String sort, String order) {
+    public List<LitemallRole> querySelective(String name, Integer page, Integer limit, String sort, String order) {
         LitemallRoleExample example = new LitemallRoleExample();
         LitemallRoleExample.Criteria criteria = example.createCriteria();
 
-        if (!StringUtils.isEmpty(roleName)) {
-            criteria.andNameEqualTo("%" + roleName + "%");
+        if (!StringUtils.isEmpty(name)) {
+            criteria.andNameLike("%" + name + "%");
         }
         criteria.andDeletedEqualTo(false);
 
@@ -50,25 +50,8 @@ public class LitemallRoleService {
             example.setOrderByClause(sort + " " + order);
         }
 
-        PageHelper.startPage(page, size);
+        PageHelper.startPage(page, limit);
         return roleMapper.selectByExample(example);
-    }
-
-    public int countSelective(String roleName, Integer page, Integer size, String sort, String order) {
-        LitemallRoleExample example = new LitemallRoleExample();
-        LitemallRoleExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(roleName)) {
-            criteria.andNameEqualTo("%" + roleName + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
-            example.setOrderByClause(sort + " " + order);
-        }
-
-        PageHelper.startPage(page, size);
-        return (int)roleMapper.countByExample(example);
     }
 
     public LitemallRole findById(Integer id) {

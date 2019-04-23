@@ -80,10 +80,10 @@
             ref="newKeywordInput"
             v-model="newKeyword"
             class="input-new-keyword"
-            size="small"
+
             @keyup.enter.native="handleInputConfirm"
             @blur="handleInputConfirm"/>
-          <el-button v-else class="button-new-keyword" size="small" type="primary" @click="showInput">+ 增加</el-button>
+          <el-button v-else class="button-new-keyword" type="primary" @click="showInput">+ 增加</el-button>
         </el-form-item>
 
         <el-form-item label="所属分类">
@@ -499,7 +499,17 @@ export default {
       for (var i = 0; i < this.specifications.length; i++) {
         const v = this.specifications[i]
         if (v.specification === this.specForm.specification) {
-          index = i
+          if (v.value === this.specForm.value) {
+            this.$message({
+              type: 'warning',
+              message: '已经存在规格值:' + v.value
+            })
+            this.specForm = {}
+            this.specVisiable = false
+            return
+          } else {
+            index = i
+          }
         }
       }
 

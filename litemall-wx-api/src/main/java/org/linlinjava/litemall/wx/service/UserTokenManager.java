@@ -1,7 +1,7 @@
 package org.linlinjava.litemall.wx.service;
 
 import org.linlinjava.litemall.core.util.CharUtil;
-import org.linlinjava.litemall.wx.dao.UserToken;
+import org.linlinjava.litemall.wx.dto.UserToken;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

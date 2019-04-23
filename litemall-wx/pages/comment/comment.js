@@ -14,7 +14,7 @@ Page({
     hasPicCount: 0,
     allPage: 1,
     picPage: 1,
-    size: 20
+    limit: 20
   },
   getCommentCount: function() {
     let that = this;

@@ -1,187 +1,189 @@
 {
-  "description": "项目配置文件。",
-  "setting": {
-    "urlCheck": false,
-    "es6": true,
-    "postcss": true,
-    "minified": true,
-    "newFeature": true,
-    "uglifyFileName": true
-  },
-  "compileType": "miniprogram",
-  "libVersion": "2.4.0",
-  "appid": "wxa5b486c6b918ecfb",
-  "projectname": "Renard",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "plugin": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "list": []
-    },
-    "miniprogram": {
-      "current": 34,
-      "list": [
-        {
-          "id": -1,
-          "name": "首页",
-          "pathName": "pages/index/index",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "专题",
-          "pathName": "pages/topic/topic",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "专题详情",
-          "pathName": "pages/topicDetail/topicDetail",
-          "query": "id=314"
-        },
-        {
-          "id": -1,
-          "name": "品牌",
-          "pathName": "pages/brand/brand",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "品牌详情",
-          "pathName": "pages/brandDetail/brandDetail",
-          "query": "id=1001000"
-        },
-        {
-          "id": -1,
-          "name": "人气推荐",
-          "pathName": "pages/hotGoods/hotGoods",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "新品首发",
-          "pathName": "pages/newGoods/newGoods",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "分类",
-          "pathName": "pages/catalog/catalog",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "分类详情",
-          "pathName": "pages/category/category",
-          "query": "id=1008002"
-        },
-        {
-          "id": -1,
-          "name": "查找",
-          "pathName": "pages/search/search",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "商品",
-          "pathName": "pages/goods/goods",
-          "query": "id=1181000"
-        },
-        {
-          "id": -1,
-          "name": "商品评论列表",
-          "pathName": "pages/comment/comment",
-          "query": "valueId=1181000&type=0"
-        },
-        {
-          "id": -1,
-          "name": "购物车",
-          "pathName": "pages/cart/cart",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "下单",
-          "pathName": "pages/shopping/checkout/checkout",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "支付结果",
-          "pathName": "pages/payResult/payResult",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "我的",
-          "pathName": "pages/ucenter/index/index",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "我的订单列表",
-          "pathName": "pages/ucenter/order/order",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "我的订单详情",
-          "pathName": "pages/ucenter/orderDetail/orderDetail",
-          "query": "id=1"
-        },
-        {
-          "id": 22,
-          "name": "待评价的订单详情",
-          "pathName": "pages/ucenter/orderDetail/orderDetail",
-          "query": "id=1"
-        },
-        {
-          "id": -1,
-          "name": "购买商品评价",
-          "pathName": "pages/commentPost/commentPost",
-          "query": "orderId=2&type=0&valueId=1116011"
-        },
-        {
-          "id": -1,
-          "name": "我的优惠券",
-          "pathName": "pages/ucenter/coupon/coupon",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "我的收藏",
-          "pathName": "pages/ucenter/collect/collect",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "我的地址",
-          "pathName": "pages/ucenter/address/address",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "我的地址添加",
-          "pathName": "pages/ucenter/addressAdd/addressAdd",
-          "query": ""
-        },
-        {
-          "id": -1,
-          "name": "登录",
-          "pathName": "pages/auth/login/login",
-          "query": ""
-        }
-      ]
-    }
-  }
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true,
+		"uglifyFileName": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.4.0",
+	"appid": "wxa5b486c6b918ecfb",
+	"projectname": "Renard",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 34,
+			"list": [
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "专题",
+					"pathName": "pages/topic/topic",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "专题详情",
+					"pathName": "pages/topicDetail/topicDetail",
+					"query": "id=314"
+				},
+				{
+					"id": -1,
+					"name": "品牌",
+					"pathName": "pages/brand/brand",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "品牌详情",
+					"pathName": "pages/brandDetail/brandDetail",
+					"query": "id=1001000"
+				},
+				{
+					"id": -1,
+					"name": "人气推荐",
+					"pathName": "pages/hotGoods/hotGoods",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "新品首发",
+					"pathName": "pages/newGoods/newGoods",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "分类",
+					"pathName": "pages/catalog/catalog",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "分类详情",
+					"pathName": "pages/category/category",
+					"query": "id=1008002"
+				},
+				{
+					"id": -1,
+					"name": "查找",
+					"pathName": "pages/search/search",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "商品",
+					"pathName": "pages/goods/goods",
+					"query": "id=1181000"
+				},
+				{
+					"id": -1,
+					"name": "商品评论列表",
+					"pathName": "pages/comment/comment",
+					"query": "valueId=1181000&type=0"
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/cart",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "下单",
+					"pathName": "pages/shopping/checkout/checkout",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "支付结果",
+					"pathName": "pages/payResult/payResult",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/ucenter/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的订单列表",
+					"pathName": "pages/ucenter/order/order",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的订单详情",
+					"pathName": "pages/ucenter/orderDetail/orderDetail",
+					"query": "id=1"
+				},
+				{
+					"id": 22,
+					"name": "待评价的订单详情",
+					"pathName": "pages/ucenter/orderDetail/orderDetail",
+					"query": "id=1"
+				},
+				{
+					"id": -1,
+					"name": "购买商品评价",
+					"pathName": "pages/commentPost/commentPost",
+					"query": "orderId=2&type=0&valueId=1116011"
+				},
+				{
+					"id": -1,
+					"name": "我的优惠券",
+					"pathName": "pages/ucenter/coupon/coupon",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的收藏",
+					"pathName": "pages/ucenter/collect/collect",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的地址",
+					"pathName": "pages/ucenter/address/address",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的地址添加",
+					"pathName": "pages/ucenter/addressAdd/addressAdd",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "登录",
+					"pathName": "pages/auth/login/login",
+					"query": ""
+				}
+			]
+		}
+	}
 }

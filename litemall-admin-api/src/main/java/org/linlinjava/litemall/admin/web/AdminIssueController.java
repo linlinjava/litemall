@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -29,7 +30,7 @@ public class AdminIssueController {
     private LitemallIssueService issueService;
 
     @RequiresPermissions("admin:issue:list")
-    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="查询")
+    @RequiresPermissionsDesc(menu={"商场管理" , "通用问题"}, button="查询")
     @GetMapping("/list")
     public Object list(String question,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -37,7 +38,7 @@ public class AdminIssueController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallIssue> issueList = issueService.querySelective(question, page, limit, sort, order);
-        int total = issueService.countSelective(question, page, limit, sort, order);
+        long total = PageInfo.of(issueList).getTotal();
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", issueList);
@@ -58,7 +59,7 @@ public class AdminIssueController {
     }
 
     @RequiresPermissions("admin:issue:create")
-    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="添加")
+    @RequiresPermissionsDesc(menu={"商场管理" , "通用问题"}, button="添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallIssue issue) {
         Object error = validate(issue);
@@ -77,7 +78,7 @@ public class AdminIssueController {
     }
 
     @RequiresPermissions("admin:issue:update")
-    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="编辑")
+    @RequiresPermissionsDesc(menu={"商场管理" , "通用问题"}, button="编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallIssue issue) {
         Object error = validate(issue);
@@ -92,7 +93,7 @@ public class AdminIssueController {
     }
 
     @RequiresPermissions("admin:issue:delete")
-    @RequiresPermissionsDesc(menu={"商城管理" , "通用问题"}, button="删除")
+    @RequiresPermissionsDesc(menu={"商场管理" , "通用问题"}, button="删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallIssue issue) {
         Integer id = issue.getId();

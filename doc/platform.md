@@ -463,25 +463,73 @@ litemall_coupon_user表的status字段，包含以后三种状态：
 当用户或者管理员上传图像时，图像文件会保存到本地或者第三方云存储服务器中，
 同时在存储对象表中记录一下。
 
-### 2.1.10 通用设计
+### 2.1.10 操作日志设计
+
+业务日志表litemall_log记录管理员的关键性操作。
+
+需要讨论的是，很多项目的业务日志模块采用注解方式，即加上方法注解，因此可以自动捕获
+用户的操作行为。虽然这样做很方便且不会影响业务代码，但是实际上最终是粗颗粒地记录，反而记录意义不大。
+
+因此本项目采用在方法内手写业务日志代码方式记录业务操作行为及结果。
+虽然比较繁琐，但是可以保证记录是细颗粒的。而且，如果管理员最终关心的操作较少，那么
+实际上需要写的代码不是很多。
+
+考虑到语义，操作业务应该是“谁做了什么操作，结果成功还是失败，失败原因是什么，补充信息是什么”，
+因此这里设计的业务日志表关键字段如下：
+* 管理员
+* IP地址
+* 操作分类
+* 操作动作
+* 操作状态
+* 操作结果
+* 补充信息
+
+#### 2.1.10.1 操作类别
+
+这里的日志类型设计成四种（当然开发者需要可以扩展）
+* 一般日志：用户觉得需要查看的一般操作日志，建议是默认的日志级别
+* 安全日志：用户安全相关的操作日志，例如登录、删除管理员
+* 订单日志：用户交易相关的操作日志，例如订单发货、退款
+* 其他日志：如果以上三种不合适，可以选择其他日志，建议是优先级最低的日志级别
+
+当然建议开发者应该和最终用户讨论交流，记录真正关键性的业务操作，例如登录相关或订单相关等。
+
+#### 2.1.10.2 操作结果
+
+如果操作成功，可以使用操作结果字段记录被操作的对象。
+当然，有些操作没有具体对象，那么可以省略。
+
+如果操作失败，也可以使用操作结果字段记录失败的原因。
+
+#### 2.1.10.3 操作失败
+
+虽然这里有操作状态字段和操作结果字段，可以记录操作失败的状态。
+但是通常失败操作不会对系统或者数据库带来影响，因此实际上开发者其实不需要
+记录太多操作失败的日志，而是记录操作成功的日志，告诉系统管理员当前状态的变化。
+
+当然，是否记录操作失败取决于开发者或者最终用户是否需要。
+例如，登录这里应该记录用户登录失败的日志，因为保存的IP地址可以帮助管理员了解
+系统被访问的情况。
+
+### 2.1.11 通用设计
 
 除了以上表，数据库还存在其他一些业务表，例如专题表litemall_topic，
 但是都很直观，不需要多讨论。
 
 以下是一些表设计中无具体业务意义可通用的字段。
 
-#### 2.1.10.1 deleted
+#### 2.1.11.1 deleted
 
 除极少数表，其他所有表都存在`deleted`字段，支持逻辑删除。
 因此目前删除数据时，不会直接删除数据，而是修改`deleted`字段。
 当然，数据库管理员可以连接到数据库直接删除数据，或者开发者
 可以修改这里的逻辑采用物理删除。
 
-#### 2.1.10.2 add_time
+#### 2.1.11.2 add_time
 
 除极少数表，其他所有表都存在`add_time`字段，记录数据创建时间。
 
-#### 2.1.10.3 update_time
+#### 2.1.11.3 update_time
 
 除极少数表，其他所有表都存在`update_time`字段，记录数据修改时间。
 
@@ -1042,7 +1090,7 @@ public interface Storage {
     public class WxTopicController {
         @GetMapping("list")
         public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
          ...
@@ -1096,7 +1144,7 @@ public interface Storage {
     public class WxTopicController {
         @GetMapping("list")
         public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
          ...

@@ -43,7 +43,7 @@ public class StorageService {
      * @param contentType   文件类型
      * @param fileName      文件索引名
      */
-    public String store(InputStream inputStream, long contentLength, String contentType, String fileName) {
+    public LitemallStorage store(InputStream inputStream, long contentLength, String contentType, String fileName) {
         String key = generateKey(fileName);
         storage.store(inputStream, contentLength, contentType, key);
 
@@ -56,7 +56,7 @@ public class StorageService {
         storageInfo.setUrl(url);
         litemallStorageService.add(storageInfo);
 
-        return url;
+        return storageInfo;
     }
 
     private String generateKey(String originalFilename) {
