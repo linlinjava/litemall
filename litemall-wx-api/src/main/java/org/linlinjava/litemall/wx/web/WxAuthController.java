@@ -95,11 +95,10 @@ public class WxAuthController {
         userInfo.setAvatarUrl(user.getAvatar());
 
         // token
-        UserToken userToken = UserTokenManager.generateToken(user.getId());
+        String token = UserTokenManager.generateToken(user.getId());
 
         Map<Object, Object> result = new HashMap<Object, Object>();
-        result.put("token", userToken.getToken());
-        result.put("tokenExpire", userToken.getExpireTime().toString());
+        result.put("token", token);
         result.put("userInfo", userInfo);
         return ResponseUtil.ok(result);
     }
@@ -146,6 +145,7 @@ public class WxAuthController {
             user.setStatus((byte) 0);
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.getIpAddr(request));
+            user.setSessionKey(sessionKey);
 
             userService.add(user);
 
@@ -154,18 +154,17 @@ public class WxAuthController {
         } else {
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.getIpAddr(request));
+            user.setSessionKey(sessionKey);
             if (userService.updateById(user) == 0) {
                 return ResponseUtil.updatedDataFailed();
             }
         }
 
         // token
-        UserToken userToken = UserTokenManager.generateToken(user.getId());
-        userToken.setSessionKey(sessionKey);
+        String token = UserTokenManager.generateToken(user.getId());
 
         Map<Object, Object> result = new HashMap<Object, Object>();
-        result.put("token", userToken.getToken());
-        result.put("tokenExpire", userToken.getExpireTime().toString());
+        result.put("token", token);
         result.put("userInfo", userInfo);
         return ResponseUtil.ok(result);
     }
@@ -305,11 +304,10 @@ public class WxAuthController {
         userInfo.setAvatarUrl(user.getAvatar());
 
         // token
-        UserToken userToken = UserTokenManager.generateToken(user.getId());
-
+        String token = UserTokenManager.generateToken(user.getId());
+        
         Map<Object, Object> result = new HashMap<Object, Object>();
-        result.put("token", userToken.getToken());
-        result.put("tokenExpire", userToken.getExpireTime().toString());
+        result.put("token", token);
         result.put("userInfo", userInfo);
         return ResponseUtil.ok(result);
     }
@@ -367,12 +365,14 @@ public class WxAuthController {
 
     @PostMapping("bindPhone")
     public Object bindPhone(@LoginUser Integer userId, @RequestBody String body) {
-        String sessionKey = UserTokenManager.getSessionKey(userId);
+    	if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+    	LitemallUser user = userService.findById(userId);
         String encryptedData = JacksonUtil.parseString(body, "encryptedData");
         String iv = JacksonUtil.parseString(body, "iv");
-        WxMaPhoneNumberInfo phoneNumberInfo = this.wxService.getUserService().getPhoneNoInfo(sessionKey, encryptedData, iv);
+        WxMaPhoneNumberInfo phoneNumberInfo = this.wxService.getUserService().getPhoneNoInfo(user.getSessionKey(), encryptedData, iv);
         String phone = phoneNumberInfo.getPhoneNumber();
-        LitemallUser user = userService.findById(userId);
         user.setMobile(phone);
         if (userService.updateById(user) == 0) {
             return ResponseUtil.updatedDataFailed();
@@ -385,7 +385,6 @@ public class WxAuthController {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
-        UserTokenManager.removeToken(userId);
         return ResponseUtil.ok();
     }
 }
