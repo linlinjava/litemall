@@ -661,14 +661,5 @@ Page({
     // 页面渲染完成
     this.sharePop = this.selectComponent("#sharePop");
     this.notify = this.selectComponent("#van-notify");
-  },
-  // 下拉刷新
-  onPullDownRefresh() {
-    wx.showNavigationBarLoading() //在标题栏中显示加载
-    this.getGoodsInfo();
-    wx.hideNavigationBarLoading() //完成停止加载
-    wx.stopPullDownRefresh() //停止下拉刷新
-  },
-  //根据已选的值，计算其它值的状态
-  setSpecValueStatus: function() {},
+  }
 })

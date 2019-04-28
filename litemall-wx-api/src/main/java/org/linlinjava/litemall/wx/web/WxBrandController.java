@@ -33,16 +33,16 @@ public class WxBrandController {
      * 品牌列表
      *
      * @param page 分页页数
-     * @param size 分页大小
+     * @param limit 分页大小
      * @return 品牌列表
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size) {
+                       @RequestParam(defaultValue = "10") Integer limit) {
 
-        List<LitemallBrand> brandList = brandService.queryVO(page, size);
+        List<LitemallBrand> brandList = brandService.queryVO(page, limit);
         int total = brandService.queryTotalCount();
-        int totalPages = (int) Math.ceil((double) total / size);
+        int totalPages = (int) Math.ceil((double) total / limit);
 
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("brandList", brandList);

@@ -11,7 +11,7 @@ Page({
     scrollTop: 0,
     scrollHeight: 0,
     page: 1,
-    size: 100
+    limit: 100
   },
 
   onLoad: function(options) {
@@ -103,7 +103,7 @@ Page({
     util.request(api.GoodsList, {
         categoryId: that.data.currentCategory.id,
         page: that.data.page,
-        size: that.data.size
+        limit: that.data.limit
       })
       .then(function(res) {
         that.setData({

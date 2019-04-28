@@ -5,6 +5,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.db.domain.LitemallGroupon;
+import org.linlinjava.litemall.db.domain.LitemallStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,9 @@ public class QCodeService {
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName);
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            String url = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(groupon.getId().toString()));
+            LitemallStorage storageInfo = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(groupon.getId().toString()));
 
-            return url;
+            return storageInfo.getUrl();
         } catch (WxErrorException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -67,9 +68,9 @@ public class QCodeService {
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName);
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            String url = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
+            LitemallStorage litemallStorage = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
 
-            return url;
+            return litemallStorage.getUrl();
         } catch (WxErrorException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {

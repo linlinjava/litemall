@@ -13,7 +13,6 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-import i18n from './lang' // Internationalization
 import './icons' // icon
 import './permission' // permission control
 
@@ -22,8 +21,7 @@ import * as filters from './filters' // global filters
 import permission from '@/directive/permission/index.js' // 权限判断指令
 
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
-  i18n: (key, value) => i18n.t(key, value)
+  size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 
 Vue.directive('permission', permission)
@@ -39,6 +37,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  i18n,
   render: h => h(App)
 })

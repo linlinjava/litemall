@@ -28,11 +28,11 @@ public class LitemallKeywordService {
         return keywordsMapper.selectByExample(example);
     }
 
-    public List<LitemallKeyword> queryByKeyword(String keyword, Integer page, Integer size) {
+    public List<LitemallKeyword> queryByKeyword(String keyword, Integer page, Integer limit) {
         LitemallKeywordExample example = new LitemallKeywordExample();
         example.setDistinct(true);
         example.or().andKeywordLike("%" + keyword + "%").andDeletedEqualTo(false);
-        PageHelper.startPage(page, size);
+        PageHelper.startPage(page, limit);
         return keywordsMapper.selectByExampleSelective(example, LitemallKeyword.Column.keyword);
     }
 

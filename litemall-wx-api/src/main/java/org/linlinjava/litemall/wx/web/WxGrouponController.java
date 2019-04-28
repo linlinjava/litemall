@@ -59,15 +59,15 @@ public class WxGrouponController {
      * 团购规则列表
      *
      * @param page 分页页数
-     * @param size 分页大小
+     * @param limit 分页大小
      * @return 团购规则列表
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        List<Map<String, Object>> topicList = grouponRulesService.queryList(page, size, sort, order);
+        List<Map<String, Object>> topicList = grouponRulesService.queryList(page, limit, sort, order);
         long total = PageInfo.of(topicList).getTotal();
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("data", topicList);

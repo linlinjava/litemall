@@ -40,21 +40,21 @@ public class WxCollectController {
      * @param userId 用户ID
      * @param type   类型，如果是0则是商品收藏，如果是1则是专题收藏
      * @param page   分页页数
-     * @param size   分页大小
+     * @param limit   分页大小
      * @return 用户收藏列表
      */
     @GetMapping("list")
     public Object list(@LoginUser Integer userId,
                        @NotNull Byte type,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size) {
+                       @RequestParam(defaultValue = "10") Integer limit) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallCollect> collectList = collectService.queryByType(userId, type, page, size);
+        List<LitemallCollect> collectList = collectService.queryByType(userId, type, page, limit);
         int count = collectService.countByType(userId, type);
-        int totalPages = (int) Math.ceil((double) count / size);
+        int totalPages = (int) Math.ceil((double) count / limit);
 
         List<Object> collects = new ArrayList<>(collectList.size());
         for (LitemallCollect collect : collectList) {

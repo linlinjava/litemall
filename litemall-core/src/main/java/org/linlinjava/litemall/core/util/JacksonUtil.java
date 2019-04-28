@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class JacksonUtil {
     public static String parseString(String body, String field) {
@@ -141,6 +142,16 @@ public class JacksonUtil {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public static Map<String, String> toMap(String data) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(data, new TypeReference<Map<String, String>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

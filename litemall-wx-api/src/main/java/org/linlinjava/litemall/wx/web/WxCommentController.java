@@ -11,7 +11,7 @@ import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.service.LitemallTopicService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
-import org.linlinjava.litemall.wx.dao.UserInfo;
+import org.linlinjava.litemall.wx.dto.UserInfo;
 import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -126,7 +126,7 @@ public class WxCommentController {
      * @param valueId  商品或专题ID。如果type是0，则是商品ID；如果type是1，则是专题ID。
      * @param showType 显示类型。如果是0，则查询全部；如果是1，则查询有图片的评论。
      * @param page     分页页数
-     * @param size     分页大小
+     * @param limit     分页大小
      * @return 评论列表
      */
     @GetMapping("list")
@@ -134,8 +134,8 @@ public class WxCommentController {
                        @NotNull Integer valueId,
                        @NotNull Integer showType,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size) {
-        List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, size);
+                       @RequestParam(defaultValue = "10") Integer limit) {
+        List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, limit);
         long count = PageInfo.of(commentList).getTotal();
 
         List<Map<String, Object>> commentVoList = new ArrayList<>(commentList.size());

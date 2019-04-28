@@ -11,7 +11,7 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
       <el-table-column align="center" label="对象KEY" prop="key"/>
 
@@ -41,8 +41,8 @@
 
     <!-- 添加对话框 -->
     <el-dialog :visible.sync="createDialogVisible" title="上传对象">
-      <el-upload :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
-        <el-button size="small" type="primary">点击上传</el-button>
+      <el-upload ref="upload" :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
+        <el-button type="primary">点击上传</el-button>
       </el-upload>
     </el-dialog>
 
@@ -124,6 +124,8 @@ export default {
       this.createDialogVisible = true
     },
     handleUpload(item) {
+      this.$refs.upload.clearFiles()
+
       const formData = new FormData()
       formData.append('file', item.file)
       createStorage(formData).then(response => {

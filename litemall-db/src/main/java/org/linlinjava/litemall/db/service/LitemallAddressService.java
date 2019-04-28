@@ -22,8 +22,10 @@ public class LitemallAddressService {
         return addressMapper.selectByExample(example);
     }
 
-    public LitemallAddress findById(Integer id) {
-        return addressMapper.selectByPrimaryKey(id);
+    public LitemallAddress query(Integer userId, Integer id) {
+        LitemallAddressExample example = new LitemallAddressExample();
+        example.or().andIdEqualTo(id).andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        return addressMapper.selectOneByExample(example);
     }
 
     public int add(LitemallAddress address) {

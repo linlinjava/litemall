@@ -12,6 +12,8 @@
 	"libVersion": "2.4.0",
 	"appid": "wxa5b486c6b918ecfb",
 	"projectname": "litemall-wx",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -258,6 +260,13 @@
 					"name": "优惠券列表",
 					"pathName": "pages/coupon/coupon",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "帮助中心",
+					"pathName": "pages/help/help",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

@@ -76,8 +76,8 @@ public class WxSearchController {
     @GetMapping("helper")
     public Object helper(@NotEmpty String keyword,
                          @RequestParam(defaultValue = "1") Integer page,
-                         @RequestParam(defaultValue = "10") Integer size) {
-        List<LitemallKeyword> keywordsList = keywordsService.queryByKeyword(keyword, page, size);
+                         @RequestParam(defaultValue = "10") Integer limit) {
+        List<LitemallKeyword> keywordsList = keywordsService.queryByKeyword(keyword, page, limit);
         String[] keys = new String[keywordsList.size()];
         int index = 0;
         for (LitemallKeyword key : keywordsList) {

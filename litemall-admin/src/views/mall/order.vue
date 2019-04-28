@@ -13,7 +13,7 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
       <el-table-column align="center" min-width="100" label="订单编号" prop="orderSn"/>
 
@@ -54,9 +54,7 @@
           <span>{{ orderDetail.order.orderSn }}</span>
         </el-form-item>
         <el-form-item label="订单状态">
-          <template slot-scope="scope">
-            <el-tag>{{ scope.order.orderStatus | orderStatusFilter }}</el-tag>
-          </template>
+          <el-tag>{{ orderDetail.order.orderStatus | orderStatusFilter }}</el-tag>
         </el-form-item>
         <el-form-item label="订单用户">
           <span>{{ orderDetail.user.nickname }}</span>
@@ -70,7 +68,7 @@
           <span>（地址）{{ orderDetail.order.address }}</span>
         </el-form-item>
         <el-form-item label="商品信息">
-          <el-table :data="orderDetail.orderGoods" size="small" border fit highlight-current-row>
+          <el-table :data="orderDetail.orderGoods" border fit highlight-current-row>
             <el-table-column align="center" label="商品名称" prop="goodsName" />
             <el-table-column align="center" label="商品编号" prop="goodsSn" />
             <el-table-column align="center" label="货品规格" prop="specifications" />
