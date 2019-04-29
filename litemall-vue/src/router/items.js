@@ -39,8 +39,6 @@ export default [
     path: '/items/list',
     name: 'list',
     component: () => import('@/views/items/list'),
-    props: route => ({
-      itemClass: +route.query.itemClass
-    })
+    props: route => route.query
   }
 ];

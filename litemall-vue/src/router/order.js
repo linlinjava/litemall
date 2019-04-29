@@ -23,11 +23,6 @@ export default [
     component: () => import('@/views/order/orderDetail')
   },
   {
-    path: '/order/placeOrderVirtual',
-    name: 'placeOrderVirtual',
-    component: () => import('@/views/order/place-order-virtual')
-  },
-  {
     path: '/order/payment',
     name: 'payment',
     component: () => import('@/views/order/payment')

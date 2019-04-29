@@ -1,9 +1,5 @@
 <template>
   <div class="user_collect">
-    <form action="/search" class="fixedTop">
-      <van-search placeholder="请输入商品名称" v-model="searchVal"/>
-    </form>
-
     <van-list
       v-model="loading"
       :finished="finished"
@@ -29,16 +25,13 @@
       </item-group>
     </van-list>
 
-    <is-empty v-if="isEmpty">没有商品收藏</is-empty>
+    <is-empty v-if="items.length === 0">没有商品收藏</is-empty>
 
-    <!-- <div class="clear_invalid" v-if="items.length" @click="clearInvalid">
-      <van-icon name="lajitong"/>清除失效商品
-    </div>-->
   </div>
 </template>
 
 <script>
-import { GOODS_COLLECT_LIST } from '@/api/user';
+import { collectList, collectAddOrDelete } from '@/api/api';
 
 import ItemGroup from '@/components/item-group/';
 import ItemCardHori from '@/components/item-card-hori/';
@@ -53,53 +46,33 @@ export default {
 
   data() {
     return {
-      shop_id: 1,
-      items: [],
-      searchVal: ''
+      page: 1,
+      limit: 10,
+      total: 0,
+      items: []
     };
   },
 
   created() {
-    this.resetInit();
+    this.init();
   },
 
   methods: {
-    initData() {
-      return this.$reqGet(
-        '/wx/collect/list?type=0&page=1&size=100',
-        {},
-        {
-          hideLoading: true
-        }
-      ).then(res => {
-        // debugger;
+    init() {
+      collectList({type:0, page:this.page, limit:this.limit}).then(res => {
         const { collectList, page } = res.data.data;
         this.items.push(...collectList);
-        return page;
       });
     },
     cancelCollect(event, i, item) {
       this.$dialog.confirm({ message: '是否取消收藏该商品' }).then(() => {
-        this.$reqPost(
-          '/wx/collect/addordelete',
-          { valueId: item.valueId, type: 0 },
-          {
-            hideLoading: true
-          }
-        ).then(res => {
+        collectAddOrDelete({ valueId: item.valueId, type: 0 }).then(res => {
           this.items.splice(i, 1);
         });
       });
     },
-    clearInvalid() {
-      this.$dialog.confirm({ message: '确定清除所有失效商品吗?' });
-    },
     itemClick(i, item) {
-      // const item_id = this.items[i].item_id;
-      // const status = this.items[i].goods_status;
-      // status &&
       this.$router.push(`/items/detail/${item.valueId}`);
-      // !status && this.$toast('该商品已失效');
     }
   },
 

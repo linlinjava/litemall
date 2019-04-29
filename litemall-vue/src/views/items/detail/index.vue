@@ -66,7 +66,7 @@
 import { goodsDetail, cartGoodsCount, collectAddOrDelete, cartAdd, cartFastAdd } from '@/api/api';
 
 import { Sku, Swipe, SwipeItem, GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn, Popup } from 'vant';
-
+import { setLocalStorage } from '@/utils/local-storage';
 import popupProps from './popup-props';
 import _ from 'lodash';
 
@@ -254,11 +254,11 @@ computed: {
       else {
         params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
       }
-     cartFastAdd(params).then(() => {
+     cartFastAdd(params).then(res => {
+      let cartId = res.data.data;
+      setLocalStorage({CartId: cartId})
       that.showSku = false;
-      that.$router.push({
-        name: 'cart'
-      });
+        this.$router.push({ name: 'placeOrderEntity'});
       });
     },
     skuAdapter() {

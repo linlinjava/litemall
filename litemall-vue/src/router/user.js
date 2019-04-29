@@ -3,6 +3,7 @@ const UserCollect = () => import('@/views/user/module-collect');
 const UserAddress = () => import('@/views/user/module-address');
 const UserAddressEdit = () => import('@/views/user/module-address-edit');
 const UserServer = () => import('@/views/user/module-server');
+const UserHelp = () => import('@/views/user/module-help');
 
 const UserInformation = () => import('@/views/user/user-information-set');
 const UserInfo_SetBg = () => import('@/views/user/user-information-set/set-bg');
@@ -42,7 +43,7 @@ export default [
     component: UserAddress
   },
   {
-    path: '/user/address/edit/:addressId',
+    path: '/user/address/edit',
     name: 'address-edit',
     props: true,
     meta: {
@@ -54,6 +55,11 @@ export default [
     path: '/user/server',
     name: 'user-server',
     component: UserServer
+  },
+  {
+    path: '/user/help',
+    name: 'user-help',
+    component: UserHelp
   },
   {
     path: '/user/information',

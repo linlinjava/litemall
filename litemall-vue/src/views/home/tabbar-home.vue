@@ -13,11 +13,11 @@
 
   <div class="goods-channel">
     <div class="item" 
-        @click="changeTabbar(iconJson)"  
-        v-for="(iconJson, index) in shopInfos.channel"
+        @click="changeTabbar(channel)"  
+        v-for="(channel, index) in shopInfos.channel"
         :key="index">
-      <img :src="iconJson.iconUrl" background-size="cover"/>
-      <span>{{iconJson.name}}</span>
+      <img :src="channel.iconUrl" background-size="cover"/>
+      <span>{{channel.name}}</span>
     </div>
   </div>
 
@@ -145,11 +145,11 @@ export default {
       })
     },
     changeTabbar(o) {
-      let that = this
       goodsCategory({ id: o.id}).then(res => {
-          let categoryId = res.data.data.currentCategory.id;
-          this.$router.push({
-          path: `items/list?keyword=&itemClass=${categoryId}`
+        let categoryId = res.data.data.currentCategory.id;
+          this.$router.replace({
+          name: 'list',
+          query: { itemClass: categoryId }
         });
       })
     },
