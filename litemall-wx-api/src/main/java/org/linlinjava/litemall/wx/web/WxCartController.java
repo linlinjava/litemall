@@ -491,10 +491,11 @@ public class WxCartController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("addressId", addressId);
+        data.put("couponId", couponId);
+        data.put("cartId", cartId);
         data.put("grouponRulesId", grouponRulesId);
         data.put("grouponPrice", grouponPrice);
         data.put("checkedAddress", checkedAddress);
-        data.put("couponId", couponId);
         data.put("availableCouponLength", availableCouponLength);
         data.put("goodsTotalPrice", checkedGoodsPrice);
         data.put("freightPrice", freightPrice);

@@ -327,7 +327,7 @@ export function couponReceive(data) {
 }
 const CouponExchange='wx/coupon/exchange'; //优惠券兑换
 
-const StorageUpload='wx/torage/upload'; //图片上传,
+const StorageUpload='wx/storage/upload'; //图片上传,
 
 const UserIndex='wx/user/index'; //个人页面用户相关信息
 export function userIndex() {

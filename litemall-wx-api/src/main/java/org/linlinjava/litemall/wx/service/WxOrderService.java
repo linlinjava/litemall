@@ -106,17 +106,6 @@ public class WxOrderService {
     @Autowired
     private CouponVerifyService couponVerifyService;
 
-    private String detailedAddress(LitemallAddress litemallAddress) {
-        Integer provinceId = litemallAddress.getProvinceId();
-        Integer cityId = litemallAddress.getCityId();
-        Integer areaId = litemallAddress.getAreaId();
-        String provinceName = regionService.findById(provinceId).getName();
-        String cityName = regionService.findById(cityId).getName();
-        String areaName = regionService.findById(areaId).getName();
-        String fullRegion = provinceName + " " + cityName + " " + areaName;
-        return fullRegion + " " + litemallAddress.getAddress();
-    }
-
     /**
      * 订单列表
      *
@@ -165,6 +154,7 @@ public class WxOrderService {
                 orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
                 orderGoodsVo.put("number", orderGoods.getNumber());
                 orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
+                orderGoodsVo.put("specifications", orderGoods.getSpecifications());
                 orderGoodsVoList.add(orderGoodsVo);
             }
             orderVo.put("goodsList", orderGoodsVoList);
@@ -348,9 +338,9 @@ public class WxOrderService {
         order.setOrderSn(orderService.generateOrderSn(userId));
         order.setOrderStatus(OrderUtil.STATUS_CREATE);
         order.setConsignee(checkedAddress.getName());
-        order.setMobile(checkedAddress.getMobile());
+        order.setMobile(checkedAddress.getTel());
         order.setMessage(message);
-        String detailedAddress = detailedAddress(checkedAddress);
+        String detailedAddress = checkedAddress.getProvince() + checkedAddress.getCity() + checkedAddress.getCounty() + " " + checkedAddress.getAddressDetail();
         order.setAddress(detailedAddress);
         order.setGoodsPrice(checkedGoodsPrice);
         order.setFreightPrice(freightPrice);
