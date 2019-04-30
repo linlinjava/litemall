@@ -24,7 +24,6 @@
     "vee-validate": "^2.1.4",
     "vue": "^2.5.17",
     "js-cookie": "2.2.0",
-    "vuex": "3.0.1",
     "vue-router": "^3.0.1",
     "vuelidation": "^1.1.0"
   },
