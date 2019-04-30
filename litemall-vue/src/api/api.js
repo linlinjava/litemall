@@ -43,10 +43,38 @@ export function authLogout() {
     method: 'post'
   })
 }
-
+const AuthInfo='wx/auth/info'; //用户信息
+export function authInfo() {
+  return request({
+    url: AuthInfo,
+    method: 'get'
+  })
+}
+const AuthProfile='wx/auth/profile'; //验证码
+export function authProfile(data) {
+  return request({
+    url: AuthProfile,
+    method: 'post',
+    data    
+  })
+}
 const AuthRegister='wx/auth/register'; //账号注册
 const AuthReset='wx/auth/reset'; //账号密码重置
+export function authReset(data) {
+  return request({
+    url: AuthReset,
+    method: 'post',
+    data    
+  })
+}
 const AuthRegisterCaptcha='wx/auth/regCaptcha'; //验证码
+export function authRegisterCaptcha(data) {
+  return request({
+    url: AuthRegisterCaptcha,
+    method: 'post',
+    data    
+  })
+}
 const AuthBindPhone='wx/auth/bindPhone'; //绑定微信手机号
 
 const GoodsCount='wx/goods/count'; //统计商品总数
@@ -282,6 +310,14 @@ const OrderGoods='wx/order/goods'; // 代评价商品信息
 const OrderComment='wx/order/comment'; // 评价订单商品信息
 
 const FeedbackAdd='wx/feedback/submit'; //添加反馈
+export function feedbackAdd(data) {
+  return request({
+    url: FeedbackAdd,
+    method: 'post',
+    data
+  })
+}
+
 const FootprintList='wx/footprint/list'; //足迹列表
 const FootprintDelete='wx/footprint/delete'; //删除足迹
 
@@ -351,3 +387,5 @@ export function getList(api, query) {
     params: query
   })
 }
+
+export const REFUND_LIST = '';

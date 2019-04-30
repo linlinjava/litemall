@@ -37,7 +37,16 @@ export default {
     },
     loadAddress() {
       addressList().then(res => {
-        this.addressList = res.data.data;
+        var list = res.data.data;
+        for(var i = 0; i < list.length; i++ ){
+          var item = list[i]
+          this.addressList.push({
+            id: item.id,
+            name: item.name,
+            tel: item.tel,
+            address: item.province + item.city + item.county + " " + item.addressDetail
+          })
+        }
       })
     }
   },

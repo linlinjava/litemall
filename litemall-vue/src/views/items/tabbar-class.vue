@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { goodsCategory, goodsChannelCategory } from '@/api/goods';
+import { catalogList } from '@/api/api';
 
 import getLocationParam from '@/utils/location-param';
 import { Search } from 'vant';
@@ -52,7 +52,7 @@ export default {
 
   methods: {
     initData() {
-      goodsCategory().then(res => {
+      catalogList().then(res => {
         this.list = res.data.data.categoryList;
         this.$refs.classTree.changeList(res.data.data);
         this.subCategory = res.data.data.currentSubCategory;
@@ -63,7 +63,7 @@ export default {
       return data.filter(item => item.children && item.children.length);
     },
     changeCatalog(id) {
-      goodsChannelCategory({ id: id}).then(res => {
+      catalogList({ id: id}).then(res => {
         let index = getIndex(this.list, res.data.data.currentCategory.id);
         this.$refs.classTree.changeList(res.data.data);
         this.subCategory = res.data.data.currentSubCategory;

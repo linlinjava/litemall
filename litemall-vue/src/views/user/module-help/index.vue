@@ -1,6 +1,6 @@
 <template>
   <div>
- <van-collapse accordion="true" v-model="activeNames">
+ <van-collapse :accordion="true" v-model="activeNames">
   <van-collapse-item :title="issue.question" :name="index" v-for="(issue, index) in issueList" :key="index">
     {{issue.answer}}  
   </van-collapse-item>
@@ -36,6 +36,3 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
-
-</style>

@@ -40,7 +40,7 @@
 
 
 <script>
-import { USER_SENDCODE } from '@/api/user';
+import { authRegisterCaptcha } from '@/api/api';
 
 import { Field } from 'vant';
 
@@ -67,7 +67,7 @@ export default {
   methods: {
     getCode() {
       if (!this.counting && this.vuelidat()) {
-        this.$reqPost(USER_SENDCODE, {
+        authRegisterCaptcha({
           mobile: this.new_mobile,
           operation: 'changeMobile'
         }).then(() => {

@@ -4,6 +4,7 @@ const UserAddress = () => import('@/views/user/module-address');
 const UserAddressEdit = () => import('@/views/user/module-address-edit');
 const UserServer = () => import('@/views/user/module-server');
 const UserHelp = () => import('@/views/user/module-help');
+const UserFeedback = () => import('@/views/user/module-feedback');
 
 const UserInformation = () => import('@/views/user/user-information-set');
 const UserInfo_SetBg = () => import('@/views/user/user-information-set/set-bg');
@@ -61,6 +62,11 @@ export default [
     name: 'user-help',
     component: UserHelp
   },
+  {
+    path: '/user/feedback',
+    name: 'user-feedback',
+    component: UserFeedback
+  },  
   {
     path: '/user/information',
     name: 'user-information',

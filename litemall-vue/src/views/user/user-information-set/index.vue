@@ -40,7 +40,6 @@
 
 <script>
 import { Uploader, Picker, Popup, Button } from 'vant';
-import { USER_PROFILE } from '@/api/user';
 import { removeLocalStorage } from '@/utils/local-storage';
 import { getLocalStorage } from '@/utils/local-storage';
 import { authLogout } from '@/api/api';
@@ -78,12 +77,7 @@ export default {
       console.log(file);
     },
     onSexConfirm(value, index) {
-      this.$reqPut(USER_PROFILE, {
-        gender: index[0]
-      }).then(res => {
-        this.gender = res.data.data.gender;
-        this.showSex = false;
-      });
+
     },
     getUserInfo() {
       const infoData = getLocalStorage(

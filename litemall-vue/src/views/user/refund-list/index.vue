@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { REFUND_LIST } from '@/api/order';
+import { REFUND_LIST } from '@/api/api';
 
 import { Tab, Tabs, Panel, Card, List } from 'vant';
 import InfinityScroll from '@/components/infinity-scroll';
