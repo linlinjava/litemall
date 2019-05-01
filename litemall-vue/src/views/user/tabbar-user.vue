@@ -31,12 +31,6 @@ export default {
   methods: {
     quit() {
       authLogout();
-      removeLocalStorage(
-        'Authorization',
-        'avatar',
-        'background_image',
-        'nickName'
-      );
       this.$router.push({ name: 'login' });
     },
     getLoginStatus() {

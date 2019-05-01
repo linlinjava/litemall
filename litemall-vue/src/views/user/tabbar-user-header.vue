@@ -39,20 +39,14 @@ export default {
     getUserInfo() {
       const infoData = getLocalStorage(
         'nickName',
-        'background_image',
         'avatar'
       );
       this.avatar = avatar_default;
       this.nickName = infoData.nickName || '昵称';
-      this.background_image = infoData.background_image || bg_default;
     },
     toSetting() {
       this.$router.push({ name: 'user-information' });
     }
-    // toLogin() {
-    //   !this.isLogin &&
-    //     this.$router.push({ name: 'login', query: { redirect: 'user' } });
-    // }
   }
 };
 </script>

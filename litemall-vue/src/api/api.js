@@ -50,7 +50,7 @@ export function authInfo() {
     method: 'get'
   })
 }
-const AuthProfile='wx/auth/profile'; //验证码
+const AuthProfile='wx/auth/profile'; //账号修改
 export function authProfile(data) {
   return request({
     url: AuthProfile,
@@ -67,7 +67,7 @@ export function authReset(data) {
     data    
   })
 }
-const AuthRegisterCaptcha='wx/auth/regCaptcha'; //验证码
+const AuthRegisterCaptcha='wx/auth/regCaptcha'; //注册验证码
 export function authRegisterCaptcha(data) {
   return request({
     url: AuthRegisterCaptcha,
@@ -75,7 +75,14 @@ export function authRegisterCaptcha(data) {
     data    
   })
 }
-const AuthBindPhone='wx/auth/bindPhone'; //绑定微信手机号
+const AuthCaptcha='wx/auth/captcha'; //验证码
+export function authCaptcha(data) {
+  return request({
+    url: AuthCaptcha,
+    method: 'post',
+    data    
+  })
+}
 
 const GoodsCount='wx/goods/count'; //统计商品总数
 export function goodsCount() {

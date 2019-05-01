@@ -1,7 +1,7 @@
 <template>
   <div class="set_nickname">
     <van-cell-group>
-      <van-field v-model="nickName" label="昵称" :error="!!$vuelidation.error('nickName')"/>
+      <van-field v-model="nickName" label="昵称"/>
     </van-cell-group>
 
     <div class="bottom_btn">

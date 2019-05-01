@@ -41,7 +41,6 @@
 import { Radio, RadioGroup, Dialog } from 'vant';
 import { orderDetail, orderPrepay } from '@/api/api';
 import _ from 'lodash';
-import md5 from 'js-md5';
 
 export default {
   name: 'payment',

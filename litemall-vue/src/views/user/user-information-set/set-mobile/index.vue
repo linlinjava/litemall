@@ -6,13 +6,13 @@
 				v-model="password"
 				type="password"
 				placeholder="请输入登录密码"
-				:error="!!$vuelidation.error('password')" />
+				 />
 
 			<van-field
 				label="新手机号"
-				v-model="new_mobile"
+				v-model="mobile"
 				placeholder="请输入新手机号"
-				:error="!!$vuelidation.error('new_mobile')" />
+				/>
 
 			<van-field
 				label="验证码"
@@ -40,50 +40,40 @@
 
 
 <script>
-import { authRegisterCaptcha } from '@/api/api';
+import { authCaptcha } from '@/api/api';
 
 import { Field } from 'vant';
 
 export default {
   data: () => ({
     password: '',
-    new_mobile: '',
+    mobile: '',
     code: '',
     counting: false
   }),
 
-  vuelidation: {
-    data: {
-      password: {
-        required: true
-      },
-      new_mobile: {
-        required: true,
-        mobile: true
-      }
-    }
-  },
-
   methods: {
     getCode() {
-      if (!this.counting && this.vuelidat()) {
-        authRegisterCaptcha({
-          mobile: this.new_mobile,
-          operation: 'changeMobile'
+      if (!this.counting && this.vuelidate()) {
+        authCaptcha({
+          mobile: this.mobile,
+          type: 'bind-mobile'
         }).then(() => {
           this.$toast.success('发送成功');
           this.counting = true;
-        });
+        }).catch(error => {
+          this.$toast.fail(error.data.errmsg);
+          this.counting = false;
+        })
+
       }
     },
     countdownend() {
       this.counting = false;
     },
-    vuelidat() {
-      this.$vuelidation.valid();
-      if (this.$vuelidation.error('new_mobile')) {
-        const msg = this.$vuelidation.error('new_mobile');
-        this.$toast(msg == 'Required' ? '请输入手机号' : msg);
+    vuelidate() {
+      if(this.mobile === ''){
+        this.$toast.fail('请输入号码');
         return false;
       }
       return true;

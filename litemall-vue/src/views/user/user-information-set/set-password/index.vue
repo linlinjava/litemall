@@ -1,29 +1,30 @@
 <template>
   <div>
     <van-cell-group>
-      <van-field
-        label="原密码"
-        v-model="password"
-        type="password"
-        placeholder="请输入原密码"
-        :error="!!$vuelidation.error('password')"
-      />
 
       <van-field
         label="新密码"
-        v-model="new_password"
+        v-model="password"
         type="password"
         placeholder="请输入新密码"
-        :error="!!$vuelidation.error('new_password')"
       />
 
-      <van-field
-        label="确认密码"
-        v-model="repeat_password"
-        type="password"
-        placeholder="请再次输入密码"
-        :error="!!$vuelidation.error('repeat_password')"
-      />
+			<van-field
+				label="验证码"
+				v-model="code"
+				@click-icon="getCode"
+				placeholder="请输入验证码">
+
+				<span slot="icon"
+					class="verifi_code red"
+					:class="{verifi_code_counting: counting}"
+					@click="getCode">
+					<countdown v-if="counting" :time="60000" @countdownend="countdownend">
+					  <template slot-scope="props">{{ +props.seconds || 60 }}秒后获取</template>
+					</countdown>
+					<span v-else>获取验证码</span>
+				</span>
+			</van-field>
     </van-cell-group>
 
     <div class="bottom_btn">
@@ -34,24 +35,25 @@
 
 
 <script>
-import { authReset, authLogout } from '@/api/api';
+import { authCaptcha, authReset, authLogout } from '@/api/api';
 import { removeLocalStorage } from '@/utils/local-storage';
-
 import { Field } from 'vant';
 
 export default {
   data: () => ({
     password: '',
-    new_password: '',
-    repeat_password: ''
+    mobile: '',
+    code: '',
+    counting: false
   }),
 
   methods: {
     modifypassword() {
       if (this.passwordValid()) {
         authReset({
-          old_password: this.password,
-          new_password: this.new_password
+          password: this.password,
+          mobile: this.mobile,
+          code: this.code
         })
         .then(() => {
           this.$dialog.alert({ message: '保存成功, 请重新登录.' })
@@ -60,12 +62,28 @@ export default {
       }
     },
     passwordValid() {
-      if (this.new_password != this.repeat_password) {
-        this.$toast('密码不一致, 请再次确认密码');
-        return false;
-      }
       return true;
-    }
+    },
+    getCode() {
+      if(this.mobile === ''){
+        this.$toast.fail('请输入号码');
+        return
+      }
+
+      if (!this.counting) {
+        authCaptcha({
+          mobile: this.mobile,
+          type: 'change-password'
+        }).then(() => {
+          this.$toast.success('发送成功');
+          this.counting = true;
+        }).catch(error => {
+          this.$toast.fail(error.data.errmsg);
+          this.counting = false;
+        })
+
+      }
+    },
   },
 
   components: {
@@ -74,8 +92,24 @@ export default {
 };
 </script>
 
-<style scoped>
+
+<style lang="scss" scoped>
+@import '../../../../assets/scss/var';
+@import '../../../../assets/scss/mixin';
 .bottom_btn {
   padding: 30px 15px 0 15px;
+}
+
+.verifi_code {
+  @include one-border;
+  padding-left: 10px;
+  &::after {
+    border-bottom: 0;
+    border-left: 1px solid $border-color;
+  }
+
+  &_counting {
+    color: $font-color-gray;
+  }
 }
 </style>

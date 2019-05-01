@@ -7,7 +7,6 @@ const UserHelp = () => import('@/views/user/module-help');
 const UserFeedback = () => import('@/views/user/module-feedback');
 
 const UserInformation = () => import('@/views/user/user-information-set');
-const UserInfo_SetBg = () => import('@/views/user/user-information-set/set-bg');
 const UserInfo_SetMobile = () => import('@/views/user/user-information-set/set-mobile');
 const UserInfo_SetNickname = () => import('@/views/user/user-information-set/set-nickname');
 const UserInfo_SetPassword = () => import('@/views/user/user-information-set/set-password');
@@ -74,11 +73,6 @@ export default [
       login: true
     },
     component: UserInformation
-  },
-  {
-    path: '/user/information/setbg',
-    name: 'user-info-setbg',
-    component: UserInfo_SetBg
   },
   {
     path: '/user/information/setMobile',
