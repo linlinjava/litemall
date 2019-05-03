@@ -111,6 +111,9 @@ public class WxCartController {
         if (!ObjectUtils.allNotNull(productId, number, goodsId)) {
             return ResponseUtil.badArgument();
         }
+        if(number <= 0){
+            return ResponseUtil.badArgument();
+        }
 
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
@@ -177,6 +180,9 @@ public class WxCartController {
         if (!ObjectUtils.allNotNull(productId, number, goodsId)) {
             return ResponseUtil.badArgument();
         }
+        if(number <= 0){
+            return ResponseUtil.badArgument();
+        }
 
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
@@ -237,6 +243,9 @@ public class WxCartController {
         Integer goodsId = cart.getGoodsId();
         Integer id = cart.getId();
         if (!ObjectUtils.allNotNull(id, productId, number, goodsId)) {
+            return ResponseUtil.badArgument();
+        }
+        if(number <= 0){
             return ResponseUtil.badArgument();
         }
 
@@ -491,10 +500,11 @@ public class WxCartController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("addressId", addressId);
+        data.put("couponId", couponId);
+        data.put("cartId", cartId);
         data.put("grouponRulesId", grouponRulesId);
         data.put("grouponPrice", grouponPrice);
         data.put("checkedAddress", checkedAddress);
-        data.put("couponId", couponId);
         data.put("availableCouponLength", availableCouponLength);
         data.put("goodsTotalPrice", checkedGoodsPrice);
         data.put("freightPrice", freightPrice);

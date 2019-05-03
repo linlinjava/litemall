@@ -8,19 +8,19 @@
 
 		<van-row class="ecoupon_status">
 			<van-col span="8">
-				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/1'})">
+				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/0'})">
 					<van-icon name="coupon" />
 				</div>
 				<div>待使用</div>
 			</van-col>
 			<van-col span="8">
-				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/2'})">
+				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/1'})">
 					<van-icon name="coupon-used" />
 				</div>
 				<div>已使用</div>
 			</van-col>
 			<van-col span="8">
-				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/3'})">
+				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/2'})">
 					<van-icon name="coupon-due" />
 				</div>
 				<div>过期关闭</div>

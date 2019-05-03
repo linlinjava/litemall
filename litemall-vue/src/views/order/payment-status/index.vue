@@ -27,7 +27,7 @@ export default {
   },
   created() {
     setTimeout(() => {
-      this.$router.push({ path: 'user/order/list/0' });
+      this.$router.push({ path: '/user/order/list/0' });
     }, 3000);
   },
   data() {

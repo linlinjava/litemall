@@ -43,11 +43,46 @@ export function authLogout() {
     method: 'post'
   })
 }
-
+const AuthInfo='wx/auth/info'; //用户信息
+export function authInfo() {
+  return request({
+    url: AuthInfo,
+    method: 'get'
+  })
+}
+const AuthProfile='wx/auth/profile'; //账号修改
+export function authProfile(data) {
+  return request({
+    url: AuthProfile,
+    method: 'post',
+    data    
+  })
+}
 const AuthRegister='wx/auth/register'; //账号注册
 const AuthReset='wx/auth/reset'; //账号密码重置
-const AuthRegisterCaptcha='wx/auth/regCaptcha'; //验证码
-const AuthBindPhone='wx/auth/bindPhone'; //绑定微信手机号
+export function authReset(data) {
+  return request({
+    url: AuthReset,
+    method: 'post',
+    data    
+  })
+}
+const AuthRegisterCaptcha='wx/auth/regCaptcha'; //注册验证码
+export function authRegisterCaptcha(data) {
+  return request({
+    url: AuthRegisterCaptcha,
+    method: 'post',
+    data    
+  })
+}
+const AuthCaptcha='wx/auth/captcha'; //验证码
+export function authCaptcha(data) {
+  return request({
+    url: AuthCaptcha,
+    method: 'post',
+    data    
+  })
+}
 
 const GoodsCount='wx/goods/count'; //统计商品总数
 export function goodsCount() {
@@ -56,7 +91,7 @@ export function goodsCount() {
     method: 'get'
   })
 }
-const GoodsList='wx/goods/list'; //获得商品列表
+export const GoodsList='wx/goods/list'; //获得商品列表
 export function goodsList(query) {
   return request({
     url: GoodsList,
@@ -141,8 +176,22 @@ export function cartGoodsCount() {
   })
 }
 const CartCheckout='wx/cart/checkout'; // 下单前信息确认
+export function cartCheckout(query) {
+  return request({
+    url: CartCheckout,
+    method: 'get',
+    params: query
+  })
+}
 
 const CollectList='wx/collect/list'; //收藏列表
+export function collectList(query) {
+  return request({
+    url: CollectList,
+    method: 'get',
+    params: query
+  })
+}
 const CollectAddOrDelete='wx/collect/addordelete'; //添加或取消收藏
 export function collectAddOrDelete(data) {
   return request({
@@ -165,26 +214,117 @@ const SearchHelper='wx/search/helper'; //搜索帮助
 const SearchClearHistory='wx/search/clearhistory'; //搜索历史清楚
 
 const AddressList='wx/address/list'; //收货地址列表
+export function addressList(query) {
+  return request({
+    url: AddressList,
+    method: 'get',
+    params: query
+  })
+}
+
 const AddressDetail='wx/address/detail'; //收货地址详情
+export function addressDetail(query) {
+  return request({
+    url: AddressDetail,
+    method: 'get',
+    params: query
+  })
+}
 const AddressSave='wx/address/save'; //保存收货地址
+export function addressSave(data) {
+  return request({
+    url: AddressSave,
+    method: 'post',
+    data
+  })
+}
 const AddressDelete='wx/address/delete'; //保存收货地址
+export function addressDelete(data) {
+  return request({
+    url: AddressDelete,
+    method: 'post',
+    data
+  })
+}
 
 const ExpressQuery='wx/express/query'; //物流查询
 
-const RegionList='wx/region/list'; //获取区域列表
-
 const OrderSubmit='wx/order/submit'; // 提交订单
+export function orderSubmit(data) {
+  return request({
+    url: OrderSubmit,
+    method: 'post',
+    data
+  })
+}
 const OrderPrepay='wx/order/prepay'; // 订单的预支付会话
-const OrderList='wx/order/list'; //订单列表
+export function orderPrepay(data) {
+  return request({
+    url: OrderPrepay,
+    method: 'post',
+    data
+  })
+}
+export const OrderList='wx/order/list'; //订单列表
+export function orderList(query) {
+  return request({
+    url: OrderList,
+    method: 'get',
+    params: query
+  })
+}
 const OrderDetail='wx/order/detail'; //订单详情
+export function orderDetail(query) {
+  return request({
+    url: OrderDetail,
+    method: 'get',
+    params: query
+  })
+}
 const OrderCancel='wx/order/cancel'; //取消订单
+export function orderCancel(data) {
+  return request({
+    url: OrderCancel,
+    method: 'post',
+    data
+  })
+}
 const OrderRefund='wx/order/refund'; //退款取消订单
+export function orderRefund(data) {
+  return request({
+    url: OrderSubmit,
+    method: 'post',
+    data
+  })
+}
 const OrderDelete='wx/order/delete'; //删除订单
+export function orderDelete(data) {
+  return request({
+    url: OrderDelete,
+    method: 'post',
+    data
+  })
+}
 const OrderConfirm='wx/order/confirm'; //确认收货
+export function orderConfirm(data) {
+  return request({
+    url: OrderConfirm,
+    method: 'post',
+    data
+  })
+}
 const OrderGoods='wx/order/goods'; // 代评价商品信息
 const OrderComment='wx/order/comment'; // 评价订单商品信息
 
 const FeedbackAdd='wx/feedback/submit'; //添加反馈
+export function feedbackAdd(data) {
+  return request({
+    url: FeedbackAdd,
+    method: 'post',
+    data
+  })
+}
+
 const FootprintList='wx/footprint/list'; //足迹列表
 const FootprintDelete='wx/footprint/delete'; //删除足迹
 
@@ -197,8 +337,29 @@ const GroupOnDetail='wx/groupon/detail'; //团购API-详情
 const GroupOnJoin='wx/groupon/join'; //团购API-详情
 
 const CouponList='wx/coupon/list'; //优惠券列表
-const CouponMyList='wx/coupon/mylist'; //我的优惠券列表
-const CouponSelectList='coupon/selectlist'; //当前订单可用优惠券列表
+export function couponList(query) {
+  return request({
+    url: CouponList,
+    method: 'get',
+    params: query
+  })
+}
+export const CouponMyList='wx/coupon/mylist'; //我的优惠券列表
+export function couponMyList(query) {
+  return request({
+    url: CouponMyList,
+    method: 'get',
+    params: query
+  })
+}
+const CouponSelectList='wx/coupon/selectlist'; //当前订单可用优惠券列表
+export function couponSelectList(query) {
+  return request({
+    url: CouponSelectList,
+    method: 'get',
+    params: query
+  })
+}
 const CouponReceive='wx/coupon/receive'; //优惠券领取
 export function couponReceive(data) {
   return request({
@@ -209,7 +370,7 @@ export function couponReceive(data) {
 }
 const CouponExchange='wx/coupon/exchange'; //优惠券兑换
 
-const StorageUpload='wx/torage/upload'; //图片上传,
+const StorageUpload='wx/storage/upload'; //图片上传,
 
 const UserIndex='wx/user/index'; //个人页面用户相关信息
 export function userIndex() {
@@ -219,3 +380,19 @@ export function userIndex() {
   })
 }
 const IssueList='wx/issue/list'; //帮助信息
+export function issueList() {
+  return request({
+    url: IssueList,
+    method: 'get'
+  })
+}
+
+export function getList(api, query) {
+  return request({
+    url: api,
+    method: 'get',
+    params: query
+  })
+}
+
+export const REFUND_LIST = '';

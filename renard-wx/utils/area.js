@@ -1,3 +1,4 @@
+var areaList =
 {
   "province_list": {
     "110000": "北京市",
@@ -3236,4 +3237,59 @@
     "659004": "五家渠市",
     "659006": "铁门关市"
   }
+}
+
+function getConfig(type) {
+  return (areaList && areaList[`${type}_list`]) || {};
+}
+
+function getList(type, code) {
+  let result = [];
+  if (type !== 'province' && !code) {
+    return result;
+  }
+
+  const list = getConfig(type);
+  result = Object.keys(list).map(code => ({
+    code,
+    name: list[code]
+  }));
+
+  if (code) {
+    // oversea code
+    if (code[0] === '9' && type === 'city') {
+      code = '9';
+    }
+
+    result = result.filter(item => item.code.indexOf(code) === 0);
+  }
+
+  return result;
+}
+
+// get index by code
+function getIndex(type, code) {
+  let compareNum = type === 'province' ? 2 : type === 'city' ? 4 : 6;
+  const list = getList(type, code.slice(0, compareNum - 2));
+
+  // oversea code
+  if (code[0] === '9' && type === 'province') {
+    compareNum = 1;
+  }
+
+  code = code.slice(0, compareNum);
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].code.slice(0, compareNum) === code) {
+      return i;
+    }
+  }
+
+  return 0;
+}
+
+// 定义数据出口
+module.exports = {
+  areaList: areaList,
+  getList: getList,
+  getIndex: getIndex
 }

@@ -139,13 +139,14 @@ public class WxHomeController {
             data.put("topicList", topicListTask.get());
             data.put("grouponList", grouponListTask.get());
             data.put("floorGoodsList", floorGoodsListTask.get());
+            //缓存数据
+            HomeCacheManager.loadData(HomeCacheManager.INDEX, data);
         }
         catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            executorService.shutdown();
         }
-        //缓存数据
-        HomeCacheManager.loadData(HomeCacheManager.INDEX, data);
-        executorService.shutdown();
         return ResponseUtil.ok(data);
     }
 
