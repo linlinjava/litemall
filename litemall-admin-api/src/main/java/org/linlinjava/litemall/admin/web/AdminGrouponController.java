@@ -70,7 +70,7 @@ public class AdminGrouponController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", records);
+        data.put("list", records);
 
         return ResponseUtil.ok(data);
     }
@@ -84,12 +84,7 @@ public class AdminGrouponController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallGrouponRules> rulesList = rulesService.querySelective(goodsId, page, limit, sort, order);
-        long total = PageInfo.of(rulesList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", rulesList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(rulesList);
     }
 
     private Object validate(LitemallGrouponRules grouponRules) {

@@ -154,7 +154,7 @@ export default {
       typeOptions: Object.assign({}, defaultTypeOptions),
       useStatusOptions: Object.assign({}, defaultUseStatusOptions),
       coupon: {},
-      list: undefined,
+      list: [],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -187,7 +187,7 @@ export default {
       this.listLoading = true
       listCouponUser(this.listQuery)
         .then(response => {
-          this.list = response.data.data.items
+          this.list = response.data.data.list
           this.total = response.data.data.total
           this.listLoading = false
         })
