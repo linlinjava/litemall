@@ -1,6 +1,9 @@
 package org.linlinjava.litemall.core.util;
 
+import com.github.pagehelper.Page;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,12 +55,19 @@ public class ResponseUtil {
         return obj;
     }
 
-    public static Object ok(String errmsg, Object data) {
-        Map<String, Object> obj = new HashMap<String, Object>();
-        obj.put("errno", 0);
-        obj.put("errmsg", errmsg);
-        obj.put("data", data);
-        return obj;
+    public static Object okList(List list) {
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("list", list);
+
+        if (list instanceof Page) {
+            Page page = (Page) list;
+            data.put("total", page.getTotal());
+        }
+        else{
+            data.put("total", list.size());
+        }
+
+        return ok(data);
     }
 
     public static Object fail() {
