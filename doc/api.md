@@ -243,6 +243,440 @@ API应该存在版本控制，以保证兼容性。
 
 ### 2.4 商品服务
 
+#### 2.4.1 商品列表
+
+应用场景
+
+    商品列表
+    
+接口链接
+
+    GET /wx/goods/list
+
+请求参数
+    
+    isNew: 是否新品，true或者false
+    isHot: 是否热卖商品，true或者false
+    keyword: 关键字，如果设置则查询是否匹配关键字
+    brandId: 品牌商ID，如果设置则查询品牌商所属商品
+    categoryId: 商品分类ID，如果设置则查询分类所属商品
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序
+        
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "total": 11,
+        "pages": 6,
+        "limit": 2,
+        "page": 1,
+        "list": [
+          {
+            "id": 1181000,
+            "name": "母亲节礼物-舒适安睡组合",
+            "brief": "安心舒适是最好的礼物",
+            "picUrl": "http://yanxuan.nosdn.127.net/1f67b1970ee20fd572b7202da0ff705d.png",
+            "isNew": true,
+            "isHot": false,
+            "counterPrice": 2618.00,
+            "retailPrice": 2598.00
+          },
+          {
+            "id": 1116011,
+            "name": "蔓越莓曲奇 200克",
+            "brief": "酥脆奶香，甜酸回味",
+            "picUrl": "http://yanxuan.nosdn.127.net/767b370d07f3973500db54900bcbd2a7.png",
+            "isNew": true,
+            "isHot": true,
+            "counterPrice": 56.00,
+            "retailPrice": 36.00
+          }
+        ],
+        "filterCategoryList": [
+          {
+            "id": 1005007,
+            "name": "锅具",
+            "keywords": "",
+            "desc": "一口好锅，炖煮生活一日三餐",
+            "pid": 1005001,
+            "iconUrl": "http://yanxuan.nosdn.127.net/4aab4598017b5749e3b63309d25e9f6b.png",
+            "picUrl": "http://yanxuan.nosdn.127.net/d2db0d1d0622c621a8aa5a7c06b0fc6d.png",
+            "level": "L2",
+            "sortOrder": 1,
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 1008002,
+            "name": "布艺软装",
+            "keywords": "",
+            "desc": "各种风格软装装点你的家",
+            "pid": 1005000,
+            "iconUrl": "http://yanxuan.nosdn.127.net/8bbcd7de60a678846664af998f57e71c.png",
+            "picUrl": "http://yanxuan.nosdn.127.net/2e2fb4f2856a021bbcd1b4c8400f2b06.png",
+            "level": "L2",
+            "sortOrder": 6,
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 1008008,
+            "name": "被枕",
+            "keywords": "",
+            "desc": "守护你的睡眠时光",
+            "pid": 1005000,
+            "iconUrl": "http://yanxuan.nosdn.127.net/927bc33f7ae2895dd6c11cf91f5e3228.png",
+            "picUrl": "http://yanxuan.nosdn.127.net/b43ef7cececebe6292d2f7f590522e05.png",
+            "level": "L2",
+            "sortOrder": 2,
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 1008009,
+            "name": "床品件套",
+            "keywords": "",
+            "desc": "MUJI等品牌制造商出品",
+            "pid": 1005000,
+            "iconUrl": "http://yanxuan.nosdn.127.net/243e5bf327a87217ad1f54592f0176ec.png",
+            "picUrl": "http://yanxuan.nosdn.127.net/81f671bd36bce05d5f57827e5c88dd1b.png",
+            "level": "L2",
+            "sortOrder": 4,
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 1008015,
+            "name": "糕点",
+            "keywords": "",
+            "desc": "四季糕点，用心烘焙",
+            "pid": 1005002,
+            "iconUrl": "http://yanxuan.nosdn.127.net/93168242df456b5f7bf3c89653b3db76.png",
+            "picUrl": "http://yanxuan.nosdn.127.net/66ea1d6ad602a8e441af7cada93bdc7a.png",
+            "level": "L2",
+            "sortOrder": 1,
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 1012003,
+            "name": "文具",
+            "keywords": "",
+            "desc": "找回书写的力量",
+            "pid": 1012000,
+            "iconUrl": "http://yanxuan.nosdn.127.net/e1743239e41ca9af76875aedc73be7f0.png",
+            "picUrl": "http://yanxuan.nosdn.127.net/e074795f61a83292d0f20eb7d124e2ac.png",
+            "level": "L2",
+            "sortOrder": 1,
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 1020003,
+            "name": "服饰",
+            "keywords": "",
+            "desc": "萌宝穿搭，柔软舒适触感",
+            "pid": 1011000,
+            "iconUrl": "http://yanxuan.nosdn.127.net/4e50f3c4e4d0a64cd0ad14cfc0b6bd17.png",
+            "picUrl": "http://yanxuan.nosdn.127.net/004f5f96df4aeb0645abbd70c0637239.png",
+            "level": "L2",
+            "sortOrder": 1,
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+
+错误码
+    
+    略   
+    
+
+#### 2.4.2 商品详情
+
+应用场景
+
+    商品详情
+    
+接口链接
+
+    GET /wx/goods/detail
+
+请求参数
+    
+    id: 商品ID，例如id=1152008
+
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "specificationList": [
+          {
+            "name": "规格",
+            "valueList": [
+              {
+                "id": 231,
+                "goodsId": 1152008,
+                "specification": "规格",
+                "value": "标准",
+                "picUrl": "",
+                "addTime": "2018-02-01 00:00:00",
+                "updateTime": "2018-02-01 00:00:00",
+                "deleted": false
+              }
+            ]
+          }
+        ],
+        "groupon": [],
+        "issue": [
+          {
+            "id": 1,
+            "question": "购买运费如何收取？",
+            "answer": "单笔订单金额（不含运费）满88元免邮费；不满88元，每单收取10元运费。\n(港澳台地区需满",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 2,
+            "question": "使用什么快递发货？",
+            "answer": "严选默认使用顺丰快递发货（个别商品使用其他快递），配送范围覆盖全国大部分地区（港澳台地区除",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 3,
+            "question": "如何申请退货？",
+            "answer": "1.自收到商品之日起30日内，顾客可申请无忧退货，退款将原路返还，不同的银行处理时间不同，",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 4,
+            "question": "如何开具发票？",
+            "answer": "1.如需开具普通发票，请在下单时选择“我要开发票”并填写相关信息（APP仅限2.4.0及以",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          }
+        ],
+        "userHasCollect": 0,
+        "shareImage": "",
+        "comment": {
+          "data": [],
+          "count": 0
+        },
+        "attribute": [],
+        "brand": {},
+        "productList": [
+          {
+            "id": 232,
+            "goodsId": 1152008,
+            "specifications": [
+              "标准"
+            ],
+            "price": 29.00,
+            "number": 100,
+            "url": "http://yanxuan.nosdn.127.net/203cb83d93606865e3ddde57b69b9e9a.png",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          }
+        ],
+        "info": {
+          "id": 1152008,
+          "goodsSn": "1152008",
+          "name": "魔兽世界 部落 护腕 一只",
+          "categoryId": 1032000,
+          "brandId": 0,
+          "gallery": [
+            "http://yanxuan.nosdn.127.net/46bcddbc57e70bf5f36bdff9c9195c65.png",
+            "http://yanxuan.nosdn.127.net/46bcddbc57e70bf5f36bdff9c9195c65.png",
+            "http://yanxuan.nosdn.127.net/46bcddbc57e70bf5f36bdff9c9195c65.png",
+            "http://yanxuan.nosdn.127.net/46bcddbc57e70bf5f36bdff9c9195c65.png",
+            "http://yanxuan.nosdn.127.net/46bcddbc57e70bf5f36bdff9c9195c65.png"
+          ],
+          "keywords": "",
+          "brief": "吸汗、舒适、弹性、防护、耐用",
+          "isOnSale": true,
+          "sortOrder": 7,
+          "picUrl": "http://yanxuan.nosdn.127.net/203cb83d93606865e3ddde57b69b9e9a.png",
+          "shareUrl": "",
+          "isNew": false,
+          "isHot": true,
+          "unit": "件",
+          "counterPrice": 49.00,
+          "retailPrice": 29.00,
+          "addTime": "2018-02-01 00:00:00",
+          "updateTime": "2018-02-01 00:00:00",
+          "deleted": false,
+          "detail": ""
+        }
+      },
+      "errmsg": "成功"
+    }
+
+错误码
+    
+    略   
+
+
+#### 2.4.3 商品推荐
+
+应用场景
+
+    针对某个商品推荐其他商品
+    
+接口链接
+
+    GET /wx/goods/related
+
+请求参数
+    
+    id: 商品ID，例如id=1152008
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序
+        
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "total": 8,
+        "pages": 2,
+        "limit": 6,
+        "page": 1,
+        "list": [
+          {
+            "id": 1152004,
+            "name": "魔兽世界 蛋盾包 双肩包",
+            "brief": "伊利丹掉落，挤地铁神器",
+            "picUrl": "http://yanxuan.nosdn.127.net/8c93cef435d888bd79833777df1cd0c2.png",
+            "isNew": false,
+            "isHot": false,
+            "counterPrice": 419.00,
+            "retailPrice": 399.00
+          },
+          {
+            "id": 1152008,
+            "name": "魔兽世界 部落 护腕 一只",
+            "brief": "吸汗、舒适、弹性、防护、耐用",
+            "picUrl": "http://yanxuan.nosdn.127.net/203cb83d93606865e3ddde57b69b9e9a.png",
+            "isNew": false,
+            "isHot": true,
+            "counterPrice": 49.00,
+            "retailPrice": 29.00
+          },
+          {
+            "id": 1152009,
+            "name": "魔兽世界 联盟 护腕 一只",
+            "brief": "吸汗、舒适、弹性、防护、耐用",
+            "picUrl": "http://yanxuan.nosdn.127.net/ae6d41117717387b82dcaf1dfce0cd97.png",
+            "isNew": false,
+            "isHot": true,
+            "counterPrice": 49.00,
+            "retailPrice": 29.00
+          },
+          {
+            "id": 1152031,
+            "name": "魔兽世界-伊利丹颈枕眼罩套装",
+            "brief": "差旅好伴侣",
+            "picUrl": "http://yanxuan.nosdn.127.net/fd6e78a397bd9e9804116a36f0270b0a.png",
+            "isNew": false,
+            "isHot": true,
+            "counterPrice": 119.00,
+            "retailPrice": 99.00
+          },
+          {
+            "id": 1152095,
+            "name": "魔兽世界 联盟·暴风城 堡垒收纳盒",
+            "brief": "桌面整理神器",
+            "picUrl": "http://yanxuan.nosdn.127.net/c86b49f635fa141decebabbd0966a6ef.png",
+            "isNew": false,
+            "isHot": false,
+            "counterPrice": 519.00,
+            "retailPrice": 499.00
+          },
+          {
+            "id": 1152097,
+            "name": "魔兽世界 雷霆之怒逐风者的祝福之剑 雨伞",
+            "brief": "炫酷装备，可以背的雨伞",
+            "picUrl": "http://yanxuan.nosdn.127.net/532836444ae5eaec40b5810ca4f9b1e6.png",
+            "isNew": false,
+            "isHot": false,
+            "counterPrice": 419.00,
+            "retailPrice": 399.00
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+
+错误码
+    
+    略   
+            
+#### 2.4.4 商品分类
+
+应用场景
+
+    针对某个商品推荐其他商品
+    
+接口链接
+
+    GET /wx/goods/related
+
+请求参数
+    
+        
+响应内容
+
+错误码
+
+#### 2.4.5 在售商品总数
+
+应用场景
+
+    在售商品总数
+    
+接口链接
+
+    GET /wx/goods/count
+
+请求参数
+    
+    无
+        
+响应内容
+
+    {
+      "errno": 0,
+      "data": 238,
+      "errmsg": "成功"
+    }
+    
+错误码
+       
+    无
+         
 ### 2.5 购物车服务
 
 ### 2.6 订单服务
@@ -427,11 +861,11 @@ API应该存在版本控制，以保证兼容性。
     
     略
     
-#### 2.9.2 品牌商信息
+#### 2.9.2 品牌商详情
 
 应用场景
 
-    访问单个品牌商信息
+    访问单个品牌商详情信息
     
 接口链接
 
@@ -467,6 +901,154 @@ API应该存在版本控制，以保证兼容性。
 
 ### 2.11 评论服务
 
+#### 2.11.1 评论数量
+
+应用场景
+
+    某个商品或者专题的评论数量，包括总的评论数量和包含图片的评论数量
+    
+接口链接
+
+    GET /wx/comment/count
+
+请求参数
+    
+    type: 评论类型，如果是0则是商品评论，如果是1则是专题评论
+    valueId: 评论对象ID，如果type=0,则设置商品ID，如果type=0,则设置专题ID
+    
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "hasPicCount": 34,
+        "allCount": 96
+      },
+      "errmsg": "成功"
+    }
+
+错误码
+    
+    无
+    
+
+#### 2.11.2 评论列表
+
+应用场景
+
+    某个商品或者专题的评论列表
+    
+接口链接
+
+    GET /wx/comment/list
+    
+请求参数
+    
+    valueId=1181000&type=0&limit=20&page=1&showType=0
+    type: 评论类型，如果是0则是商品评论，如果是1则是专题评论
+    valueId: 评论对象ID，如果type=0,则设置商品ID，如果type=0,则设置专题ID
+    showType: 评论显示类型，如果是0则是所有评论，如果是1则是包含图片的评论
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序
+        
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "total": 96,
+        "pages": 20,
+        "limit": 5,
+        "page": 1,
+        "list": [
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/218783173f303ec6d8766810951d0790.jpg"
+            ],
+            "content": "布料很厚实，触感不错，洗过之后不缩水不掉色"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/33978a0d6f56d94c45e4fc594b4b8606.jpg"
+            ],
+            "content": "料子很舒服，凉凉的，配合蚕丝被，夏天很凉快~"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/d3975d1b6d88e9f9d762cd9a879d1a14.jpg"
+            ],
+            "content": "一直喜欢粗布的床上用品。冬暖夏凉。这套看起来非常漂亮。实际感觉有点粗布的感觉。很好！"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/5fe1121396458cfe0dc1b25ec86f7ff9.jpg",
+              "https://yanxuan.nosdn.127.net/d5a55abd6ced5c811d775b04929aaabc.jpg",
+              "https://yanxuan.nosdn.127.net/f1764d820ba6ddaf51d297e3cf3826cd.jpg"
+            ],
+            "content": "太好了，舒服的不得了，腰，腿，脊柱，头，颈椎！\n无一处不舒服，真没想到这么优惠！\n搬了新家还要买！"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/f753f91430dfb56f574c737d4b2fde46.jpg"
+            ],
+            "content": "抱着试试的态度 先买了小的 果然感觉很舒服 深陷其中 把自己全身心都给了它 第二个床垫已经在路上"
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+    
+错误码
+    
+    无
+        
+
+#### 2.11.3 发表评论
+
+应用场景
+
+    针对某个商品或者专题的发表评论
+    
+接口链接
+
+
+请求参数
+    
+
+响应内容
+
+
+错误码
+    
+    略
+            
 ### 2.12 优惠券服务
 
 ### 2.13 反馈服务
@@ -475,6 +1057,88 @@ API应该存在版本控制，以保证兼容性。
 
 ### 2.15 团购服务
 
+注意
+> 团购业务还不完善
+
+
+#### 2.15.1 团购商品列表
+
+应用场景
+
+    参加团购的商品列表信息
+    
+接口链接
+
+
+请求参数
+    
+
+响应内容
+
+
+错误码
+    
+    略
+
+
+#### 2.15.2 团购活动详情
+
+应用场景
+
+    团购活动详情
+    
+接口链接
+
+
+请求参数
+    
+
+响应内容
+
+
+错误码
+    
+    略               
+
+#### 2.15.3 参加团购
+
+应用场景
+
+    参加团购的商品列表信息
+    
+接口链接
+
+
+请求参数
+    
+
+响应内容
+
+
+错误码
+    
+    略
+
+
+#### 2.15.4 用户参团列表
+
+应用场景
+
+    用户参团列表
+    
+接口链接
+
+
+请求参数
+    
+
+响应内容
+
+
+错误码
+    
+    略
+                                                                  
 ### 2.16 帮助服务
 
 ### 2.17 搜索服务
