@@ -53,7 +53,6 @@ Page({
   },
   onShow: function() {
     // 页面显示
-    this.getCommentList();
   },
   onHide: function() {
     // 页面隐藏
