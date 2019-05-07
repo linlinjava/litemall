@@ -689,7 +689,7 @@ API应该存在版本控制，以保证兼容性。
 
 应用场景
 
-    请求用户的收货地址列表
+    用户收货地址列表
 
 接口链接
 
@@ -698,18 +698,40 @@ API应该存在版本控制，以保证兼容性。
 请求参数
 
     userId: 用户ID
-    
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序
+        
 响应结果
 
     {
-        errno: 0,
-        errmsg: "成功",，
-        list: [AddressVo]
-        page:  xx
-        limit: xx
-        total: xx
+      "errno": 0,
+      "data": {
+        "total": 1,
+        "pages": 1,
+        "limit": 1,
+        "page": 1,
+        "list": [
+          {
+            "id": 3,
+            "name": "d",
+            "userId": 2,
+            "province": "北京市",
+            "city": "市辖区",
+            "county": "东城区",
+            "addressDetail": "ddd",
+            "areaCode": "110101",
+            "tel": "13811111111",
+            "isDefault": true,
+            "addTime": "2019-05-06 14:17:32",
+            "updateTime": "2019-05-06 14:17:32",
+            "deleted": false
+          }
+        ]
+      },
+      "errmsg": "成功"
     }
-
 
 错误码
 
@@ -752,7 +774,83 @@ API应该存在版本控制，以保证兼容性。
 错误码
 
     略
-    	
+
+    
+#### 2.8.3 保存收货地址
+
+应用场景
+
+    添加或者更新用户收货地址
+
+接口链接
+
+    POST /wx/address/save
+
+请求参数
+
+    id: 收货地址ID，如果是0则是添加，否则是更新
+    name: 收货人，
+    tel: 手机号
+    province: 省级行政区域,
+    city: 市级行政区域,
+    county: 区级行政区域,
+    addressDetail: 具体地址,
+    areaCode: 地址编码，
+    postalCode: 邮政编码
+    isDefault: 是否默认    
+
+例如
+    
+    {
+      "id": 0,
+      "name": "xxx",
+      "tel": "13811111111",
+      "province": "北京市",
+      "city": "市辖区",
+      "county": "东城区",
+      "areaCode": "110101",
+      "addressDetail": "dddd",
+      "isDefault": true
+    }
+    
+响应结果
+
+    {
+        errno: 0,
+        errmsg: "成功",，
+        data: 3
+    }
+
+错误码
+
+    略
+    
+    
+#### 2.8.4 删除收货地址
+
+应用场景
+
+    删除用户的某个收货地址
+
+接口链接
+
+    POST /wx/address/delete
+
+请求参数
+
+    id: 收货地址ID
+    
+响应结果
+
+    {
+        errno: 0,
+        errmsg: "成功"
+    }
+
+错误码
+
+    略
+            	
 ### 2.9 品牌商服务
 
 #### 2.9.1 品牌商列表
