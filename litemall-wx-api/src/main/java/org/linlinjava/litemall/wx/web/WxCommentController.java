@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.wx.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -113,10 +112,10 @@ public class WxCommentController {
     public Object count(@NotNull Byte type, @NotNull Integer valueId) {
         int allCount = commentService.count(type, valueId, 0);
         int hasPicCount = commentService.count(type, valueId, 1);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("allCount", allCount);
-        data.put("hasPicCount", hasPicCount);
-        return ResponseUtil.ok(data);
+        Map<String, Object> entity = new HashMap<String, Object>();
+        entity.put("allCount", allCount);
+        entity.put("hasPicCount", hasPicCount);
+        return ResponseUtil.ok(entity);
     }
 
     /**
@@ -136,7 +135,6 @@ public class WxCommentController {
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit) {
         List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, limit);
-        long count = PageInfo.of(commentList).getTotal();
 
         List<Map<String, Object>> commentVoList = new ArrayList<>(commentList.size());
         for (LitemallComment comment : commentList) {
@@ -153,10 +151,6 @@ public class WxCommentController {
 
             commentVoList.add(commentVo);
         }
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", commentVoList);
-        data.put("count", count);
-        data.put("currentPage", page);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(commentVoList, commentList);
     }
 }

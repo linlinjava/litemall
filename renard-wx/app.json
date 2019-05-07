@@ -13,7 +13,6 @@
     "pages/ucenter/collect/collect",
     "pages/auth/login/login",
     "pages/payResult/payResult",
-    "pages/comment/comment",
     "pages/commentPost/commentPost",
     "pages/topic/topic",
     "pages/topicDetail/topicDetail",

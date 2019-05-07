@@ -427,11 +427,11 @@ API应该存在版本控制，以保证兼容性。
     
     略
     
-#### 2.9.2 品牌商信息
+#### 2.9.2 品牌商详情
 
 应用场景
 
-    访问单个品牌商信息
+    访问单个品牌商详情信息
     
 接口链接
 
@@ -467,6 +467,154 @@ API应该存在版本控制，以保证兼容性。
 
 ### 2.11 评论服务
 
+#### 2.11.1 评论数量
+
+应用场景
+
+    某个商品或者专题的评论数量，包括总的评论数量和包含图片的评论数量
+    
+接口链接
+
+    GET /wx/comment/count
+
+请求参数
+    
+    type: 评论类型，如果是0则是商品评论，如果是1则是专题评论
+    valueId: 评论对象ID，如果type=0,则设置商品ID，如果type=0,则设置专题ID
+    
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "hasPicCount": 34,
+        "allCount": 96
+      },
+      "errmsg": "成功"
+    }
+
+错误码
+    
+    无
+    
+
+#### 2.11.2 评论列表
+
+应用场景
+
+    某个商品或者专题的评论列表
+    
+接口链接
+
+    GET /wx/comment/list
+    
+请求参数
+    
+    valueId=1181000&type=0&limit=20&page=1&showType=0
+    type: 评论类型，如果是0则是商品评论，如果是1则是专题评论
+    valueId: 评论对象ID，如果type=0,则设置商品ID，如果type=0,则设置专题ID
+    showType: 评论显示类型，如果是0则是所有评论，如果是1则是包含图片的评论
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序
+        
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "total": 96,
+        "pages": 20,
+        "limit": 5,
+        "page": 1,
+        "list": [
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/218783173f303ec6d8766810951d0790.jpg"
+            ],
+            "content": "布料很厚实，触感不错，洗过之后不缩水不掉色"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/33978a0d6f56d94c45e4fc594b4b8606.jpg"
+            ],
+            "content": "料子很舒服，凉凉的，配合蚕丝被，夏天很凉快~"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/d3975d1b6d88e9f9d762cd9a879d1a14.jpg"
+            ],
+            "content": "一直喜欢粗布的床上用品。冬暖夏凉。这套看起来非常漂亮。实际感觉有点粗布的感觉。很好！"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/5fe1121396458cfe0dc1b25ec86f7ff9.jpg",
+              "https://yanxuan.nosdn.127.net/d5a55abd6ced5c811d775b04929aaabc.jpg",
+              "https://yanxuan.nosdn.127.net/f1764d820ba6ddaf51d297e3cf3826cd.jpg"
+            ],
+            "content": "太好了，舒服的不得了，腰，腿，脊柱，头，颈椎！\n无一处不舒服，真没想到这么优惠！\n搬了新家还要买！"
+          },
+          {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "addTime": "2018-02-01 00:00:00",
+            "picList": [
+              "https://yanxuan.nosdn.127.net/f753f91430dfb56f574c737d4b2fde46.jpg"
+            ],
+            "content": "抱着试试的态度 先买了小的 果然感觉很舒服 深陷其中 把自己全身心都给了它 第二个床垫已经在路上"
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+    
+错误码
+    
+    无
+        
+
+#### 2.11.3 发表评论
+
+应用场景
+
+    针对某个商品或者专题的发表评论
+    
+接口链接
+
+
+请求参数
+    
+
+响应内容
+
+
+错误码
+    
+    略
+            
 ### 2.12 优惠券服务
 
 ### 2.13 反馈服务
