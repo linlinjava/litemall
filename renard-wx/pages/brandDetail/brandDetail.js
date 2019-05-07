@@ -26,7 +26,7 @@ Page({
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          brand: res.data.brand
+          brand: res.data
         });
 
         that.getGoodsList();
@@ -44,7 +44,7 @@ Page({
       .then(function(res) {
         if (res.errno === 0) {
           that.setData({
-            goodsList: res.data.goodsList
+            goodsList: res.data.list
           });
         }
       });

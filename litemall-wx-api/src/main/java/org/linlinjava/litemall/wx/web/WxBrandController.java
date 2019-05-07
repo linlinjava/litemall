@@ -3,6 +3,8 @@ package org.linlinjava.litemall.wx.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
+import org.linlinjava.litemall.core.validator.Order;
+import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallBrand;
 import org.linlinjava.litemall.db.service.LitemallBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +40,11 @@ public class WxBrandController {
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer limit) {
-
-        List<LitemallBrand> brandList = brandService.queryVO(page, limit);
-        int total = brandService.queryTotalCount();
-        int totalPages = (int) Math.ceil((double) total / limit);
-
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("brandList", brandList);
-        data.put("totalPages", totalPages);
-        return ResponseUtil.ok(data);
+                       @RequestParam(defaultValue = "10") Integer limit,
+                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Order @RequestParam(defaultValue = "desc") String order) {
+        List<LitemallBrand> brandList = brandService.query(page, limit, sort, order);
+        return ResponseUtil.okList(brandList);
     }
 
     /**
@@ -63,8 +60,6 @@ public class WxBrandController {
             return ResponseUtil.badArgumentValue();
         }
 
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("brand", entity);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.ok(entity);
     }
 }

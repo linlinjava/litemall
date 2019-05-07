@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      list: undefined,
+      list: [],
       listLoading: true,
       downloadLoading: false
     }
@@ -47,7 +47,7 @@ export default {
     getList() {
       this.listLoading = true
       listRegion().then(response => {
-        this.list = response.data.data
+        this.list = response.data.data.list
         this.listLoading = false
       }).catch(() => {
         this.list = []

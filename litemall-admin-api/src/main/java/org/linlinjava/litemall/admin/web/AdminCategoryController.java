@@ -64,7 +64,7 @@ public class AdminCategoryController {
             categoryVoList.add(categoryVO);
         }
 
-        return ResponseUtil.ok(categoryVoList);
+        return ResponseUtil.okList(categoryVoList);
     }
 
     private Object validate(LitemallCategory category) {
@@ -148,6 +148,6 @@ public class AdminCategoryController {
             d.put("label", category.getName());
             data.add(d);
         }
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(data);
     }
 }
