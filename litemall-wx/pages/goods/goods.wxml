@@ -33,7 +33,7 @@
 
   <view class="goods-info">
     <view class="c">
-      <text class="desc">{{goods.goodsBrief}}</text>
+      <text class="desc">{{goods.brief}}</text>
       <view class="price">
         <view class="counterPrice">原价：￥{{goods.counterPrice}}</view>
         <view class="retailPrice">现价：￥{{checkedSpecPrice}}</view>
