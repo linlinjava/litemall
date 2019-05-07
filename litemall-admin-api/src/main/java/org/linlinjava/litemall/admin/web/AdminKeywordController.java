@@ -49,13 +49,13 @@ public class AdminKeywordController {
     @RequiresPermissions("admin:keyword:create")
     @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="添加")
     @PostMapping("/create")
-    public Object create(@RequestBody LitemallKeyword keywords) {
-        Object error = validate(keywords);
+    public Object create(@RequestBody LitemallKeyword keyword) {
+        Object error = validate(keyword);
         if (error != null) {
             return error;
         }
-        keywordService.add(keywords);
-        return ResponseUtil.ok(keywords);
+        keywordService.add(keyword);
+        return ResponseUtil.ok(keyword);
     }
 
     @RequiresPermissions("admin:keyword:read")
@@ -69,15 +69,15 @@ public class AdminKeywordController {
     @RequiresPermissions("admin:keyword:update")
     @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="编辑")
     @PostMapping("/update")
-    public Object update(@RequestBody LitemallKeyword keywords) {
-        Object error = validate(keywords);
+    public Object update(@RequestBody LitemallKeyword keyword) {
+        Object error = validate(keyword);
         if (error != null) {
             return error;
         }
-        if (keywordService.updateById(keywords) == 0) {
+        if (keywordService.updateById(keyword) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
-        return ResponseUtil.ok(keywords);
+        return ResponseUtil.ok(keyword);
     }
 
     @RequiresPermissions("admin:keyword:delete")

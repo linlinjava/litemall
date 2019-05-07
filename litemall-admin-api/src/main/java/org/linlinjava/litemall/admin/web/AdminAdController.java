@@ -66,8 +66,8 @@ public class AdminAdController {
     @RequiresPermissionsDesc(menu={"推广管理" , "广告管理"}, button="详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
-        LitemallAd brand = adService.findById(id);
-        return ResponseUtil.ok(brand);
+        LitemallAd ad = adService.findById(id);
+        return ResponseUtil.ok(ad);
     }
 
     @RequiresPermissions("admin:ad:update")
