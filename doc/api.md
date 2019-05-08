@@ -145,11 +145,45 @@ list是对象数组，total是总的数量。
 
 ### 1.4 Token
 
+前后端采用token来验证访问权限。
+
 #### 1.4.1 Header&Token
+
+1. 前端访问商场登录API`/wx/auth/login`或者管理后台登录API`/admin/auth/login`
+
+        POST /wx/auth/login
+    
+        {
+            "username": "user123",
+            "password': "user123'
+        }
+
+2. 成功以后，会接收后端想要的一个token，
+
+            {
+              "errno": 0,
+              "data": {
+                "userInfo": {
+                  "nickName": "user123",
+                  "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                },
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNTU3MzI2ODUwLCJ1c2VySWQiOjEsImlhdCI6MTU1NzMxOTY1MH0.XP0TuhupV_ttQsCr1KTaPZVlTbVzVOcnq_K0kXdbri0"
+              },
+              "errmsg": "成功"
+            }
+    
+3. 请求受保护API则，则采用自定义头部携带此token
+
+        GET http://localhost:8080/wx/address/list
+        X-Litemall-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNTU3MzM2ODU0LCJ1c2VySWQiOjIsImlhdCI6MTU1NzMyOTY1NH0.JY1-cqOnmi-CVjFohZMqK2iAdAH4O6CKj0Cqd5tMF3M
 
 #### 1.4.2 商场Header
 
+访问受保护商场API采用自定义`X-Litemall-Token`头部
+
 #### 1.4.3 管理后台Header
+
+访问受保护管理后台API则是自定义`X-Litemall-Admin-Token`头部。
 
 ### 1.5 版本控制
 
@@ -211,15 +245,152 @@ API应该存在版本控制，以保证兼容性。
 管理后台API服务涉及:
 * 略
 
+### 1.8 API测试
+
+本节以GET、POST两种方式以及是否需要登录举例说明如何测试和使用本项目API。
+
+开发者可以使用各种API测试命令或者工具，这里以Postman作为工具。
+
+#### 1.8.1 GET 示例
+
+如果一个API是GET方法，那么请求参数需要在访问链接后面：
+
+例如测试2.4.2节商品详情API
+
+![](./pic/get.png)    
+
+#### 1.8.2 GET & Token 示例
+
+如果需要登录才能访问数据，则需要先向后端请求登录，得到token，然后请求时携带token。
+
+例如测试2.8.1节收货地址列表API
+
+如果没有登录，则返回未登录信息
+
+![](./pic/get_no_token.png)
+
+因此测试这些API，需要先登录
+
+![](./pic/login.png)
+
+然后，采用自定义`X-Litemall-Token`来携带token访问商场API
+
+![](./pic/get_with_token.png)
+
+注意：
+> 访问受保护商场API是采用自定义`X-Litemall-Token`头部；
+> 而访问受保护管理后台API则是自定义`X-Litemall-Admin-Token`头部。
+
+#### 1.8.3 POST 示例
+
+通常POST请求后端时，都需要先登录才能有权限上传数据，因此这里不举例说明。
+
+#### 1.8.4 POST & Token 示例
+
+如果需要登录才能提交数据，则需要先向后端请求登录，得到token，然后请求时携带token。
+
+![](./pic/post_no_token.png)
+
+因此测试这些API，需要先登录
+
+![](./pic/login.png)
+
+然后，采用自定义`X-Litemall-Token`来携带token访问商场API
+
+![](./pic/get_with_token.png)
+
+注意：
+> 访问受保护商场API是采用自定义`X-Litemall-Token`头部；
+> 而访问受保护管理后台API则是自定义`X-Litemall-Admin-Token`头部。
+
+### 1.9 API保护
+
+为了保护API不被滥用，通常API需要引入保护机制，例如OAuth2。
+
+本项目暂时无保护机制，因此实际上一旦开发者知道服务器，就很容易访问API。
+
+### 1.10 API局限性
+
+当前API还存在一些问题，后面需要继续优化和完善。
+
+* 无意义的通用字段
+
+* 团购API完善
+
+### 1.11 NO Swagger
+
+暂不支持Swagger，基于以下考虑：
+
+* 前后端中立
+
+在前后端分离项目中，依赖后端的Swagger来生成项目API似乎不是很理想，
+这实际上把项目API设计工作过多地压在后端，同时前端也被迫依赖后端，
+因为后端如果没有写好文档注解，前端不可能了解API的输入输出。
+
+可能一种合理的做法应该这样：
+项目初期前后端一起完成一个完整基本的API文档，定义好交互规范和具体API的行为，然后双方同时开始开发工作；
+某个开发阶段，前端需要更多的数据或者新的API支持，此时也不需要立即联系后端（除非API产生破坏性变更），
+而是暂时基于mock和自定义mock数据独立开发；之后，在合适阶段（可以按照项目规定，例如三天或者周五），
+前后端再次沟通API的变更，后端了解需求后则可以接受、拒绝或者调整，当然变更必须要在API文档中体现和更新；
+下一个开发阶段，前端和后端能够再次基于最新的API文档来调整自己代码。
+最后项目测试时，只要前端对照API文档，后端也是对照API文档。
+
+* 后端代码简洁
+
+如果使用Swagger，为了得到完整的文档，需要在每一个方法前面加上多个文档注解，文档越是详尽，则注解越多，
+造成代码不是很简洁。特别是具备代码属性的注解和Swagger文档注解混杂在一起，可能不是很好。
+
+如果开发者需要Swagger，可以自行接入。
+
 ## 2 商城API服务
 
 ### 2.1 安全服务
 
-#### 2.1.1 注册
+#### 2.1.1 小程序微信登录
 
-#### 2.1.2 登录
+应用场景
 
-#### 2.1.3 账号信息
+    小程序环境下微信登录。
+      
+接口链接
+
+    xxx
+    
+请求参数
+
+    xxx
+    
+响应内容
+
+    xxx
+    
+错误码
+
+    xxx
+    
+#### 2.1.2 账号登录
+
+应用场景
+
+    微信登录
+    
+接口链接
+
+    xxx
+    
+请求参数
+
+    xxx
+    
+响应内容
+
+    xxx
+    
+错误码
+
+    xxx
+    
+#### 2.1.3 注册
 
 #### 2.1.4 退出
 
@@ -680,7 +851,102 @@ API应该存在版本控制，以保证兼容性。
 ### 2.5 购物车服务
 
 ### 2.6 订单服务
+    
+#### 2.6.1 订单列表
 
+应用场景
+
+    订单列表
+
+接口链接
+
+
+请求参数
+
+    
+响应结果
+
+错误码
+
+    略
+    
+#### 2.6.2 订单详情
+
+应用场景
+
+    订单详情
+
+接口链接
+
+请求参数
+    
+响应结果
+
+错误码
+
+    略
+    
+#### 2.6.3 创建新订单
+
+应用场景
+
+    创建新订单
+
+接口链接
+
+
+请求参数
+
+    
+响应结果
+
+
+错误码
+
+    略
+    
+#### 2.6.4 取消订单
+
+应用场景
+
+    取消订单
+
+接口链接
+
+
+请求参数
+
+    
+响应结果
+
+
+错误码
+
+    略
+
+#### 2.6.4 订单的微信预支付交易单
+
+应用场景
+
+    订单的微信预支付交易单
+
+接口链接
+
+
+请求参数
+
+    
+响应结果
+
+    {
+        errno: 0,
+        errmsg: "成功"
+    }
+
+错误码
+
+    略
+                    
 ### 2.7 会员服务
 
 ### 2.8 收货地址服务
