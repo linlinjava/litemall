@@ -15,10 +15,6 @@ module.exports = {
   CatalogAll: WxApiRoot + 'catalog/all', //分类目录当前分类数据接口
 
   AuthLoginByWeixin: WxApiRoot + 'auth/login_by_weixin', //微信登录
-  AuthLoginByAccount: WxApiRoot + 'auth/login', //账号登录
-  AuthRegister: WxApiRoot + 'auth/register', //账号注册
-  AuthReset: WxApiRoot + 'auth/reset', //账号密码重置
-  AuthRegisterCaptcha: WxApiRoot + 'auth/regCaptcha', //验证码
 
   GoodsCount: WxApiRoot + 'goods/count', //统计商品总数
   GoodsList: WxApiRoot + 'goods/list', //获得商品列表
@@ -53,8 +49,6 @@ module.exports = {
   AddressDetail: WxApiRoot + 'address/detail', //收货地址详情
   AddressSave: WxApiRoot + 'address/save', //保存收货地址
   AddressDelete: WxApiRoot + 'address/delete', //保存收货地址
-
-  RegionList: WxApiRoot + 'region/list', //获取区域列表
 
   OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
   OrderPrepay: WxApiRoot + 'order/prepay', // 订单的预支付会话
