@@ -98,9 +98,9 @@ Page({
       if (res.errno === 0) {
 
         that.setData({
-          issueList: res.data.data,
+          issueList: res.data.list,
           showPage: true,
-          count: res.data.count
+          count: res.data.total
         });
       }
     });

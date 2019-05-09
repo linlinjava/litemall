@@ -23,8 +23,8 @@ Page({
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          collectList: that.data.collectList.concat(res.data.collectList),
-          totalPages: res.data.totalPages
+          collectList: that.data.collectList.concat(res.data.list),
+          totalPages: res.data.pages
         });
       }
       wx.hideLoading();

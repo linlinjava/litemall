@@ -1263,6 +1263,97 @@ API应该存在版本控制，以保证兼容性。
     
 ### 2.10 收藏服务
 
+#### 2.10.1 收藏列表
+
+应用场景
+
+    收藏列表
+    
+接口链接
+
+    GET /wx/collect/list
+    
+请求参数
+    
+    type： 收藏类型，如果是0则是商品收藏，如果是1则是专题收藏
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序   
+    
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "total": 2,
+        "pages": 1,
+        "limit": 10,
+        "page": 1,
+        "list": [
+          {
+            "brief": "酥脆奶香，甜酸回味",
+            "picUrl": "http://yanxuan.nosdn.127.net/767b370d07f3973500db54900bcbd2a7.png",
+            "valueId": 1116011,
+            "name": "蔓越莓曲奇 200克",
+            "id": 3,
+            "type": 0,
+            "retailPrice": 36.00
+          },
+          {
+            "brief": "MUJI供应商携手打造",
+            "picUrl": "http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png",
+            "valueId": 1109008,
+            "name": "云端沙发组合",
+            "id": 2,
+            "type": 0,
+            "retailPrice": 3999.00
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+    
+错误码
+    
+    略
+    
+
+#### 2.10.2 收藏添加或删除
+
+应用场景
+
+    用户收藏添加或删除
+
+说明
+
+    如果用户已经收藏，则请求API会删除已收藏商品或专题；
+    如果用户未收藏，则请求API会添加新的商品或专题收藏记录。
+        
+接口链接
+
+    POST /wx/collect/addordelete
+    
+请求参数
+    
+    type: 收藏类型，如果是0则是商品收藏，如果是1则是专题收藏
+    valueId: 收藏对象ID，如果type=0则设置商品ID，如果type=1则设置专题ID
+    
+例如
+    
+    {
+      "type": 0,
+      "valueId": 1116011
+    }
+
+    
+响应内容
+
+    
+错误码
+    
+    略
+        
 ### 2.11 评论服务
 
 #### 2.11.1 评论数量
@@ -1419,6 +1510,101 @@ API应该存在版本控制，以保证兼容性。
 
 ### 2.14 足迹服务
 
+#### 2.14.1 用户足迹列表
+
+应用场景
+
+    用户足迹列表
+    
+接口链接
+
+    GET /wx/footprint/list
+    
+请求参数
+    
+    page: 请求页码
+    limit: 每一页数量 
+    
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "total": 22,
+        "pages": 6,
+        "limit": 4,
+        "page": 1,
+        "list": [
+          {
+            "brief": "酥脆奶香，甜酸回味",
+            "picUrl": "http://yanxuan.nosdn.127.net/767b370d07f3973500db54900bcbd2a7.png",
+            "addTime": "2019-05-09 10:10:01",
+            "goodsId": 1116011,
+            "name": "蔓越莓曲奇 200克",
+            "id": 22,
+            "retailPrice": 36.00
+          },
+          {
+            "brief": "MUJI供应商携手打造",
+            "picUrl": "http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png",
+            "addTime": "2019-05-09 10:09:49",
+            "goodsId": 1109008,
+            "name": "云端沙发组合",
+            "id": 21,
+            "retailPrice": 3999.00
+          },
+          {
+            "brief": "酥脆奶香，甜酸回味",
+            "picUrl": "http://yanxuan.nosdn.127.net/767b370d07f3973500db54900bcbd2a7.png",
+            "addTime": "2019-05-08 22:40:55",
+            "goodsId": 1116011,
+            "name": "蔓越莓曲奇 200克",
+            "id": 20,
+            "retailPrice": 36.00
+          },
+          {
+            "brief": "MUJI供应商携手打造",
+            "picUrl": "http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png",
+            "addTime": "2019-05-07 14:35:41",
+            "goodsId": 1109008,
+            "name": "云端沙发组合",
+            "id": 19,
+            "retailPrice": 3999.00
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+        
+错误码
+    
+    略
+    
+#### 2.14.2 用户足迹删除
+
+应用场景
+
+    用户足迹删除
+    
+接口链接
+
+    POST /wx/footprint/delete
+    
+请求参数
+    
+    id: 用户足迹ID
+    
+响应内容
+
+    {
+      "errno": 0,
+      "errmsg": "成功"
+    }
+        
+错误码
+    
+    略
+        
 ### 2.15 团购服务
 
 注意
@@ -1505,6 +1691,74 @@ API应该存在版本控制，以保证兼容性。
                                                                   
 ### 2.16 帮助服务
 
+#### 2.16.1 帮助列表
+
+应用场景
+
+    帮助列表
+    
+接口链接
+
+    GET /wx/issue/list
+    
+请求参数
+    
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序    
+
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "total": 4,
+        "pages": 1,
+        "limit": 10,
+        "page": 1,
+        "list": [
+          {
+            "id": 1,
+            "question": "购买运费如何收取？",
+            "answer": "单笔订单金额（不含运费）满88元免邮费；不满88元，每单收取10元运费。\n(港澳台地区需满",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 2,
+            "question": "使用什么快递发货？",
+            "answer": "严选默认使用顺丰快递发货（个别商品使用其他快递），配送范围覆盖全国大部分地区（港澳台地区除",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 3,
+            "question": "如何申请退货？",
+            "answer": "1.自收到商品之日起30日内，顾客可申请无忧退货，退款将原路返还，不同的银行处理时间不同，",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          },
+          {
+            "id": 4,
+            "question": "如何开具发票？",
+            "answer": "1.如需开具普通发票，请在下单时选择“我要开发票”并填写相关信息（APP仅限2.4.0及以",
+            "addTime": "2018-02-01 00:00:00",
+            "updateTime": "2018-02-01 00:00:00",
+            "deleted": false
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+    
+错误码
+    
+    无
+              
 ### 2.17 搜索服务
 
 ### 2.18 专题服务
