@@ -7,17 +7,22 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 * [文档](https://linlinjava.gitbook.io/litemall)
 * [贡献](https://linlinjava.gitbook.io/litemall/contribute)
 * [FAQ](https://linlinjava.gitbook.io/litemall/faq)
+* [API](https://linlinjava.gitbook.io/litemall/api)
 
 ## 项目实例
 
 ### 小商场实例
 
 * renard-wx模块实例
+
 ![](./doc/pic/renard_wx_demo.png)    
+
 > 注意：此实例是真实小商场，开发者可以购买商品和付款，但请不要尝试退款操作。
 
 * litemall-wx模块实例
+
 ![](./doc/pic/litemall_wx_demo.png)    
+
 > 注意：此实例是测试小商场，开发者请不要尝试购买商品、付款、退款操作。
 
 ### 轻商场实例
