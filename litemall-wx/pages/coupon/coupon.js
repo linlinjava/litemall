@@ -92,9 +92,9 @@ Page({
 
         that.setData({
           scrollTop: 0,
-          couponList: res.data.data,
+          couponList: res.data.list,
           showPage: true,
-          count: res.data.count
+          count: res.data.total
         });
       }
       wx.hideToast();
