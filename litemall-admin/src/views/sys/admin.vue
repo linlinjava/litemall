@@ -162,7 +162,7 @@ export default {
 
     roleOptions()
       .then(response => {
-        this.roleOptions = response.data.data
+        this.roleOptions = response.data.data.list
       })
   },
   methods: {
