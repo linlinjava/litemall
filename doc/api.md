@@ -158,7 +158,7 @@ list是对象数组，total是总的数量。
             "password': "user123'
         }
 
-2. 成功以后，会接收后端想要的一个token，
+2. 成功以后，前端会接收后端响应的一个token，
 
             {
               "errno": 0,
@@ -1399,12 +1399,58 @@ API应该存在版本控制，以保证兼容性。
 
 接口链接
 
-
+    GET /wx/order/list
+    
 请求参数
 
+    showType: 订单类型，0则全部，1则待付款，2则待发货，3则待收货，4则代评价
+    page: 请求页码
+    limit: 每一页数量
+    sort: 排序字段
+    order: 升序降序
     
 响应结果
 
+    {
+      "errno": 0,
+      "data": {
+        "total": 1,
+        "pages": 1,
+        "limit": 10,
+        "page": 1,
+        "list": [
+          {
+            "orderStatusText": "未付款",
+            "isGroupin": false,
+            "orderSn": "20190509607545",
+            "actualPrice": 3989.00,
+            "goodsList": [
+              {
+                "number": 1,
+                "picUrl": "http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png",
+                "id": 3,
+                "goodsName": "云端沙发组合",
+                "specifications": [
+                  "标准"
+                ]
+              }
+            ],
+            "id": 3,
+            "handleOption": {
+              "cancel": true,
+              "delete": false,
+              "pay": true,
+              "comment": false,
+              "confirm": false,
+              "refund": false,
+              "rebuy": false
+            }
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+    
 错误码
 
     略
@@ -1417,15 +1463,68 @@ API应该存在版本控制，以保证兼容性。
 
 接口链接
 
+    GET /wx/order/detail
+    
 请求参数
+    
+    orderId： 订单ID
     
 响应结果
 
+    {
+      "errno": 0,
+      "data": {
+        "orderInfo": {
+          "consignee": "d",
+          "address": "北京市市辖区东城区 ddd",
+          "addTime": "2019-05-09 15:30:29",
+          "orderSn": "20190509607545",
+          "actualPrice": 3989.00,
+          "mobile": "13811111111",
+          "orderStatusText": "未付款",
+          "goodsPrice": 3999.00,
+          "couponPrice": 10.00,
+          "id": 3,
+          "freightPrice": 0.00,
+          "handleOption": {
+            "cancel": true,
+            "delete": false,
+            "pay": true,
+            "comment": false,
+            "confirm": false,
+            "refund": false,
+            "rebuy": false
+          }
+        },
+        "orderGoods": [
+          {
+            "id": 3,
+            "orderId": 3,
+            "goodsId": 1109008,
+            "goodsName": "云端沙发组合",
+            "goodsSn": "1109008",
+            "productId": 140,
+            "number": 1,
+            "price": 3999.00,
+            "specifications": [
+              "标准"
+            ],
+            "picUrl": "http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png",
+            "comment": 0,
+            "addTime": "2019-05-09 15:30:29",
+            "updateTime": "2019-05-09 15:30:29",
+            "deleted": false
+          }
+        ]
+      },
+      "errmsg": "成功"
+    }
+    
 错误码
 
     略
     
-#### 2.6.3 创建新订单
+#### 2.6.3 创建订单
 
 应用场景
 
@@ -1433,13 +1532,29 @@ API应该存在版本控制，以保证兼容性。
 
 接口链接
 
+    POST /wx/order/submit
 
 请求参数
 
+    {
+      "cartId": 0,
+      "addressId": 3,
+      "couponId": -1,
+      "message": "",
+      "grouponRulesId": 0,
+      "grouponLinkId": 0
+    }
     
 响应结果
 
-
+    {
+      "errno": 0,
+      "data": {
+        "orderId": 4
+      },
+      "errmsg": "成功"
+    }
+    
 错误码
 
     略
@@ -1452,18 +1567,24 @@ API应该存在版本控制，以保证兼容性。
 
 接口链接
 
-
+    POST /wx/order/cancel
+    
 请求参数
 
+    orderId: 订单ID
     
 响应结果
 
-
+    {
+      "errno": 0,
+      "errmsg": "成功"
+    }
+    
 错误码
 
     略
 
-#### 2.6.4 订单的微信预支付交易单
+#### 2.6.5 微信预支付交易单
 
 应用场景
 
@@ -1471,21 +1592,200 @@ API应该存在版本控制，以保证兼容性。
 
 接口链接
 
+    POST /wx/order/prepay
+
+说明
+
+    具体微信支付交互流程和预支付使用方式，见官方文档: https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_3&index=1
 
 请求参数
 
-    
+    orderId: 订单ID
+
 响应结果
 
     {
         errno: 0,
-        errmsg: "成功"
+        errmsg: "成功",
+        data: {
+            appId: 'xxx',
+            timeStamp: 'xxx',
+            nonceStr: 'xxx',
+            packageValue: 'xxx',
+            signType: 'xxx',
+            paySign: 'xxx'
+        }
     }
 
 错误码
 
     略
-                    
+     
+#### 2.6.6 确认收货
+
+应用场景
+
+    订单确认收货
+
+接口链接
+
+    POST /wx/order/confirm
+    
+请求参数
+
+    orderId: 订单ID
+    
+响应结果
+
+    {
+      "errno": 0,
+      "errmsg": "成功"
+    }
+    
+错误码
+
+    略
+    
+#### 2.6.7 订单删除
+
+应用场景
+
+    删除订单记录
+
+接口链接
+
+    POST /wx/order/delete
+    
+请求参数
+
+    orderId: 订单ID
+    
+响应结果
+
+    {
+      "errno": 0,
+      "errmsg": "成功"
+    }
+    
+错误码
+
+    略
+    
+#### 2.6.8 订单退款
+
+应用场景
+
+    订单已经支付但是商家未发货，用户可以点击退款按钮申请退款取消订单。
+
+说明
+
+    退款请求发送以后，不会自动退款，仅仅是后端设置退款请求记录。
+    管理员在管理后台看到退款请求以后会手动退款或者拒绝退款。
+    
+接口链接
+
+    POST /wx/order/refund
+    
+请求参数
+
+    orderId: 订单ID
+    
+响应结果
+
+    {
+      "errno": 0,
+      "errmsg": "成功"
+    }
+    
+错误码
+
+    略
+           
+  
+#### 2.6.9 待评价商品
+
+应用场景
+
+    用户确认收货以后，可以待评价的订单商品。    
+
+接口链接
+
+    GET /wx/order/goods
+    
+请求参数
+
+    orderId: 订单ID
+    goodsId: 商品ID
+    
+响应结果
+
+    {
+      "errno": 0,
+      "data": {
+        "id": 4,
+        "orderId": 4,
+        "goodsId": 1109008,
+        "goodsName": "云端沙发组合",
+        "goodsSn": "1109008",
+        "productId": 140,
+        "number": 1,
+        "price": 3999.00,
+        "specifications": [
+          "标准"
+        ],
+        "picUrl": "http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png",
+        "comment": 0,
+        "addTime": "2019-05-09 17:06:54",
+        "updateTime": "2019-05-09 17:06:54",
+        "deleted": false
+      },
+      "errmsg": "成功"
+    }
+    
+错误码
+
+    略
+         
+  
+#### 2.6.10 订单评价
+
+应用场景
+
+    订单评价
+
+接口链接
+
+    POST /wx/order/comment
+    
+请求参数
+
+    orderGoodsId: 订单商品ID
+    content: 评价内容
+    star: 评分，1分至5分
+    hasPicture: 是否有评价图片
+    picUrls: 评价图片列表
+    
+例如
+
+    {
+      "orderGoodsId": 4,
+      "content": "不错",
+      "star": 5,
+      "hasPicture": true,
+      "picUrls": []
+    }
+        
+响应结果
+
+    {
+      "errno": 0,
+      "errmsg": "成功"
+    }
+    
+错误码
+
+    略
+                                                  
 ### 2.7 会员服务
 
 ### 2.8 收货地址服务
@@ -1502,7 +1802,6 @@ API应该存在版本控制，以保证兼容性。
 
 请求参数
 
-    userId: 用户ID
     page: 请求页码
     limit: 每一页数量
     sort: 排序字段
@@ -1554,7 +1853,6 @@ API应该存在版本控制，以保证兼容性。
 
 请求参数
 
-    userId: 用户ID
     id: 收货地址ID
     
 响应结果
@@ -2760,6 +3058,8 @@ API应该存在版本控制，以保证兼容性。
     }
     
 ### 2.19 对象存储服务
+
+### 2.20 其他服务
 
 
 ## 3 管理后台API服务

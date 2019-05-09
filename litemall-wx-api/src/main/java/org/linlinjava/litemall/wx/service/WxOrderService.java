@@ -8,7 +8,6 @@ import com.github.binarywang.wxpay.bean.result.BaseWxPayResult;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -120,33 +119,31 @@ public class WxOrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public Object list(Integer userId, Integer showType, Integer page, Integer limit) {
+    public Object list(Integer userId, Integer showType, Integer page, Integer limit, String sort, String order) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
         List<Short> orderStatus = OrderUtil.orderStatus(showType);
-        List<LitemallOrder> orderList = orderService.queryByOrderStatus(userId, orderStatus, page, limit);
-        long count = PageInfo.of(orderList).getTotal();
-        int totalPages = (int) Math.ceil((double) count / limit);
+        List<LitemallOrder> orderList = orderService.queryByOrderStatus(userId, orderStatus, page, limit, sort, order);
 
         List<Map<String, Object>> orderVoList = new ArrayList<>(orderList.size());
-        for (LitemallOrder order : orderList) {
+        for (LitemallOrder o : orderList) {
             Map<String, Object> orderVo = new HashMap<>();
-            orderVo.put("id", order.getId());
-            orderVo.put("orderSn", order.getOrderSn());
-            orderVo.put("actualPrice", order.getActualPrice());
-            orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
-            orderVo.put("handleOption", OrderUtil.build(order));
+            orderVo.put("id", o.getId());
+            orderVo.put("orderSn", o.getOrderSn());
+            orderVo.put("actualPrice", o.getActualPrice());
+            orderVo.put("orderStatusText", OrderUtil.orderStatusText(o));
+            orderVo.put("handleOption", OrderUtil.build(o));
 
-            LitemallGroupon groupon = grouponService.queryByOrderId(order.getId());
+            LitemallGroupon groupon = grouponService.queryByOrderId(o.getId());
             if (groupon != null) {
                 orderVo.put("isGroupin", true);
             } else {
                 orderVo.put("isGroupin", false);
             }
 
-            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
+            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(o.getId());
             List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 Map<String, Object> orderGoodsVo = new HashMap<>();
@@ -162,12 +159,7 @@ public class WxOrderService {
             orderVoList.add(orderVo);
         }
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("count", count);
-        result.put("data", orderVoList);
-        result.put("totalPages", totalPages);
-
-        return ResponseUtil.ok(result);
+        return ResponseUtil.okList(orderVoList, orderList);
     }
 
     /**
