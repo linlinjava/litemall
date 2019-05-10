@@ -2,7 +2,7 @@
   <div class="tabbar-user">
     <user-header :isLogin="isLogin"/>
     <order-group/>
-    <ecoupon-group/>
+    <coupon-group/>
     <user-module/>
     <van-button size="large" class="tabbar-user__quit" v-if="isLogin" @click="quit">退出当前账户</van-button>
   </div>
@@ -11,7 +11,7 @@
 <script>
 import userHeader from './tabbar-user-header';
 import orderGroup from './tabbar-user-order';
-import ecouponGroup from './tabbar-user-ecoupon';
+import couponGroup from './tabbar-user-coupon';
 import userModule from './tabbar-user-module';
 
 import { removeLocalStorage } from '@/utils/local-storage';
@@ -42,7 +42,7 @@ export default {
   components: {
     [userHeader.name]: userHeader,
     [orderGroup.name]: orderGroup,
-    [ecouponGroup.name]: ecouponGroup,
+    [couponGroup.name]: couponGroup,
     [userModule.name]: userModule
   }
 };

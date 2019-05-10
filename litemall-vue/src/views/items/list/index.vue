@@ -46,6 +46,7 @@ export default {
 
   data() {
     return {
+      categoryId: this.itemClass,
       listApi: GoodsList,
       goodsList: [],
       currentCategory: {},
@@ -60,25 +61,25 @@ export default {
 
   methods: {
     handleTabClick(index) {
-      this.itemClass= this.navList[index].id;
+      this.categoryId= this.navList[index].id;
       this.$router.replace({
         name: 'list',
-        query: { itemClass: this.itemClass }
+        query: { itemClass: this.categoryId }
       });
       this.init();
     },
   init() {
-    goodsCategory({id: this.itemClass}).then(res => {
+    goodsCategory({id: this.categoryId}).then(res => {
       this.navList = res.data.data.brotherCategory;
       this.currentCategory= res.data.data.currentCategory;
 
       // 当id是L1分类id时，这里需要重新设置成L1分类的一个子分类的id
-      if (res.data.data.parentCategory.id == this.itemClass) {
-        this.itemClass = res.data.data.currentCategory.id;
+      if (res.data.data.parentCategory.id == this.categoryId) {
+        this.categoryId = res.data.data.currentCategory.id;
       }
 
       for (let i = 0; i < this.navList.length; i++) {
-        if (this.navList[i].id == this.itemClass) {
+        if (this.navList[i].id == this.categoryId) {
           this.navActive = i
           break;
         }
@@ -87,8 +88,8 @@ export default {
     });
   },
   getGoodsList() {
-    goodsList({categoryId: this.itemClass}).then(res => {
-      this.goodsList= res.data.data.goodsList
+    goodsList({categoryId: this.categoryId}).then(res => {
+      this.goodsList= res.data.data.list
     });
   },  
 },

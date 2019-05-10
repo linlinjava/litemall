@@ -12,19 +12,19 @@
 				</div>
 			</div>
 			<div class="item_search_history">
-				<word-tag
+				<van-tag
+          plain
 					v-for="(his, i) in wordHistory"
 					:key="i"
 					@click="toSearchResult(his)"
-				>{{his}}</word-tag>
+				>{{his}}</van-tag>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { Search } from 'vant';
-import SrarchTag from './search-tag';
+import { Search, Tag } from 'vant';
 
 export default {
   data() {
@@ -78,7 +78,7 @@ export default {
   },
   components: {
     [Search.name]: Search,
-    [SrarchTag.name]: SrarchTag
+    [Tag.name]: Tag
   }
 };
 </script>

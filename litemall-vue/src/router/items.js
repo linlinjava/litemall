@@ -8,7 +8,7 @@ export default [
       keepAlive: true
     },
     components: {
-      default:  () => import('@/views/items/tabbar-class'),
+      default:  () => import('@/views/items/tabbar-catalog'),
       tabbar: Tabbar
     }
   },

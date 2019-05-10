@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { goodsList } from '@/api/api';
 import ItemGroup from '@/components/item-group/';
 import IsEmpty from '@/components/is-empty/';
 import ItemCardHori from '@/components/item-card-hori/';
@@ -78,7 +79,6 @@ export default {
 
   methods: {
     initData() {
-      // debugger;
       this.items = [];
 
       return this.$reqGet(
@@ -86,7 +86,7 @@ export default {
         {
           keyword: this.searchVal,
           page: 1,
-          size: 100,
+          limit: 100,
           sort: 'name',
           order: 'desc',
           categoryId: 0
