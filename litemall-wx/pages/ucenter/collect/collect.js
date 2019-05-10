@@ -8,7 +8,7 @@ Page({
     type: 0,
     collectList: [],
     page: 1,
-    size: 10,
+    limit: 10,
     totalPages: 1
   },
   getCollectList() {
@@ -19,7 +19,7 @@ Page({
     util.request(api.CollectList, {
       type: that.data.type,
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({

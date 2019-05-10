@@ -9,7 +9,7 @@ Page({
     code: '',
     status: 0,
     page: 1,
-    size: 10,
+    limit: 10,
     count: 0,
     scrollTop: 0,
     showPage: false
@@ -82,7 +82,7 @@ Page({
     util.request(api.CouponMyList, {
       status: that.data.status,
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
 
@@ -131,7 +131,7 @@ Page({
   },
   nextPage: function(event) {
     var that = this;
-    if (this.data.page > that.data.count / that.data.size) {
+    if (this.data.page > that.data.count / that.data.limit) {
       return true;
     }
 
@@ -159,7 +159,7 @@ Page({
       couponList: [],
       status: e.currentTarget.dataset.index,
       page: 1,
-      size: 10,
+      limit: 10,
       count: 0,
       scrollTop: 0,
       showPage: false

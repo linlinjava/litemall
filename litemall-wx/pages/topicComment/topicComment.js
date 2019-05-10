@@ -15,7 +15,7 @@ Page({
     hasPicCount: 0,
     allPage: 1,
     picPage: 1,
-    size: 20
+    limit: 20
   },
   getCommentCount: function() {
     let that = this;
@@ -37,7 +37,7 @@ Page({
     util.request(api.CommentList, {
       valueId: that.data.valueId,
       type: that.data.type,
-      size: that.data.size,
+      limit: that.data.limit,
       page: (that.data.showType == 0 ? that.data.allPage : that.data.picPage),
       showType: that.data.showType
     }).then(function(res) {
@@ -95,20 +95,20 @@ Page({
     console.log('onPullDownRefresh');
     if (this.data.showType == 0) {
 
-      if (this.data.allCount / this.data.size < this.data.allPage) {
+      if (this.data.allCount / this.data.limit < this.data.allPage) {
         return false;
       }
 
       this.setData({
-        'allPage': this.data.allPage + 1
+        allPage: this.data.allPage + 1
       });
     } else {
-      if (this.data.hasPicCount / this.data.size < this.data.picPage) {
+      if (this.data.hasPicCount / this.data.limit < this.data.picPage) {
         return false;
       }
 
       this.setData({
-        'picPage': this.data.picPage + 1
+        picPage: this.data.picPage + 1
       });
     }
 

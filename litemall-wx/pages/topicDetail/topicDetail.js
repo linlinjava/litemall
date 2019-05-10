@@ -49,7 +49,7 @@ Page({
       type: 1,
       showType: 0,
       page: 1,
-      size: 5
+      limit: 5
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({

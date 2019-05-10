@@ -105,7 +105,7 @@ Page({
     console.log('onPullDownRefresh');
     if (this.data.showType == 0) {
 
-      if (this.data.allCount / this.data.size < this.data.allPage) {
+      if (this.data.allCount / this.data.limit < this.data.allPage) {
         return false;
       }
 
@@ -113,7 +113,7 @@ Page({
         'allPage': this.data.allPage + 1
       });
     } else {
-      if (this.data.hasPicCount / this.data.size < this.data.picPage) {
+      if (this.data.hasPicCount / this.data.limit < this.data.picPage) {
         return false;
       }
 
