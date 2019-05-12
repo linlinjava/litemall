@@ -21,15 +21,6 @@ export default [
     component: () => import('@/views/items/search')
   },
   {
-    path: '/items/search/result',
-    name: 'search-result',
-    meta: {
-      keepAlive: true
-    },
-    component: () => import('@/views/items/search-result'),
-    props: route => route.query
-  },
-  {
     path: '/items/detail/:itemId',
     name: 'detail',
     props: true,

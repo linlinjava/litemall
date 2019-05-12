@@ -16,36 +16,72 @@
           plain
 					v-for="(his, i) in wordHistory"
 					:key="i"
-					@click="toSearchResult(his)"
+					@click="clickSearch(his)"
 				>{{his}}</van-tag>
 			</div>
 		</div>
+
+    
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      :immediate-check="false"
+      @load="loadMore"
+    >
+      <item-group>
+        <item-card-hori
+          v-for="(item) in list"
+          :key="item.id"
+          :goods="item"
+          @click="itemClick(item.id)"
+        />
+      </item-group>
+    </van-list>
+
+    <is-empty v-if="isEmpty">抱歉,没有找到符合条件商品</is-empty>
 	</div>
 </template>
 
 <script>
-import { Search, Tag } from 'vant';
+import { Search, Tag, List } from 'vant';
+import { goodsList } from '@/api/api';
+import ItemGroup from '@/components/item-group/';
+import IsEmpty from '@/components/is-empty/';
+import ItemCardHori from '@/components/item-card-hori/';
 
 export default {
   data() {
     return {
       keyword: '',
       focusStatus: true,
-      wordHistory: []
+      wordHistory: [],
+      list: [],
+      page: 1,
+      limit: 10,
+      pages: 0,
+      loading: false,
+      finished: false,
+      isEmpty: false    
     };
   },
   methods: {
     enterSearch() {
-      const keyword = this.keyword;
-      this.pushHistoryTolocal(keyword);
-      this.toSearchResult(keyword);
+      this.reset();
+      this.searchGoods();
     },
-    toSearchResult(word) {
+    clickSearch(word) {
       this.keyword = word.trim();
-      this.$router.push({
-        name: 'search-result',
-        query: { keyword: word.trim() }
-      });
+      this.reset();
+      this.searchGoods();
+    },
+    reset() {
+      this.list = [];
+      this.page = 1;
+      this.limit = 10;
+      this.total = 0;
+      this.loading = false;
+      this.finished = false;
+      this.isEmpty = false;
     },
     pushHistoryTolocal(keyword) {
       const wordHistory = this.wordHistory;
@@ -71,14 +107,41 @@ export default {
     },
     disabledSubmit() {
       return false;
-    }
+    },
+    searchGoods() {
+      goodsList({
+          keyword: this.keyword,
+          page: this.page,
+          limit: this.limit,
+          categoryId: 0
+        }).then(res => {
+        var data = res.data.data;
+        this.list.push(...data.list);
+        this.page = data.page;
+        this.limit = data.limit;
+        this.pages = data.pages;
+      });
+    },
+    async loadMore() {
+      this.loading = false;
+      this.page += 1;
+      await this.searchGoods();
+      this.loading = false;
+      if (this.pages <= this.page) {
+        this.finished = true;
+      }
+    },
   },
   activated() {
     this.wordHistory = this.getKeyWordHistory();
   },
   components: {
     [Search.name]: Search,
-    [Tag.name]: Tag
+    [Tag.name]: Tag,
+    [ItemGroup.name]: ItemGroup,
+    [ItemCardHori.name]: ItemCardHori,
+    [List.name]: List,
+    [IsEmpty.name]: IsEmpty    
   }
 };
 </script>
