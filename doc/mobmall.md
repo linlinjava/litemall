@@ -5,10 +5,9 @@ litemall轻商城，是商城移动版本。
 技术：
 
 * 轻商城前端，即litemall-vue模块
-  * power by vue-cli3 
+  * vue-cli3 
   * Vue + Vue-router + Vant + Sass
   * axios
-  * vee-validate
   * fastclick
   * babel-polyfill
   * @xkeshi/vue-countdown
