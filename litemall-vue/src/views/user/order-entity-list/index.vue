@@ -120,8 +120,8 @@ export default {
     },
     toOrderDetail(id) {
       this.$router.push({
-        name: `orderDetail`,
-        query: { cartId: 0, orderId: id }
+        name: 'orderDetail',
+        query: { orderId: id }
       });
     }
   },
