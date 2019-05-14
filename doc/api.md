@@ -61,11 +61,10 @@
     sort: 排序字段
     order: 升序降序
 
-* page, 和通常计算机概念中数组下标从0开始不同，这里的page参数应该从1开始，
-1即代表第一页数据.
-* limit
-* sort, 例如'add_time'或者'id'.
-* order, 只能是"desc"或者'asc'.
+* page, 和通常计算机概念中数组下标从0开始不同，这里的page参数应该从1开始，1即代表第一页数据;
+* limit, 分页大小；
+* sort, 例如"add_time"或者"id";
+* order, 只能是"desc"或者"asc"。
 
 此外，这里四个参数是可选的，后端应该设置默认参数，因此即使前端不设置，
 后端也会自动返回合适的对象数组响应数据。
@@ -93,7 +92,7 @@
     
     {
         errno: xxx,
-        errmsg: xxx,，
+        errmsg: xxx,
         data: {}
     }
 
@@ -111,14 +110,14 @@
 
     {
         errno: 0,
-        errmsg: "成功",，
+        errmsg: "成功",
     }
 
 #### 1.2.3 普通对象
 
     {
         errno: 0,
-        errmsg: "成功",，
+        errmsg: "成功",
         data: {}
     }
     
@@ -126,10 +125,13 @@
 
     {
         errno: 0,
-        errmsg: "成功",，
+        errmsg: "成功",
         data: {
             list: [],
-            total: XX
+            total: XX，
+            page: XX,
+            limit: XX,
+            pages: XX
         }
     }
 
@@ -209,41 +211,79 @@ list是对象数组，total是总的数量。
 
 #### 1.4.1 Header&Token
 
-1. 前端访问商场登录API`/wx/auth/login`或者管理后台登录API`/admin/auth/login`
+前后端Token交换流程如下：
+
+1. 前端访问商场登录API或者管理后台登录API;
+
+2. 成功以后，前端会接收后端响应的一个token，保存在本地；
+    
+3. 请求受保护API则，则采用自定义头部携带此token
+
+4. 后端检验Token，成功则返回受保护的数据。
+
+#### 1.4.2 商场自定义Header
+
+访问受保护商场API采用自定义`X-Litemall-Token`头部
+
+1. 小商城（或轻商场）前端访问小商城后端登录API`/wx/auth/login`
 
         POST /wx/auth/login
     
         {
             "username": "user123",
-            "password': "user123'
+            "password": "user123"
         }
 
 2. 成功以后，前端会接收后端响应的一个token，
 
-            {
-              "errno": 0,
-              "data": {
-                "userInfo": {
-                  "nickName": "user123",
-                  "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
-                },
-                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNTU3MzI2ODUwLCJ1c2VySWQiOjEsImlhdCI6MTU1NzMxOTY1MH0.XP0TuhupV_ttQsCr1KTaPZVlTbVzVOcnq_K0kXdbri0"
-              },
-              "errmsg": "成功"
-            }
+        {
+          "errno": 0,
+          "data": {
+            "userInfo": {
+              "nickName": "user123",
+              "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNTU3MzI2ODUwLCJ1c2VySWQiOjEsImlhdCI6MTU1NzMxOTY1MH0.XP0TuhupV_ttQsCr1KTaPZVlTbVzVOcnq_K0kXdbri0"
+          },
+          "errmsg": "成功"
+        }    
     
 3. 请求受保护API则，则采用自定义头部携带此token
 
         GET http://localhost:8080/wx/address/list
         X-Litemall-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNTU3MzM2ODU0LCJ1c2VySWQiOjIsImlhdCI6MTU1NzMyOTY1NH0.JY1-cqOnmi-CVjFohZMqK2iAdAH4O6CKj0Cqd5tMF3M
 
-#### 1.4.2 商场Header
-
-访问受保护商场API采用自定义`X-Litemall-Token`头部
-
-#### 1.4.3 管理后台Header
+#### 1.4.3 管理后台自定义Header
 
 访问受保护管理后台API则是自定义`X-Litemall-Admin-Token`头部。
+
+1. 管理后台前端访问管理后台后端登录API`/admin/auth/login`
+
+        POST /admin/auth/login
+    
+        {
+            "username": "admin123",
+            "password": "admin123"
+        }
+
+2. 成功以后，管理后台前端会接收后端响应的一个token，
+
+        {
+            "errno": 0,
+            "data": {
+                "adminInfo": {
+                    "nickName": "admin123",
+                    "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                },
+                "token": "f2dbcae8-6e25-4f8e-bc58-aa81d512c952"
+            },
+            "errmsg": "成功"
+        }
+    
+3. 请求受保护API时，则采用自定义头部携带此token
+
+        GET http://localhost:8080/wx/address/list
+        X-Litemall-Admin-Token: f2dbcae8-6e25-4f8e-bc58-aa81d512c952
 
 ### 1.5 版本控制
 
@@ -432,7 +472,42 @@ API应该存在版本控制，以保证兼容性。
 
 应用场景
 
-    账号登录
+    基于用户名和密码的账号登录
+    
+接口链接
+
+    POST /wx/auth/login
+    
+请求参数
+
+    {
+        "username": "user123",
+        "password": "user123"
+    }    
+    
+响应内容
+
+    {
+      "errno": 0,
+      "data": {
+        "userInfo": {
+          "nickName": "user123",
+          "avatarUrl": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNTU3MzI2ODUwLCJ1c2VySWQiOjEsImlhdCI6MTU1NzMxOTY1MH0.XP0TuhupV_ttQsCr1KTaPZVlTbVzVOcnq_K0kXdbri0"
+      },
+      "errmsg": "成功"
+    }   
+    
+错误码
+
+    略
+    
+#### 2.1.3 注册
+
+应用场景
+
+    xxx
     
 接口链接
 
@@ -450,22 +525,204 @@ API应该存在版本控制，以保证兼容性。
 
     xxx
     
-#### 2.1.3 注册
-
 #### 2.1.4 退出
 
+应用场景
+
+    账号退出
+    
+接口链接
+
+    POST /wx/auth/logout
+    
+请求参数
+
+    {
+        "username": "user123",
+        "password": "user123"
+    }    
+    
+响应内容
+
+    {
+        "errno": 0,
+        "errmsg": "成功"
+    }
+    
+错误码
+
+    略
+    
 #### 2.1.5 注册验证码
 
-#### 2.1.6 验证码
+应用场景
 
+    用户未登录情况下，请求后端发送注册验证码用于注册。
+    
+接口链接
+
+    xxx
+    
+请求参数
+
+    xxx
+    
+响应内容
+
+    xxx
+    
+错误码
+
+    xxx
+    
+#### 2.1.6 操作验证码
+
+应用场景
+
+    用户已登录情况下，请求后端发送操作验证码用于相关操作。
+    
+接口链接
+
+    xxx
+    
+请求参数
+
+    xxx
+    
+响应内容
+
+    xxx
+    
+错误码
+
+    xxx
+    
 #### 2.1.7 账号密码修改
 
+应用场景
+
+    账号密码修改
+    
+接口链接
+
+    xxx
+    
+请求参数
+
+    xxx
+    
+响应内容
+
+    xxx
+    
+错误码
+
+    xxx
+    
 #### 2.1.8 微信手机号码绑定
 
+应用场景
+
+    微信手机号码绑定，仅用于小程序环境。
+    
+接口链接
+
+    xxx
+    
+请求参数
+
+    xxx
+    
+响应内容
+
+    xxx
+    
+错误码
+
+    xxx
+    
 #### 2.1.9 手机号码修改
 
-#### 2.1.10 账号信息修改
+应用场景
 
+    手机号码修改
+    
+接口链接
+
+    xxx
+    
+请求参数
+
+    xxx
+    
+响应内容
+
+    xxx
+    
+错误码
+
+    xxx
+    
+#### 2.1.10 账号信息
+
+应用场景
+
+    账号信息
+    
+接口链接
+
+    GET /wx/auth/info
+    
+请求参数
+
+    无
+    
+响应内容
+
+    {
+        "errno": 0,
+        "data": {
+            "gender": 1,
+            "nickName": "user123",
+            "mobile": "",
+            "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+        },
+        "errmsg": "成功"
+    }   
+    
+错误码
+
+    略
+    
+#### 2.1.11 账号信息更新
+
+应用场景
+
+    账号信息更新。
+    
+接口链接
+
+    POST /wx/auth/profile
+    
+请求参数
+
+    {
+        "gender": 1,
+        "nickName": "user123",
+        "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+    }
+    
+响应内容
+
+    {
+        "errno": 0,
+        "errmsg": "成功"
+    }
+    
+错误码
+
+    略
+    
 ### 2.2 首页服务
 
 #### 2.2.1 首页数据
