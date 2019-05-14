@@ -60,8 +60,10 @@ export default {
   methods: {
     init() {
       collectList({type:0, page:this.page, limit:this.limit}).then(res => {
-        const { collectList, page } = res.data.data;
-        this.items.push(...collectList);
+        this.page = res.data.data.page;
+        this.limit = res.data.data.limit;
+        this.total = res.data.data.total;
+        this.items.push(...res.data.data.list);
       });
     },
     cancelCollect(event, i, item) {
