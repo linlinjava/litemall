@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,8 +83,6 @@ public class WxFootprintController {
         }
 
         List<LitemallFootprint> footprintList = footprintService.queryByAddTime(userId, page, limit);
-        long count = PageInfo.of(footprintList).getTotal();
-        int totalPages = (int) Math.ceil((double) count / limit);
 
         List<Object> footprintVoList = new ArrayList<>(footprintList.size());
         for (LitemallFootprint footprint : footprintList) {
@@ -101,11 +100,7 @@ public class WxFootprintController {
             footprintVoList.add(c);
         }
 
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("footprintList", footprintVoList);
-        result.put("totalPages", totalPages);
-        return ResponseUtil.ok(result);
+        return ResponseUtil.okList(footprintVoList, footprintList);
     }
 
 }

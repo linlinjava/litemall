@@ -12,7 +12,7 @@ const UserInfo_SetNickname = () => import('@/views/user/user-information-set/set
 const UserInfo_SetPassword = () => import('@/views/user/user-information-set/set-password');
 
 const UserOrderEntityList = () => import('@/views/user/order-entity-list');
-const UserOrderEleList = () => import('@/views/user/order-ele-list');
+const UserCouponList = () => import('@/views/user/coupon-list');
 const UserRefundList = () => import('@/views/user/refund-list');
 
 const Tabbar = () => import('@/components/Tabbar/');
@@ -96,10 +96,10 @@ export default [
     component: UserOrderEntityList
   },
   {
-    path: '/user/orderEle/list/:active',
-    name: 'user-order-ele-list',
+    path: '/user/coupon/list/:active',
+    name: 'user-coupon-list',
     props: true,
-    component: UserOrderEleList
+    component: UserCouponList
   },
   {
     path: '/user/refund/list',

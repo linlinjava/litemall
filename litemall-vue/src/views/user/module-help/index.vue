@@ -25,7 +25,7 @@ export default {
   methods: {
     getIssueList() {
       issueList().then(res => {
-        this.issueList = res.data.data.data
+        this.issueList = res.data.data.list
       })
     }
   },

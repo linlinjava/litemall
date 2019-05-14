@@ -92,7 +92,7 @@ export default {
     init(i) {
       let showType = i || this.activeIndex;
       orderList({showType: showType}).then(res => {
-        this.orderList = res.data.data.data;
+        this.orderList = res.data.data.list;
       });
     },
     delOrder(i) {
@@ -120,8 +120,8 @@ export default {
     },
     toOrderDetail(id) {
       this.$router.push({
-        name: `orderDetail`,
-        query: { cartId: 0, orderId: id }
+        name: 'orderDetail',
+        query: { orderId: id }
       });
     }
   },

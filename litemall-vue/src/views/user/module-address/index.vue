@@ -37,7 +37,7 @@ export default {
     },
     loadAddress() {
       addressList().then(res => {
-        var list = res.data.data;
+        var list = res.data.data.list;
         for(var i = 0; i < list.length; i++ ){
           var item = list[i]
           this.addressList.push({

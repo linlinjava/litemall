@@ -46,21 +46,34 @@
       </div>
     </van-panel>
 
-    <van-panel title="团购专区">
+    <van-panel>
       <van-card
-        :thumb-link="goDetail(groupGood.goods.id)"
-        v-for="(groupGood ,index) in shopInfos.grouponList"
+        :thumb-link="goDetail(grouponGood.id)"
+        v-for="(grouponGood ,index) in shopInfos.grouponList"
         :key="index"
-        :title="groupGood.goods.name"
-        :desc="groupGood.goods.brief"
-        :num="groupGood.groupon_member"
-        :origin-price="groupGood.goods.counterPrice"
-        :price="groupGood.goods.retailPrice +'.00'"
-        :thumb="groupGood.goods.picUrl"
-        @native-click="goDetail(groupGood.goods.id)"
+        :title="grouponGood.name"
+        :desc="grouponGood.brief"
+        :origin-price="grouponGood.retailPrice"
+        :price="grouponGood.grouponPrice +'.00'"
+        :thumb="grouponGood.picUrl"
+        @native-click="goDetail(grouponGood.id)"
       >
-        <!-- <div slot="footer">添加日期 {{item.addTime}}</div> -->
+        <div slot="tags" class="card__tags">
+          <van-tag plain type="primary">
+            {{grouponGood.grouponMember}}人成团
+          </van-tag>
+          <van-tag plain type="danger">
+            {{grouponGood.grouponDiscount}}元再减
+          </van-tag>
+        </div>
       </van-card>
+      <div slot='header'>
+      	<van-cell-group>
+			    <van-cell title="团购专区" isLink>
+			    	<router-link to="/user/coupon/list/0" class="text-desc">更多团购商品</router-link>
+			    </van-cell>
+		    </van-cell-group>
+      </div>
     </van-panel>
 
     <van-panel title="新品首发">
@@ -117,7 +130,8 @@ import {
   Toast,
   Card,
   Row,
-  Col
+  Col,
+  Tag
 } from 'vant';
 
 export default {
@@ -161,36 +175,8 @@ export default {
           this.brandList.push(v.picUrl);
         });
       });
-    },
-
-    toGoods(item) {
-      // 如果是秒杀商品, 并且已经抢光
-      if (this.lootAll(item)) {
-        this.$dialog.alert({ message: '该秒杀商品已抢光，看看别的吧！' });
-        return;
-      }
-      this.$router.push({ path: `/items/detail/${item.id}` });
-    },
-
-    groupIcon(key) {
-      const iconGroup = {
-        activity_seckill: 'naozhong',
-        goods: 'list',
-        mx_goods: 'n4',
-        shop_recommend: 'good'
-      };
-      return iconGroup[key] || '';
-    },
-
-    getStyle(style) {
-      return style ? 'item-card-vert' : 'item-card-hori';
-    },
-
-    lootAll(item) {
-      return (
-        typeof item.as_status !== 'undefined' && item.sold_num == item.total
-      );
     }
+
   },
 
   components: {
@@ -207,7 +193,8 @@ export default {
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
     [Tabbar.name]: Tabbar,
-    [TabbarItem.name]: TabbarItem
+    [TabbarItem.name]: TabbarItem,
+    [Tag.name]: Tag
   }
 };
 </script>

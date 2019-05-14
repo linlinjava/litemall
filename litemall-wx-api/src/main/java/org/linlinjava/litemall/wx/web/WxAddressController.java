@@ -45,7 +45,7 @@ public class WxAddressController extends GetRegionService {
 			return ResponseUtil.unlogin();
 		}
 		List<LitemallAddress> addressList = addressService.queryByUid(userId);
-		return ResponseUtil.ok(addressList);
+		return ResponseUtil.okList(addressList);
 	}
 
 	/**

@@ -10,7 +10,6 @@
     "pages/ucenter/order/order",
     "pages/ucenter/orderDetail/orderDetail",
     "pages/ucenter/coupon/coupon",
-    "pages/ucenter/collect/collect",
     "pages/auth/login/login",
     "pages/payResult/payResult",
     "pages/commentPost/commentPost",

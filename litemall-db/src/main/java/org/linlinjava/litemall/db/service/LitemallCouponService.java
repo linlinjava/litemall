@@ -56,12 +56,6 @@ public class LitemallCouponService {
         return couponMapper.selectByExampleSelective(criteria.example(), result);
     }
 
-    public int queryTotal() {
-        LitemallCouponExample example = new LitemallCouponExample();
-        example.or().andTypeEqualTo(CouponConstant.TYPE_COMMON).andStatusEqualTo(CouponConstant.STATUS_NORMAL).andDeletedEqualTo(false);
-        return (int) couponMapper.countByExample(example);
-    }
-
     public List<LitemallCoupon> queryAvailableList(Integer userId, int offset, int limit) {
         assert userId != null;
         // 过滤掉登录账号已经领取过的coupon

@@ -1,26 +1,26 @@
 <template>
 	<div>
 		<van-cell-group>
-			<van-cell title="我的电子券" isLink>
-				<router-link to="/user/orderEle/list/0" class="text-desc">全部电子券</router-link>
+			<van-cell title="我的优惠券" isLink>
+				<router-link to="/user/coupon/list/0" class="text-desc">全部优惠券</router-link>
 			</van-cell>
 		</van-cell-group>
 
-		<van-row class="ecoupon_status">
+		<van-row class="coupon_status">
 			<van-col span="8">
-				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/0'})">
+				<div class="coupon_status_icon" @click="$router.push({path: '/user/coupon/list/0'})">
 					<van-icon name="coupon" />
 				</div>
 				<div>待使用</div>
 			</van-col>
 			<van-col span="8">
-				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/1'})">
+				<div class="coupon_status_icon" @click="$router.push({path: '/user/coupon/list/1'})">
 					<van-icon name="coupon-used" />
 				</div>
 				<div>已使用</div>
 			</van-col>
 			<van-col span="8">
-				<div class="ecoupon_status_icon" @click="$router.push({path: '/user/orderEle/list/2'})">
+				<div class="coupon_status_icon" @click="$router.push({path: '/user/coupon/list/2'})">
 					<van-icon name="coupon-due" />
 				</div>
 				<div>过期关闭</div>
@@ -34,7 +34,7 @@
 import { Row, Col } from 'vant';
 
 export default {
-  name: 'ecoupon-group',
+  name: 'coupon-group',
   components: {
     [Row.name]: Row,
     [Col.name]: Col
@@ -45,7 +45,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../../assets/scss/mixin';
-.ecoupon_status {
+.coupon_status {
   background-color: #fff;
   text-align: center;
   padding: 10px 0;
@@ -67,7 +67,7 @@ export default {
     }
   }
 
-  .ecoupon_status_icon {
+  .coupon_status_icon {
     position: relative;
     width: 36px;
     height: 36px;

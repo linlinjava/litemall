@@ -29,7 +29,7 @@ Page({
     util.request(api.AddressList).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          addressList: res.data
+          addressList: res.data.list
         });
       }
     });

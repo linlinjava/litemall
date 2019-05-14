@@ -7,7 +7,7 @@
   </view>
   <view class="footprint" wx:if="{{footprintList.length > 0}}">
     <view class="day-item" wx:for="{{footprintList}}" wx:key="*this" wx:for-index="index">
-      <view class="day-hd" wx:if="{{item.length > 0}}">{{item[0].addTime}}</view>
+      <view class="day-hd" wx:if="{{item.length > 0}}">{{item[0].addDate}}</view>
       <view class="day-list" wx:if="{{item.length > 0}}">
         <view class="item" data-index="{{index}}" data-iindex="{{iindex}}" bindtouchstart="touchStart" bindtouchend="touchEnd" bindtap="deleteItem" wx:for="{{item}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="id">
           <image class="img" src="{{iitem.picUrl}}"></image>

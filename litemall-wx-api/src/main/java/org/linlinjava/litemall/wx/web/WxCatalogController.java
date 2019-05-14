@@ -119,6 +119,9 @@ public class WxCatalogController {
     public Object current(@NotNull Integer id) {
         // 当前分类
         LitemallCategory currentCategory = categoryService.findById(id);
+        if(currentCategory == null){
+            return ResponseUtil.badArgumentValue();
+        }
         List<LitemallCategory> currentSubCategory = categoryService.queryByPid(currentCategory.getId());
 
         Map<String, Object> data = new HashMap<String, Object>();

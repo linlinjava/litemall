@@ -73,7 +73,7 @@ export default {
     init(i) {
       let status = i || this.activeIndex;
       couponMyList({status: status}).then(res => {
-        this.couponList = res.data.data.data;
+        this.couponList = res.data.data.list;
       });
     },
     handleTabClick(index) {

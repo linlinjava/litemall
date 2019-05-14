@@ -8,7 +8,7 @@ export default [
       keepAlive: true
     },
     components: {
-      default:  () => import('@/views/items/tabbar-class'),
+      default:  () => import('@/views/items/tabbar-catalog'),
       tabbar: Tabbar
     }
   },
@@ -19,15 +19,6 @@ export default [
       keepAlive: true
     },
     component: () => import('@/views/items/search')
-  },
-  {
-    path: '/items/search/result',
-    name: 'search-result',
-    meta: {
-      keepAlive: true
-    },
-    component: () => import('@/views/items/search-result'),
-    props: route => route.query
   },
   {
     path: '/items/detail/:itemId',
