@@ -51,7 +51,6 @@ public interface LitemallCouponUserMapper {
      * This method corresponds to the database table litemall_coupon_user
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCouponUser selectOneByExample(LitemallCouponUserExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallCouponUserMapper {
      * This method corresponds to the database table litemall_coupon_user
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCouponUser selectOneByExampleSelective(@Param("example") LitemallCouponUserExample example, @Param("selective") LitemallCouponUser.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallCouponUserMapper {
      * This method corresponds to the database table litemall_coupon_user
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallCouponUser> selectByExampleSelective(@Param("example") LitemallCouponUserExample example, @Param("selective") LitemallCouponUser.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallCouponUserMapper {
      * This method corresponds to the database table litemall_coupon_user
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCouponUser selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallCouponUser.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallCouponUserMapper {
      * This method corresponds to the database table litemall_coupon_user
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCouponUser selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallCouponUserMapper {
      * This method corresponds to the database table litemall_coupon_user
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallCouponUserExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallCouponUserMapper {
      * This method corresponds to the database table litemall_coupon_user
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }
