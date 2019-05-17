@@ -82,7 +82,16 @@ public class AdminAuthController {
         adminService.updateById(admin);
 
         logHelper.logAuthSucceed("登录");
-        return ResponseUtil.ok(currentUser.getSession().getId());
+
+        // userInfo
+        Map<String, Object> adminInfo = new HashMap<String, Object>();
+        adminInfo.put("nickName", admin.getUsername());
+        adminInfo.put("avatar", admin.getAvatar());
+
+        Map<Object, Object> result = new HashMap<Object, Object>();
+        result.put("token", currentUser.getSession().getId());
+        result.put("adminInfo", adminInfo);
+        return ResponseUtil.ok(result);
     }
 
     /*

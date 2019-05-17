@@ -148,12 +148,17 @@ computed: {
     },
     addCollect() {
       collectAddOrDelete({valueId: this.itemId, type: 0}).then(res => {
-        let type = res.data.data.type;
-        this.goods.userHasCollect = type === 'add' ? 1 : 0;
-        this.$toast({
-          message: type === 'add' ? '添加成功' : '取消成功',
-          duration: 1500
-        });
+        if(this.goods.userHasCollect === 1){
+          this.goods.userHasCollect = 0
+        }
+        else{
+          this.goods.userHasCollect = 1
+          this.$toast({
+            message: '收藏成功',
+            duration: 1500
+        });          
+        }
+
       });
     },
     getProductId(s1, s2) {
