@@ -21,10 +21,6 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 
   由litemall-wx-api模块和litemall-vue模块组成。
   注意，目前这里移动商城子系统的后端和小商场子系统是一样的。
-
-* 简商城子系统(webmall)
-
-  这里仅列出，目前没有开发计划。
     
 * 管理后台子系统(admin)
 
@@ -44,6 +40,27 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 * Vue技术栈
 
   采用VSC开发工具，开发litemall-admin模块和litemall-vue模块。
+
+### 1.1.1 项目特点
+
+项目存在以下特点：
+
+* 数据库方面，只是简单的表，表和表之间的依赖关系没有采用外键设计，而是依赖Java代码在service层面或者业务层面保证。这样做的好处是数据库频繁改动很方便，不会因为外键而导致数据库难以修改;
+* 涉及三种技术栈，但是每种技术栈仅涉及最基础的技术；
+  * 后端技术栈，仅涉及 Spring，Spring Boot, Spring MVC和Mybatis技术，其他后端技术暂时不采用;
+  * 小程序技术栈，仅涉及miniprogram官方文档；
+  * 前端技术栈，仅涉及vue, vuex, vue-route和element技术；
+* 安全方面，仅采用最基本的代码，提供简单基本的安全服务;
+* 性能方面，没有涉及内存数据库缓存功能，而是完全依赖MySQL;
+* 对象存储服务方面，支持本地存储和第三方云存储方案。
+* 消息通知方面，支持邮件通知、第三方云短信通知和微信模板通知；
+* 部署方便，支持多服务部署和一键部署脚本；
+* 文档全面，虽然还在开发中，但是规划中文档和代码注释一定会完成，帮助开发者理解项目。
+
+总之，目前的系统只是为了学习技术和业务而开发的一个简单商场原型系统。虽然缺失很多企业级功能，但是是完整和合理的原型系统。
+
+注意：
+> 以上特点并不一定是优点。
 
 ## 1.2 系统功能
 
@@ -139,26 +156,79 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
   * 订单统计
   * 商品统计
 
-## 1.3 项目特点
+## 1.3 项目技术
 
-存在以下特点：
+### 1.3.1 技术参考
 
-* 数据库方面，只是简单的表，表和表之间的依赖关系没有采用外键设计，而是依赖Java代码在service层面或者业务层面保证。这样做的好处是数据库频繁改动很方便，不会因为外键而导致数据库难以修改;
-* 涉及三种技术栈，但是每种技术栈仅涉及最基础的技术；
-  * 后端技术栈，仅涉及 Spring，Spring Boot, Spring MVC和Mybatis技术，其他后端技术暂时不采用;
-  * 小程序技术栈，仅涉及miniprogram官方文档；
-  * 前端技术栈，仅涉及vue, vuex, vue-route和element技术；
-* 安全方面，仅采用最基本的代码，提供简单基本的安全服务;
-* 性能方面，没有涉及内存数据库缓存功能，而是完全依赖MySQL;
-* 对象存储服务方面，支持本地存储和第三方云存储方案。
-* 消息通知方面，支持邮件通知、第三方云短信通知和微信模板通知；
-* 部署方便，支持多服务部署和一键部署脚本；
-* 文档全面，虽然还在开发中，但是规划中文档和代码注释一定会完成，帮助开发者理解项目。
+#### 1.3.1.1 Spring Boot技术
 
-总之，目前的系统只是为了学习技术和业务而开发的一个简单商场原型系统。虽然缺失很多企业级功能，但是是完整和合理的原型系统。
+Spring Boot技术栈参考以下文档或者项目：
 
-注意：
-> 以上特点并不一定是优点。
+1. MySQL
+
+   了解创建数据库和表、添加、查询、更新和删除即可。
+    
+2. Spring Boot 2.x
+
+    * https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/htmlsingle/#getting-started-introducing-spring-boot
+    * https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/htmlsingle/#using-boot-maven
+
+    这里需要了解RestController, Service等注解，以及如何使用自动化配置。 
+    Spring Boot支持很多功能，开发者使用时查阅。
+    
+3. Mybatis
+
+    * http://www.mybatis.org/mybatis-3/
+    * http://www.mybatis.org/mybatis-3/java-api.html
+    * http://www.mybatis.org/mybatis-3/sqlmap-xml.html
+ 
+    这里可以简单了解，而使用Mybatis Generator来生成Java代码使用即可。
+    
+4. Mybatis Generator
+
+    * http://www.mybatis.org/generator/running/runningWithMaven.html
+    * http://www.mybatis.org/generator/generatedobjects/results.html
+    * http://www.mybatis.org/generator/generatedobjects/exampleClassUsage.html
+    
+5. Mybatis PageHelper
+
+    * https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/en/HowToUse.md
+    
+#### 1.3.1.2 小程序技术
+
+1. 小程序
+
+    * https://developers.weixin.qq.com/miniprogram/dev/index.html
+    * https://developers.weixin.qq.com/miniprogram/dev/component/
+    * https://developers.weixin.qq.com/miniprogram/dev/api/
+    * https://developers.weixin.qq.com/community/develop
+    
+    建议小程序方面遇到问题，可以到官方社区查找。
+
+2. 微信支付
+
+    * https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_3&index=1
+    
+#### 1.3.1.3 Vue技术
+
+1. Vue
+
+    * https://cn.vuejs.org/index.html
+
+2. Vant
+
+    * https://youzan.github.io/vant/#/zh-CN/intro
+
+3. Element
+
+    * https://element.eleme.cn/#/zh-CN/component/installation
+
+4. vue-element-admin
+
+    * https://github.com/PanJiaChen/vue-element-admin
+    * https://panjiachen.github.io/vue-element-admin-site/zh/
+    
+### 1.3.2 项目阶段
 
 接下来，从项目的开发、部署（测试）和上线三个阶段介绍litemall。
 
