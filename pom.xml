@@ -177,6 +177,7 @@
                     <execution>
                         <id>repackage</id>
                         <configuration>
+                            <executable>true</executable>
                             <classifier>exec</classifier>
                         </configuration>
                     </execution>
