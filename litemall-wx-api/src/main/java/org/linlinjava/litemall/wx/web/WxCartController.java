@@ -495,7 +495,8 @@ public class WxCartController {
         BigDecimal integralPrice = new BigDecimal(0.00);
 
         // 订单费用
-        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
+        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice).max(new BigDecimal(0.00));
+
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
         Map<String, Object> data = new HashMap<>();
