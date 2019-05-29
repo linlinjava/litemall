@@ -110,8 +110,9 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
     ```bash
     cd litemall
     mvn install
-    mvn clean package
-    java -Dfile.encoding=UTF-8 -jar litemall-all/target/litemall-all-0.1.0-exec.jar
+    mvn package
+    cd ./litemall-all
+    mvn spring-boot:run
     ```
     
 4. 启动管理后台前端
