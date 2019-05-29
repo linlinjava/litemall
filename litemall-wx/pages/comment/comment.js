@@ -14,7 +14,7 @@ Page({
     hasPicCount: 0,
     allPage: 1,
     picPage: 1,
-    size: 20
+    limit: 20
   },
   getCommentCount: function() {
     let that = this;
@@ -35,7 +35,7 @@ Page({
     util.request(api.CommentList, {
       valueId: that.data.valueId,
       type: that.data.type,
-      size: that.data.size,
+      limit: that.data.limit,
       page: (that.data.showType == 0 ? that.data.allPage : that.data.picPage),
       showType: that.data.showType
     }).then(function(res) {
@@ -43,15 +43,15 @@ Page({
 
         if (that.data.showType == 0) {
           that.setData({
-            allCommentList: that.data.allCommentList.concat(res.data.data),
-            allPage: res.data.currentPage,
-            comments: that.data.allCommentList.concat(res.data.data)
+            allCommentList: that.data.allCommentList.concat(res.data.list),
+            allPage: res.data.page,
+            comments: that.data.allCommentList.concat(res.data.list)
           });
         } else {
           that.setData({
-            picCommentList: that.data.picCommentList.concat(res.data.data),
-            picPage: res.data.currentPage,
-            comments: that.data.picCommentList.concat(res.data.data)
+            picCommentList: that.data.picCommentList.concat(res.data.list),
+            picPage: res.data.page,
+            comments: that.data.picCommentList.concat(res.data.list)
           });
         }
       }
@@ -105,7 +105,7 @@ Page({
     console.log('onPullDownRefresh');
     if (this.data.showType == 0) {
 
-      if (this.data.allCount / this.data.size < this.data.allPage) {
+      if (this.data.allCount / this.data.limit < this.data.allPage) {
         return false;
       }
 
@@ -113,7 +113,7 @@ Page({
         'allPage': this.data.allPage + 1
       });
     } else {
-      if (this.data.hasPicCount / this.data.size < this.data.picPage) {
+      if (this.data.hasPicCount / this.data.limit < this.data.picPage) {
         return false;
       }
 

@@ -5,7 +5,7 @@ Page({
   data: {
     topicList: [],
     page: 1,
-    size: 10,
+    limit: 10,
     count: 0,
     scrollTop: 0,
     showPage: false
@@ -28,7 +28,7 @@ Page({
   },
   nextPage: function(event) {
     var that = this;
-    if (this.data.page > that.data.count / that.data.size) {
+    if (this.data.page > that.data.count / that.data.limit) {
       return true;
     }
 
@@ -65,15 +65,15 @@ Page({
 
     util.request(api.TopicList, {
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
 
         that.setData({
           scrollTop: 0,
-          topicList: res.data.data,
+          topicList: res.data.list,
           showPage: true,
-          count: res.data.count
+          count: res.data.total
         });
       }
       wx.hideToast();

@@ -68,39 +68,34 @@ Page({
     });
     try {
       var cartId = wx.getStorageSync('cartId');
-      if (cartId) {
-        this.setData({
-          'cartId': cartId
-        });
+      if (cartId === "") {
+        cartId = 0;
       }
-
       var addressId = wx.getStorageSync('addressId');
-      if (addressId) {
-        this.setData({
-          'addressId': addressId
-        });
+      if (addressId === "") {
+        addressId = 0;
       }
-
       var couponId = wx.getStorageSync('couponId');
-      if (couponId) {
-        this.setData({
-          'couponId': couponId
-        });
+      if (couponId === "") {
+        couponId = 0;
       }
-
       var grouponRulesId = wx.getStorageSync('grouponRulesId');
-      if (grouponRulesId) {
-        this.setData({
-          'grouponRulesId': grouponRulesId
-        });
+      if (grouponRulesId === "") {
+        grouponRulesId = 0;
+      }
+      var grouponLinkId = wx.getStorageSync('grouponLinkId');
+      if (grouponLinkId === "") {
+        grouponLinkId = 0;
       }
 
-      var grouponLinkId = wx.getStorageSync('grouponLinkId');
-      if (grouponLinkId) {
-        this.setData({
-          'grouponLinkId': grouponLinkId
-        });
-      }
+      this.setData({
+        cartId: cartId,
+        addressId: addressId,
+        couponId: couponId,
+        grouponRulesId: grouponRulesId,
+        grouponLinkId: grouponLinkId
+      });
+      
     } catch (e) {
       // Do something when catch error
       console.log(e);

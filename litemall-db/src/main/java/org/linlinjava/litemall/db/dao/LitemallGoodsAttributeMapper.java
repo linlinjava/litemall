@@ -51,7 +51,6 @@ public interface LitemallGoodsAttributeMapper {
      * This method corresponds to the database table litemall_goods_attribute
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGoodsAttribute selectOneByExample(LitemallGoodsAttributeExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallGoodsAttributeMapper {
      * This method corresponds to the database table litemall_goods_attribute
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGoodsAttribute selectOneByExampleSelective(@Param("example") LitemallGoodsAttributeExample example, @Param("selective") LitemallGoodsAttribute.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallGoodsAttributeMapper {
      * This method corresponds to the database table litemall_goods_attribute
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallGoodsAttribute> selectByExampleSelective(@Param("example") LitemallGoodsAttributeExample example, @Param("selective") LitemallGoodsAttribute.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallGoodsAttributeMapper {
      * This method corresponds to the database table litemall_goods_attribute
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGoodsAttribute selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallGoodsAttribute.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallGoodsAttributeMapper {
      * This method corresponds to the database table litemall_goods_attribute
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGoodsAttribute selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallGoodsAttributeMapper {
      * This method corresponds to the database table litemall_goods_attribute
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallGoodsAttributeExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallGoodsAttributeMapper {
      * This method corresponds to the database table litemall_goods_attribute
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

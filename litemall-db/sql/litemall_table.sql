@@ -51,18 +51,20 @@ CREATE TABLE `litemall_address` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(63) NOT NULL DEFAULT '' COMMENT '收货人名称',
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户表的用户ID',
-  `province_id` int(11) NOT NULL DEFAULT '0' COMMENT '行政区域表的省ID',
-  `city_id` int(11) NOT NULL DEFAULT '0' COMMENT '行政区域表的市ID',
-  `area_id` int(11) NOT NULL DEFAULT '0' COMMENT '行政区域表的区县ID',
-  `address` varchar(127) NOT NULL DEFAULT '' COMMENT '具体收货地址',
-  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号码',
+  `province` varchar(63) NOT NULL COMMENT '行政区域表的省ID',
+  `city` varchar(63) NOT NULL COMMENT '行政区域表的市ID',
+  `county` varchar(63) NOT NULL COMMENT '行政区域表的区县ID',
+  `address_detail` varchar(127) NOT NULL DEFAULT '' COMMENT '详细收货地址',
+  `area_code` char(6) DEFAULT NULL COMMENT '地区编码',
+  `postal_code` char(6) DEFAULT NULL COMMENT '邮政编码',
+  `tel` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号码',
   `is_default` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否默认地址',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='收货地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='收货地址表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,6 +84,7 @@ CREATE TABLE `litemall_admin` (
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  `role_ids` varchar(127) DEFAULT '[]' COMMENT '角色列表',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='管理员表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -190,7 +193,7 @@ CREATE TABLE `litemall_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value_id` int(11) NOT NULL DEFAULT '0' COMMENT '如果type=0，则是商品评论；如果是type=1，则是专题评论。',
   `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '评论类型，如果type=0，则是商品评论；如果是type=1，则是专题评论；如果type=3，则是订单商品评论。',
-  `content` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '评论内容',
+  `content` varchar(1023) NOT NULL COMMENT '评论内容',
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户表的用户ID',
   `has_picture` tinyint(1) DEFAULT '0' COMMENT '是否含有图片',
   `pic_urls` varchar(1023) DEFAULT NULL COMMENT '图片地址列表，采用JSON数组格式',
@@ -200,7 +203,62 @@ CREATE TABLE `litemall_comment` (
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`),
   KEY `id_value` (`value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1012 DEFAULT CHARSET=utf8 COMMENT='评论表';
+) ENGINE=InnoDB AUTO_INCREMENT=1012 DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_coupon`
+--
+
+DROP TABLE IF EXISTS `litemall_coupon`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_coupon` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(63) NOT NULL COMMENT '优惠券名称',
+  `desc` varchar(127) DEFAULT '' COMMENT '优惠券介绍，通常是显示优惠券使用限制文字',
+  `tag` varchar(63) DEFAULT '' COMMENT '优惠券标签，例如新人专用',
+  `total` int(11) NOT NULL DEFAULT '0' COMMENT '优惠券数量，如果是0，则是无限量',
+  `discount` decimal(10,2) DEFAULT '0.00' COMMENT '优惠金额，',
+  `min` decimal(10,2) DEFAULT '0.00' COMMENT '最少消费金额才能使用优惠券。',
+  `limit` smallint(6) DEFAULT '1' COMMENT '用户领券限制数量，如果是0，则是不限制；默认是1，限领一张.',
+  `type` smallint(6) DEFAULT '0' COMMENT '优惠券赠送类型，如果是0则通用券，用户领取；如果是1，则是注册赠券；如果是2，则是优惠券码兑换；',
+  `status` smallint(6) DEFAULT '0' COMMENT '优惠券状态，如果是0则是正常可用；如果是1则是过期; 如果是2则是下架。',
+  `goods_type` smallint(6) DEFAULT '0' COMMENT '商品限制类型，如果0则全商品，如果是1则是类目限制，如果是2则是商品限制。',
+  `goods_value` varchar(1023) DEFAULT '[]' COMMENT '商品限制值，goods_type如果是0则空集合，如果是1则是类目集合，如果是2则是商品集合。',
+  `code` varchar(63) DEFAULT NULL COMMENT '优惠券兑换码',
+  `time_type` smallint(6) DEFAULT '0' COMMENT '有效时间限制，如果是0，则基于领取时间的有效天数days；如果是1，则start_time和end_time是优惠券有效期；',
+  `days` smallint(6) DEFAULT '0' COMMENT '基于领取时间的有效天数days。',
+  `start_time` datetime DEFAULT NULL COMMENT '使用券开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '使用券截至时间',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='优惠券信息及规则表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_coupon_user`
+--
+
+DROP TABLE IF EXISTS `litemall_coupon_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_coupon_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `coupon_id` int(11) NOT NULL COMMENT '优惠券ID',
+  `status` smallint(6) DEFAULT '0' COMMENT '使用状态, 如果是0则未使用；如果是1则已使用；如果是2则已过期；如果是3则已经下架；',
+  `used_time` datetime DEFAULT NULL COMMENT '使用时间',
+  `start_time` datetime DEFAULT NULL COMMENT '有效期开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '有效期截至时间',
+  `order_id` int(11) DEFAULT NULL COMMENT '订单ID',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='优惠券用户使用表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,19 +271,19 @@ DROP TABLE IF EXISTS `litemall_feedback`;
 CREATE TABLE `litemall_feedback` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户表的用户ID',
-  `username` varchar(63) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '用户名称',
-  `mobile` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '手机号',
+  `username` varchar(63) NOT NULL DEFAULT '' COMMENT '用户名称',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
   `feed_type` varchar(63) NOT NULL DEFAULT '' COMMENT '反馈类型',
-  `content` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '反馈内容',
+  `content` varchar(1023) NOT NULL COMMENT '反馈内容',
   `status` int(3) NOT NULL DEFAULT '0' COMMENT '状态',
   `has_picture` tinyint(1) DEFAULT '0' COMMENT '是否含有图片',
-  `pic_urls` varchar(1023) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '图片地址列表，采用JSON数组格式',
+  `pic_urls` varchar(1023) DEFAULT NULL COMMENT '图片地址列表，采用JSON数组格式',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`),
   KEY `id_value` (`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='意见反馈表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='意见反馈表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,6 +488,29 @@ CREATE TABLE `litemall_keyword` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `litemall_log`
+--
+
+DROP TABLE IF EXISTS `litemall_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '管理员',
+  `ip` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '管理员地址',
+  `type` int(11) DEFAULT NULL COMMENT '操作分类',
+  `action` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '操作动作',
+  `status` tinyint(1) DEFAULT NULL COMMENT '操作状态',
+  `result` varchar(127) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '操作结果，或者成功消息，或者失败消息',
+  `comment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '补充信息',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='操作日志表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `litemall_order`
 --
 
@@ -464,7 +545,7 @@ CREATE TABLE `litemall_order` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,6 +577,24 @@ CREATE TABLE `litemall_order_goods` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `litemall_permission`
+--
+
+DROP TABLE IF EXISTS `litemall_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
+  `permission` varchar(63) DEFAULT NULL COMMENT '权限',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `litemall_region`
 --
 
@@ -513,6 +612,26 @@ CREATE TABLE `litemall_region` (
   KEY `region_type` (`type`),
   KEY `agency_id` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3232 DEFAULT CHARSET=utf8mb4 COMMENT='行政区域表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_role`
+--
+
+DROP TABLE IF EXISTS `litemall_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(63) NOT NULL COMMENT '角色名称',
+  `desc` varchar(1023) DEFAULT NULL COMMENT '角色描述',
+  `enabled` tinyint(1) DEFAULT '1' COMMENT '是否启用',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -552,7 +671,7 @@ CREATE TABLE `litemall_storage` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件存储表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文件存储表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -570,7 +689,7 @@ CREATE TABLE `litemall_system` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -618,13 +737,14 @@ CREATE TABLE `litemall_user` (
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '用户手机号码',
   `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '用户头像图片',
   `weixin_openid` varchar(63) NOT NULL DEFAULT '' COMMENT '微信登录openid',
+  `session_key` varchar(100) NOT NULL DEFAULT '' COMMENT '微信登录会话KEY',
   `status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '0 可用, 1 禁用, 2 注销',
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -657,4 +777,4 @@ CREATE TABLE `litemall_user_formid` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-09 19:40:48
+-- Dump completed on 2018-12-10 16:59:09

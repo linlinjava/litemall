@@ -67,7 +67,7 @@ export default {
     }
   },
   created() {
-    info(this.listQuery).then(response => {
+    info().then(response => {
       this.userTotal = response.data.data.userTotal
       this.goodsTotal = response.data.data.goodsTotal
       this.productTotal = response.data.data.productTotal

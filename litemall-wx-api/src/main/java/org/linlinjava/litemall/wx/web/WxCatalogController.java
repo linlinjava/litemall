@@ -36,14 +36,10 @@ public class WxCatalogController {
      * @param id   分类类目ID。
      *             如果分类类目ID是空，则选择第一个分类类目。
      *             需要注意，这里分类类目是一级类目
-     * @param page 分页页数
-     * @param size 分页大小
      * @return 分类详情
      */
     @GetMapping("index")
-    public Object index(Integer id,
-                        @RequestParam(defaultValue = "1") Integer page,
-                        @RequestParam(defaultValue = "10") Integer size) {
+    public Object index(Integer id) {
 
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
@@ -123,6 +119,9 @@ public class WxCatalogController {
     public Object current(@NotNull Integer id) {
         // 当前分类
         LitemallCategory currentCategory = categoryService.findById(id);
+        if(currentCategory == null){
+            return ResponseUtil.badArgumentValue();
+        }
         List<LitemallCategory> currentSubCategory = categoryService.queryByPid(currentCategory.getId());
 
         Map<String, Object> data = new HashMap<String, Object>();

@@ -62,19 +62,4 @@ public class LitemallStorageService {
         PageHelper.startPage(page, limit);
         return storageMapper.selectByExample(example);
     }
-
-    public int countSelective(String key, String name, Integer page, Integer size, String sort, String order) {
-        LitemallStorageExample example = new LitemallStorageExample();
-        LitemallStorageExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(key)) {
-            criteria.andKeyEqualTo(key);
-        }
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) storageMapper.countByExample(example);
-    }
 }

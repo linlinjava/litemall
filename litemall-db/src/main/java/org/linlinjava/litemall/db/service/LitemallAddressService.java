@@ -22,8 +22,10 @@ public class LitemallAddressService {
         return addressMapper.selectByExample(example);
     }
 
-    public LitemallAddress findById(Integer id) {
-        return addressMapper.selectByPrimaryKey(id);
+    public LitemallAddress query(Integer userId, Integer id) {
+        LitemallAddressExample example = new LitemallAddressExample();
+        example.or().andIdEqualTo(id).andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        return addressMapper.selectOneByExample(example);
     }
 
     public int add(LitemallAddress address) {
@@ -74,20 +76,5 @@ public class LitemallAddressService {
 
         PageHelper.startPage(page, limit);
         return addressMapper.selectByExample(example);
-    }
-
-    public int countSelective(Integer userId, String name, Integer page, Integer limit, String sort, String order) {
-        LitemallAddressExample example = new LitemallAddressExample();
-        LitemallAddressExample.Criteria criteria = example.createCriteria();
-
-        if (userId != null) {
-            criteria.andUserIdEqualTo(userId);
-        }
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) addressMapper.countByExample(example);
     }
 }

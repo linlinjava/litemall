@@ -60,6 +60,11 @@ Page({
   },
   goOrder() {
     if (this.data.hasLogin) {
+      try {
+        wx.setStorageSync('tab', 0);
+      } catch (e) {
+
+      }
       wx.navigateTo({
         url: "/pages/ucenter/order/order"
       });
@@ -91,20 +96,15 @@ Page({
     };
   },
   goCoupon() {
-    wx.showToast({
-      title: '目前不支持',
-      icon: 'none',
-      duration: 2000
-    });
-    // if (this.data.hasLogin) {
-    //   wx.navigateTo({
-    //     url: "/pages/ucenter/coupon/coupon"
-    //   });
-    // } else {
-    //   wx.navigateTo({
-    //     url: "/pages/auth/login/login"
-    //   });
-    // };
+    if (this.data.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/ucenter/couponList/couponList"
+      });
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    };
   },
   goGroupon() {
     if (this.data.hasLogin) {
@@ -201,6 +201,11 @@ Page({
       url: '/pages/about/about'
     });
   },
+  goHelp: function () {
+    wx.navigateTo({
+      url: '/pages/help/help'
+    });
+  },  
   exitLogin: function() {
     wx.showModal({
       title: '',

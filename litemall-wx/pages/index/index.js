@@ -14,7 +14,9 @@ Page({
     groupons: [],
     floorGoods: [],
     banner: [],
-    channel: []
+    channel: [],
+    coupon: [],
+    goodsCount: 0
   },
 
   onShareAppMessage: function() {
@@ -44,9 +46,15 @@ Page({
           floorGoods: res.data.floorGoodsList,
           banner: res.data.banner,
           groupons: res.data.grouponList,
-          channel: res.data.channel
+          channel: res.data.channel,
+          coupon: res.data.couponList
         });
       }
+    });
+    util.request(api.GoodsCount).then(function (res) {
+      that.setData({
+        goodsCount: res.data
+      });
     });
   },
   onLoad: function(options) {
@@ -114,5 +122,26 @@ Page({
   },
   onUnload: function() {
     // 页面关闭
+  },
+  getCoupon(e) {
+    if (!app.globalData.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    }
+
+    let couponId = e.currentTarget.dataset.index
+    util.request(api.CouponReceive, {
+      couponId: couponId
+    }, 'POST').then(res => {
+      if (res.errno === 0) {
+        wx.showToast({
+          title: "领取成功"
+        })
+      }
+      else{
+        util.showErrorToast(res.errmsg);
+      }
+    })
   },
 })

@@ -1,0 +1,43 @@
+{
+  "name": "litemall-vue",
+  "version": "0.1.0",
+  "description": "litemall-vue basing on vant--mobile-mall 0.1.0",
+  "author": "litemall <linlinjava@163.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build  --mode production",
+    "build:dep": "vue-cli-service build --mode deployment",
+    "build:prod": "vue-cli-service build --mode production",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@chenfengyuan/vue-countdown": "^1.1.2",
+    "axios": "^0.18.0",
+    "dayjs": "^1.7.7",
+    "js-cookie": "2.2.0",
+    "lodash": "^4.17.11",
+    "vant": "^1.6.15",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vuelidate": "^0.7.4"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
+    "@vue/eslint-config-prettier": "^3.0.5",
+    "babel-plugin-import": "^1.9.1",
+    "babel-plugin-lodash": "^3.3.4",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

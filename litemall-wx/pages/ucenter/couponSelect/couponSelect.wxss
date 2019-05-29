@@ -1,0 +1,119 @@
+page {
+  background: #f4f4f4;
+  min-height: 100%;
+}
+
+.container {
+  background: #f4f4f4;
+  min-height: 100%;
+  padding-top: 30rpx;
+}
+
+.coupon-list {
+  width: 750rpx;
+  height: 100%;
+  overflow: hidden;
+}
+
+.unselect {
+  height: 80rpx;
+  border: none;
+  width: 700rpx;
+  background: #28b43b;
+  color: #fff;
+  font-size: 40rpx;
+  text-align: center;
+  margin-bottom: 30rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+}
+
+.item {
+  position: relative;
+  height: 290rpx;
+  width: 700rpx;
+  background: linear-gradient(to right, #cfa568, #e3bf79);
+  margin-bottom: 30rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+  padding-top: 52rpx;
+}
+
+.tag {
+  height: 32rpx;
+  background: #a48143;
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+  position: absolute;
+  left: 20rpx;
+  color: #fff;
+  top: 20rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 32rpx;
+}
+
+.content {
+  margin-top: 24rpx;
+  margin-left: 40rpx;
+  display: flex;
+  margin-right: 40rpx;
+  flex-direction: row;
+}
+
+.content .left {
+  flex: 1;
+}
+
+.discount {
+  font-size: 50rpx;
+  color: #b4282d;
+}
+
+.min {
+  color: #fff;
+}
+
+.content .right {
+  width: 400rpx;
+}
+
+.name {
+  font-size: 44rpx;
+  color: #fff;
+  margin-bottom: 14rpx;
+}
+
+.time {
+  font-size: 24rpx;
+  color: #fff;
+  line-height: 30rpx;
+}
+
+.condition {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: 78rpx;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 24rpx 40rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.condition .txt {
+  display: block;
+  height: 30rpx;
+  flex: 1;
+  overflow: hidden;
+  font-size: 24rpx;
+  line-height: 30rpx;
+  color: #fff;
+}
+
+.condition .icon {
+  margin-left: 30rpx;
+  width: 24rpx;
+  height: 24rpx;
+}

@@ -11,7 +11,8 @@
     "pages/ucenter/footprint/footprint",
     "pages/ucenter/order/order",
     "pages/ucenter/orderDetail/orderDetail",
-    "pages/ucenter/coupon/coupon",
+    "pages/ucenter/couponList/couponList",
+    "pages/ucenter/couponSelect/couponSelect",
     "pages/ucenter/collect/collect",
     "pages/auth/login/login",
     "pages/auth/accountLogin/accountLogin",
@@ -34,7 +35,9 @@
     "pages/about/about",
     "pages/groupon/myGroupon/myGroupon",
     "pages/groupon/grouponDetail/grouponDetail",
-    "pages/groupon/grouponList/grouponList"
+    "pages/groupon/grouponList/grouponList",
+    "pages/coupon/coupon",
+    "pages/help/help"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
@@ -82,5 +85,6 @@
     "uploadFile": 10000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
 }

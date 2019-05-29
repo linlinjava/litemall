@@ -8,7 +8,7 @@ Page({
     type: 0,
     collectList: [],
     page: 1,
-    size: 10,
+    limit: 10,
     totalPages: 1
   },
   getCollectList() {
@@ -19,12 +19,12 @@ Page({
     util.request(api.CollectList, {
       type: that.data.type,
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          collectList: that.data.collectList.concat(res.data.collectList),
-          totalPages: res.data.totalPages
+          collectList: that.data.collectList.concat(res.data.list),
+          totalPages: res.data.pages
         });
       }
       wx.hideLoading();

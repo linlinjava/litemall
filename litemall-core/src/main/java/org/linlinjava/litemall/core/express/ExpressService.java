@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 快鸟物流查询服务
- * <p>
- * 3831775044640 韵达快递(YD)
+ * 物流查询服务
+ *
+ * 快递鸟即时查询API http://www.kdniao.com/api-track
  */
 public class ExpressService {
     //请求url
-    private String ReqURL = "http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
+    private String ReqURL = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
 
     private ExpressProperties properties;
 

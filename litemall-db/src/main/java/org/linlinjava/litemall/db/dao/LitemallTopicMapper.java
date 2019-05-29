@@ -51,7 +51,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallTopic selectOneByExample(LitemallTopicExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallTopic selectOneByExampleSelective(@Param("example") LitemallTopicExample example, @Param("selective") LitemallTopic.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallTopic selectOneByExampleWithBLOBs(LitemallTopicExample example);
 
@@ -78,7 +75,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallTopic> selectByExampleSelective(@Param("example") LitemallTopicExample example, @Param("selective") LitemallTopic.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallTopic selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallTopic.Column ... selective);
 
@@ -120,7 +115,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallTopic selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -177,7 +171,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallTopicExample example);
 
@@ -186,7 +179,6 @@ public interface LitemallTopicMapper {
      * This method corresponds to the database table litemall_topic
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

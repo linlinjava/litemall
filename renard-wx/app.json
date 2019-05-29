@@ -10,10 +10,8 @@
     "pages/ucenter/order/order",
     "pages/ucenter/orderDetail/orderDetail",
     "pages/ucenter/coupon/coupon",
-    "pages/ucenter/collect/collect",
     "pages/auth/login/login",
     "pages/payResult/payResult",
-    "pages/comment/comment",
     "pages/commentPost/commentPost",
     "pages/topic/topic",
     "pages/topicDetail/topicDetail",
@@ -70,5 +68,6 @@
     "uploadFile": 10000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
 }

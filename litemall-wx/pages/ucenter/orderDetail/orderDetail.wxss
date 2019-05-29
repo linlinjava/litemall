@@ -227,7 +227,7 @@ page {
 }
 
 .order-bottom .total {
-  height: 106rpx;
+  height: 130rpx;
   padding-top: 20rpx;
   border-bottom: 1px solid #f4f4f4;
 }
