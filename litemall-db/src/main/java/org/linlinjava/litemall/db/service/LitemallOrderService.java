@@ -64,7 +64,7 @@ public class LitemallOrderService {
         String now = df.format(LocalDate.now());
         String orderSn = now + getRandomNum(6);
         while (countByOrderSn(userId, orderSn) != 0) {
-            orderSn = getRandomNum(6);
+            orderSn = now + getRandomNum(6);
         }
         return orderSn;
     }
