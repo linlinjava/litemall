@@ -3,6 +3,7 @@ package org.linlinjava.litemall.wx.service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 简单缓存的数据
@@ -13,7 +14,7 @@ public class HomeCacheManager {
     public static final String CATALOG = "catalog";
     public static final String GOODS = "goods";
 
-    private static Map<String, Map<String, Object>> cacheDataList = new HashMap<>();
+    private static ConcurrentHashMap<String, Map<String, Object>> cacheDataList = new ConcurrentHashMap<>();
 
     /**
      * 缓存首页数据
@@ -66,7 +67,7 @@ public class HomeCacheManager {
      * 清除所有缓存
      */
     public static void clearAll() {
-        cacheDataList = new HashMap<>();
+        cacheDataList = new ConcurrentHashMap<>();
     }
 
     /**
