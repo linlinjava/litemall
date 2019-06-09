@@ -7,7 +7,9 @@ import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
+import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallTopic;
+import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.service.LitemallTopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -16,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/topic")
@@ -26,6 +31,8 @@ public class AdminTopicController {
 
     @Autowired
     private LitemallTopicService topicService;
+    @Autowired
+    private LitemallGoodsService goodsService;
 
     @RequiresPermissions("admin:topic:list")
     @RequiresPermissionsDesc(menu={"推广管理" , "专题管理"}, button="查询")
@@ -72,7 +79,18 @@ public class AdminTopicController {
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallTopic topic = topicService.findById(id);
-        return ResponseUtil.ok(topic);
+        Integer[] goodsIds = topic.getGoods();
+        List<LitemallGoods> goodsList = null;
+        if(goodsIds == null || goodsIds.length == 0){
+            goodsList = new ArrayList<>();
+        }
+        else{
+            goodsList = goodsService.queryByIds(goodsIds);
+        }
+        Map<String, Object> data = new HashMap<>(2);
+        data.put("topic", topic);
+        data.put("goodsList", goodsList);
+        return ResponseUtil.ok(data);
     }
 
     @RequiresPermissions("admin:topic:update")
