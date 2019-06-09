@@ -101,7 +101,10 @@ export default {
         subtitle: undefined,
         sort: 'add_time',
         order: 'desc'
-      }
+      },
+      contentDetail: '',
+      contentDialogVisible: false,
+      downloadLoading: false
     }
   },
   created() {
@@ -148,6 +151,10 @@ export default {
             message: response.data.errmsg
           })
         })
+    },
+    showContent(content) {
+      this.contentDetail = content
+      this.contentDialogVisible = true
     },
     handleDownload() {
       this.downloadLoading = true
