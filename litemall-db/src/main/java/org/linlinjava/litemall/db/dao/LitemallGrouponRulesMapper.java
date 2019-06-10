@@ -51,7 +51,6 @@ public interface LitemallGrouponRulesMapper {
      * This method corresponds to the database table litemall_groupon_rules
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGrouponRules selectOneByExample(LitemallGrouponRulesExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallGrouponRulesMapper {
      * This method corresponds to the database table litemall_groupon_rules
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGrouponRules selectOneByExampleSelective(@Param("example") LitemallGrouponRulesExample example, @Param("selective") LitemallGrouponRules.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallGrouponRulesMapper {
      * This method corresponds to the database table litemall_groupon_rules
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallGrouponRules> selectByExampleSelective(@Param("example") LitemallGrouponRulesExample example, @Param("selective") LitemallGrouponRules.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallGrouponRulesMapper {
      * This method corresponds to the database table litemall_groupon_rules
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGrouponRules selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallGrouponRules.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallGrouponRulesMapper {
      * This method corresponds to the database table litemall_groupon_rules
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGrouponRules selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallGrouponRulesMapper {
      * This method corresponds to the database table litemall_groupon_rules
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallGrouponRulesExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallGrouponRulesMapper {
      * This method corresponds to the database table litemall_groupon_rules
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

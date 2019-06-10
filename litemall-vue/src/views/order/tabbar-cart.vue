@@ -8,13 +8,13 @@
       <div v-for="(item, i) in goods" :key="i" class="card-goods__item">
         <van-checkbox :key="item.id" :name="item.id" v-model="item.checked"></van-checkbox>
 
-        <van-card desc="暂无描述" :num="item.number" :thumb="item.picUrl">
-          <div class="van-card__row" slot="title">
-            <div class="van-card__title">
-              <!-- <van-tag plain type="danger">海淘</van-tag> -->
-              {{item.goodsName}}
+        <van-card :title="item.goodsName" :price="item.price" :num="item.number" :thumb="item.picUrl">
+          <div slot="desc">
+            <div class="van-card__desc">
+              <van-tag plain style="margin-right:6px;" v-for="(spec, index) in item.specifications" :key="index">
+                {{spec}}
+              </van-tag>
             </div>
-            <div class="van-card__price">{{item.price * 100 | yuan}}</div>
           </div>
           <div slot="footer" v-if="isEditor">
             <van-stepper v-model="item.number" @change="stepperEvent(item,arguments)" disableInput/>
@@ -25,10 +25,6 @@
         <div class="cart_delete" v-if="isEditor" @click="deleteCart(i)">删除</div>
       </div>
     </van-checkbox-group>
-
-    <div class="clear_invalid" v-if="goods.length" @click="clearInvalid">
-      <van-icon name="lajitong"/>清除失效商品
-    </div>
 
     <is-empty v-if="!goods.length">您的购物车空空如也~</is-empty>
 
@@ -49,6 +45,7 @@
 <script>
 import { Checkbox, CheckboxGroup, Card, SubmitBar, Stepper, Tag } from 'vant';
 import { cartList, cartUpdate, cartChecked, cartDelete} from '@/api/api';
+import { setLocalStorage } from '@/utils/local-storage';
 
 import isEmpty from '@/components/is-empty/';
 import _ from 'lodash';
@@ -136,7 +133,6 @@ export default {
           }).productId
         );
       });
-      console.log(this.goods);
       if (this.isEditor) {
         this.$dialog
           .confirm({
@@ -147,29 +143,10 @@ export default {
             this.deleteNext(productIds);
           });
       } else {
-        // for (check in checkedGoods){
-        // await this.doCheck(productIds);
-        // }
-        // let { data } = await this.$reqGet(
-        //   '/wx/cart/checkout?cartId=0&addressId=0&couponId=0&grouponRulesId=0'
-        // );
         this.isSubmit = true;
-        this.$router.push({ name: 'placeOrderEntity' });
+        setLocalStorage({AddressId: 0, CartId: 0, CouponId: 0});
+        this.$router.push({ name: 'placeOrderEntity'});
       }
-    },
-    doCheck(productIds, isChecked) {
-      // let good =  _.find(this.goods, vv => {
-      //         return id === vv.id;
-      //       })
-      //       let productId = good.productId;
-
-      cartChecked({productIds: productIds, isChecked: isChecked});
-      // if (this.checkedGoods.length == this.AllGoods.length) {
-      //   this.allCheckedStatus = true;
-      // }
-    },
-    formatPrice(price) {
-      return (price / 100).toFixed(2);
     },
     setCheckAll(val) {
       if (this.checkedGoods.length === this.AllGoods.length) {
@@ -183,7 +160,6 @@ export default {
       this.$dialog
         .confirm({ message: '确定删除所选商品吗', cancelButtonText: '再想想' })
         .then(() => {
-          // const goodsId = this.goods.splice(i, 1)[0].id;
           this.$nextTick(() => {
             this.deleteNext(productId);
           });
@@ -207,13 +183,13 @@ export default {
       });
       //没选中的不掉接口
       if (delProductIds.length > 0) {
-        this.doCheck(delProductIds, 0);
+        cartChecked({productIds: delProductIds, isChecked: 0});
       }
       if (addProductIds.length > 0) {
-        this.doCheck(addProductIds, 1);
+        cartChecked({productIds: addProductIds, isChecked: 1});
       }
     },
-    async deleteNext(o) {
+    deleteNext(o) {
       let productIds = [];
       if (o instanceof Array) {
         productIds = o;
@@ -221,29 +197,12 @@ export default {
         productIds.push(o);
       }
 
-      
-      cartDelete({productIds: productIds});
-
-      this.count = this.count - productIds.length;
-      this.goods = data.data.cartList;
-
-      // this.isEditor = !!this.goods.length;
-      // this.checkedGoods.forEach((goods, i) => {
-      //   if (goods.id == goodsId) {
-      //     this.checkedGoods.splice(i, 1);
-      //     return false;
-      //   }
-      // });
-    },
-    clearInvalid() {
-      this.$dialog
-        .confirm({
-          message: '确定清除所有失效商品吗?',
-          cancelButtonText: '再想想'
-        })
-        .then(() => {
-          this.goods = this.goods.filter(goods => goods.checked);
-        });
+      cartDelete({productIds: productIds}).then(res => {
+        this.goods = res.data.data.cartList;
+        this.AllGoods = this.getAllList();
+        this.checkedGoods = this.getCheckedList(this.goods);
+        this.count = this.checkedGoods.length;
+      });
     }
   },
 

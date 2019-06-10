@@ -19,7 +19,7 @@ import { List } from 'vant';
 import { get } from 'lodash';
 import IsEmpty from '@/components/is-empty';
 import loadMore from '@/mixin/load-more';
-import { goodsList } from '@/api/api';
+import { getList } from '@/api/api';
 
 const DEFAULT_CONFIG = {
   params: {},
@@ -64,25 +64,23 @@ export default {
     beforeInitData() {
       return this.beforeRequest ? this.beforeRequest() : DEFAULT_CONFIG;
     },
-    async initData() {
+    initData() {
       const { params = {}, headers = {} } = this.beforeInitData();
       const prePage = this.perPage || this.pages.perPage;
       console.log(params);
       console.log(headers);
-      goodsList({
-          // 'per-page': prePage,
+      getList(this.apiUrl, {
           page: this.pages.currPage,
-          size: 100,
-          categoryId: params.cid
-          // ...params
+          limit: prePage,
+          ...params
         },
         headers
-      );
-      await this.sleep(1000);
-      const items = get(res.data, this.resKey, []);
-      const page = get(res.data, this.pageKey, null);
-      this.$emit('onLoad', items);
-      return page;
+      ).then(res => {
+        const items = get(res.data.data, this.resKey, []);
+        const page = get(res.data.data, this.pageKey, null);
+        this.$emit('onLoad', items);
+        return page;
+      });
     },
     sleep(time) {
       return new Promise(resolve => {

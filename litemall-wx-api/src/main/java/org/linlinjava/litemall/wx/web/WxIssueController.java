@@ -35,11 +35,7 @@ public class WxIssueController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallIssue> issueList = issueService.querySelective(question, page, size, sort, order);
-        long total = PageInfo.of(issueList).getTotal();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", issueList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(issueList);
     }
 
 }

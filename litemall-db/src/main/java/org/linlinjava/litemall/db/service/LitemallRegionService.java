@@ -52,10 +52,4 @@ public class LitemallRegionService {
         return regionMapper.selectByExample(example);
     }
 
-
-    public List<LitemallRegion> queryChildren(Integer id) {
-        LitemallRegionExample example = new LitemallRegionExample();
-        example.or().andPidEqualTo(id);
-        return regionMapper.selectByExample(example);
-    }
 }

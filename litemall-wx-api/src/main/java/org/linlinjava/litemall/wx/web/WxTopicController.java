@@ -49,11 +49,7 @@ public class WxTopicController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallTopic> topicList = topicService.queryList(page, limit, sort, order);
-        int total = topicService.queryTotal();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", topicList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(topicList);
     }
 
     /**
@@ -64,17 +60,18 @@ public class WxTopicController {
      */
     @GetMapping("detail")
     public Object detail(@NotNull Integer id) {
-        Map<String, Object> data = new HashMap<>();
         LitemallTopic topic = topicService.findById(id);
-        data.put("topic", topic);
         List<LitemallGoods> goods = new ArrayList<>();
         for (Integer i : topic.getGoods()) {
             LitemallGoods good = goodsService.findByIdVO(i);
             if (null != good)
                 goods.add(good);
         }
-        data.put("goods", goods);
-        return ResponseUtil.ok(data);
+
+        Map<String, Object> entity = new HashMap<String, Object>();
+        entity.put("topic", topic);
+        entity.put("goods", goods);
+        return ResponseUtil.ok(entity);
     }
 
     /**
@@ -86,6 +83,6 @@ public class WxTopicController {
     @GetMapping("related")
     public Object related(@NotNull Integer id) {
         List<LitemallTopic> topicRelatedList = topicService.queryRelatedList(id, 0, 4);
-        return ResponseUtil.ok(topicRelatedList);
+        return ResponseUtil.okList(topicRelatedList);
     }
 }

@@ -50,20 +50,20 @@
     </view>
     <view class="b">
       <view class="item" wx:for="{{groupons}}" wx:for-index="index" wx:for-item="item" wx:key="id">
-        <navigator url="/pages/goods/goods?id={{item.goods.id}}">
-          <image class="img" src="{{item.goods.picUrl}}" background-size="cover"></image>
+        <navigator url="/pages/goods/goods?id={{item.id}}">
+          <image class="img" src="{{item.picUrl}}" background-size="cover"></image>
           <view class="right">
             <view class="text">
               <view class="header">
-                <text class="name">{{item.goods.name}}</text>
+                <text class="name">{{item.name}}</text>
                 <view class="capsule-tag">
-                  <zan-capsule color="#a78845" leftText="团购" rightText="{{item.groupon_member}}" />
+                  <zan-capsule color="#a78845" leftText="{{item.grouponMember}}人成团" rightText="立减{{item.grouponDiscount}}" />
                 </view>
               </view>
-              <text class="desc">{{item.goods.brief}}</text>
+              <text class="desc">{{item.brief}}</text>
               <view class="price">
-                <view class="counterPrice">原价：￥{{item.goods.counterPrice}}</view>
-                <view class="retailPrice">团购价：￥{{item.groupon_price}}</view>
+                <view class="counterPrice">原价：￥{{item.retailPrice}}</view>
+                <view class="retailPrice">团购价：￥{{item.grouponPrice}}</view>
               </view>
             </view>
           </view>

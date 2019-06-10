@@ -3,15 +3,16 @@ const UserCollect = () => import('@/views/user/module-collect');
 const UserAddress = () => import('@/views/user/module-address');
 const UserAddressEdit = () => import('@/views/user/module-address-edit');
 const UserServer = () => import('@/views/user/module-server');
+const UserHelp = () => import('@/views/user/module-help');
+const UserFeedback = () => import('@/views/user/module-feedback');
 
 const UserInformation = () => import('@/views/user/user-information-set');
-const UserInfo_SetBg = () => import('@/views/user/user-information-set/set-bg');
 const UserInfo_SetMobile = () => import('@/views/user/user-information-set/set-mobile');
 const UserInfo_SetNickname = () => import('@/views/user/user-information-set/set-nickname');
 const UserInfo_SetPassword = () => import('@/views/user/user-information-set/set-password');
 
 const UserOrderEntityList = () => import('@/views/user/order-entity-list');
-const UserOrderEleList = () => import('@/views/user/order-ele-list');
+const UserCouponList = () => import('@/views/user/coupon-list');
 const UserRefundList = () => import('@/views/user/refund-list');
 
 const Tabbar = () => import('@/components/Tabbar/');
@@ -42,7 +43,7 @@ export default [
     component: UserAddress
   },
   {
-    path: '/user/address/edit/:addressId',
+    path: '/user/address/edit',
     name: 'address-edit',
     props: true,
     meta: {
@@ -56,17 +57,22 @@ export default [
     component: UserServer
   },
   {
+    path: '/user/help',
+    name: 'user-help',
+    component: UserHelp
+  },
+  {
+    path: '/user/feedback',
+    name: 'user-feedback',
+    component: UserFeedback
+  },  
+  {
     path: '/user/information',
     name: 'user-information',
     meta: {
       login: true
     },
     component: UserInformation
-  },
-  {
-    path: '/user/information/setbg',
-    name: 'user-info-setbg',
-    component: UserInfo_SetBg
   },
   {
     path: '/user/information/setMobile',
@@ -90,10 +96,10 @@ export default [
     component: UserOrderEntityList
   },
   {
-    path: '/user/orderEle/list/:active',
-    name: 'user-order-ele-list',
+    path: '/user/coupon/list/:active',
+    name: 'user-coupon-list',
     props: true,
-    component: UserOrderEleList
+    component: UserCouponList
   },
   {
     path: '/user/refund/list',

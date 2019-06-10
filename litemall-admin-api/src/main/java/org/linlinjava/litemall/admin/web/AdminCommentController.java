@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -14,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/comment")
@@ -35,13 +32,8 @@ public class AdminCommentController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        List<LitemallComment> brandList = commentService.querySelective(userId, valueId, page, limit, sort, order);
-        long total = PageInfo.of(brandList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", brandList);
-
-        return ResponseUtil.ok(data);
+        List<LitemallComment> commentList = commentService.querySelective(userId, valueId, page, limit, sort, order);
+        return ResponseUtil.okList(commentList);
     }
 
     @RequiresPermissions("admin:comment:delete")

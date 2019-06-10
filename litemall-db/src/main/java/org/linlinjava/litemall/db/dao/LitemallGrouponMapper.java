@@ -51,7 +51,6 @@ public interface LitemallGrouponMapper {
      * This method corresponds to the database table litemall_groupon
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGroupon selectOneByExample(LitemallGrouponExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallGrouponMapper {
      * This method corresponds to the database table litemall_groupon
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGroupon selectOneByExampleSelective(@Param("example") LitemallGrouponExample example, @Param("selective") LitemallGroupon.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallGrouponMapper {
      * This method corresponds to the database table litemall_groupon
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallGroupon> selectByExampleSelective(@Param("example") LitemallGrouponExample example, @Param("selective") LitemallGroupon.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallGrouponMapper {
      * This method corresponds to the database table litemall_groupon
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGroupon selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallGroupon.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallGrouponMapper {
      * This method corresponds to the database table litemall_groupon
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallGroupon selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallGrouponMapper {
      * This method corresponds to the database table litemall_groupon
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallGrouponExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallGrouponMapper {
      * This method corresponds to the database table litemall_groupon
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

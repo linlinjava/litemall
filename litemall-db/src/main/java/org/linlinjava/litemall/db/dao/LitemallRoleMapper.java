@@ -51,7 +51,6 @@ public interface LitemallRoleMapper {
      * This method corresponds to the database table litemall_role
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallRole selectOneByExample(LitemallRoleExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallRoleMapper {
      * This method corresponds to the database table litemall_role
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallRole selectOneByExampleSelective(@Param("example") LitemallRoleExample example, @Param("selective") LitemallRole.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallRoleMapper {
      * This method corresponds to the database table litemall_role
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallRole> selectByExampleSelective(@Param("example") LitemallRoleExample example, @Param("selective") LitemallRole.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallRoleMapper {
      * This method corresponds to the database table litemall_role
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallRole selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallRole.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallRoleMapper {
      * This method corresponds to the database table litemall_role
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallRole selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallRoleMapper {
      * This method corresponds to the database table litemall_role
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallRoleExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallRoleMapper {
      * This method corresponds to the database table litemall_role
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

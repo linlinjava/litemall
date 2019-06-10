@@ -4,7 +4,6 @@ import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.notify.NotifyService;
@@ -55,13 +54,7 @@ public class AdminOrderService {
     public Object list(Integer userId, String orderSn, List<Short> orderStatusArray,
                        Integer page, Integer limit, String sort, String order) {
         List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
-        long total = PageInfo.of(orderList).getTotal();
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", orderList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(orderList);
     }
 
     public Object detail(Integer id) {

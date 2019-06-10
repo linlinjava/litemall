@@ -66,7 +66,7 @@
 import { goodsDetail, cartGoodsCount, collectAddOrDelete, cartAdd, cartFastAdd } from '@/api/api';
 
 import { Sku, Swipe, SwipeItem, GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn, Popup } from 'vant';
-
+import { setLocalStorage } from '@/utils/local-storage';
 import popupProps from './popup-props';
 import _ from 'lodash';
 
@@ -148,12 +148,17 @@ computed: {
     },
     addCollect() {
       collectAddOrDelete({valueId: this.itemId, type: 0}).then(res => {
-        let type = res.data.data.type;
-        this.goods.userHasCollect = type === 'add' ? 1 : 0;
-        this.$toast({
-          message: type === 'add' ? '添加成功' : '取消成功',
-          duration: 1500
-        });
+        if(this.goods.userHasCollect === 1){
+          this.goods.userHasCollect = 0
+        }
+        else{
+          this.goods.userHasCollect = 1
+          this.$toast({
+            message: '收藏成功',
+            duration: 1500
+        });          
+        }
+
       });
     },
     getProductId(s1, s2) {
@@ -254,11 +259,11 @@ computed: {
       else {
         params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
       }
-     cartFastAdd(params).then(() => {
+     cartFastAdd(params).then(res => {
+      let cartId = res.data.data;
+      setLocalStorage({CartId: cartId})
       that.showSku = false;
-      that.$router.push({
-        name: 'cart'
-      });
+        this.$router.push({ name: 'placeOrderEntity'});
       });
     },
     skuAdapter() {

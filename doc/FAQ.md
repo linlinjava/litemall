@@ -133,6 +133,44 @@ litemall.wx.notify-url=
 3. 最后，如果设置正确，用chrome的开发者工具查看登录页面向后端请求返回数据信息；
 如果设置不正确，请启动相应的后端服务。
 
+### 2.2 安装失败/启动不成功
+
+现象：
+
+执行`cnpm install`失败
+
+原因：
+
+可能下载依赖失败。
+
+解决：
+
+清空node_modules，重新执行`cnpm install`命令，或者自行百度、Google。
+
+### 2.3 分页数据返回不正常
+
+现象：
+
+如果管理后台点击很大的分页页数（实际已超过当时数据最大页数），后端仍然能够返回数据。
+
+原因：
+
+这个不是BUG，而是开发者对于查询页面超过实际页面后应该产生何种效果的不同理解。
+* 返回最后一页数据可能是合理的；
+* 返回空数据可能也是合理的。
+
+解决：
+
+litemall-db模块的application-db.yaml资源文件中reasonable是true
+
+    pagehelper:
+      helperDialect:  mysql
+      reasonable: true
+      supportMethodsArguments:  true
+      params: count=countSql
+
+开发者可以尝试设置reasonable为false，然后检查是否能够解决问题。
+
 ## 3. 基础系统
 
 这里主要是指litemall-db、litemall-core和litemall-all模块三个模块的相关问题。

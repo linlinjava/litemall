@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -47,9 +46,8 @@ public class AdminGrouponController {
                              @Sort @RequestParam(defaultValue = "add_time") String sort,
                              @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallGroupon> grouponList = grouponService.querySelective(grouponId, page, limit, sort, order);
-        long total = PageInfo.of(grouponList).getTotal();
 
-        List<Map<String, Object>> records = new ArrayList<>();
+        List<Map<String, Object>> groupons = new ArrayList<>();
         for (LitemallGroupon groupon : grouponList) {
             try {
                 Map<String, Object> RecordData = new HashMap<>();
@@ -62,17 +60,13 @@ public class AdminGrouponController {
                 RecordData.put("rules", rules);
                 RecordData.put("goods", goods);
 
-                records.add(RecordData);
+                groupons.add(RecordData);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", records);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(groupons, grouponList);
     }
 
     @RequiresPermissions("admin:groupon:list")
@@ -84,12 +78,7 @@ public class AdminGrouponController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallGrouponRules> rulesList = rulesService.querySelective(goodsId, page, limit, sort, order);
-        long total = PageInfo.of(rulesList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", rulesList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(rulesList);
     }
 
     private Object validate(LitemallGrouponRules grouponRules) {

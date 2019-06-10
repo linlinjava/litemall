@@ -21,10 +21,6 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 
   由litemall-wx-api模块和litemall-vue模块组成。
   注意，目前这里移动商城子系统的后端和小商场子系统是一样的。
-
-* 简商城子系统(webmall)
-
-  这里仅列出，目前没有开发计划。
     
 * 管理后台子系统(admin)
 
@@ -44,6 +40,27 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 * Vue技术栈
 
   采用VSC开发工具，开发litemall-admin模块和litemall-vue模块。
+
+### 1.1.1 项目特点
+
+项目存在以下特点：
+
+* 数据库方面，只是简单的表，表和表之间的依赖关系没有采用外键设计，而是依赖Java代码在service层面或者业务层面保证。这样做的好处是数据库频繁改动很方便，不会因为外键而导致数据库难以修改;
+* 涉及三种技术栈，但是每种技术栈仅涉及最基础的技术；
+  * 后端技术栈，仅涉及 Spring，Spring Boot, Spring MVC和Mybatis技术，其他后端技术暂时不采用;
+  * 小程序技术栈，仅涉及miniprogram官方文档；
+  * 前端技术栈，仅涉及vue, vuex, vue-route和element技术；
+* 安全方面，仅采用最基本的代码，提供简单基本的安全服务;
+* 性能方面，没有涉及内存数据库缓存功能，而是完全依赖MySQL;
+* 对象存储服务方面，支持本地存储和第三方云存储方案。
+* 消息通知方面，支持邮件通知、第三方云短信通知和微信模板通知；
+* 部署方便，支持多服务部署和一键部署脚本；
+* 文档全面，虽然还在开发中，但是规划中文档和代码注释一定会完成，帮助开发者理解项目。
+
+总之，目前的系统只是为了学习技术和业务而开发的一个简单商场原型系统。虽然缺失很多企业级功能，但是是完整和合理的原型系统。
+
+注意：
+> 以上特点并不一定是优点。
 
 ## 1.2 系统功能
 
@@ -139,26 +156,79 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
   * 订单统计
   * 商品统计
 
-## 1.3 项目特点
+## 1.3 项目技术
 
-存在以下特点：
+### 1.3.1 技术参考
 
-* 数据库方面，只是简单的表，表和表之间的依赖关系没有采用外键设计，而是依赖Java代码在service层面或者业务层面保证。这样做的好处是数据库频繁改动很方便，不会因为外键而导致数据库难以修改;
-* 涉及三种技术栈，但是每种技术栈仅涉及最基础的技术；
-  * 后端技术栈，仅涉及 Spring，Spring Boot, Spring MVC和Mybatis技术，其他后端技术暂时不采用;
-  * 小程序技术栈，仅涉及miniprogram官方文档；
-  * 前端技术栈，仅涉及vue, vuex, vue-route和element技术；
-* 安全方面，仅采用最基本的代码，提供简单基本的安全服务;
-* 性能方面，没有涉及内存数据库缓存功能，而是完全依赖MySQL;
-* 对象存储服务方面，支持本地存储和第三方云存储方案。
-* 消息通知方面，支持邮件通知、第三方云短信通知和微信模板通知；
-* 部署方便，支持多服务部署和一键部署脚本；
-* 文档全面，虽然还在开发中，但是规划中文档和代码注释一定会完成，帮助开发者理解项目。
+#### 1.3.1.1 Spring Boot技术
 
-总之，目前的系统只是为了学习技术和业务而开发的一个简单商场原型系统。虽然缺失很多企业级功能，但是是完整和合理的原型系统。
+Spring Boot技术栈参考以下文档或者项目：
 
-注意：
-> 以上特点并不一定是优点。
+1. MySQL
+
+   了解创建数据库和表、添加、查询、更新和删除即可。
+    
+2. Spring Boot 2.x
+
+    * https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/htmlsingle/#getting-started-introducing-spring-boot
+    * https://docs.spring.io/spring-boot/docs/2.1.5.RELEASE/reference/htmlsingle/#using-boot-maven
+
+    这里需要了解RestController, Service等注解，以及如何使用自动化配置。 
+    Spring Boot支持很多功能，开发者使用时查阅。
+    
+3. Mybatis
+
+    * http://www.mybatis.org/mybatis-3/
+    * http://www.mybatis.org/mybatis-3/java-api.html
+    * http://www.mybatis.org/mybatis-3/sqlmap-xml.html
+ 
+    这里可以简单了解，而使用Mybatis Generator来生成Java代码使用即可。
+    
+4. Mybatis Generator
+
+    * http://www.mybatis.org/generator/running/runningWithMaven.html
+    * http://www.mybatis.org/generator/generatedobjects/results.html
+    * http://www.mybatis.org/generator/generatedobjects/exampleClassUsage.html
+    
+5. Mybatis PageHelper
+
+    * https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/en/HowToUse.md
+    
+#### 1.3.1.2 小程序技术
+
+1. 小程序
+
+    * https://developers.weixin.qq.com/miniprogram/dev/index.html
+    * https://developers.weixin.qq.com/miniprogram/dev/component/
+    * https://developers.weixin.qq.com/miniprogram/dev/api/
+    * https://developers.weixin.qq.com/community/develop
+    
+    建议小程序方面遇到问题，可以到官方社区查找。
+
+2. 微信支付
+
+    * https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_3&index=1
+    
+#### 1.3.1.3 Vue技术
+
+1. Vue
+
+    * https://cn.vuejs.org/index.html
+
+2. Vant
+
+    * https://youzan.github.io/vant/#/zh-CN/intro
+
+3. Element
+
+    * https://element.eleme.cn/#/zh-CN/component/installation
+
+4. vue-element-admin
+
+    * https://github.com/PanJiaChen/vue-element-admin
+    * https://panjiachen.github.io/vue-element-admin-site/zh/
+    
+### 1.3.2 项目阶段
 
 接下来，从项目的开发、部署（测试）和上线三个阶段介绍litemall。
 
@@ -1139,7 +1209,7 @@ http://www.example.com
    这样可以避免开发者对模块内部的开发配置文件造成修改；
 3. 管理后台前端litemall-admin模块`config/prod.env.js`中的`BASE_API`设置管理后台后端服务的服务地址。
 
-### 1.6.5 项目评估和调整
+### 1.6.5 项目评估
 
 本项目只是参考项目，项目代码质量和功能不可能符合开发者的最终需求，
 因此开发者**请务必仔细评估项目代码**。
@@ -1178,6 +1248,69 @@ litemall-admin编译得到的前端文件在第一次加载时相当耗时，这
 
 建议开发者根据自己业务或架构情况优化。
 
+### 1.6.7 项目安全
+
+项目一旦正式上线，即对外正式服务。但是服务同时，可能会存在安全隐患甚至黑客攻击。
+
+本节仅列举一些注意事项，欢迎开发者补充和完善。
+
+#### 1.6.7.1 账户安全
+
+这里的账号安全，既包括商城端用户账户，也包括管理后台端管理员账户。
+
+目前账号安全还缺乏一点的保护措施，例如
+
+* 用户密码失败超过阈值，则显示验证码；
+* 用户密码失败超过阈值，则取消登录；
+* 用户密码失败超过阈值，则需要手机验证码；
+
+#### 1.6.7.2 关键业务记录
+
+有关订单或者金钱相关的操作，建议开发者尽可能记录在数据库中，以便以后回溯。
+
+#### 1.6.7.3 API统一调整
+
+本项目公布了参考API接口，如果出现BUG可能会被黑客作为入口。
+建议开发者上线之前可以统一调整接口，以减少安全隐患。
+
+#### 1.6.7.4 对账
+
+本项目管理后台没有对账功能，建议开发者可以开发对账比对商场的状态是否正常。
+
+#### 1.6.7.5 取消或者限制退款
+
+本项目不支持自动退款功能，而是在管理后台通过管理员点击退款按钮来人工退款。
+但是仍然可能存在隐患，例如黑客通过漏洞进入管理后台从而进行不合理的退款操作。
+
+因此建议开发者可以取消管理后台的退款按钮，而仅仅保持退款信息，管理员可以登录
+微信官方支付平台进行退款操作。
+
+或者建议开发者基于一定的业务逻辑或场景限制管理后台的退款功能。例如，设置当天
+退款限额从而保证不会产生无限退款操作。
+
+#### 1.6.7.6 资源限制访问
+
+一些API操作涉及到后端服务器资源，因此需要做一定的限制，防止有限资源被恶意消耗。
+
+有限资源可能包括：
+
+* 验证码
+* 图片上传
+
+一些限制措施可能包括：
+
+* 限制单个IP的访问频率
+* 限制用户上传图片数量
+
+#### 1.6.7.n 跟踪本项目进展
+
+一旦有开发者反馈BUG，本项目会优先解决并及时上传补丁。
+因此建议开发者跟踪本项目进展，留意每次BUG修复的commit。
+
+同时也希望开发者发现任何BUG都及时反馈。
+
+目前还不存在LTS版本，未来业务稳定后可能会发布。
+
 ## 1.7 项目管理
 
 这里简述一些当前项目开发的要点。
@@ -1193,6 +1326,8 @@ litemall-admin编译得到的前端文件在第一次加载时相当耗时，这
 * litemall-wx-api/.gitignore
 * litemall-all/.gitignore
 * .gitignore
+
+开发者可以采用单一.gitignore文件。
 
 ### 1.7.2 项目自动部署
 
@@ -1333,8 +1468,8 @@ application配置文件中，但是问题就是数据库信息一旦改变则其
   * 503，业务不支持，即后端虽然定义了接口，但是还没有实现功能；
   * 504，更新数据失效，即后端采用了乐观锁更新，而并发更新时存在数据更新失效；
   * 505，更新数据失败，即后端数据库更新失败（正常情况应该更新成功）。
-* 6xx，小商城后端业务错误码，具体见litemall-admin-api模块的`AdminResponseCode`类。
-* 7xx，管理后台后端业务错误码，具体见litemall-wx-api模块的`WxResponseCode`类。
+* 6xx，管理后台后端业务错误码，具体见litemall-admin-api模块的`AdminResponseCode`类。
+* 7xx，小商城后端业务错误码，具体见litemall-wx-api模块的`WxResponseCode`类。
 
 需要指出的是，小商场后端可能返回4xx、5xx和6xx错误码；管理后台后端则可能返回4xx、5xx和7xx错误码。
 这样设计原因是方便小商场前端和管理后台前端区别对待。
@@ -1355,6 +1490,9 @@ application配置文件中，但是问题就是数据库信息一旦改变则其
 这里也要求后端开发者书写良好友好的业务错误信息，因为会向最终用户显示。
 
 和小商场前端类似，管理后台前端处理后端响应错误码也存在三种类似的处理方式。
+
+注意：
+> 这里的4xx和5xx错误码，和HTTP中的4xx和5xx状态码不是一个概念。
 
 ### 1.7.7 TODO
 

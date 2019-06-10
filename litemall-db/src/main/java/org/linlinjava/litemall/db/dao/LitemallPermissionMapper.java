@@ -51,7 +51,6 @@ public interface LitemallPermissionMapper {
      * This method corresponds to the database table litemall_permission
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallPermission selectOneByExample(LitemallPermissionExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallPermissionMapper {
      * This method corresponds to the database table litemall_permission
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallPermission selectOneByExampleSelective(@Param("example") LitemallPermissionExample example, @Param("selective") LitemallPermission.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallPermissionMapper {
      * This method corresponds to the database table litemall_permission
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallPermission> selectByExampleSelective(@Param("example") LitemallPermissionExample example, @Param("selective") LitemallPermission.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallPermissionMapper {
      * This method corresponds to the database table litemall_permission
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallPermission selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallPermission.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallPermissionMapper {
      * This method corresponds to the database table litemall_permission
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallPermission selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallPermissionMapper {
      * This method corresponds to the database table litemall_permission
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallPermissionExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallPermissionMapper {
      * This method corresponds to the database table litemall_permission
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

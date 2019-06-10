@@ -104,7 +104,7 @@ Page({
         that.setData({
           searchStatus: true,
           categoryFilter: false,
-          goodsList: res.data.goodsList,
+          goodsList: res.data.list,
           filterCategory: res.data.filterCategoryList
         });
       }

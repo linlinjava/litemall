@@ -107,7 +107,7 @@ Page({
       })
       .then(function(res) {
         that.setData({
-          goodsList: res.data.goodsList,
+          goodsList: res.data.list,
         });
         wx.hideLoading();
       });
