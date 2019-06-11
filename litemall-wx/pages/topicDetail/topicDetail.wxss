@@ -143,6 +143,22 @@
   margin-top: 20rpx;
 }
 
+.topic-goods .h {
+  height: 93rpx;
+  line-height: 93rpx;
+  width: 720rpx;
+  padding-right: 30rpx;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.topic-goods .h .t {
+  display: block;
+  float: left;
+  width: 50%;
+  font-size: 29rpx;
+  color: #333;
+}
+
 .topic-goods .b .item {
   border-top: 1px solid #d9d9d9;
   margin: 0 20rpx;
