@@ -265,13 +265,15 @@ IDEA导入项目时，非常耗时间，或者卡断，或者一直疯狂运行�
 
 原因：
 
-应该是litemall-admin模块的node_modules文件夹导致的。
-node_modules是litemall-admin所依赖的项目库，可能有近200M的文件。
+应该是litemall-admin模块和litemall-vue模块的node_modules文件夹导致的。
+node_modules是litemall-admin和litemall-vue模块所依赖的项目库，可能有近200M的文件。
 而IDEA如果没有设置，则可能尝试对该文件夹进行解析索引，从而导致卡断。
 
 解决方案：
 
-先关闭IDEA，然后删除node_modules文件夹，然后重新打开IDEA，设置node_modules文件夹Excluded状态。
+1. 先关闭IDEA，然后删除litemall-admin和litemall-vue模块内的node_modules文件夹；
+2. 然后分别创建空的node_modules文件夹；
+3. 重新打开IDEA，分别设置litemall-admin模块和litemall-vue模块的node_modules文件夹Excluded状态。
 
 ![](./pic/excluded.png)    
 
