@@ -91,7 +91,7 @@ public class BCryptTest {
 
   @PrepareForTest({BCrypt.class, SecureRandom.class})
   @Test
-  public void testGensalt() {
+  public void testGensalt() throws Exception {
     PowerMockito.whenNew(SecureRandom.class).withNoArguments()
         .thenReturn(PowerMockito.mock(SecureRandom.class));
     Assert.assertEquals("$2a$10$......................", BCrypt.gensalt());
