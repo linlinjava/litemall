@@ -36,7 +36,7 @@ public class AdminAdminController {
     private LogHelper logHelper;
 
     @RequiresPermissions("admin:admin:list")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(String username,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -63,7 +63,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:create")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
@@ -87,7 +87,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:read")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallAdmin admin = adminService.findById(id);
@@ -95,7 +95,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:update")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
@@ -120,7 +120,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:delete")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallAdmin admin) {
         Integer anotherAdminId = admin.getId();

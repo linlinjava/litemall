@@ -52,7 +52,7 @@ public class AdminAuthorizingRealm extends AuthorizingRealm {
 
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         String username = upToken.getUsername();
-        String password=new String(upToken.getPassword());
+        String password = new String(upToken.getPassword());
 
         if (StringUtils.isEmpty(username)) {
             throw new AccountException("用户名不能为空");
@@ -64,16 +64,16 @@ public class AdminAuthorizingRealm extends AuthorizingRealm {
         List<LitemallAdmin> adminList = adminService.findAdmin(username);
         Assert.state(adminList.size() < 2, "同一个用户名存在两个账户");
         if (adminList.size() == 0) {
-            throw new UnknownAccountException("找不到用户（"+username+"）的帐号信息");
+            throw new UnknownAccountException("找不到用户（" + username + "）的帐号信息");
         }
         LitemallAdmin admin = adminList.get(0);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(password, admin.getPassword())) {
-            throw new UnknownAccountException("找不到用户（"+username+"）的帐号信息");
+            throw new UnknownAccountException("找不到用户（" + username + "）的帐号信息");
         }
 
-        return new SimpleAuthenticationInfo(admin,password,getName());
+        return new SimpleAuthenticationInfo(admin, password, getName());
     }
 
 }

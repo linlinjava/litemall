@@ -53,7 +53,8 @@ public class AdminOrderService {
 
     public Object list(Integer userId, String orderSn, List<Short> orderStatusArray,
                        Integer page, Integer limit, String sort, String order) {
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
+        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit,
+                sort, order);
         return ResponseUtil.okList(orderList);
     }
 
@@ -154,7 +155,8 @@ public class AdminOrderService {
         //TODO 发送邮件和短信通知，这里采用异步发送
         // 退款成功通知用户, 例如“您申请的订单退款 [ 单号:{1} ] 已成功，请耐心等待到账。”
         // 注意订单号只发后6位
-        notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND, new String[]{order.getOrderSn().substring(8, 14)});
+        notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND,
+                new String[]{order.getOrderSn().substring(8, 14)});
 
         logHelper.logOrderSucceed("退款", "订单编号 " + orderId);
         return ResponseUtil.ok();
