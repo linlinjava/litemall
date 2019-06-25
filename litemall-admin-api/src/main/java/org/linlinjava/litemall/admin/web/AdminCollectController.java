@@ -29,7 +29,7 @@ public class AdminCollectController {
 
 
     @RequiresPermissions("admin:collect:list")
-    @RequiresPermissionsDesc(menu={"用户管理" , "用户收藏"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"用户管理", "用户收藏"}, button = "查询")
     @GetMapping("/list")
     public Object list(String userId, String valueId,
                        @RequestParam(defaultValue = "1") Integer page,

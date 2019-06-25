@@ -37,10 +37,6 @@ public class AdminGoodsService {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallBrandService brandService;
-    @Autowired
-    private LitemallCartService cartService;
-    @Autowired
-    private LitemallOrderGoodsService orderGoodsService;
 
     @Autowired
     private QCodeService qCodeService;

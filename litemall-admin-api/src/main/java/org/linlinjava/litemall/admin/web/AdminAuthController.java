@@ -16,9 +16,7 @@ import org.linlinjava.litemall.core.util.IpUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
-import org.linlinjava.litemall.db.domain.LitemallLog;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
-import org.linlinjava.litemall.db.service.LitemallLogService;
 import org.linlinjava.litemall.db.service.LitemallPermissionService;
 import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,7 +151,7 @@ public class AdminAuthController {
                 apis.clear();
                 apis.add("*");
                 return apis;
-//                return systemPermissionsMap.values();
+                //                return systemPermissionsMap.values();
 
             }
         }
