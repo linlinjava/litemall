@@ -47,7 +47,8 @@ public class WxTemplateSender {
         sendMsg(touser, templatId, parms, page, "", "");
     }
 
-    private void sendMsg(String touser, String templatId, String[] parms, String page, String color, String emphasisKeyword) {
+    private void sendMsg(String touser, String templatId, String[] parms, String page, String color,
+                         String emphasisKeyword) {
         LitemallUserFormid userFormid = formIdService.queryByOpenId(touser);
         if (userFormid == null)
             return;
@@ -68,7 +69,7 @@ public class WxTemplateSender {
                 logger.warn("更新数据已失效");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 

@@ -1,11 +1,12 @@
 package org.linlinjava.litemall.core.storage;
 
 import com.qiniu.common.QiniuException;
-import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
@@ -16,6 +17,8 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public class QiniuStorage implements Storage {
+
+    private final Log logger = LogFactory.getLog(QiniuStorage.class);
 
     private String endpoint;
     private String accessKey;
@@ -71,9 +74,9 @@ public class QiniuStorage implements Storage {
 
         try {
             String upToken = auth.uploadToken(bucketName);
-            Response response = uploadManager.put(inputStream, keyName, upToken, null, contentType);
+            uploadManager.put(inputStream, keyName, upToken, null, contentType);
         } catch (QiniuException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -94,13 +97,11 @@ public class QiniuStorage implements Storage {
             Resource resource = new UrlResource(url);
             if (resource.exists() || resource.isReadable()) {
                 return resource;
-            } else {
-                return null;
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
+            logger.error(e.getMessage(), e);
         }
+        return null;
     }
 
     @Override
@@ -111,11 +112,10 @@ public class QiniuStorage implements Storage {
             }
             bucketManager = new BucketManager(auth, new Configuration());
         }
-
         try {
             bucketManager.delete(bucketName, keyName);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 

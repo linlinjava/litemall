@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.linlinjava.litemall.core.storage.QiniuStorage;
@@ -17,6 +19,8 @@ import java.io.IOException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class QiniuStorageTest {
+
+    private final Log logger = LogFactory.getLog(QiniuStorageTest.class);
     @Autowired
     private QiniuStorage qiniuStorage;
 
@@ -27,10 +31,9 @@ public class QiniuStorageTest {
         qiniuStorage.store(new FileInputStream(test), testFile.length(), "image/png", "litemall.png");
         Resource resource = qiniuStorage.loadAsResource("litemall.png");
         String url = qiniuStorage.generateUrl("litemall.png");
-        System.out.println("test file " + test);
-        System.out.println("store file " + resource.getURI());
-        System.out.println("generate url " + url);
-//        qiniuStorage.delete("litemall.png");
+        logger.info("test file " + test);
+        logger.info("store file " + resource.getURI());
+        logger.info("generate url " + url);
     }
 
 }
