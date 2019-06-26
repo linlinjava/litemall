@@ -1,5 +1,8 @@
 package org.linlinjava.litemall.core.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -9,8 +12,10 @@ import java.net.UnknownHostException;
  */
 public class IpUtil {
 
+    private static final Log logger = LogFactory.getLog(IpUtil.class);
+
     public static String getIpAddr(HttpServletRequest request) {
-        String ipAddress = null;
+        String ipAddress;
         try {
             ipAddress = request.getHeader("x-forwarded-for");
             if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
@@ -27,7 +32,7 @@ public class IpUtil {
                     try {
                         inet = InetAddress.getLocalHost();
                     } catch (UnknownHostException e) {
-                        e.printStackTrace();
+                        logger.error(e.getMessage(), e);
                     }
                     ipAddress = inet.getHostAddress();
                 }
@@ -42,7 +47,6 @@ public class IpUtil {
         } catch (Exception e) {
             ipAddress = "";
         }
-        // ipAddress = this.getRequest().getRemoteAddr();
 
         return ipAddress;
     }
