@@ -1,8 +1,13 @@
 package org.linlinjava.litemall.core.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.Map;
 
 public class SystemInfoPrinter {
+
+    private static final Log logger = LogFactory.getLog(SystemInfoPrinter.class);
     public static final String CREATE_PART_COPPER = "XOXOXOXOX";
 
     private static int maxSize = 0;
@@ -34,24 +39,24 @@ public class SystemInfoPrinter {
     }
 
     private static void printHeader(String title) {
-        System.out.println(getLineCopper());
-        System.out.println("");
-        System.out.println("              " + title);
-        System.out.println("");
+        logger.info(getLineCopper());
+        logger.info("");
+        logger.info("              " + title);
+        logger.info("");
     }
 
     private static void printEnd() {
-        System.out.println("  ");
-        System.out.println(getLineCopper());
+        logger.info("  ");
+        logger.info(getLineCopper());
     }
 
     private static String getLineCopper() {
-        String copper = "";
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < maxSize; i++) {
-            copper += "=";
+            sb.append("=");
         }
 
-        return copper;
+        return sb.toString();
     }
 
     private static void printLine(String head, String line) {
@@ -59,11 +64,11 @@ public class SystemInfoPrinter {
             return;
 
         if (head.startsWith(CREATE_PART_COPPER)) {
-            System.out.println("");
-            System.out.println("    [[  " + line + "  ]]");
-            System.out.println("");
+            logger.info("");
+            logger.info("    [[  " + line + "  ]]");
+            logger.info("");
         } else {
-            System.out.println("    " + head + "        ->        " + line);
+            logger.info("    " + head + "        ->        " + line);
         }
     }
 }
