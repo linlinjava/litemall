@@ -122,7 +122,7 @@ public class AdminAuthController {
         data.put("roles", roles);
         // NOTE
         // 这里需要转换perms结构，因为对于前端而已API形式的权限更容易理解
-        data.put("perms", toAPI(permissions));
+        data.put("perms", toApi(permissions));
         return ResponseUtil.ok(data);
     }
 
@@ -130,7 +130,7 @@ public class AdminAuthController {
     private ApplicationContext context;
     private HashMap<String, String> systemPermissionsMap = null;
 
-    private Collection<String> toAPI(Set<String> permissions) {
+    private Collection<String> toApi(Set<String> permissions) {
         if (systemPermissionsMap == null) {
             systemPermissionsMap = new HashMap<>();
             final String basicPackage = "org.linlinjava.litemall.admin";

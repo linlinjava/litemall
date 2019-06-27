@@ -9,7 +9,12 @@
         <artifactId>litemall</artifactId>
         <version>0.1.0</version>
     </parent>
-
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
+        <checkstyle.version>7.6</checkstyle.version>
+    </properties>
     <dependencies>
 
         <dependency>
@@ -39,5 +44,39 @@
         </dependency>
     </dependencies>
 
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <sourceDirectories>
+                        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+                    </sourceDirectories>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <configLocation>checkstyle.xml</configLocation>
+                            <encoding>${project.reporting.outputEncoding}</encoding>
+                            <failOnViolation>true</failOnViolation>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
