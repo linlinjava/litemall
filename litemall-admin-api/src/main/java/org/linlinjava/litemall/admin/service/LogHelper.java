@@ -24,10 +24,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class LogHelper {
-    public final static Integer LOG_TYPE_GENERAL = 0;
-    public final static Integer LOG_TYPE_AUTH = 1;
-    public final static Integer LOG_TYPE_ORDER = 2;
-    public final static Integer LOG_TYPE_OTHER = 3;
+    public static final  Integer LOG_TYPE_GENERAL = 0;
+    public static final  Integer LOG_TYPE_AUTH = 1;
+    public static final  Integer LOG_TYPE_ORDER = 2;
+    public static final  Integer LOG_TYPE_OTHER = 3;
 
     @Autowired
     private LitemallLogService logService;

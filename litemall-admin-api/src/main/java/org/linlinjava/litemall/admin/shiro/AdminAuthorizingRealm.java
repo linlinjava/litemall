@@ -12,8 +12,6 @@ import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.linlinjava.litemall.db.service.LitemallPermissionService;
 import org.linlinjava.litemall.db.service.LitemallRoleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -23,7 +21,6 @@ import java.util.Set;
 
 public class AdminAuthorizingRealm extends AuthorizingRealm {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminAuthorizingRealm.class);
     @Autowired
     private LitemallAdminService adminService;
     @Autowired

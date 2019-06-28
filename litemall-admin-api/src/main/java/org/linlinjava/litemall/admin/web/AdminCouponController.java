@@ -51,8 +51,8 @@ public class AdminCouponController {
                            @RequestParam(defaultValue = "10") Integer limit,
                            @Sort @RequestParam(defaultValue = "add_time") String sort,
                            @Order @RequestParam(defaultValue = "desc") String order) {
-        List<LitemallCouponUser> couponList = couponUserService.queryList(userId, couponId, status, page, limit, sort
-                , order);
+        List<LitemallCouponUser> couponList = couponUserService.queryList(userId, couponId, status, page,
+                limit, sort, order);
         return ResponseUtil.okList(couponList);
     }
 

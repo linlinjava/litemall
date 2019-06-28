@@ -120,11 +120,11 @@ public class AdminOrderService {
         wxPayRefundRequest.setTotalFee(totalFee);
         wxPayRefundRequest.setRefundFee(totalFee);
 
-        WxPayRefundResult wxPayRefundResult = null;
+        WxPayRefundResult wxPayRefundResult;
         try {
             wxPayRefundResult = wxPayService.refund(wxPayRefundRequest);
         } catch (WxPayException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return ResponseUtil.fail(ORDER_REFUND_FAILED, "订单退款失败");
         }
         if (!wxPayRefundResult.getReturnCode().equals("SUCCESS")) {
