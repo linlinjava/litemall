@@ -71,6 +71,16 @@
             <groupId>org.linlinjava</groupId>
             <artifactId>litemall-db</artifactId>
         </dependency>
+        <!-- <dependency>
+			<groupId>com.huawei.storage</groupId>
+			<artifactId>esdk-obs-java</artifactId>
+			<version>3.19.5</version> 
+        </dependency> -->
+		<dependency>
+		    <groupId>com.huaweicloud</groupId>
+		    <artifactId>esdk-obs-java</artifactId>
+		    <version>3.19.5</version>
+		</dependency>
     </dependencies>
 
 </project>
