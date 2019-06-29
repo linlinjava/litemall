@@ -12,8 +12,8 @@ logging:
     root:  ERROR
     org.springframework:  ERROR
     org.mybatis:  ERROR
-    org.linlinjava.litemall.core:  ERROR
-    org.linlinjava.litemall.db:  ERROR
-    org.linlinjava.litemall.admin:  ERROR
-    org.linlinjava.litemall.wx:  ERROR
-    org.linlinjava.litemall:  ERROR
+    org.linlinjava.litemall.core:  INFO
+    org.linlinjava.litemall.db:  INFO
+    org.linlinjava.litemall.admin:  INFO
+    org.linlinjava.litemall.wx:  INFO
+    org.linlinjava.litemall:  INFO
