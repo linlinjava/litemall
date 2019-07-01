@@ -32,7 +32,6 @@
 <script>
 import { goodsCategory, goodsList } from '@/api/api';
 import { Card, List, Tab, Tabs } from 'vant';
-import InfinityScroll from '@/components/infinity-scroll';
 
 export default {
   name: 'Item-list',
