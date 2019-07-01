@@ -52,10 +52,10 @@
     </div>
 
     <van-goods-action>
-      <van-goods-action-mini-btn @click="toCart" icon="cart-o" :info="(cartInfo > 0) ? cartInfo : ''"/>
-      <van-goods-action-mini-btn @click="addCollect" icon="star-o" :style="(goods.userHasCollect !== 0) ? 'color: #f7b444;':''"/>
-      <van-goods-action-big-btn @click="skuClick" text="加入购物车"/>
-      <van-goods-action-big-btn primary @click="skuClick" text="立即购买"/>
+      <van-goods-action-icon @click="toCart" icon="cart-o" :info="(cartInfo > 0) ? cartInfo : ''"/>
+      <van-goods-action-icon @click="addCollect" icon="star-o" :style="(goods.userHasCollect !== 0) ? 'color: #f7b444;':''"/>
+      <van-goods-action-button type="warning" @click="skuClick" text="加入购物车"/>
+      <van-goods-action-button type="danger" @click="skuClick" text="立即购买"/>
     </van-goods-action>
 
   </div>
@@ -65,7 +65,7 @@
 
 import { goodsDetail, cartGoodsCount, collectAddOrDelete, cartAdd, cartFastAdd } from '@/api/api';
 
-import { Sku, Swipe, SwipeItem, GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn, Popup } from 'vant';
+import { Sku, Swipe, SwipeItem, GoodsAction, GoodsActionButton, GoodsActionIcon, Popup } from 'vant';
 import { setLocalStorage } from '@/utils/local-storage';
 import popupProps from './popup-props';
 import _ from 'lodash';
@@ -349,8 +349,8 @@ computed: {
     [SwipeItem.name]: SwipeItem,
     [Sku.name]: Sku,
     [GoodsAction.name]: GoodsAction,
-    [GoodsActionBigBtn.name]: GoodsActionBigBtn,
-    [GoodsActionMiniBtn.name]: GoodsActionMiniBtn,
+    [GoodsActionButton.name]: GoodsActionButton,
+    [GoodsActionIcon.name]: GoodsActionIcon,
     [popupProps.name]: popupProps    
   }
 }
