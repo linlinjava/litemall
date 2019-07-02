@@ -1,6 +1,8 @@
 package org.linlinjava.litemall.core.express;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.express.config.ExpressProperties;
 import org.linlinjava.litemall.core.express.dao.ExpressInfo;
 import org.linlinjava.litemall.core.util.HttpUtil;
@@ -13,10 +15,12 @@ import java.util.Map;
 
 /**
  * 物流查询服务
- *
+ * <p>
  * 快递鸟即时查询API http://www.kdniao.com/api-track
  */
 public class ExpressService {
+
+    private final Log logger = LogFactory.getLog(ExpressService.class);
     //请求url
     private String ReqURL = "http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx";
 
@@ -59,7 +63,7 @@ public class ExpressService {
             ei.setShipperName(getVendorName(expCode));
             return ei;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return null;
@@ -103,7 +107,7 @@ public class ExpressService {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(str.getBytes(charset));
         byte[] result = md.digest();
-        StringBuffer sb = new StringBuffer(32);
+        StringBuilder sb = new StringBuilder(32);
         for (int i = 0; i < result.length; i++) {
             int val = result[i] & 0xff;
             if (val <= 0xf) {
@@ -126,12 +130,12 @@ public class ExpressService {
         if (keyValue != null) {
             content = content + keyValue;
         }
-        byte[] src = new byte[0];
+        byte[] src;
         try {
             src = MD5(content, charset).getBytes(charset);
             return Base64Utils.encodeToString(src);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return null;

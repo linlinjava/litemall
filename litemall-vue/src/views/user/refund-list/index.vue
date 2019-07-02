@@ -1,13 +1,12 @@
 <template>
-  <div class="order_list">
+  <div class="refund_list">
     <van-tabs sticky :active="activeIndex" :swipe-threshold="5" @click="handleTabClick">
-      <van-tab v-for="(tab, tabIndex) in tabsItem" :title="tab.name" :key="tab.type">
-        <InfinityScroll
-          class="full-page scroll-wrap"
-          :beforeRequest="beforeRequest"
-          :apiUrl="listApi"
-          @onLoad="onLoad(tabIndex, $event)"
-        >
+      <van-tab v-for="(tab, tabIndex) in tabsItem" :title="tab.name" :key="tabIndex">
+        <van-list v-model="loading"
+                  :finished="finished"
+                  :immediate-check="false"
+                  finished-text="没有更多了"
+                  @load="getRefundList">
           <van-panel
             v-for="(el, i) in tab.items"
             class="order_list--panel"
@@ -36,7 +35,7 @@
               >{{ el.status == 10 ? "撤销申请" : "查看详情"}}</van-button>
             </div>
           </van-panel>
-        </InfinityScroll>
+        </van-list>
       </van-tab>
     </van-tabs>
   </div>
@@ -46,7 +45,6 @@
 import { REFUND_LIST } from '@/api/api';
 
 import { Tab, Tabs, Panel, Card, List } from 'vant';
-import InfinityScroll from '@/components/infinity-scroll';
 
 const STATUS_TEXT = {
   10: '退款中',
@@ -60,9 +58,12 @@ export default {
   data() {
     return {
       listApi: REFUND_LIST,
-      shop_id: 1,
       activeIndex: 0,
       items: [],
+      page: 0,
+      limit: 10,
+      loading: false,
+      finished: false,
       tabsItem: [
         {
           name: '全部',
@@ -87,17 +88,6 @@ export default {
     onLoad(i, items) {
       this.tabsItem[i].items.push(...items);
     },
-    beforeRequest() {
-      const i = this.activeIndex;
-      const status = this.tabsItem[i].status;
-      const { shop_id } = this;
-      return {
-        params: {
-          status,
-          shop_id
-        }
-      };
-    },
     refund_handle(i) {
       const item = this.items[i];
       if (item.status == 10) {
@@ -120,6 +110,9 @@ export default {
     },
     getStatusText(status) {
       return STATUS_TEXT[status] || '';
+    },
+    getRefundList(){
+
     }
   },
   components: {
@@ -127,14 +120,13 @@ export default {
     [Tabs.name]: Tabs,
     [Panel.name]: Panel,
     [Card.name]: Card,
-    [List.name]: List,
-    InfinityScroll
+    [List.name]: List
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.order_list {
+.refund_list {
   padding-bottom: 0;
 
   &--footer_btn {

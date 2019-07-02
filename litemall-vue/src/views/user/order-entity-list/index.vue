@@ -1,54 +1,67 @@
 <template>
-  <div class="order_list over-hide">
-    <van-tabs v-model="activeIndex" :swipe-threshold="5" @click="handleTabClick">
-      <van-tab v-for="(tabTitle, index) in tabTitles" :title="tabTitle" :key="index">
-        <!-- <InfinityScroll
-          class="full-page scroll-wrap height-fix42"
-          :beforeRequest="beforeRequest"
-          :apiUrl="listApi"
-          @onLoad="onLoad(tabIndex, $event)"
-        > -->
-          <van-panel
-            v-for="(el, i) in orderList"
-            class="order_list--panel"
-            :key="i"
-            :title="'订单编号: ' + el.orderSn"
-            :status="el.orderStatusText"
-          >
+  <div class="order_list">
+    <van-tabs v-model="activeIndex"
+              :swipe-threshold="5"
+              @click="handleTabClick">
+      <van-tab v-for="(tabTitle, index) in tabTitles"
+               :title="tabTitle"
+               :key="index">
+        <van-list v-model="loading"
+                  :finished="finished"
+                  :immediate-check="false"
+                  finished-text="没有更多了"
+                  @load="getOrderList">
+          <van-panel v-for="(el, i) in orderList"
+                     class="order_list--panel"
+                     :key="i"
+                     :title="'订单编号: ' + el.orderSn"
+                     :status="el.orderStatusText">
             <div>
-              <van-card
-                v-for="(goods, goodsI) in el.goodsList"
-                class="order_list--van-card"
-                :key="goodsI"
-                :title="goods.goodsName"
-                :num="goods.number"
-                :thumb="goods.picUrl"
-                @click.native="toOrderDetail(el.id)"
-              >
-              <div slot="desc">
-                <div class="van-card__desc">
-                  <van-tag plain style="margin-right:6px;" v-for="(spec, index) in goods.specifications" :key="index">
-                  {{spec}}
-                  </van-tag>
+              <van-card v-for="(goods, goodsI) in el.goodsList"
+                        class="order_list--van-card"
+                        :key="goodsI"
+                        :title="goods.goodsName"
+                        :num="goods.number"
+                        :thumb="goods.picUrl"
+                        @click.native="toOrderDetail(el.id)">
+                <div slot="desc">
+                  <div class="van-card__desc">
+                    <van-tag plain
+                             style="margin-right:6px;"
+                             v-for="(spec, index) in goods.specifications"
+                             :key="index">
+                      {{spec}}
+                    </van-tag>
+                  </div>
                 </div>
-              </div>
-            </van-card>              
-              <div
-                class="order_list--total"
-              >合计: {{el.actualPrice * 100 | yuan}}（含运费{{el.post_fee | yuan}}）</div>
+              </van-card>
+              <div class="order_list--total">合计: {{el.actualPrice * 100 | yuan}}（含运费{{el.post_fee | yuan}}）</div>
             </div>
 
-          	<div slot="footer" class="order_list--footer_btn">
-              <van-button size="small" v-if="el.handleOption.cencel" @click="cancelOrder(el.id)">取消订单</van-button>
-	            <van-button size="small" v-if="el.handleOption.pay" type="danger" @click="toPay(el.id)">去支付</van-button>
-		          <van-button size="small" v-if="el.handleOption.confirm" type="danger" @click="confirmOrder(el.id)">确认收货</van-button>
-              <van-button size="small" v-if="el.handleOption.delete" @click="delOrder(el.id)">删除订单</van-button>
-              <van-button size="small" v-if="el.handleOption.comment" @click="commentOrder(el.id)">去评价</van-button>
-	          </div>
+            <div slot="footer"
+                 class="order_list--footer_btn">
+              <van-button size="small"
+                          v-if="el.handleOption.cencel"
+                          @click="cancelOrder(el.id)">取消订单</van-button>
+              <van-button size="small"
+                          v-if="el.handleOption.pay"
+                          type="danger"
+                          @click="toPay(el.id)">去支付</van-button>
+              <van-button size="small"
+                          v-if="el.handleOption.confirm"
+                          type="danger"
+                          @click="confirmOrder(el.id)">确认收货</van-button>
+              <van-button size="small"
+                          v-if="el.handleOption.delete"
+                          @click="delOrder(el.id)">删除订单</van-button>
+              <van-button size="small"
+                          v-if="el.handleOption.comment"
+                          @click="commentOrder(el.id)">去评价</van-button>
+            </div>
 
           </van-panel>
 
-        <!-- </InfinityScroll> -->
+        </van-list>
 
       </van-tab>
     </van-tabs>
@@ -56,10 +69,9 @@
 </template>
 
 <script>
-import { OrderList, orderList } from '@/api/api';
+import { orderList } from '@/api/api';
 
 import { Tab, Tabs, Panel, Card, List, Tag } from 'vant';
-import InfinityScroll from '@/components/infinity-scroll';
 
 export default {
   name: 'order-list',
@@ -74,25 +86,33 @@ export default {
     this.init();
   },
   data() {
-    return {      
-      listApi: OrderList,
+    return {
       activeIndex: this.active,
-      tabTitles: [
-        '全部',
-        '待付款',
-        '待发货',
-        '待收货',
-        '待评价'
-      ],
-      orderList: []
+      tabTitles: ['全部', '待付款', '待发货', '待收货', '待评价'],
+      orderList: [],
+      page: 0,
+      limit: 10,
+      loading: false,
+      finished: false
     };
   },
 
   methods: {
-    init(i) {
-      let showType = i || this.activeIndex;
-      orderList({showType: showType}).then(res => {
-        this.orderList = res.data.data.list;
+    init() {
+      this.page = 0;
+      this.orderList = [];
+      this.getOrderList();
+    },
+    getOrderList() {
+      this.page++;
+      orderList({
+        showType: this.activeIndex,
+        page: this.page,
+        limit: this.limit
+      }).then(res => {
+        this.orderList.push(...res.data.data.list);
+        this.loading = false;
+        this.finished = res.data.data.page >= res.data.data.pages;
       });
     },
     delOrder(i) {
@@ -110,13 +130,15 @@ export default {
       });
       this.$toast('已确认收货');
     },
-    commentOrder(id) {
-    },
+    commentOrder(id) {},
     toPay(id) {
       this.$router.push({ name: 'payment', params: { orderId: id } });
     },
     handleTabClick(index) {
-      this.init(index);
+      this.activeIndex = index;
+      this.page = 0;
+      this.orderList = [];
+      this.getOrderList();
     },
     toOrderDetail(id) {
       this.$router.push({
@@ -126,7 +148,6 @@ export default {
     }
   },
   components: {
-    InfinityScroll,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     [Panel.name]: Panel,
@@ -140,16 +161,15 @@ export default {
 <style lang="scss" scoped>
 .order_list {
   padding-bottom: 0;
-  overflow-y: hidden;
   &--footer_btn {
     text-align: right;
   }
   &--panel {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   &--van-card {
-    background-color: #fafafa;
+    background-color: #fff;
   }
 
   &--total {

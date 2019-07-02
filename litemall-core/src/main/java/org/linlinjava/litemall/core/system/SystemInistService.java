@@ -31,6 +31,7 @@ class SystemInistService {
 
 
     private final static Map<String, String> DEFAULT_CONFIGS = new HashMap<>();
+
     static {
         // 小程序相关配置默认值
         DEFAULT_CONFIGS.put(SystemConfig.LITEMALL_WX_INDEX_NEW, "6");
@@ -63,7 +64,7 @@ class SystemInistService {
 
         // 2. 分析DEFAULT_CONFIGS
         for (Map.Entry<String, String> entry : DEFAULT_CONFIGS.entrySet()) {
-            if(configs.containsKey(entry.getKey())){
+            if (configs.containsKey(entry.getKey())) {
                 continue;
             }
 
@@ -109,7 +110,9 @@ class SystemInistService {
         infos.put(SystemInfoPrinter.CREATE_PART_COPPER + 3, "系统设置");
         infos.put("自动创建朋友圈分享图", Boolean.toString(SystemConfig.isAutoCreateShareImage()));
         infos.put("商场名称", SystemConfig.getMallName());
-        infos.put("首页显示记录数：NEW,HOT,BRAND,TOPIC,CatlogList,CatlogMore", SystemConfig.getNewLimit() + "," + SystemConfig.getHotLimit() + "," + SystemConfig.getBrandLimit() + "," + SystemConfig.getTopicLimit() + "," + SystemConfig.getCatlogListLimit() + "," + SystemConfig.getCatlogMoreLimit());
+        infos.put("首页显示记录数：NEW,HOT,BRAND,TOPIC,CatlogList,CatlogMore",
+                SystemConfig.getNewLimit() + "," + SystemConfig.getHotLimit() + "," + SystemConfig.getBrandLimit() +
+                        "," + SystemConfig.getTopicLimit() + "," + SystemConfig.getCatlogListLimit() + "," + SystemConfig.getCatlogMoreLimit());
 
         return infos;
     }

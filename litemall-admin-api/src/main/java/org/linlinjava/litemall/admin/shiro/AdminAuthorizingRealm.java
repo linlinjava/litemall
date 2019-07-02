@@ -12,8 +12,6 @@ import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.linlinjava.litemall.db.service.LitemallPermissionService;
 import org.linlinjava.litemall.db.service.LitemallRoleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -23,7 +21,6 @@ import java.util.Set;
 
 public class AdminAuthorizingRealm extends AuthorizingRealm {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminAuthorizingRealm.class);
     @Autowired
     private LitemallAdminService adminService;
     @Autowired
@@ -52,7 +49,7 @@ public class AdminAuthorizingRealm extends AuthorizingRealm {
 
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         String username = upToken.getUsername();
-        String password=new String(upToken.getPassword());
+        String password = new String(upToken.getPassword());
 
         if (StringUtils.isEmpty(username)) {
             throw new AccountException("用户名不能为空");
@@ -64,16 +61,16 @@ public class AdminAuthorizingRealm extends AuthorizingRealm {
         List<LitemallAdmin> adminList = adminService.findAdmin(username);
         Assert.state(adminList.size() < 2, "同一个用户名存在两个账户");
         if (adminList.size() == 0) {
-            throw new UnknownAccountException("找不到用户（"+username+"）的帐号信息");
+            throw new UnknownAccountException("找不到用户（" + username + "）的帐号信息");
         }
         LitemallAdmin admin = adminList.get(0);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(password, admin.getPassword())) {
-            throw new UnknownAccountException("找不到用户（"+username+"）的帐号信息");
+            throw new UnknownAccountException("找不到用户（" + username + "）的帐号信息");
         }
 
-        return new SimpleAuthenticationInfo(admin,password,getName());
+        return new SimpleAuthenticationInfo(admin, password, getName());
     }
 
 }

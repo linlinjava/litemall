@@ -137,10 +137,6 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script>
 import { listOrder, shipOrder, refundOrder, detailOrder } from '@/api/order'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
