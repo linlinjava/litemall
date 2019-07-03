@@ -113,7 +113,6 @@
 
 <script>
 import { getHome, goodsCategory, couponReceive } from '@/api/api';
-import loadMore from '@/mixin/list-load-more';
 import scrollFixed from '@/mixin/scroll-fixed';
 import _ from 'lodash';
 
@@ -135,7 +134,7 @@ import {
 } from 'vant';
 
 export default {
-  mixins: [loadMore, scrollFixed],
+  mixins: [scrollFixed],
 
   data() {
     return {
@@ -180,7 +179,6 @@ export default {
   },
 
   components: {
-    // Vue.use(Tabbar).use(TabbarItem);,
     [Row.name]: Row,
     [Col.name]: Col,
     [Card.name]: Card,
