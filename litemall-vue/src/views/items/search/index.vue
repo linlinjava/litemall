@@ -1,53 +1,52 @@
 <template>
-	<div class="item_search">
-		<form action="/search" @submit="disabledSubmit">
-			<van-search placeholder="请输入商品名称" v-model="keyword" @search="enterSearch" autofocus/>
-		</form>
-		<div class="item_search_content">
-			<div class="item_search_text clearfix">
-				<div class="float-l">历史搜索</div>
-				<div class="float-r" @click="clearHistory">
-					<van-icon name="lajitong" style="font-size: 12px;margin-right: 3px" />
-					清空历史记录
-				</div>
-			</div>
-			<div class="item_search_history">
-				<van-tag
-          plain
-					v-for="(his, i) in wordHistory"
-					:key="i"
-					@click="clickSearch(his)"
-				>{{his}}</van-tag>
-			</div>
-		</div>
+  <div class="item_search">
+    <form action="/search"
+          @submit="disabledSubmit">
+      <van-search placeholder="请输入商品名称"
+                  v-model="keyword"
+                  @search="enterSearch"
+                  autofocus />
+    </form>
+    <div class="item_search_content">
+      <div class="item_search_text clearfix">
+        <div class="float-l">历史搜索</div>
+        <div class="float-r"
+             @click="clearHistory">
+          <van-icon name="lajitong"
+                    style="font-size: 12px;margin-right: 3px" />
+          清空历史记录
+        </div>
+      </div>
+      <div class="item_search_history">
+        <van-tag plain
+                 v-for="(his, i) in wordHistory"
+                 :key="i"
+                 @click="clickSearch(his)">{{his}}</van-tag>
+      </div>
+    </div>
 
-    
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      :immediate-check="false"
-      @load="loadMore"
-    >
-      <item-group>
-        <item-card-hori
-          v-for="(item) in list"
-          :key="item.id"
-          :goods="item"
-          @click="itemClick(item.id)"
-        />
-      </item-group>
+    <van-list v-model="loading"
+              :finished="finished"
+              :immediate-check="false"
+              @load="loadMore">
+      <van-card v-for="(item, i) in list"
+                :key="i"
+                :desc="item.brief"
+                :title="item.name"
+                :thumb="item.picUrl"
+                :price="item.retailPrice"
+                :origin-price="item.counterPrice"
+                @click="itemClick(item.id)" />
     </van-list>
 
     <is-empty v-if="isEmpty">抱歉,没有找到符合条件商品</is-empty>
-	</div>
+  </div>
 </template>
 
 <script>
-import { Search, Tag, List } from 'vant';
+import { Card, Search, Tag, List } from 'vant';
 import { goodsList } from '@/api/api';
-import ItemGroup from '@/components/item-group/';
 import IsEmpty from '@/components/is-empty/';
-import ItemCardHori from '@/components/item-card-hori/';
 
 export default {
   data() {
@@ -61,7 +60,7 @@ export default {
       pages: 0,
       loading: false,
       finished: false,
-      isEmpty: false    
+      isEmpty: false
     };
   },
   methods: {
@@ -110,11 +109,11 @@ export default {
     },
     searchGoods() {
       goodsList({
-          keyword: this.keyword,
-          page: this.page,
-          limit: this.limit,
-          categoryId: 0
-        }).then(res => {
+        keyword: this.keyword,
+        page: this.page,
+        limit: this.limit,
+        categoryId: 0
+      }).then(res => {
         var data = res.data.data;
         this.list.push(...data.list);
         this.page = data.page;
@@ -131,17 +130,19 @@ export default {
         this.finished = true;
       }
     },
+    itemClick(id) {
+      this.$router.push(`/items/detail/${id}`);
+    }
   },
   activated() {
     this.wordHistory = this.getKeyWordHistory();
   },
   components: {
     [Search.name]: Search,
+    [Card.name]: Card,
     [Tag.name]: Tag,
-    [ItemGroup.name]: ItemGroup,
-    [ItemCardHori.name]: ItemCardHori,
     [List.name]: List,
-    [IsEmpty.name]: IsEmpty    
+    [IsEmpty.name]: IsEmpty
   }
 };
 </script>
