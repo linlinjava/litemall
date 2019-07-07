@@ -378,10 +378,7 @@ public class WxAuthController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("reset")
-    public Object reset(@LoginUser Integer userId, @RequestBody String body, HttpServletRequest request) {
-        if(userId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object reset(@RequestBody String body, HttpServletRequest request) {
         String password = JacksonUtil.parseString(body, "password");
         String mobile = JacksonUtil.parseString(body, "mobile");
         String code = JacksonUtil.parseString(body, "code");
