@@ -3,7 +3,6 @@ package org.linlinjava.litemall.admin.job;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.system.SystemConfig;
-import org.linlinjava.litemall.db.domain.LitemallGoodsProduct;
 import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
 import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
@@ -42,7 +41,7 @@ public class OrderJob {
      * 注意，因为是相隔半小时检查，因此导致订单真正超时时间是 [LITEMALL_ORDER_UNPAID, 30 + LITEMALL_ORDER_UNPAID]
      */
     @Scheduled(fixedDelay = 30 * 60 * 1000)
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void checkOrderUnpaid() {
         logger.info("系统开启任务检查订单是否已经超期自动取消订单");
 
@@ -65,7 +64,7 @@ public class OrderJob {
                     throw new RuntimeException("商品货品库存增加失败");
                 }
             }
-            logger.info("订单 ID=" + order.getId() + " 已经超期自动取消订单");
+            logger.info("订单 ID" + order.getId() + " 已经超期自动取消订单");
         }
     }
 
@@ -109,7 +108,6 @@ public class OrderJob {
     public void checkOrderComment() {
         logger.info("系统开启任务检查订单是否已经超期未评价");
 
-        LocalDateTime now = LocalDateTime.now();
         List<LitemallOrder> orderList = orderService.queryComment(SystemConfig.getOrderComment());
         for (LitemallOrder order : orderList) {
             order.setComments((short) 0);

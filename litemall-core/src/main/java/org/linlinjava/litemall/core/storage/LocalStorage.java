@@ -1,6 +1,8 @@
 package org.linlinjava.litemall.core.storage;
 
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
@@ -18,6 +20,9 @@ import java.util.stream.Stream;
  */
 public class LocalStorage implements Storage {
 
+
+    private final Log logger = LogFactory.getLog(LocalStorage.class);
+
     private String storagePath;
     private String address;
 
@@ -34,7 +39,7 @@ public class LocalStorage implements Storage {
         try {
             Files.createDirectories(rootLocation);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -83,7 +88,7 @@ public class LocalStorage implements Storage {
                 return null;
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
@@ -94,13 +99,13 @@ public class LocalStorage implements Storage {
         try {
             Files.delete(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 
     @Override
     public String generateUrl(String keyName) {
-        String url = address + keyName;
-        return url;
+
+        return address + keyName;
     }
 }

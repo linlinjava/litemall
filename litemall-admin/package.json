@@ -24,7 +24,7 @@
     "@tinymce/tinymce-vue": "1.1.0",
     "@riophae/vue-treeselect": "0.0.37",
     "v-charts": "1.19.0",
-    "axios": "0.18.0",
+    "axios": ">=0.18.1",
     "clipboard": "1.7.1",
     "connect": "3.6.6",
     "echarts": "4.1.0",
