@@ -11,7 +11,10 @@ import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class AdminUserController {
     private LitemallUserService userService;
 
     @RequiresPermissions("admin:user:list")
-    @RequiresPermissionsDesc(menu={"用户管理" , "会员管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"用户管理", "会员管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(String username, String mobile,
                        @RequestParam(defaultValue = "1") Integer page,

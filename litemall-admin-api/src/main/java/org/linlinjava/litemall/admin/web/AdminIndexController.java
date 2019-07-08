@@ -51,14 +51,14 @@ public class AdminIndexController {
     }
 
     @RequiresPermissions("index:permission:read")
-    @RequiresPermissionsDesc(menu={"其他" , "权限测试"}, button="权限读")
+    @RequiresPermissionsDesc(menu = {"其他", "权限测试"}, button = "权限读")
     @GetMapping("/read")
     public Object read() {
         return ResponseUtil.ok("hello world, this is admin service");
     }
 
     @RequiresPermissions("index:permission:write")
-    @RequiresPermissionsDesc(menu={"其他" , "权限测试"}, button="权限写")
+    @RequiresPermissionsDesc(menu = {"其他", "权限测试"}, button = "权限写")
     @PostMapping("/write")
     public Object write() {
         return ResponseUtil.ok("hello world, this is admin service");

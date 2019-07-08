@@ -11,6 +11,7 @@ import org.linlinjava.litemall.db.util.CouponUserConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
@@ -35,13 +36,13 @@ public class CouponJob {
         logger.info("系统开启任务检查优惠券是否已经过期");
 
         List<LitemallCoupon> couponList = couponService.queryExpired();
-        for(LitemallCoupon coupon : couponList){
+        for (LitemallCoupon coupon : couponList) {
             coupon.setStatus(CouponConstant.STATUS_EXPIRED);
             couponService.updateById(coupon);
         }
 
         List<LitemallCouponUser> couponUserList = couponUserService.queryExpired();
-        for(LitemallCouponUser couponUser : couponUserList){
+        for (LitemallCouponUser couponUser : couponUserList) {
             couponUser.setStatus(CouponUserConstant.STATUS_EXPIRED);
             couponUserService.update(couponUser);
         }

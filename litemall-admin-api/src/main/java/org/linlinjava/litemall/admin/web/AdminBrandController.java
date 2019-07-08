@@ -28,7 +28,7 @@ public class AdminBrandController {
     private LitemallBrandService brandService;
 
     @RequiresPermissions("admin:brand:list")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(String id, String name,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -58,7 +58,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:create")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallBrand brand) {
         Object error = validate(brand);
@@ -70,7 +70,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:read")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallBrand brand = brandService.findById(id);
@@ -78,7 +78,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:update")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallBrand brand) {
         Object error = validate(brand);
@@ -92,7 +92,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:delete")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallBrand brand) {
         Integer id = brand.getId();

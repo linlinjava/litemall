@@ -86,6 +86,13 @@ public class WxAuthController {
             return ResponseUtil.fail(AUTH_INVALID_ACCOUNT, "账号密码不对");
         }
 
+        // 更新登录情况
+        user.setLastLoginTime(LocalDateTime.now());
+        user.setLastLoginIp(IpUtil.getIpAddr(request));
+        if (userService.updateById(user) == 0) {
+            return ResponseUtil.updatedDataFailed();
+        }
+
         // userInfo
         UserInfo userInfo = new UserInfo();
         userInfo.setNickName(username);
@@ -371,10 +378,7 @@ public class WxAuthController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("reset")
-    public Object reset(@LoginUser Integer userId, @RequestBody String body, HttpServletRequest request) {
-        if(userId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object reset(@RequestBody String body, HttpServletRequest request) {
         String password = JacksonUtil.parseString(body, "password");
         String mobile = JacksonUtil.parseString(body, "mobile");
         String code = JacksonUtil.parseString(body, "code");

@@ -4,6 +4,8 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
@@ -19,6 +21,8 @@ import java.util.stream.Stream;
  * @decrpt 阿里云对象存储服务
  */
 public class AliyunStorage implements Storage {
+
+    private final Log logger = LogFactory.getLog(AliyunStorage.class);
 
     private String endpoint;
     private String accessKeyId;
@@ -84,7 +88,7 @@ public class AliyunStorage implements Storage {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata);
             PutObjectResult putObjectResult = getOSSClient().putObject(putObjectRequest);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage(), ex);
         }
 
     }
@@ -110,7 +114,7 @@ public class AliyunStorage implements Storage {
                 return null;
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
@@ -120,7 +124,7 @@ public class AliyunStorage implements Storage {
         try {
             getOSSClient().deleteObject(bucketName, keyName);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
     }
