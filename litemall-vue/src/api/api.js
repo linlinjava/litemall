@@ -330,7 +330,14 @@ const FootprintDelete='wx/footprint/delete'; //删除足迹
 
 const UserFormIdCreate='wx/formid/create'; //用户FromId，用于发送模版消息
 
-const GroupOnList='wx/groupon/list'; //团购列表
+const GrouponList='wx/groupon/list'; //团购列表
+export function grouponList(query) {
+  return request({
+    url: GrouponList,
+    method: 'get',
+    params: query
+  })
+}
 const GroupOn='wx/groupon/query'; //团购API-查询
 const GroupOnMy='wx/groupon/my'; //团购API-我的团购
 const GroupOnDetail='wx/groupon/detail'; //团购API-详情

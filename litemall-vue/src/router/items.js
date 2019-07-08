@@ -31,5 +31,23 @@ export default [
     name: 'list',
     component: () => import('@/views/items/list'),
     props: route => route.query
+  },
+  {
+    path: '/items/hot',
+    name: 'hot',
+    component: () => import('@/views/items/hot'),
+    props: route => route.query
+  },
+  {
+    path: '/items/new',
+    name: 'new',
+    component: () => import('@/views/items/new'),
+    props: route => route.query
+  },
+  {
+    path: '/items/groupon',
+    name: 'groupon',
+    component: () => import('@/views/items/groupon'),
+    props: route => route.query
   }
 ];
