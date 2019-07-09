@@ -42,6 +42,7 @@ public class WxConfig {
         payConfig.setKeyPath(properties.getKeyPath());
         payConfig.setTradeType("JSAPI");
         payConfig.setSignType("MD5");
+        // payConfig.setUseSandboxEnv(true);
         return payConfig;
     }
 
