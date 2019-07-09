@@ -7,6 +7,7 @@ public class StorageProperties {
     private String active;
     private Local local;
     private Aliyun aliyun;
+    private Huawei huawei;
     private Tencent tencent;
     private Qiniu qiniu;
 
@@ -50,7 +51,15 @@ public class StorageProperties {
         this.qiniu = qiniu;
     }
 
-    public static class Local {
+    public Huawei getHuawei() {
+		return huawei;
+	}
+
+	public void setHuawei(Huawei huawei) {
+		this.huawei = huawei;
+	}
+
+	public static class Local {
         private String address;
         private String storagePath;
 
@@ -147,6 +156,45 @@ public class StorageProperties {
         public void setBucketName(String bucketName) {
             this.bucketName = bucketName;
         }
+    }
+    
+    public static class Huawei {
+    	private String endpoint;
+    	private String ak;
+    	private String sk;
+    	private String bucketName;
+    	
+    	public String getEndpoint() {
+    		return endpoint;
+    	}
+    	
+    	public void setEndpoint(String endpoint) {
+    		this.endpoint = endpoint;
+    	}
+    	
+    	public String getBucketName() {
+    		return bucketName;
+    	}
+    	
+    	public void setBucketName(String bucketName) {
+    		this.bucketName = bucketName;
+    	}
+
+		public String getAk() {
+			return ak;
+		}
+
+		public void setAk(String ak) {
+			this.ak = ak;
+		}
+
+		public String getSk() {
+			return sk;
+		}
+
+		public void setSk(String sk) {
+			this.sk = sk;
+		}
     }
 
     public static class Qiniu {

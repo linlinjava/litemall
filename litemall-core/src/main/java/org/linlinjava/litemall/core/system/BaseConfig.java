@@ -13,6 +13,10 @@ abstract class BaseConfig {
     //所有的配置均保存在该 HashMap 中
     protected static Map<String, String> configs = new HashMap<>();
 
+    public static Map<String, String> getAllConfigs(){
+    	return configs;
+    }
+    
     /**
      * 添加配置到公共Map中
      *

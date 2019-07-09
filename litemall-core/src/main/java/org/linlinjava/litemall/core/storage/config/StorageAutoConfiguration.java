@@ -24,6 +24,8 @@ public class StorageAutoConfiguration {
             storageService.setStorage(localStorage());
         } else if (active.equals("aliyun")) {
             storageService.setStorage(aliyunStorage());
+        } else if (active.equals("huawei")) {
+            storageService.setStorage(huaweiStorage());
         } else if (active.equals("tencent")) {
             storageService.setStorage(tencentStorage());
         } else if (active.equals("qiniu")) {
@@ -53,6 +55,17 @@ public class StorageAutoConfiguration {
         aliyunStorage.setBucketName(aliyun.getBucketName());
         aliyunStorage.setEndpoint(aliyun.getEndpoint());
         return aliyunStorage;
+    }
+    
+    @Bean
+    public HuaweiStorage huaweiStorage() {
+    	HuaweiStorage huaweiStorage = new HuaweiStorage();
+    	StorageProperties.Huawei huawei = this.properties.getHuawei();
+    	huaweiStorage.setAk(huawei.getAk());
+    	huaweiStorage.setSk(huawei.getSk());
+    	huaweiStorage.setBucketName(huawei.getBucketName());
+    	huaweiStorage.setEndpoint(huawei.getEndpoint());
+    	return huaweiStorage;
     }
 
     @Bean
