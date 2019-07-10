@@ -118,7 +118,21 @@ export function goodsDetail(query) {
 const GoodsRelated='wx/goods/related'; //商品详情页的关联商品（大家都在看）
 
 const BrandList='wx/brand/list'; //品牌列表
+export function brandList(query) {
+  return request({
+    url: BrandList,
+    method: 'get',
+    params: query
+  })
+}
 const BrandDetail='wx/brand/detail'; //品牌详情
+export function brandDetail(query) {
+  return request({
+    url: BrandDetail,
+    method: 'get',
+    params: query
+  })
+}
 
 const CartList='wx/cart/index'; //获取购物车的数据
 export function cartList(query) {

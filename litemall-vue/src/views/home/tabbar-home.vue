@@ -83,6 +83,29 @@
     </van-panel>
 
     <van-panel>
+      <van-grid clickable
+                :column-num="2">
+        <van-grid-item v-for="(brand ,index) in shopInfos.brandList"
+                       :key="index"
+                       :text="brand.name"
+                       :url="goBrand(brand.id)">
+          <img :src="brand.picUrl"
+               style="width: 80%;" />
+          <div style="size:10px;"> {{ brand.name }}</div>
+        </van-grid-item>
+      </van-grid>
+      <div slot='header'>
+        <van-cell-group>
+          <van-cell title="品牌商直供"
+                    isLink>
+            <router-link to="/items/brand-list"
+                         class="text-desc">更多品牌商</router-link>
+          </van-cell>
+        </van-cell-group>
+      </div>
+    </van-panel>
+
+    <van-panel>
       <van-row gutter>
         <van-col span="12"
                  v-for="(newGood ,index) in shopInfos.newGoodsList"
@@ -126,7 +149,7 @@
                          class="text-desc">更多人气推荐</router-link>
           </van-cell>
         </van-cell-group>
-      </div>      
+      </div>
     </van-panel>
 
   </div>
@@ -149,6 +172,8 @@ import {
   CouponList,
   Toast,
   Card,
+  Grid,
+  GridItem,
   Row,
   Col,
   Tag
@@ -171,6 +196,9 @@ export default {
   methods: {
     goDetail(id) {
       return `#/items/detail/${id}`;
+    },
+    goBrand(id) {
+      return `#/items/brand/${id}`;
     },
     getCoupon(id) {
       couponReceive({ couponId: id }).then(res => {
@@ -207,7 +235,9 @@ export default {
     [SwipeItem.name]: SwipeItem,
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
-    [Tag.name]: Tag
+    [Tag.name]: Tag,
+    [Grid.name]: Grid,
+    [GridItem.name]: GridItem
   }
 };
 </script>
@@ -217,7 +247,9 @@ export default {
 .interval_bot {
   margin-bottom: 10px;
 }
-
+.van-panel {
+  margin-top: 20px;
+}
 .goods-channel {
   background: #fff;
   display: flex;

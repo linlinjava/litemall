@@ -49,5 +49,17 @@ export default [
     name: 'groupon',
     component: () => import('@/views/items/groupon'),
     props: route => route.query
+  },
+  {
+    path: '/items/brand/:brandId',
+    name: 'brand',
+    props: true,
+    component: () => import('@/views/items/brand')
+  },
+  {
+    path: '/items/brand-list',
+    name: 'brandList',
+    component: () => import('@/views/items/brand-list'),
+    props: route => route.query
   }
 ];
