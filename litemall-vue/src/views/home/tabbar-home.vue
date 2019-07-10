@@ -5,12 +5,11 @@
                   @click="$router.push({ name: 'search' })" />
       <div class="tal_class_searchMask"></div>
     </div>
-    <!-- 品牌商 -->
     <van-swipe :autoplay="3000"
                indicator-color="white">
-      <van-swipe-item v-for="(image, index) in brandList"
+      <van-swipe-item v-for="(banner, index) in shopInfos.banner"
                       :key="index">
-        <img :src="image"
+        <img :src="banner.url"
              style="height:230px">
       </van-swipe-item>
     </van-swipe>
@@ -160,7 +159,6 @@ export default {
 
   data() {
     return {
-      brandList: [],
       shopInfos: [],
       isLoading: false
     };
@@ -191,10 +189,6 @@ export default {
     initViews() {
       getHome().then(res => {
         this.shopInfos = res.data.data;
-        this.brandList = [];
-        _.each(res.data.data.brandList, v => {
-          this.brandList.push(v.picUrl);
-        });
       });
     }
   },
