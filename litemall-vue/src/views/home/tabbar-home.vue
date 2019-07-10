@@ -183,7 +183,7 @@ export default {
       goodsCategory({ id: o.id }).then(res => {
         let categoryId = res.data.data.currentCategory.id;
         this.$router.replace({
-          name: 'list',
+          name: 'category',
           query: { itemClass: categoryId }
         });
       });

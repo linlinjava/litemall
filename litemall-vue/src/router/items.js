@@ -27,9 +27,9 @@ export default [
     component: () => import('@/views/items/detail')
   },
   {
-    path: '/items/list',
-    name: 'list',
-    component: () => import('@/views/items/list'),
+    path: '/items/category',
+    name: 'category',
+    component: () => import('@/views/items/category'),
     props: route => route.query
   },
   {
