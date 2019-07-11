@@ -15,22 +15,25 @@
       </div>
     </div>
 
-    <van-card v-for="(item, i) in brand.list"
-              :key="i"
-              :desc="item.brief"
-              :title="item.name"
-              :thumb="item.picUrl"
-              :price="item.retailPrice"
-              :origin-price="item.counterPrice"
-              @click="itemClick(item.id)">
-    </van-card>
+    <van-row gutter>
+      <van-col span="12"
+               v-for="(goods ,index) in brandGoods"
+               :key="index">
+        <router-link :to="{ path: `/items/detail/${goods.id}`}">
+          <img :src="goods.picUrl"
+               style="width:150px;height:150px;">
+        </router-link>
+        <div style="margin-left: 20px; rgb(123, 116, 116);">{{goods.name}}</div>
+        <div style="margin-left: 20px; color:#ab956d">￥ {{goods.retailPrice}}</div>
+      </van-col>
+    </van-row>
 
   </div>
 </template>
 
 <script>
-import { brandDetail } from '@/api/api';
-import { Card } from 'vant';
+import { brandDetail, goodsList } from '@/api/api';
+import { Card, Row, Col } from 'vant';
 
 export default {
   props: {
@@ -38,7 +41,8 @@ export default {
   },
   data() {
     return {
-      brand: {}
+      brand: {},
+      brandGoods: []
     };
   },
 
@@ -53,6 +57,12 @@ export default {
       }).then(res => {
         this.brand = res.data.data;
       });
+
+      goodsList({
+        brandId: this.brandId
+      }).then(res => {
+        this.brandGoods = res.data.data.list;
+      });
     },
     itemClick(id) {
       this.$router.push(`/items/detail/${id}`);
@@ -60,7 +70,9 @@ export default {
   },
 
   components: {
-    [Card.name]: Card
+    [Card.name]: Card,
+    [Row.name]: Row,
+    [Col.name]: Col
   }
 };
 </script>
