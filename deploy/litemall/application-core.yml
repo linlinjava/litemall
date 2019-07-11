@@ -5,7 +5,7 @@ litemall:
     app-secret: e04004829d4c383b4db7769d88dfbca1
     mch-id: 111111
     mch-key: xxxxxx
-    notify-url: http://122.152.206.172:8080/wx/order/pay-notify
+    notify-url: http://118.24.0.153:8080/wx/order/pay-notify
     # 商户证书文件路径
     # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
     key-path: xxxxx
@@ -91,7 +91,7 @@ litemall:
     # 本地对象存储配置信息
     local:
       storagePath: storage
-      address: http://122.152.206.172:8080/wx/storage/fetch/
+      address: http://118.24.0.153:8080/wx/storage/fetch/
     # 阿里云对象存储配置信息
     aliyun:
       endpoint: oss-cn-shenzhen.aliyuncs.com

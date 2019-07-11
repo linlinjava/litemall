@@ -22,6 +22,21 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+
+      <div style="position:relative">
+        <div class="tips">
+          <span> 超级管理员用户名: admin123</span>
+          <span> 超级管理员用户名：admin123</span>
+        </div>
+        <div class="tips">
+          <span> 商城管理员用户名: mall123</span>
+          <span> 商城管理员用户名：mall123</span>
+        </div>
+        <div class="tips">
+          <span> 推广管理员用户名: promotion123</span>
+          <span> 推广管理员用户名：promotion123</span>
+        </div>
+      </div>
     </el-form>
 
   </div>
@@ -31,13 +46,6 @@
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (validateUsername == null) {
-        callback(new Error('请输入正确的管理员用户名'))
-      } else {
-        callback()
-      }
-    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('管理员密码长度应大于6'))
@@ -51,8 +59,11 @@ export default {
         password: 'admin123'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, message: '管理员账户不允许为空', trigger: 'blur' }],
+        password: [
+          { required: true, message: '管理员密码不允许为空', trigger: 'blur' },
+          { validator: validatePassword, trigger: 'blur' }
+        ]
       },
       passwordType: 'password',
       loading: false

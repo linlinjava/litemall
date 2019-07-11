@@ -32,11 +32,25 @@
 
   <view class="about-item">
     <view class="item-left">
-      <label>litemall交流群: </label>
+      <label>QQ交流群: </label>
        <text>{{shopInfo.qqNumber}}</text> 
     </view>
     <view class="item-right">
       <image src="/static/images/mobile.png" class="right-icon"></image>
+    </view>
+  </view>
+
+  <view class="about-item">
+    <view class="item-left">
+      <label>当前版本: </label>
+       <text>1.0.0</text> 
+    </view>
+  </view>
+
+  <view class="about-item">
+    <view class="item-left">
+      <label>开源协议: </label>
+       <text>MIT</text> 
     </view>
   </view>
 

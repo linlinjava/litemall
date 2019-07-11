@@ -6,8 +6,8 @@
         <view class="default" wx:if="{{item.isDefault}}">默认</view>
       </view>
       <view class="c">
-        <view class="mobile">{{item.mobile}}</view>
-        <view class="address">{{item.detailedAddress}}</view>
+        <view class="mobile">{{item.tel}}</view>
+        <view class="address">{{item.addressDetail}}</view>
       </view>
       <view class="r">
         <image catchtap="deleteAddress" data-address-id="{{item.id}}" class="del" src="/static/images/del-address.png"></image>

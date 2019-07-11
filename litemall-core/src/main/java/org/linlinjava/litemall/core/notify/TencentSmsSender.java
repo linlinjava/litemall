@@ -35,7 +35,7 @@ public class TencentSmsSender implements SmsSender {
             smsResult.setResult(result);
             return smsResult;
         } catch (HTTPException | IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return null;
@@ -52,7 +52,7 @@ public class TencentSmsSender implements SmsSender {
             smsResult.setResult(result);
             return smsResult;
         } catch (HTTPException | IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return null;

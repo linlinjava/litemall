@@ -51,7 +51,6 @@ public interface LitemallCartMapper {
      * This method corresponds to the database table litemall_cart
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCart selectOneByExample(LitemallCartExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallCartMapper {
      * This method corresponds to the database table litemall_cart
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCart selectOneByExampleSelective(@Param("example") LitemallCartExample example, @Param("selective") LitemallCart.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallCartMapper {
      * This method corresponds to the database table litemall_cart
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallCart> selectByExampleSelective(@Param("example") LitemallCartExample example, @Param("selective") LitemallCart.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallCartMapper {
      * This method corresponds to the database table litemall_cart
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCart selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallCart.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallCartMapper {
      * This method corresponds to the database table litemall_cart
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallCart selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallCartMapper {
      * This method corresponds to the database table litemall_cart
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallCartExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallCartMapper {
      * This method corresponds to the database table litemall_cart
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

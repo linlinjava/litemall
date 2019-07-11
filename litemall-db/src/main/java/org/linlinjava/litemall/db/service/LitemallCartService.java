@@ -93,28 +93,13 @@ public class LitemallCartService {
         return cartMapper.selectByExample(example);
     }
 
-    public int countSelective(Integer userId, Integer goodsId, Integer page, Integer limit, String sort, String order) {
-        LitemallCartExample example = new LitemallCartExample();
-        LitemallCartExample.Criteria criteria = example.createCriteria();
-
-        if (userId != null) {
-            criteria.andUserIdEqualTo(userId);
-        }
-        if (goodsId != null) {
-            criteria.andGoodsIdEqualTo(goodsId);
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) cartMapper.countByExample(example);
-    }
-
     public void deleteById(Integer id) {
         cartMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public boolean checkExist(Integer goodsId) {
         LitemallCartExample example = new LitemallCartExample();
-        example.or().andGoodsIdEqualTo(goodsId).andCheckedEqualTo(true);
+        example.or().andGoodsIdEqualTo(goodsId).andCheckedEqualTo(true).andDeletedEqualTo(false);
         return cartMapper.countByExample(example) != 0;
     }
 }

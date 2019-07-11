@@ -133,18 +133,4 @@ public class LitemallGrouponService {
         PageHelper.startPage(page, size);
         return mapper.selectByExample(example);
     }
-
-    public int countSelective(String rulesId, Integer page, Integer limit, String sort, String order) {
-        LitemallGrouponExample example = new LitemallGrouponExample();
-        LitemallGrouponExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(rulesId)) {
-            criteria.andRulesIdEqualTo(Integer.parseInt(rulesId));
-        }
-        criteria.andDeletedEqualTo(false);
-        criteria.andPayedEqualTo(true);
-        criteria.andGrouponIdEqualTo(0);
-
-        return (int) mapper.countByExample(example);
-    }
 }

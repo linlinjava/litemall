@@ -5,7 +5,7 @@ Page({
   data: {
     brandList: [],
     page: 1,
-    size: 10,
+    limit: 10,
     totalPages: 1
   },
   onLoad: function(options) {
@@ -19,12 +19,12 @@ Page({
     let that = this;
     util.request(api.BrandList, {
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          brandList: that.data.brandList.concat(res.data.brandList),
-          totalPages: res.data.totalPages
+          brandList: that.data.brandList.concat(res.data.list),
+          totalPages: res.data.pages
         });
       }
       wx.hideLoading();

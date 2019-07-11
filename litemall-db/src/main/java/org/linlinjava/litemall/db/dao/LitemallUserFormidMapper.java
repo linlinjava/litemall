@@ -51,7 +51,6 @@ public interface LitemallUserFormidMapper {
      * This method corresponds to the database table litemall_user_formid
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallUserFormid selectOneByExample(LitemallUserFormidExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallUserFormidMapper {
      * This method corresponds to the database table litemall_user_formid
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallUserFormid selectOneByExampleSelective(@Param("example") LitemallUserFormidExample example, @Param("selective") LitemallUserFormid.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallUserFormidMapper {
      * This method corresponds to the database table litemall_user_formid
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallUserFormid> selectByExampleSelective(@Param("example") LitemallUserFormidExample example, @Param("selective") LitemallUserFormid.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallUserFormidMapper {
      * This method corresponds to the database table litemall_user_formid
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallUserFormid selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallUserFormid.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallUserFormidMapper {
      * This method corresponds to the database table litemall_user_formid
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallUserFormid selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallUserFormidMapper {
      * This method corresponds to the database table litemall_user_formid
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallUserFormidExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallUserFormidMapper {
      * This method corresponds to the database table litemall_user_formid
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

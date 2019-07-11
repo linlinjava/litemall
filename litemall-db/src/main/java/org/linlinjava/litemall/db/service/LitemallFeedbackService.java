@@ -45,18 +45,4 @@ public class LitemallFeedbackService {
         PageHelper.startPage(page, limit);
         return feedbackMapper.selectByExample(example);
     }
-
-    public int countSelective(Integer userId, String username, Integer page, Integer limit, String sort, String order) {
-        LitemallFeedbackExample example = new LitemallFeedbackExample();
-        LitemallFeedbackExample.Criteria criteria = example.createCriteria();
-
-        if (userId != null) {
-            criteria.andUserIdEqualTo(userId);
-        }
-        if (!StringUtils.isEmpty(username)) {
-            criteria.andUsernameLike("%" + username + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-        return (int) feedbackMapper.countByExample(example);
-    }
 }

@@ -22,11 +22,21 @@ public class LitemallCollectService {
         return (int) collectMapper.countByExample(example);
     }
 
-    public List<LitemallCollect> queryByType(Integer userId, Byte type, Integer page, Integer size) {
+    public List<LitemallCollect> queryByType(Integer userId, Byte type, Integer page, Integer limit, String sort, String order) {
         LitemallCollectExample example = new LitemallCollectExample();
-        example.or().andUserIdEqualTo(userId).andTypeEqualTo(type).andDeletedEqualTo(false);
-        example.setOrderByClause(LitemallCollect.Column.addTime.desc());
-        PageHelper.startPage(page, size);
+        LitemallCollectExample.Criteria criteria = example.createCriteria();
+
+        if (type != null) {
+            criteria.andTypeEqualTo(type);
+        }
+        criteria.andUserIdEqualTo(userId);
+        criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
+        PageHelper.startPage(page, limit);
         return collectMapper.selectByExample(example);
     }
 
@@ -70,20 +80,5 @@ public class LitemallCollectService {
 
         PageHelper.startPage(page, size);
         return collectMapper.selectByExample(example);
-    }
-
-    public int countSelective(String userId, String valueId, Integer page, Integer size, String sort, String order) {
-        LitemallCollectExample example = new LitemallCollectExample();
-        LitemallCollectExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        }
-        if (!StringUtils.isEmpty(valueId)) {
-            criteria.andValueIdEqualTo(Integer.valueOf(valueId));
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) collectMapper.countByExample(example);
     }
 }

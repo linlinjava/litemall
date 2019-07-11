@@ -16,7 +16,7 @@
         sum(actual_price) as amount,
         round(sum(actual_price)/count(distinct user_id),2) as pcr
         from litemall_order
-        where order_status in(103)
+        where order_status in(401,402)
         group by substr(add_time,1,10)
     </select>
     <select id="statGoods" resultType="map">

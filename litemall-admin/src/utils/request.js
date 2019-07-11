@@ -32,7 +32,7 @@ service.interceptors.response.use(
     const res = response.data
 
     if (res.errno === 501) {
-      MessageBox.alert('系统未登录，请重新登录', '未登录', {
+      MessageBox.alert('系统未登录，请重新登录', '错误', {
         confirmButtonText: '确定',
         type: 'error'
       }).then(() => {
@@ -49,6 +49,24 @@ service.interceptors.response.use(
       return Promise.reject('error')
     } else if (res.errno === 503) {
       MessageBox.alert('请求业务目前未支持', '警告', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+      return Promise.reject('error')
+    } else if (res.errno === 504) {
+      MessageBox.alert('更新数据已经失效，请刷新页面重新操作', '警告', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+      return Promise.reject('error')
+    } else if (res.errno === 505) {
+      MessageBox.alert('更新失败，请再尝试一次', '警告', {
+        confirmButtonText: '确定',
+        type: 'error'
+      })
+      return Promise.reject('error')
+    } else if (res.errno === 506) {
+      MessageBox.alert('没有操作权限，请联系管理员授权', '错误', {
         confirmButtonText: '确定',
         type: 'error'
       })

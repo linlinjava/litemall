@@ -30,7 +30,8 @@ Page({
     collectImage: '/static/images/icon_collect.png',
     shareImage: '',
     isGroupon: false, //标识是否是一个参团购买
-    soldout: false
+    soldout: false,
+    canWrite: false, //用户是否获取了保存相册的权限
   },
 
   // 页面分享
@@ -53,7 +54,27 @@ Page({
       return false;
     }
   },
-
+  handleSetting: function(e) {
+      var that = this;
+      // console.log(e)
+      if (!e.detail.authSetting['scope.writePhotosAlbum']) {
+          wx.showModal({
+              title: '警告',
+              content: '不授权无法保存',
+              showCancel: false
+          })
+          that.setData({
+              canWrite: false
+          })
+      } else {
+          wx.showToast({
+              title: '保存成功'
+          })
+          that.setData({
+              canWrite: true
+          })
+      }
+  },
   // 保存分享图
   saveShare: function() {
     let that = this;
@@ -189,7 +210,7 @@ Page({
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          relatedGoods: res.data.goodsList,
+          relatedGoods: res.data.list,
         });
       }
     });
@@ -399,6 +420,32 @@ Page({
       });
       this.getGrouponInfo(options.grouponId);
     }
+    let that = this;
+    wx.getSetting({
+        success: function (res) {
+            console.log(res)
+            //不存在相册授权
+            if (!res.authSetting['scope.writePhotosAlbum']) {
+                wx.authorize({
+                    scope: 'scope.writePhotosAlbum',
+                    success: function () {
+                        that.setData({
+                            canWrite: true
+                        })
+                    },
+                    fail: function (err) {
+                        that.setData({
+                            canWrite: false
+                        })
+                    }
+                })
+            } else {
+                that.setData({
+                    canWrite: true
+                });
+            }
+        }
+    })
   },
   onShow: function() {
     // 页面显示
@@ -420,23 +467,15 @@ Page({
         valueId: this.data.id
       }, "POST")
       .then(function(res) {
-        let _res = res;
-        if (_res.errno == 0) {
-          if (_res.data.type == 'add') {
-            that.setData({
-              collectImage: that.data.hasCollectImage
-            });
-          } else {
-            that.setData({
-              collectImage: that.data.noCollectImage
-            });
-          }
-
+        if (that.data.userHasCollect == 1) {
+          that.setData({
+            collectImage: that.data.noCollectImage,
+            userHasCollect: 0
+          });
         } else {
-          wx.showToast({
-            image: '/static/images/icon_error.png',
-            title: _res.errmsg,
-            mask: true
+          that.setData({
+            collectImage: that.data.hasCollectImage,
+            userHasCollect: 1
           });
         }
 
@@ -640,17 +679,6 @@ Page({
   onReady: function() {
     // 页面渲染完成
 
-  },
-  // 下拉刷新
-  onPullDownRefresh() {
-    wx.showNavigationBarLoading() //在标题栏中显示加载
-    this.getGoodsInfo();
-    wx.hideNavigationBarLoading() //完成停止加载
-    wx.stopPullDownRefresh() //停止下拉刷新
-  },
-  //根据已选的值，计算其它值的状态
-  setSpecValueStatus: function() {
-
-  },
+  }
 
 })
