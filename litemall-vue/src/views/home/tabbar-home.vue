@@ -267,17 +267,17 @@ export default {
 
 .goods-channel img {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   margin: 0 auto;
 }
 
 .goods-channel span {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   text-align: center;
-  margin: 0 auto;
-  line-height: 1;
+  margin-top: 5px;
+  margin-bottom: 10px;
   color: #333;
 }
 .van-coupon-cell--selected {
