@@ -61,5 +61,17 @@ export default [
     name: 'brandList',
     component: () => import('@/views/items/brand-list'),
     props: route => route.query
+  },
+  {
+    path: '/items/topic/:topicId',
+    name: 'topic',
+    props: true,
+    component: () => import('@/views/items/topic')
+  },
+  {
+    path: '/items/topic-list',
+    name: 'topicList',
+    component: () => import('@/views/items/topic-list'),
+    props: route => route.query
   }
 ];

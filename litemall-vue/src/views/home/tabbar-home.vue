@@ -91,7 +91,7 @@
                        :url="goBrand(brand.id)">
           <img :src="brand.picUrl"
                style="width: 80%;" />
-          <div style="size:10px;"> {{ brand.name }}</div>
+          <div style="font-size:16px;"> {{ brand.name }}</div>
         </van-grid-item>
       </van-grid>
       <div slot='header'>
@@ -152,6 +152,29 @@
       </div>
     </van-panel>
 
+<van-panel>
+      <van-grid clickable
+                :column-num="2">
+        <van-grid-item v-for="(topic ,index) in shopInfos.topicList"
+                       :key="index"
+                       :url="goTopic(topic.id)">
+          <img :src="topic.picUrl"
+               style="width: 90%; max-height: 150px;" />
+          <div style="font-size:14px;color:#ab956d;"> {{ topic.title }}</div>
+          <div style="font-size:10px;color:#ab956d;"> {{ topic.subtitle }}</div>
+        </van-grid-item>
+      </van-grid>
+      <div slot='header'>
+        <van-cell-group>
+          <van-cell title="专题精选"
+                    isLink>
+            <router-link to="/items/topic-list"
+                         class="text-desc">更多专题精选</router-link>
+          </van-cell>
+        </van-cell-group>
+      </div>
+    </van-panel>
+
   </div>
 </template>
 
@@ -200,6 +223,9 @@ export default {
     goBrand(id) {
       return `#/items/brand/${id}`;
     },
+    goTopic(id) {
+      return `#/items/topic/${id}`;
+    },    
     getCoupon(id) {
       couponReceive({ couponId: id }).then(res => {
         Toast.success('领取成功');

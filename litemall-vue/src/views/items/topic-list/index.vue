@@ -1,26 +1,26 @@
 <template>
-  <div class="goods_brand_list">
+  <div class="goods_topic_list">
     <van-list v-model="loading"
               :finished="finished"
               :immediate-check="false"
               finished-text="没有更多了"
-              @load="getBrandList">
-      <div class="brand-info"
-           v-for="(brand, index) in list"
+              @load="getTopicList">
+      <div class="topic-info"
+           v-for="(topic, index) in list"
            :key="index"
-           @click="itemClick(brand.id)">
+           @click="itemClick(topic.id)">
         <div class="name">
           <img class="img"
-               :src="brand.picUrl"
+               :src="topic.picUrl"
                background-size="cover" />
           <div class="info-box">
-            <div class="txt">{{brand.name}}</div>
+            <div class="txt">{{topic.title}}</div>
             <div class="line"></div>
-            <div class="price">{{brand.floorPrice}}元起</div>
+            <div class="price">阅读次数：{{topic.readCount}}</div>
           </div>
         </div>
         <div class="desc">
-          {{brand.desc}}
+          {{topic.subtitle}}
         </div>
       </div>
     </van-list>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { brandList } from '@/api/api';
+import { topicList } from '@/api/api';
 import { List } from 'vant';
 
 export default {
@@ -51,11 +51,11 @@ export default {
     init() {
       this.page = 0;
       this.list = [];
-      this.getBrandList();
+      this.getTopicList();
     },
-    getBrandList() {
+    getTopicList() {
       this.page++;
-      brandList({
+      topicList({
         page: this.page,
         limit: this.limit
       }).then(res => {
@@ -65,7 +65,7 @@ export default {
       });
     },
     itemClick(id) {
-      this.$router.push(`/items/brand/${id}`);
+      this.$router.push(`/items/topic/${id}`);
     }
   },
 
@@ -76,8 +76,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.goods_brand_list {
-  .brand-info {
+.goods_topic_list {
+  .topic-info {
     .name {
       width: 100%;
       height: 180px;
