@@ -5,12 +5,11 @@
                   @click="$router.push({ name: 'search' })" />
       <div class="tal_class_searchMask"></div>
     </div>
-    <!-- 品牌商 -->
     <van-swipe :autoplay="3000"
                indicator-color="white">
-      <van-swipe-item v-for="(image, index) in brandList"
+      <van-swipe-item v-for="(banner, index) in shopInfos.banner"
                       :key="index">
-        <img :src="image"
+        <img :src="banner.url"
              style="height:230px">
       </van-swipe-item>
     </van-swipe>
@@ -84,6 +83,29 @@
     </van-panel>
 
     <van-panel>
+      <van-grid clickable
+                :column-num="2">
+        <van-grid-item v-for="(brand ,index) in shopInfos.brandList"
+                       :key="index"
+                       :text="brand.name"
+                       :url="goBrand(brand.id)">
+          <img :src="brand.picUrl"
+               style="width: 80%;" />
+          <div style="font-size:16px;"> {{ brand.name }}</div>
+        </van-grid-item>
+      </van-grid>
+      <div slot='header'>
+        <van-cell-group>
+          <van-cell title="品牌商直供"
+                    isLink>
+            <router-link to="/items/brand-list"
+                         class="text-desc">更多品牌商</router-link>
+          </van-cell>
+        </van-cell-group>
+      </div>
+    </van-panel>
+
+    <van-panel>
       <van-row gutter>
         <van-col span="12"
                  v-for="(newGood ,index) in shopInfos.newGoodsList"
@@ -127,7 +149,30 @@
                          class="text-desc">更多人气推荐</router-link>
           </van-cell>
         </van-cell-group>
-      </div>      
+      </div>
+    </van-panel>
+
+<van-panel>
+      <van-grid clickable
+                :column-num="2">
+        <van-grid-item v-for="(topic ,index) in shopInfos.topicList"
+                       :key="index"
+                       :url="goTopic(topic.id)">
+          <img :src="topic.picUrl"
+               style="width: 90%; max-height: 150px;" />
+          <div style="font-size:14px;color:#ab956d;"> {{ topic.title }}</div>
+          <div style="font-size:10px;color:#ab956d;"> {{ topic.subtitle }}</div>
+        </van-grid-item>
+      </van-grid>
+      <div slot='header'>
+        <van-cell-group>
+          <van-cell title="专题精选"
+                    isLink>
+            <router-link to="/items/topic-list"
+                         class="text-desc">更多专题精选</router-link>
+          </van-cell>
+        </van-cell-group>
+      </div>
     </van-panel>
 
   </div>
@@ -150,6 +195,8 @@ import {
   CouponList,
   Toast,
   Card,
+  Grid,
+  GridItem,
   Row,
   Col,
   Tag
@@ -160,7 +207,6 @@ export default {
 
   data() {
     return {
-      brandList: [],
       shopInfos: [],
       isLoading: false
     };
@@ -174,6 +220,12 @@ export default {
     goDetail(id) {
       return `#/items/detail/${id}`;
     },
+    goBrand(id) {
+      return `#/items/brand/${id}`;
+    },
+    goTopic(id) {
+      return `#/items/topic/${id}`;
+    },    
     getCoupon(id) {
       couponReceive({ couponId: id }).then(res => {
         Toast.success('领取成功');
@@ -183,7 +235,7 @@ export default {
       goodsCategory({ id: o.id }).then(res => {
         let categoryId = res.data.data.currentCategory.id;
         this.$router.replace({
-          name: 'list',
+          name: 'category',
           query: { itemClass: categoryId }
         });
       });
@@ -191,10 +243,6 @@ export default {
     initViews() {
       getHome().then(res => {
         this.shopInfos = res.data.data;
-        this.brandList = [];
-        _.each(res.data.data.brandList, v => {
-          this.brandList.push(v.picUrl);
-        });
       });
     }
   },
@@ -213,7 +261,9 @@ export default {
     [SwipeItem.name]: SwipeItem,
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
-    [Tag.name]: Tag
+    [Tag.name]: Tag,
+    [Grid.name]: Grid,
+    [GridItem.name]: GridItem
   }
 };
 </script>
@@ -223,7 +273,9 @@ export default {
 .interval_bot {
   margin-bottom: 10px;
 }
-
+.van-panel {
+  margin-top: 20px;
+}
 .goods-channel {
   background: #fff;
   display: flex;
@@ -241,17 +293,17 @@ export default {
 
 .goods-channel img {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   margin: 0 auto;
 }
 
 .goods-channel span {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   text-align: center;
-  margin: 0 auto;
-  line-height: 1;
+  margin-top: 5px;
+  margin-bottom: 10px;
   color: #333;
 }
 .van-coupon-cell--selected {

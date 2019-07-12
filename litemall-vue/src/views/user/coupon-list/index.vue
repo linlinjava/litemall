@@ -89,8 +89,7 @@ export default {
         this.finished = res.data.data.page >= res.data.data.pages;
       });
     },
-    handleTabClick(index) {
-      this.activeIndex = index;
+    handleTabClick() {
       this.page = 0;
       this.couponList = [];
       this.getCouponList();
