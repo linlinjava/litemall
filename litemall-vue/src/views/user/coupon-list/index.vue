@@ -1,7 +1,8 @@
 <template>
   <div class="coupon_list">
     <van-tabs v-model="activeIndex"
-              :swipe-threshold="5"
+              type="card"
+              sticky
               @click="handleTabClick">
       <van-tab v-for="(tabTitle, tabIndex) in tabTitles"
                :title="tabTitle"
@@ -58,9 +59,8 @@ export default {
   },
   data() {
     return {
-      activeIndex: this.active,
+      activeIndex: Number(this.active),
       tabTitles: ['未使用', '已使用', '已过期'],
-      status: 0,
       couponList: [],
       page: 0,
       limit: 10,
@@ -108,23 +108,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.coupon_list {
-  &--footer_btn {
-    text-align: right;
-  }
-  &--panel {
-    margin-bottom: 10px;
-  }
 
-  &--van-card {
-    background-color: #fafafa;
-  }
-
-  &--total {
-    text-align: right;
-    padding: 10px;
-  }
-}
 .van-coupon-item {
   overflow: hidden;
   border-radius: 4px;
