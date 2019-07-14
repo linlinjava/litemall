@@ -101,6 +101,9 @@ export default {
         this.loading = false;
         this.finished = res.data.data.page >= res.data.data.pages;
       });
+    },
+    itemClick(id) {
+      this.$router.push(`/items/detail/${id}`);
     }
   },
 

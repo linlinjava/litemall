@@ -270,7 +270,7 @@ litemall_region表保存了行政区域信息，包括省级、市级、县级�
 如果用户没有支付，也没有点击`取消订单`按钮，那么系统会定时查询数据库的订单信息。
 如果发现存在订单未支付状态超时半小时，此时系统会自动取消订单，来释放商品资源。
 
-所对应的后台服务方法是litemall-admin-api模块的`AdminOrderController.checkOrderUnpaid`
+对应的应该是litemall-admin-api模块的系统定时任务的`OrderJob.checkOrderUnpaid`
 
 * 101 -> 201
 
@@ -314,7 +314,7 @@ litemall_region表保存了行政区域信息，包括省级、市级、县级�
 当管理员发货以后，用户一直没有确认收货，系统定时检测订单状态，如果发现发货以后
 七天用户都没有收货，此时系统自动确认用户收货，设置订单状态402。
 
-所对应的后台服务方法是litemall-admin-api模块的`AdminOrderController.checkOrderUnpaid`
+应该改为 litemall-admin-api模块的系统定时任务`OrderJob.checkOrderUnconfirm`
 
 注意：
 > 上述订单状态变化中具体的逻辑处理可以参考相应模块文档和模块代码。

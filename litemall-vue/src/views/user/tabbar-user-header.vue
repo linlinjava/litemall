@@ -41,7 +41,7 @@ export default {
         'nickName',
         'avatar'
       );
-      this.avatar = avatar_default;
+      this.avatar = infoData.avatar || avatar_default;
       this.nickName = infoData.nickName || '昵称';
     },
     toSetting() {
@@ -53,17 +53,15 @@ export default {
 
 <style lang="scss" scoped>
 .user_header {
-  position: relative;
   background-repeat: no-repeat;
   background-size: cover;
   height: 130px;
-  box-sizing: border-box;
   text-align: center;
   color: #fff;
   padding-top: 30px;
 }
 
-i.user_set {
+.user_set {
   position: absolute;
   top: 10px;
   right: 10px;

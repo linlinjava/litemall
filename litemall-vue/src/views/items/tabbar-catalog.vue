@@ -71,7 +71,7 @@ export default {
     },
     toItemList(id) {
       this.$router.push({
-        name: 'list',
+        name: 'category',
         query: { keyword: '', itemClass: id }
       });
     }
