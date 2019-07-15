@@ -327,7 +327,7 @@ export function orderCancel(data) {
 const OrderRefund='wx/order/refund'; //退款取消订单
 export function orderRefund(data) {
   return request({
-    url: OrderSubmit,
+    url: OrderRefund,
     method: 'post',
     data
   })

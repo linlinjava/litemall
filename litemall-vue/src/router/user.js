@@ -11,7 +11,7 @@ const UserInfo_SetMobile = () => import('@/views/user/user-information-set/set-m
 const UserInfo_SetNickname = () => import('@/views/user/user-information-set/set-nickname');
 const UserInfo_SetPassword = () => import('@/views/user/user-information-set/set-password');
 
-const UserOrderEntityList = () => import('@/views/user/order-entity-list');
+const UserOrderList = () => import('@/views/user/order-list');
 const UserCouponList = () => import('@/views/user/coupon-list');
 const UserRefundList = () => import('@/views/user/refund-list');
 
@@ -93,7 +93,7 @@ export default [
     path: '/user/order/list/:active',
     name: 'user-order-list',
     props: true,
-    component: UserOrderEntityList
+    component: UserOrderList
   },
   {
     path: '/user/coupon/list/:active',
