@@ -145,7 +145,7 @@ export default {
       } else {
         this.isSubmit = true;
         setLocalStorage({AddressId: 0, CartId: 0, CouponId: 0});
-        this.$router.push({ name: 'placeOrderEntity'});
+        this.$router.push('/order/checkout');
       }
     },
     setCheckAll(val) {

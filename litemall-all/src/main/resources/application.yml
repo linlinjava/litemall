@@ -8,12 +8,4 @@ server:
   port: 8080
 
 logging:
-  level:
-    root:  ERROR
-    org.springframework:  ERROR
-    org.mybatis:  ERROR
-    org.linlinjava.litemall.core:  INFO
-    org.linlinjava.litemall.db:  INFO
-    org.linlinjava.litemall.admin:  INFO
-    org.linlinjava.litemall.wx:  INFO
-    org.linlinjava.litemall:  INFO
+  config: classpath:logback-spring.xml
