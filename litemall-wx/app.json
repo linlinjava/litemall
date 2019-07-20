@@ -36,7 +36,8 @@
     "pages/groupon/myGroupon/myGroupon",
     "pages/groupon/grouponDetail/grouponDetail",
     "pages/groupon/grouponList/grouponList",
-    "pages/coupon/coupon"
+    "pages/coupon/coupon",
+	"pages/family/familyTree/familyTree"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
@@ -57,6 +58,12 @@
         "iconPath": "static/images/home.png",
         "selectedIconPath": "static/images/home@selected.png",
         "text": "首页"
+      },
+      {
+        "pagePath": "pages/family/familyTree/familyTree",
+        "iconPath": "static/images/category.png",
+        "selectedIconPath": "static/images/category@selected.png",
+        "text": "匡式"
       },
       {
         "pagePath": "pages/catalog/catalog",
@@ -84,5 +91,6 @@
     "uploadFile": 10000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
 }
