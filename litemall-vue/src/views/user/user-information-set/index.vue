@@ -19,7 +19,9 @@
       <van-cell title="密码设置" to="/user/information/setPassword" isLink/>
       <van-cell title="手机号" to="/user/information/setMobile" :value="mobile" isLink></van-cell>
     </van-cell-group>
-    <van-button class="bottom_btn" @click="loginOut" type="primary" bottomAction>退出登录</van-button>
+
+    <van-button size="large" class="user_quit" @click="loginOut">退出当前账户</van-button>
+
     <van-popup v-model="showSex" position="bottom">
       <van-picker
         showToolbar
@@ -82,8 +84,13 @@ export default {
       })
     },
     loginOut() {
-      authLogout();
-      this.$router.push({ name: 'home' });
+      authLogout().then(res => {
+        removeLocalStorage('Authorization')
+        removeLocalStorage('avatar')
+        removeLocalStorage('nickName')
+        this.$router.push({ name: 'home' });
+      });
+
     }
   },
 
@@ -116,6 +123,9 @@ export default {
       font-size: 20px;
       color: $border-color;
     }
+  }
+  .user_quit {
+    margin-top: 20px;
   }
 }
 </style>
