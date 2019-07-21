@@ -252,7 +252,7 @@ export default {
         let cartId = res.data.data;
         setLocalStorage({ CartId: cartId });
         that.showSku = false;
-        this.$router.push({ name: 'placeOrderEntity' });
+        this.$router.push('/order/checkout');
       });
     },
     skuAdapter() {
