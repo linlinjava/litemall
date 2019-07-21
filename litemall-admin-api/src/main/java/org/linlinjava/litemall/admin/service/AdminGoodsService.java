@@ -1,10 +1,9 @@
 package org.linlinjava.litemall.admin.service;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.dao.GoodsAllinone;
-import org.linlinjava.litemall.admin.util.CatVo;
+import org.linlinjava.litemall.admin.dto.GoodsAllinone;
+import org.linlinjava.litemall.admin.vo.CatVo;
 import org.linlinjava.litemall.core.qcode.QCodeService;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.GOODS_NAME_EXIST;
-import static org.linlinjava.litemall.admin.util.AdminResponseCode.GOODS_UPDATE_NOT_ALLOWED;
 
 @Service
 public class AdminGoodsService {
@@ -39,10 +37,6 @@ public class AdminGoodsService {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallBrandService brandService;
-    @Autowired
-    private LitemallCartService cartService;
-    @Autowired
-    private LitemallOrderGoodsService orderGoodsService;
 
     @Autowired
     private QCodeService qCodeService;
@@ -50,12 +44,7 @@ public class AdminGoodsService {
     public Object list(String goodsSn, String name,
                        Integer page, Integer limit, String sort, String order) {
         List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, order);
-        long total = PageInfo.of(goodsList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", goodsList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(goodsList);
     }
 
     private Object validate(GoodsAllinone goodsAllinone) {
@@ -157,14 +146,6 @@ public class AdminGoodsService {
         LitemallGoodsProduct[] products = goodsAllinone.getProducts();
 
         Integer id = goods.getId();
-        // 检查是否存在购物车商品或者订单商品
-        // 如果存在则拒绝修改商品。
-        if (orderGoodsService.checkExist(id)) {
-            return ResponseUtil.fail(GOODS_UPDATE_NOT_ALLOWED, "商品已经在订单中，不能修改");
-        }
-        if (cartService.checkExist(id)) {
-            return ResponseUtil.fail(GOODS_UPDATE_NOT_ALLOWED, "商品已经在购物车中，不能修改");
-        }
 
         //将生成的分享图片地址写入数据库
         String url = qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
@@ -197,7 +178,6 @@ public class AdminGoodsService {
             product.setGoodsId(goods.getId());
             productService.add(product);
         }
-        qCodeService.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName());
 
         return ResponseUtil.ok();
     }

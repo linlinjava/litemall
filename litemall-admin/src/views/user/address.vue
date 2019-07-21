@@ -10,20 +10,22 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" width="100px" label="地址ID" prop="id" sortable/>
 
       <el-table-column align="center" min-width="100px" label="用户ID" prop="userId"/>
 
       <el-table-column align="center" min-width="100px" label="收货人名称" prop="name"/>
 
-      <el-table-column align="center" min-width="100px" label="手机号码" prop="mobile"/>
+      <el-table-column align="center" min-width="100px" label="手机号码" prop="tel"/>
 
-      <el-table-column align="center" min-width="300px" label="地址" prop="address">
+      <el-table-column align="center" min-width="300px" label="区域地址">
         <template slot-scope="scope">
-          {{ scope.row.province + scope.row.city + scope.row.area + scope.row.address }}
+          {{ scope.row.province + scope.row.city + scope.row.county }}
         </template>
       </el-table-column>
+
+      <el-table-column align="center" min-width="300px" label="详细地址" prop="addressDetail"/>
 
       <el-table-column align="center" min-width="80px" label="默认" prop="isDefault">
         <template slot-scope="scope">
@@ -68,7 +70,7 @@ export default {
     getList() {
       this.listLoading = true
       listAddress(this.listQuery).then(response => {
-        this.list = response.data.data.items
+        this.list = response.data.data.list
         this.total = response.data.data.total
         this.listLoading = false
       }).catch(() => {
@@ -85,7 +87,7 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['地址ID', '用户ID', '收获人', '手机号', '省', '市', '区', '地址', '是否默认']
-        const filterVal = ['id', 'userId', 'name', 'mobile', 'province', 'city', 'area', 'address', 'isDefault']
+        const filterVal = ['id', 'userId', 'name', 'tel', 'province', 'city', 'county', 'addressDetail', 'isDefault']
         excel.export_json_to_excel2(tHeader, this.list, filterVal, '用户地址信息')
         this.downloadLoading = false
       })

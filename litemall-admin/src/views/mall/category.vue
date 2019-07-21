@@ -3,15 +3,11 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.id" clearable class="filter-item" style="width: 200px;" placeholder="请输入类目ID"/>
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入类目名称"/>
-      <el-button v-permission="['GET /admin/category/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /admin/category/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row row-key="id">
 
       <el-table-column align="center" label="类目ID" prop="id"/>
 
@@ -39,8 +35,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="父类目ID" prop="pid"/>
-
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-permission="['POST /admin/category/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -48,8 +42,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -109,7 +101,10 @@
   </div>
 </template>
 
-<style>
+<style scoped>
+.filter-item{
+  margin-left: 100px;
+}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -139,35 +134,24 @@
 import { listCategory, listCatL1, createCategory, updateCategory, deleteCategory } from '@/api/category'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'Category',
-  components: { Pagination },
   data() {
     return {
       uploadPath,
-      list: undefined,
-      total: 0,
+      list: [],
       listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 20,
-        id: undefined,
-        name: undefined,
-        sort: 'add_time',
-        order: 'desc'
-      },
       catL1: {},
       dataForm: {
         id: undefined,
         name: '',
         keywords: '',
         level: 'L2',
-        pid: undefined,
+        pid: 0,
         desc: '',
-        iconUrl: undefined,
-        picUrl: undefined
+        iconUrl: '',
+        picUrl: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -177,8 +161,7 @@ export default {
       },
       rules: {
         name: [{ required: true, message: '类目名不能为空', trigger: 'blur' }]
-      },
-      downloadLoading: false
+      }
     }
   },
   computed: {
@@ -195,26 +178,20 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listCategory(this.listQuery)
+      listCategory()
         .then(response => {
-          this.list = response.data.data.items
-          this.total = response.data.data.total
+          this.list = response.data.data.list
           this.listLoading = false
         })
         .catch(() => {
           this.list = []
-          this.total = 0
           this.listLoading = false
         })
     },
     getCatL1() {
       listCatL1().then(response => {
-        this.catL1 = response.data.data
+        this.catL1 = response.data.data.list
       })
-    },
-    handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
     },
     resetForm() {
       this.dataForm = {
@@ -222,15 +199,15 @@ export default {
         name: '',
         keywords: '',
         level: 'L2',
-        pid: undefined,
+        pid: 0,
         desc: '',
-        iconUrl: undefined,
-        picUrl: undefined
+        iconUrl: '',
+        picUrl: ''
       }
     },
     onLevelChange: function(value) {
       if (value === 'L1') {
-        this.pid = undefined
+        this.dataForm.pid = 0
       }
     },
     handleCreate() {
@@ -252,7 +229,7 @@ export default {
         if (valid) {
           createCategory(this.dataForm)
             .then(response => {
-              this.list.unshift(response.data.data)
+              this.getList()
               // 更新L1目录
               this.getCatL1()
               this.dialogFormVisible = false
@@ -283,13 +260,7 @@ export default {
         if (valid) {
           updateCategory(this.dataForm)
             .then(() => {
-              for (const v of this.list) {
-                if (v.id === this.dataForm.id) {
-                  const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.dataForm)
-                  break
-                }
-              }
+              this.getList()
               // 更新L1目录
               this.getCatL1()
               this.dialogFormVisible = false
@@ -310,14 +281,13 @@ export default {
     handleDelete(row) {
       deleteCategory(row)
         .then(response => {
+          this.getList()
           // 更新L1目录
           this.getCatL1()
           this.$notify.success({
             title: '成功',
             message: '删除成功'
           })
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
         })
         .catch(response => {
           this.$notify.error({
@@ -325,38 +295,6 @@ export default {
             message: response.data.errmsg
           })
         })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = [
-          '类目ID',
-          '名称',
-          '关键字',
-          '级别',
-          '父类目ID',
-          '类目图标',
-          '类目图片',
-          '简介'
-        ]
-        const filterVal = [
-          'id',
-          'name',
-          'keywords',
-          'level',
-          'pid',
-          'iconUrl',
-          'picUrl',
-          'desc'
-        ]
-        excel.export_json_to_excel2(
-          tHeader,
-          this.list,
-          filterVal,
-          '商品类目信息'
-        )
-        this.downloadLoading = false
-      })
     }
   }
 }

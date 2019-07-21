@@ -17,7 +17,7 @@ Page({
     defaultKeyword: {},
     hotKeyword: [],
     page: 1,
-    size: 20,
+    limit: 20,
     categoryId: 0
   },
   //事件处理函数
@@ -95,7 +95,7 @@ Page({
     util.request(api.GoodsList, {
       keyword: that.data.keyword,
       page: that.data.page,
-      size: that.data.size,
+      limit: that.data.limit,
       sort: that.data.currentSort,
       order: that.data.currentSortOrder,
       categoryId: that.data.categoryId
@@ -104,7 +104,7 @@ Page({
         that.setData({
           searchStatus: true,
           categoryFilter: false,
-          goodsList: res.data.goodsList,
+          goodsList: res.data.list,
           filterCategory: res.data.filterCategoryList
         });
       }

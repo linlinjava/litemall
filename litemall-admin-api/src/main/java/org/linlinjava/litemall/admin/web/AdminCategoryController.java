@@ -1,13 +1,11 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
+import org.linlinjava.litemall.admin.vo.CategoryVo;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.core.validator.Order;
-import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +29,42 @@ public class AdminCategoryController {
     private LitemallCategoryService categoryService;
 
     @RequiresPermissions("admin:category:list")
-    @RequiresPermissionsDesc(menu={"商场管理" , "类目管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"商场管理", "类目管理"}, button = "查询")
     @GetMapping("/list")
-    public Object list(String id, String name,
-                       @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer limit,
-                       @Sort @RequestParam(defaultValue = "add_time") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order) {
-        List<LitemallCategory> collectList = categoryService.querySelective(id, name, page, limit, sort, order);
-        long total = PageInfo.of(collectList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", collectList);
+    public Object list() {
+        List<CategoryVo> categoryVoList = new ArrayList<>();
 
-        return ResponseUtil.ok(data);
+        List<LitemallCategory> categoryList = categoryService.queryByPid(0);
+        for (LitemallCategory category : categoryList) {
+            CategoryVo categoryVO = new CategoryVo();
+            categoryVO.setId(category.getId());
+            categoryVO.setDesc(category.getDesc());
+            categoryVO.setIconUrl(category.getIconUrl());
+            categoryVO.setPicUrl(category.getPicUrl());
+            categoryVO.setKeywords(category.getKeywords());
+            categoryVO.setName(category.getName());
+            categoryVO.setLevel(category.getLevel());
+
+            List<CategoryVo> children = new ArrayList<>();
+            List<LitemallCategory> subCategoryList = categoryService.queryByPid(category.getId());
+            for (LitemallCategory subCategory : subCategoryList) {
+                CategoryVo subCategoryVo = new CategoryVo();
+                subCategoryVo.setId(subCategory.getId());
+                subCategoryVo.setDesc(subCategory.getDesc());
+                subCategoryVo.setIconUrl(subCategory.getIconUrl());
+                subCategoryVo.setPicUrl(subCategory.getPicUrl());
+                subCategoryVo.setKeywords(subCategory.getKeywords());
+                subCategoryVo.setName(subCategory.getName());
+                subCategoryVo.setLevel(subCategory.getLevel());
+
+                children.add(subCategoryVo);
+            }
+
+            categoryVO.setChildren(children);
+            categoryVoList.add(categoryVO);
+        }
+
+        return ResponseUtil.okList(categoryVoList);
     }
 
     private Object validate(LitemallCategory category) {
@@ -70,7 +90,7 @@ public class AdminCategoryController {
     }
 
     @RequiresPermissions("admin:category:create")
-    @RequiresPermissionsDesc(menu={"商场管理" , "类目管理"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"商场管理", "类目管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallCategory category) {
         Object error = validate(category);
@@ -82,7 +102,7 @@ public class AdminCategoryController {
     }
 
     @RequiresPermissions("admin:category:read")
-    @RequiresPermissionsDesc(menu={"商场管理" , "类目管理"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"商场管理", "类目管理"}, button = "详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallCategory category = categoryService.findById(id);
@@ -90,7 +110,7 @@ public class AdminCategoryController {
     }
 
     @RequiresPermissions("admin:category:update")
-    @RequiresPermissionsDesc(menu={"商场管理" , "类目管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"商场管理", "类目管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallCategory category) {
         Object error = validate(category);
@@ -105,7 +125,7 @@ public class AdminCategoryController {
     }
 
     @RequiresPermissions("admin:category:delete")
-    @RequiresPermissionsDesc(menu={"商场管理" , "类目管理"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"商场管理", "类目管理"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallCategory category) {
         Integer id = category.getId();
@@ -128,6 +148,6 @@ public class AdminCategoryController {
             d.put("label", category.getName());
             data.add(d);
         }
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(data);
     }
 }

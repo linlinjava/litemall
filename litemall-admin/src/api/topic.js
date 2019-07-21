@@ -16,11 +16,11 @@ export function createTopic(data) {
   })
 }
 
-export function readTopic(data) {
+export function readTopic(query) {
   return request({
     url: '/topic/read',
     method: 'get',
-    data
+    params: query
   })
 }
 

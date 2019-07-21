@@ -6,8 +6,9 @@ import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
@@ -21,6 +22,8 @@ import java.util.stream.Stream;
  * 腾讯对象存储服务
  */
 public class TencentStorage implements Storage {
+
+    private final Log logger = LogFactory.getLog(TencentStorage.class);
 
     private String secretId;
     private String secretKey;
@@ -74,7 +77,7 @@ public class TencentStorage implements Storage {
     }
 
     private String getBaseUrl() {
-        return "https://" + bucketName + ".cos-website." + region + ".myqcloud.com/";
+        return "https://" + bucketName + ".cos." + region + ".myqcloud.com/";
     }
 
     @Override
@@ -84,11 +87,12 @@ public class TencentStorage implements Storage {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(contentLength);
             objectMetadata.setContentType(contentType);
-            // 对象键（Key）是对象在存储桶中的唯一标识。例如，在对象的访问域名 `bucket1-1250000000.cos.ap-guangzhou.myqcloud.com/doc1/pic1.jpg` 中，对象键为 doc1/pic1.jpg, 详情参考 [对象键](https://cloud.tencent.com/document/product/436/13324)
+            // 对象键（Key）是对象在存储桶中的唯一标识。例如，在对象的访问域名 `bucket1-1250000000.cos.ap-guangzhou.myqcloud.com/doc1/pic1.jpg`
+            // 中，对象键为 doc1/pic1.jpg, 详情参考 [对象键](https://cloud.tencent.com/document/product/436/13324)
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata);
-            PutObjectResult putObjectResult = getCOSClient().putObject(putObjectRequest);
+            getCOSClient().putObject(putObjectRequest);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -109,13 +113,11 @@ public class TencentStorage implements Storage {
             Resource resource = new UrlResource(url);
             if (resource.exists() || resource.isReadable()) {
                 return resource;
-            } else {
-                return null;
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
+            logger.error(e.getMessage(), e);
         }
+        return null;
     }
 
     @Override
@@ -123,7 +125,7 @@ public class TencentStorage implements Storage {
         try {
             getCOSClient().deleteObject(bucketName, keyName);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
     }

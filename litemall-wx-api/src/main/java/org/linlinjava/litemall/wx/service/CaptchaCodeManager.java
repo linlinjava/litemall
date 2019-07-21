@@ -1,16 +1,17 @@
 package org.linlinjava.litemall.wx.service;
 
-import org.linlinjava.litemall.wx.dao.CaptchaItem;
+import org.linlinjava.litemall.wx.dto.CaptchaItem;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 缓存系统中的验证码
  */
 public class CaptchaCodeManager {
-    private static Map<String, CaptchaItem> captchaCodeCache = new HashMap<>();
+    private static ConcurrentHashMap<String, CaptchaItem> captchaCodeCache = new ConcurrentHashMap<>();
 
     /**
      * 添加到缓存

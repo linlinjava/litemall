@@ -1,11 +1,9 @@
 package org.linlinjava.litemall.wx.web;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.mysql.jdbc.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -105,7 +103,7 @@ public class WxGoodsController {
 		Callable<List> productListCallable = () -> productService.queryByGid(id);
 
 		// 商品问题，这里是一些通用问题
-		Callable<List> issueCallable = () -> goodsIssueService.query();
+		Callable<List> issueCallable = () -> goodsIssueService.querySelective("", 1, 4, "", "");
 
 		// 商品品牌商
 		Callable<LitemallBrand> brandCallable = ()->{
@@ -237,7 +235,7 @@ public class WxGoodsController {
 	 * @param isHot      是否热买，可选
 	 * @param userId     用户ID
 	 * @param page       分页页数
-	 * @param size       分页大小
+	 * @param limit       分页大小
 	 * @param sort       排序方式，支持"add_time", "retail_price"或"name"
 	 * @param order      排序类型，顺序或者降序
 	 * @return 根据条件搜素的商品详情
@@ -251,7 +249,7 @@ public class WxGoodsController {
 		Boolean isHot,
 		@LoginUser Integer userId,
 		@RequestParam(defaultValue = "1") Integer page,
-		@RequestParam(defaultValue = "10") Integer size,
+		@RequestParam(defaultValue = "10") Integer limit,
 		@Sort(accepts = {"add_time", "retail_price", "name"}) @RequestParam(defaultValue = "add_time") String sort,
 		@Order @RequestParam(defaultValue = "desc") String order) {
 
@@ -265,7 +263,7 @@ public class WxGoodsController {
 		}
 
 		//查询列表数据
-		List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, size, sort, order);
+		List<LitemallGoods> goodsList = goodsService.querySelective(categoryId, brandId, keyword, isHot, isNew, page, limit, sort, order);
 
 		// 查询商品所属类目列表。
 		List<Integer> goodsCatIds = goodsService.getCatIds(brandId, keyword, isHot, isNew);
@@ -276,12 +274,18 @@ public class WxGoodsController {
 			categoryList = new ArrayList<>(0);
 		}
 
-		Map<String, Object> data = new HashMap<>();
-		data.put("goodsList", goodsList);
-		data.put("count", PageInfo.of(goodsList).getTotal());
-		data.put("filterCategoryList", categoryList);
+		PageInfo<LitemallGoods> pagedList = PageInfo.of(goodsList);
 
-		return ResponseUtil.ok(data);
+		Map<String, Object> entity = new HashMap<>();
+		entity.put("list", goodsList);
+		entity.put("total", pagedList.getTotal());
+		entity.put("page", pagedList.getPageNum());
+		entity.put("limit", pagedList.getPageSize());
+		entity.put("pages", pagedList.getPages());
+		entity.put("filterCategoryList", categoryList);
+
+		// 因为这里需要返回额外的filterCategoryList参数，因此不能方便使用ResponseUtil.okList
+		return ResponseUtil.ok(entity);
 	}
 
 	/**
@@ -303,9 +307,7 @@ public class WxGoodsController {
 		// 查找六个相关商品
 		int related = 6;
 		List<LitemallGoods> goodsList = goodsService.queryByCategory(cid, 0, related);
-		Map<String, Object> data = new HashMap<>();
-		data.put("goodsList", goodsList);
-		return ResponseUtil.ok(data);
+		return ResponseUtil.okList(goodsList);
 	}
 
 	/**
@@ -316,9 +318,7 @@ public class WxGoodsController {
 	@GetMapping("count")
 	public Object count() {
 		Integer goodsCount = goodsService.queryOnSale();
-		Map<String, Object> data = new HashMap<>();
-		data.put("goodsCount", goodsCount);
-		return ResponseUtil.ok(data);
+		return ResponseUtil.ok(goodsCount);
 	}
 
 }

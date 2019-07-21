@@ -63,4 +63,10 @@ public class LitemallAdminService {
     public LitemallAdmin findById(Integer id) {
         return adminMapper.selectByPrimaryKeySelective(id, result);
     }
+
+    public List<LitemallAdmin> all() {
+        LitemallAdminExample example = new LitemallAdminExample();
+        example.or().andDeletedEqualTo(false);
+        return adminMapper.selectByExample(example);
+    }
 }

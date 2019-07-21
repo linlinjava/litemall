@@ -6,7 +6,7 @@ Page({
     orderList: [],
     showType: 0,
     page: 1,
-    size: 10,
+    limit: 10,
     totalPages: 1
   },
   onLoad: function(options) {
@@ -26,12 +26,12 @@ Page({
     util.request(api.OrderList, {
       showType: that.data.showType,
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          orderList: that.data.orderList.concat(res.data.data),
-          totalPages: res.data.totalPages
+          orderList: that.data.orderList.concat(res.data.list),
+          totalPages: res.data.pages
         });
         wx.hideLoading();
       }
@@ -58,7 +58,7 @@ Page({
       orderList: [],
       showType: showType,
       page: 1,
-      size: 10,
+      limit: 10,
       totalPages: 1
     });
     this.getOrderList();

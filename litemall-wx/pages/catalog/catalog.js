@@ -36,7 +36,7 @@ Page({
     });
     util.request(api.GoodsCount).then(function(res) {
       that.setData({
-        goodsCount: res.data.goodsCount
+        goodsCount: res.data
       });
     });
 

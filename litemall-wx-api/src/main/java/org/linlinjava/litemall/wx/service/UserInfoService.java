@@ -2,7 +2,7 @@ package org.linlinjava.litemall.wx.service;
 
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.wx.dao.UserInfo;
+import org.linlinjava.litemall.wx.dto.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;

@@ -9,8 +9,10 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+import org.linlinjava.litemall.admin.service.LogHelper;
 import org.linlinjava.litemall.admin.util.Permission;
 import org.linlinjava.litemall.admin.util.PermissionUtil;
+import org.linlinjava.litemall.core.util.IpUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
@@ -23,6 +25,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
@@ -39,12 +43,14 @@ public class AdminAuthController {
     private LitemallRoleService roleService;
     @Autowired
     private LitemallPermissionService permissionService;
+    @Autowired
+    private LogHelper logHelper;
 
     /*
      *  { username : value, password : value }
      */
     @PostMapping("/login")
-    public Object login(@RequestBody String body) {
+    public Object login(@RequestBody String body, HttpServletRequest request) {
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
 
@@ -56,14 +62,34 @@ public class AdminAuthController {
         try {
             currentUser.login(new UsernamePasswordToken(username, password));
         } catch (UnknownAccountException uae) {
+            logHelper.logAuthFail("登录", "用户帐号或密码不正确");
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号或密码不正确");
         } catch (LockedAccountException lae) {
+            logHelper.logAuthFail("登录", "用户帐号已锁定不可用");
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号已锁定不可用");
 
         } catch (AuthenticationException ae) {
+            logHelper.logAuthFail("登录", "认证失败");
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "认证失败");
         }
-        return ResponseUtil.ok(currentUser.getSession().getId());
+
+        currentUser = SecurityUtils.getSubject();
+        LitemallAdmin admin = (LitemallAdmin) currentUser.getPrincipal();
+        admin.setLastLoginIp(IpUtil.getIpAddr(request));
+        admin.setLastLoginTime(LocalDateTime.now());
+        adminService.updateById(admin);
+
+        logHelper.logAuthSucceed("登录");
+
+        // userInfo
+        Map<String, Object> adminInfo = new HashMap<String, Object>();
+        adminInfo.put("nickName", admin.getUsername());
+        adminInfo.put("avatar", admin.getAvatar());
+
+        Map<Object, Object> result = new HashMap<Object, Object>();
+        result.put("token", currentUser.getSession().getId());
+        result.put("adminInfo", adminInfo);
+        return ResponseUtil.ok(result);
     }
 
     /*
@@ -71,8 +97,10 @@ public class AdminAuthController {
      */
     @RequiresAuthentication
     @PostMapping("/logout")
-    public Object login() {
+    public Object logout() {
         Subject currentUser = SecurityUtils.getSubject();
+
+        logHelper.logAuthSucceed("退出");
         currentUser.logout();
         return ResponseUtil.ok();
     }
@@ -94,7 +122,7 @@ public class AdminAuthController {
         data.put("roles", roles);
         // NOTE
         // 这里需要转换perms结构，因为对于前端而已API形式的权限更容易理解
-        data.put("perms", toAPI(permissions));
+        data.put("perms", toApi(permissions));
         return ResponseUtil.ok(data);
     }
 
@@ -102,7 +130,7 @@ public class AdminAuthController {
     private ApplicationContext context;
     private HashMap<String, String> systemPermissionsMap = null;
 
-    private Collection<String> toAPI(Set<String> permissions) {
+    private Collection<String> toApi(Set<String> permissions) {
         if (systemPermissionsMap == null) {
             systemPermissionsMap = new HashMap<>();
             final String basicPackage = "org.linlinjava.litemall.admin";
@@ -123,7 +151,7 @@ public class AdminAuthController {
                 apis.clear();
                 apis.add("*");
                 return apis;
-//                return systemPermissionsMap.values();
+                //                return systemPermissionsMap.values();
 
             }
         }

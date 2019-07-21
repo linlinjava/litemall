@@ -19,4 +19,6 @@ public class AdminResponseCode {
     public static final Integer USER_MOBILE_EXIST = 634;
     public static final Integer ROLE_NAME_EXIST = 640;
     public static final Integer ROLE_SUPER_SUPERMISSION = 641;
+    public static final Integer ROLE_USER_EXIST = 642;
+
 }

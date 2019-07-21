@@ -51,4 +51,5 @@ public class LitemallRegionService {
         PageHelper.startPage(page, size);
         return regionMapper.selectByExample(example);
     }
+
 }

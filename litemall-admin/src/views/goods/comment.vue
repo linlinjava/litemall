@@ -10,7 +10,7 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
       <el-table-column align="center" label="用户ID" prop="userId"/>
 
@@ -64,7 +64,7 @@ export default {
   components: { Pagination },
   data() {
     return {
-      list: undefined,
+      list: [],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -90,7 +90,7 @@ export default {
     getList() {
       this.listLoading = true
       listComment(this.listQuery).then(response => {
-        this.list = response.data.data.items
+        this.list = response.data.data.list
         this.total = response.data.data.total
         this.listLoading = false
       }).catch(() => {

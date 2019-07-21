@@ -11,7 +11,7 @@ Page({
     scrollTop: 0,
     scrollHeight: 0,
     page: 1,
-    size: 100
+    limit: 10
   },
   onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -85,7 +85,6 @@ Page({
   },
   onShow: function() {
     // 页面显示
-    console.log(1);
   },
   onHide: function() {
     // 页面隐藏
@@ -96,11 +95,11 @@ Page({
     util.request(api.GoodsList, {
         categoryId: that.data.id,
         page: that.data.page,
-        size: that.data.size
+        limit: that.data.limit
       })
       .then(function(res) {
         that.setData({
-          goodsList: res.data.goodsList,
+          goodsList: res.data.list,
         });
       });
   },

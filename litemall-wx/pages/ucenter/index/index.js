@@ -60,6 +60,11 @@ Page({
   },
   goOrder() {
     if (this.data.hasLogin) {
+      try {
+        wx.setStorageSync('tab', 0);
+      } catch (e) {
+
+      }
       wx.navigateTo({
         url: "/pages/ucenter/order/order"
       });
@@ -196,6 +201,11 @@ Page({
       url: '/pages/about/about'
     });
   },
+  goHelp: function () {
+    wx.navigateTo({
+      url: '/pages/help/help'
+    });
+  },  
   exitLogin: function() {
     wx.showModal({
       title: '',

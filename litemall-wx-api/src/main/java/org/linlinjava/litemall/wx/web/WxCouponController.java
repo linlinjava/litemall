@@ -13,7 +13,7 @@ import org.linlinjava.litemall.db.domain.LitemallGrouponRules;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.CouponConstant;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
-import org.linlinjava.litemall.wx.dao.CouponVo;
+import org.linlinjava.litemall.wx.vo.CouponVo;
 import org.linlinjava.litemall.wx.util.WxResponseCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -51,23 +51,19 @@ public class WxCouponController {
      * 优惠券列表
      *
      * @param page
-     * @param size
+     * @param limit
      * @param sort
      * @param order
      * @return
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
 
-        List<LitemallCoupon> couponList = couponService.queryList(page, size, sort, order);
-        int total = couponService.queryTotal();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", couponList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
+        List<LitemallCoupon> couponList = couponService.queryList(page, limit, sort, order);
+        return ResponseUtil.okList(couponList);
     }
 
     /**
@@ -76,7 +72,7 @@ public class WxCouponController {
      * @param userId
      * @param status
      * @param page
-     * @param size
+     * @param limit
      * @param sort
      * @param order
      * @return
@@ -85,20 +81,16 @@ public class WxCouponController {
     public Object mylist(@LoginUser Integer userId,
                        @NotNull Short status,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallCouponUser> couponUserList = couponUserService.queryList(userId, null, status, page, size, sort, order);
+        List<LitemallCouponUser> couponUserList = couponUserService.queryList(userId, null, status, page, limit, sort, order);
         List<CouponVo> couponVoList = change(couponUserList);
-        int total = couponService.queryTotal();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", couponVoList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(couponVoList, couponUserList);
     }
 
     private List<CouponVo> change(List<LitemallCouponUser> couponList) {
@@ -179,7 +171,7 @@ public class WxCouponController {
 
         List<CouponVo> couponVoList = change(availableCouponUserList);
 
-        return ResponseUtil.ok(couponVoList);
+        return ResponseUtil.okList(couponVoList);
     }
 
     /**

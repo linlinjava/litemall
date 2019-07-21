@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAddress;
-import org.linlinjava.litemall.db.domain.LitemallRegion;
 import org.linlinjava.litemall.db.service.LitemallAddressService;
 import org.linlinjava.litemall.db.service.LitemallRegionService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
@@ -16,11 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.*;
 
 /**
  * 用户收货地址服务
@@ -37,11 +32,6 @@ public class WxAddressController extends GetRegionService {
 	@Autowired
 	private LitemallRegionService regionService;
 
-	private final static ArrayBlockingQueue<Runnable> WORK_QUEUE = new ArrayBlockingQueue<>(6);
-
-	private final static RejectedExecutionHandler HANDLER = new ThreadPoolExecutor.CallerRunsPolicy();
-
-	private static ThreadPoolExecutor executorService = new ThreadPoolExecutor(3, 6, 1000, TimeUnit.MILLISECONDS, WORK_QUEUE, HANDLER);
 
 	/**
 	 * 用户收货地址列表
@@ -55,39 +45,7 @@ public class WxAddressController extends GetRegionService {
 			return ResponseUtil.unlogin();
 		}
 		List<LitemallAddress> addressList = addressService.queryByUid(userId);
-		List<Map<String, Object>> addressVoList = new ArrayList<>(addressList.size());
-		List<LitemallRegion> regionList = getLitemallRegions();
-		for (LitemallAddress address : addressList) {
-			Map<String, Object> addressVo = new HashMap<>();
-			addressVo.put("id", address.getId());
-			addressVo.put("name", address.getName());
-			addressVo.put("mobile", address.getMobile());
-			addressVo.put("isDefault", address.getIsDefault());
-			Callable<String> provinceCallable = () -> regionList.stream().filter(region -> region.getId().equals(address.getProvinceId())).findAny().orElse(null).getName();
-			Callable<String> cityCallable = () -> regionList.stream().filter(region -> region.getId().equals(address.getCityId())).findAny().orElse(null).getName();
-			Callable<String> areaCallable = () -> regionList.stream().filter(region -> region.getId().equals(address.getAreaId())).findAny().orElse(null).getName();
-			FutureTask<String> provinceNameCallableTask = new FutureTask<>(provinceCallable);
-			FutureTask<String> cityNameCallableTask = new FutureTask<>(cityCallable);
-			FutureTask<String> areaNameCallableTask = new FutureTask<>(areaCallable);
-			executorService.submit(provinceNameCallableTask);
-			executorService.submit(cityNameCallableTask);
-			executorService.submit(areaNameCallableTask);
-			String detailedAddress = "";
-			try {
-				String province = provinceNameCallableTask.get();
-				String city = cityNameCallableTask.get();
-				String area = areaNameCallableTask.get();
-				String addr = address.getAddress();
-				detailedAddress = province + city + area + " " + addr;
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			addressVo.put("detailedAddress", detailedAddress);
-
-			addressVoList.add(addressVo);
-		}
-		return ResponseUtil.ok(addressVoList);
+		return ResponseUtil.okList(addressList);
 	}
 
 	/**
@@ -103,27 +61,11 @@ public class WxAddressController extends GetRegionService {
 			return ResponseUtil.unlogin();
 		}
 
-		LitemallAddress address = addressService.findById(id);
+		LitemallAddress address = addressService.query(userId, id);
 		if (address == null) {
 			return ResponseUtil.badArgumentValue();
 		}
-
-		Map<Object, Object> data = new HashMap<Object, Object>();
-		data.put("id", address.getId());
-		data.put("name", address.getName());
-		data.put("provinceId", address.getProvinceId());
-		data.put("cityId", address.getCityId());
-		data.put("areaId", address.getAreaId());
-		data.put("mobile", address.getMobile());
-		data.put("address", address.getAddress());
-		data.put("isDefault", address.getIsDefault());
-		String pname = regionService.findById(address.getProvinceId()).getName();
-		data.put("provinceName", pname);
-		String cname = regionService.findById(address.getCityId()).getName();
-		data.put("cityName", cname);
-		String dname = regionService.findById(address.getAreaId()).getName();
-		data.put("areaName", dname);
-		return ResponseUtil.ok(data);
+		return ResponseUtil.ok(address);
 	}
 
 	private Object validate(LitemallAddress address) {
@@ -133,7 +75,7 @@ public class WxAddressController extends GetRegionService {
 		}
 
 		// 测试收货手机号码是否正确
-		String mobile = address.getMobile();
+		String mobile = address.getTel();
 		if (StringUtils.isEmpty(mobile)) {
 			return ResponseUtil.badArgument();
 		}
@@ -141,31 +83,28 @@ public class WxAddressController extends GetRegionService {
 			return ResponseUtil.badArgument();
 		}
 
-		Integer pid = address.getProvinceId();
-		if (pid == null) {
+		String province = address.getProvince();
+		if (StringUtils.isEmpty(province)) {
 			return ResponseUtil.badArgument();
 		}
-		if (regionService.findById(pid) == null) {
-			return ResponseUtil.badArgumentValue();
-		}
 
-		Integer cid = address.getCityId();
-		if (cid == null) {
+		String city = address.getCity();
+		if (StringUtils.isEmpty(city)) {
 			return ResponseUtil.badArgument();
 		}
-		if (regionService.findById(cid) == null) {
-			return ResponseUtil.badArgumentValue();
-		}
 
-		Integer aid = address.getAreaId();
-		if (aid == null) {
+		String county = address.getCounty();
+		if (StringUtils.isEmpty(county)) {
 			return ResponseUtil.badArgument();
 		}
-		if (regionService.findById(aid) == null) {
-			return ResponseUtil.badArgumentValue();
+
+
+		String areaCode = address.getAreaCode();
+		if (StringUtils.isEmpty(areaCode)) {
+			return ResponseUtil.badArgument();
 		}
 
-		String detailedAddress = address.getAddress();
+		String detailedAddress = address.getAddressDetail();
 		if (StringUtils.isEmpty(detailedAddress)) {
 			return ResponseUtil.badArgument();
 		}

@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.wx.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +10,7 @@ import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.service.LitemallTopicService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
-import org.linlinjava.litemall.wx.dao.UserInfo;
+import org.linlinjava.litemall.wx.dto.UserInfo;
 import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -113,10 +112,10 @@ public class WxCommentController {
     public Object count(@NotNull Byte type, @NotNull Integer valueId) {
         int allCount = commentService.count(type, valueId, 0);
         int hasPicCount = commentService.count(type, valueId, 1);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("allCount", allCount);
-        data.put("hasPicCount", hasPicCount);
-        return ResponseUtil.ok(data);
+        Map<String, Object> entity = new HashMap<String, Object>();
+        entity.put("allCount", allCount);
+        entity.put("hasPicCount", hasPicCount);
+        return ResponseUtil.ok(entity);
     }
 
     /**
@@ -126,7 +125,7 @@ public class WxCommentController {
      * @param valueId  商品或专题ID。如果type是0，则是商品ID；如果type是1，则是专题ID。
      * @param showType 显示类型。如果是0，则查询全部；如果是1，则查询有图片的评论。
      * @param page     分页页数
-     * @param size     分页大小
+     * @param limit     分页大小
      * @return 评论列表
      */
     @GetMapping("list")
@@ -134,9 +133,8 @@ public class WxCommentController {
                        @NotNull Integer valueId,
                        @NotNull Integer showType,
                        @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size) {
-        List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, size);
-        long count = PageInfo.of(commentList).getTotal();
+                       @RequestParam(defaultValue = "10") Integer limit) {
+        List<LitemallComment> commentList = commentService.query(type, valueId, showType, page, limit);
 
         List<Map<String, Object>> commentVoList = new ArrayList<>(commentList.size());
         for (LitemallComment comment : commentList) {
@@ -153,10 +151,6 @@ public class WxCommentController {
 
             commentVoList.add(commentVo);
         }
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", commentVoList);
-        data.put("count", count);
-        data.put("currentPage", page);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(commentVoList, commentList);
     }
 }

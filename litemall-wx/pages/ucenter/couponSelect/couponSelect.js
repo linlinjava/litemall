@@ -117,7 +117,7 @@ Page({
     }).then(function (res) {
       if (res.errno === 0) {
         that.setData({
-          couponList: res.data
+          couponList: res.data.list
         });
       }
       wx.hideToast();

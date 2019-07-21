@@ -238,7 +238,6 @@ public class LitemallRegion {
      * This enum corresponds to the database table litemall_region
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     public enum Column {
         id("id", "id", "INTEGER", false),
@@ -252,7 +251,6 @@ public class LitemallRegion {
          * This field corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         private static final String BEGINNING_DELIMITER = "`";
 
@@ -261,7 +259,6 @@ public class LitemallRegion {
          * This field corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         private static final String ENDING_DELIMITER = "`";
 
@@ -270,7 +267,6 @@ public class LitemallRegion {
          * This field corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         private final String column;
 
@@ -279,7 +275,6 @@ public class LitemallRegion {
          * This field corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         private final boolean isColumnNameDelimited;
 
@@ -288,7 +283,6 @@ public class LitemallRegion {
          * This field corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         private final String javaProperty;
 
@@ -297,7 +291,6 @@ public class LitemallRegion {
          * This field corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         private final String jdbcType;
 
@@ -306,7 +299,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public String value() {
             return this.column;
@@ -317,7 +309,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public String getValue() {
             return this.column;
@@ -328,7 +319,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public String getJavaProperty() {
             return this.javaProperty;
@@ -339,7 +329,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public String getJdbcType() {
             return this.jdbcType;
@@ -350,7 +339,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         Column(String column, String javaProperty, String jdbcType, boolean isColumnNameDelimited) {
             this.column = column;
@@ -364,7 +352,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public String desc() {
             return this.getEscapedColumnName() + " DESC";
@@ -375,7 +362,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public String asc() {
             return this.getEscapedColumnName() + " ASC";
@@ -386,7 +372,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public static Column[] excludes(Column ... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
@@ -401,7 +386,6 @@ public class LitemallRegion {
          * This method corresponds to the database table litemall_region
          *
          * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public String getEscapedColumnName() {
             if (this.isColumnNameDelimited) {
@@ -409,6 +393,16 @@ public class LitemallRegion {
             } else {
                 return this.column;
             }
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method corresponds to the database table litemall_region
+         *
+         * @mbg.generated
+         */
+        public String getAliasedEscapedColumnName() {
+            return this.getEscapedColumnName();
         }
     }
 }

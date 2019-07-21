@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.wx.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.express.ExpressService;
@@ -12,6 +11,8 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.service.WxGrouponRuleService;
+import org.linlinjava.litemall.wx.vo.GrouponRuleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,8 @@ public class WxGrouponController {
     @Autowired
     private LitemallGrouponRulesService rulesService;
     @Autowired
+    private WxGrouponRuleService wxGrouponRuleService;
+    @Autowired
     private LitemallGrouponService grouponService;
     @Autowired
     private LitemallGoodsService goodsService;
@@ -59,20 +62,16 @@ public class WxGrouponController {
      * 团购规则列表
      *
      * @param page 分页页数
-     * @param size 分页大小
+     * @param limit 分页大小
      * @return 团购规则列表
      */
     @GetMapping("list")
     public Object list(@RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        List<Map<String, Object>> topicList = grouponRulesService.queryList(page, size, sort, order);
-        long total = PageInfo.of(topicList).getTotal();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", topicList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
+        List<GrouponRuleVo> grouponRuleVoList = wxGrouponRuleService.queryList(page, limit, sort, order);
+        return ResponseUtil.okList(grouponRuleVoList);
     }
 
     /**
@@ -281,21 +280,4 @@ public class WxGrouponController {
         return ResponseUtil.ok(result);
     }
 
-    /**
-     * 商品所对应的团购规则
-     *
-     * @param goodsId 商品ID
-     * @return 团购规则详情
-     */
-    @GetMapping("query")
-    public Object query(@NotNull Integer goodsId) {
-        LitemallGoods goods = goodsService.findById(goodsId);
-        if (goods == null) {
-            return ResponseUtil.fail(GOODS_UNKNOWN, "未找到对应的商品");
-        }
-
-        List<LitemallGrouponRules> rules = rulesService.queryByGoodsId(goodsId);
-
-        return ResponseUtil.ok(rules);
-    }
 }
