@@ -60,10 +60,12 @@
             :action="uploadPath"
             :show-file-list="false"
             :on-success="uploadUrl"
+            :before-upload="checkFileSize"
             class="avatar-uploader"
             accept=".jpg,.jpeg,.png,.gif">
             <img v-if="dataForm.url" :src="dataForm.url" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1024kb</div>
           </el-upload>
         </el-form-item>
         <el-form-item label="广告位置" prop="position">
@@ -217,6 +219,13 @@ export default {
     },
     uploadUrl: function(response) {
       this.dataForm.url = response.data.url
+    },
+    checkFileSize: function(file) {
+      if (file.size > 1048576) {
+        this.$message.error(`${file.name}文件大于1024KB，请选择小于1024KB大小的图片`)
+        return false
+      }
+      return true
     },
     createData() {
       this.$refs['dataForm'].validate(valid => {
