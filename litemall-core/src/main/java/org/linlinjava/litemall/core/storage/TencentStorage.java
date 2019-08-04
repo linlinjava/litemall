@@ -77,7 +77,7 @@ public class TencentStorage implements Storage {
     }
 
     private String getBaseUrl() {
-        return "https://" + bucketName + ".cos-website." + region + ".myqcloud.com/";
+        return "https://" + bucketName + ".cos." + region + ".myqcloud.com/";
     }
 
     @Override
