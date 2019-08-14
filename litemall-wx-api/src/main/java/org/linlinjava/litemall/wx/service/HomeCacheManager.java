@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 简单缓存的数据
  */
 public class HomeCacheManager {
-    public static final boolean ENABLE = false;
+    public static  boolean ENABLE = false;
     public static final String INDEX = "index";
     public static final String CATALOG = "catalog";
     public static final String GOODS = "goods";
@@ -35,6 +35,7 @@ public class HomeCacheManager {
         //设置缓存有效期为10分钟
         cacheData.put("expireTime", LocalDateTime.now().plusMinutes(10));
         cacheDataList.put(cacheKey, cacheData);
+        HomeCacheManager.ENABLE=true;
     }
 
     public static Map<String, Object> getCacheData(String cacheKey) {
@@ -68,6 +69,7 @@ public class HomeCacheManager {
      */
     public static void clearAll() {
         cacheDataList = new ConcurrentHashMap<>();
+         HomeCacheManager.ENABLE=false;
     }
 
     /**
