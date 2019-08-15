@@ -161,7 +161,7 @@ export function cartFastAdd(data) {
 const CartUpdate='wx/cart/update'; // 更新购物车的商品
 export function cartUpdate(data) {
   return request({
-    url: cartUpdate,
+    url: CartUpdate,
     method: 'post',
     data
   })
