@@ -64,7 +64,7 @@ export default {
     handleTabClick(index) {
       this.categoryId = this.navList[index].id;
       this.$router.replace({
-        name: 'list',
+        name: 'category',
         query: { itemClass: this.categoryId }
       });
       this.init();
