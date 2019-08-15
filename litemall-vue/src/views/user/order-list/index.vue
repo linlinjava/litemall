@@ -42,7 +42,7 @@
               <van-button size="small"
                           v-if="el.handleOption.pay"
                           type="danger"
-                          @click="toPay(el.id)">去支付</van-button>
+                          @click.stop="toPay(el.id)">去支付</van-button>
               <van-button size="small"
                           v-if="el.handleOption.refund"
                           type="danger"
