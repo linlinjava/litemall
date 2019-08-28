@@ -47,6 +47,7 @@ public class LitemallCouponUserService {
         if (status != null) {
             criteria.andStatusEqualTo(status);
         }
+        criteria.andEndTimeGreaterThan(LocalDateTime.now());
         criteria.andDeletedEqualTo(false);
 
         if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
