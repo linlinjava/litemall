@@ -44,8 +44,18 @@ public class LitemallCouponUserService {
         if(couponId != null){
             criteria.andCouponIdEqualTo(couponId);
         }
-        if (status != null) {
-            criteria.andStatusEqualTo(status);
+            if (status != null) {
+
+            if(status==1){
+                criteria.andStatusEqualTo(status);
+            }
+            if(status==2){
+                criteria.andEndTimeLessThan(LocalDateTime.now());//如果状态为2（过期优惠券）则新增过期条件
+                criteria.andStatusEqualTo((short) 0);//目前数据库只有0和1两种状态，未使用和过期未使用都为0
+            }
+            if(status==0){
+                criteria.andEndTimeGreaterThan(LocalDateTime.now());//如果状态为0则新增未过期条件
+            }
         }
         criteria.andDeletedEqualTo(false);
 
