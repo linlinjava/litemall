@@ -134,7 +134,7 @@ public class WxAddressController extends GetRegionService {
 		}
 
 		if (address.getIsDefault()) {
-			// 重置其他收获地址的默认选项
+			// 重置其他收货地址的默认选项
 			addressService.resetDefault(userId);
 		}
 

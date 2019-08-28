@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: none
   message:
     encoding: UTF-8
   datasource:
@@ -139,3 +141,9 @@ litemall:
       secretKey: xxxxxx
       region: xxxxxx
       bucketName: xxxxxx
+    # 七牛云对象存储配置信息
+    qiniu:
+      endpoint: http://pd5cb6ulu.bkt.clouddn.com
+      accessKey: 111111
+      secretKey: xxxxxx
+      bucketName: litemall

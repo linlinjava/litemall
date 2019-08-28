@@ -460,24 +460,21 @@ flush privilege
 
 #### 1.4.5.1 日志配置
 
-如果开发者启动litemall-all模块，则需要配置该模块的`application.yml`文件
+如果开发者启动litemall-all模块，则需要配置该模块的`logback-spring.xml`文件
 ```
-logging:
-  level:
-    root:  ERROR
-    org.springframework:  ERROR
-    org.mybatis:  ERROR
-    org.linlinjava.litemall.core:  ERROR
-    org.linlinjava.litemall.db:  ERROR
-    org.linlinjava.litemall.admin:  ERROR
-    org.linlinjava.litemall.wx:  ERROR
-    org.linlinjava.litemall:  ERROR
+    <logger name="org.mybatis" level="ERROR" />
+    <logger name="org.springframework" level="ERROR" />
+    <logger name="org.linlinjava.litemall.core" level="DEBUG" />
+    <logger name="org.linlinjava.litemall.db" level="DEBUG" />
+    <logger name="org.linlinjava.litemall.admin" level="DEBUG" />
+    <logger name="org.linlinjava.litemall.wx" level="DEBUG" />
+    <logger name="org.linlinjava.litemall" level="DEBUG" />
 ```
 
-具体如何配置，请自行学习Spring Boot的日志配置。
+具体如何配置，请自行学习Spring Boot的日志配置和logback日志配置。
 
 `org.linlinjava.litemall.core`定义litemall-core模块的日志级别
-`org.linlinjava.litemall.db`定义litemall-core模块的日志级别
+`org.linlinjava.litemall.db`定义litemall-db模块的日志级别
 `org.linlinjava.litemall.wx`定义litemall-wx-api模块的日志级别
 `org.linlinjava.litemall.admin`定义litemall-admin-api模块的日志级别
 `org.linlinjava.litemall`而定义litemall所有后端模块的日志级别
@@ -487,7 +484,7 @@ logging:
 
 注意：
 > 如果开发者独立启动litemall-wx-api模块，那么则需要配置litemall-wx-api模块的
-> `application.yml`文件来设置日志
+> 日志配置方式。
 
 #### 1.4.5.2 数据库连接配置
 
