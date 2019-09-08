@@ -351,7 +351,10 @@ public class WxOrderService {
         // 添加订单表项
         orderService.add(order);
         orderId = order.getId();
-
+        
+        //保存所有商品货品表id（用于删除购物车商品）
+        List<Integer> productIds=new ArrayList<>();
+        
         // 添加订单商品表项
         for (LitemallCart cartGoods : checkedGoodsList) {
             // 订单商品
@@ -370,8 +373,8 @@ public class WxOrderService {
             orderGoodsService.add(orderGoods);
         }
 
-        // 删除购物车里面的商品信息
-        cartService.clearGoods(userId);
+        // 删除购物车里面的订单商品
+        cartService.delete(productIds,userId);
 
         // 商品货品数量减少
         for (LitemallCart checkGoods : checkedGoodsList) {
