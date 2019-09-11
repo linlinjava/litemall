@@ -5,7 +5,7 @@ spring:
     encoding: UTF-8
   datasource:
     druid:
-      url:  jdbc:mysql://localhost:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      url:  jdbc:mysql://47.94.211.247:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
       driver-class-name:  com.mysql.jdbc.Driver
       username:  litemall
       password:  litemall123456
@@ -37,8 +37,8 @@ pagehelper:
 litemall:
   # 开发者应该设置成自己的wx相关信息
   wx:
-    app-id: wxa5b486c6b918ecfb
-    app-secret: e04004829d4c383b4db7769d88dfbca1
+    app-id: wx344252582681191f
+    app-secret: 63a627901317f83dd43acd1aa2952760
     mch-id: 111111
     mch-key: xxxxxx
     notify-url: http://118.24.0.153:8080/wx/order/pay-notify

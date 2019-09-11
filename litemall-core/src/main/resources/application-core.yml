@@ -1,8 +1,8 @@
 litemall:
   # 开发者应该设置成自己的wx相关信息
   wx:
-    app-id: wxa5b486c6b918ecfb
-    app-secret: e04004829d4c383b4db7769d88dfbca1
+    app-id: wx344252582681191f
+    app-secret: 63a627901317f83dd43acd1aa2952760
     mch-id: 111111
     mch-key: xxxxxx
     notify-url: http://www.example.com/wx/order/pay-notify
@@ -43,9 +43,9 @@ litemall:
       enable: false
       template:
       - name: paySucceed
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        templateId: RDfNW49nEJS5i9y0kmxF47QEG0nbe0eA19GSR5MYXMs
       - name: captcha
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        templateId: MkXHC3N4l2nAW39IUQpnbsjFv96x5SMvs6YERfTMrLE
       - name: ship
         templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       - name: refund
@@ -87,7 +87,7 @@ litemall:
   # 对象存储配置
   storage:
     # 当前工作的对象存储模式，分别是local、aliyun、tencent、qiniu
-    active: local
+    active: qiniu
     # 本地对象存储配置信息
     local:
       storagePath: storage
@@ -108,7 +108,7 @@ litemall:
       bucketName: litemall
     # 七牛云对象存储配置信息
     qiniu:
-      endpoint: http://pd5cb6ulu.bkt.clouddn.com
-      accessKey: 111111
-      secretKey: xxxxxx
-      bucketName: litemall
+      endpoint: http://qiniu.hziee.top/
+      accessKey: HE1Qw9Z7catux9bE-m5uf-_5aCyvdbYxSDE66NTk
+      secretKey: i7TrDCthc7_3VHbOmUd5Y4ukSX7nF32Exa6qC6qB
+      bucketName: school

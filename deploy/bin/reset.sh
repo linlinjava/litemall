@@ -9,8 +9,8 @@
 # 重置数据库
 # i. 请在`XXXXXX`处设置相应的root密码
 # ii. 同时请注意root密码放在脚本是非常危险的，因此这里仅仅是用于开发测试阶段。
-ROOT=root
-PASSWORD=
+ROOT=litemall
+PASSWORD=litemall123456
 
 if test -z "$PASSWORD"
 then
@@ -19,13 +19,13 @@ then
 fi
 
 # 导入数据
-cd /home/ubuntu/deploy/db || exit 2
+cd /usr/litemall/db || exit 2
 mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
 
 # 删除storage文件夹内文件
-cd /home/ubuntu/deploy/litemall/storage || exit 2
+cd /usr/litemall/storage || exit 2
 rm -f ./**
 
 # 重新部署服务
-cd /home/ubuntu/deploy/bin || exit 2
+cd /usr/litemall/ || exit 2
 sudo ./deploy.sh
