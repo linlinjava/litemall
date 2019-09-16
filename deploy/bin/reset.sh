@@ -19,12 +19,12 @@ then
 fi
 
 # 导入数据
-cd /usr/litemall/db || exit 2
-mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
+#cd /usr/litemall/db || exit 2
+#mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
 
 # 删除storage文件夹内文件
 cd /usr/litemall/storage || exit 2
-rm -f ./**
+rm -rf *
 
 # 重新部署服务
 cd /usr/litemall/ || exit 2

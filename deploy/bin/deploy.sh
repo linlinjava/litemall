@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # 本脚本的作用是停止当前Spring Boot应用，然后再次部署
-sudo service litemall stop
-sudo ln -f -s /usr/litemall/deploy/litemall/litemall.jar /etc/init.d/litemall
-sudo update-rc.d litemall defaults
-sudo update-rc.d litemall enable
-sudo service litemall start
+service litemall stop
+ln -f -s /usr/litemall/litemall.jar /etc/init.d/litemall
+chmod a+x /etc/init.d/litemall
+service litemall start

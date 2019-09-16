@@ -40,6 +40,6 @@ scp -i $ID_RSA -r  ./deploy $REMOTE -p 8015:/usr/litemall/
 # 远程登录云主机并执行reset脚本
 ssh $REMOTE -p 8015 -i $ID_RSA << eeooff
 cd /usr/litemall/
-sudo ./deploy/bin/reset.sh
+./bin/reset.sh
 exit
 eeooff
