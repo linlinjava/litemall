@@ -23,9 +23,9 @@ fi
 #mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
 
 # 删除storage文件夹内文件
-cd /usr/litemall/storage || exit 2
+cd /usr/litemall/deploy/litemall/storage || exit 2
 rm -rf *
 
 # 重新部署服务
-cd /usr/litemall/ || exit 2
-sudo ./deploy.sh
+cd /usr/litemall/deploy/bin || exit 2
+./deploy.sh

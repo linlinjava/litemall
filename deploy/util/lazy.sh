@@ -10,7 +10,7 @@
 REMOTE=root@47.94.211.247
 # 请设置本地SSH私钥文件id_rsa路径
 # 例如 /home/litemall/id_rsa
-ID_RSA=/Users/kingsley/.ssh
+ID_RSA=/Users/kingsley/.ssh/id_rsa
 
 if test -z "$REMOTE"
 then
@@ -35,11 +35,14 @@ cd $LITEMALL_HOME || exit 2
 
 # 上传云主机
 cd $LITEMALL_HOME || exit 2
-scp -i $ID_RSA -r  ./deploy $REMOTE -p 8015:/usr/litemall/
+#scp -i $ID_RSA -r  ./deploy $REMOTE -p 8015:/usr/litemall/
+#scp -P 8015 ../litemall/litemall.jar $REMOTE:/usr/litemall
+sudo scp -P 8015 -r ./deploy $REMOTE:/usr/litemall
 
 # 远程登录云主机并执行reset脚本
-ssh $REMOTE -p 8015 -i $ID_RSA << eeooff
-cd /usr/litemall/
-./bin/reset.sh
+sudo ssh $REMOTE -p 8015 << eeooff
+cd /usr/litemall/deploy/bin
+chmod u+x *.sh
+./reset.sh
 exit
 eeooff
