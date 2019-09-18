@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.dao.LitemallOrderMapper;
 import org.linlinjava.litemall.db.dao.OrderMapper;
 import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.domain.LitemallOrderExample;
+import org.linlinjava.litemall.db.task.OrderDelayedTaskManager;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,6 +29,8 @@ public class LitemallOrderService {
     public int add(LitemallOrder order) {
         order.setAddTime(LocalDateTime.now());
         order.setUpdateTime(LocalDateTime.now());
+        OrderDelayedTaskManager manager = OrderDelayedTaskManager.getInstance();
+        manager.putQueue(order);
         return litemallOrderMapper.insertSelective(order);
     }
 
