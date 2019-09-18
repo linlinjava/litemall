@@ -20,6 +20,10 @@ import * as filters from './filters' // global filters
 
 import permission from '@/directive/permission/index.js' // 权限判断指令
 
+import Print from '@/utils/print' // 打印
+
+Vue.use(Print)
+
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
