@@ -22,11 +22,21 @@ public class LitemallCollectService {
         return (int) collectMapper.countByExample(example);
     }
 
-    public List<LitemallCollect> queryByType(Integer userId, Byte type, Integer page, Integer size) {
+    public List<LitemallCollect> queryByType(Integer userId, Byte type, Integer page, Integer limit, String sort, String order) {
         LitemallCollectExample example = new LitemallCollectExample();
-        example.or().andUserIdEqualTo(userId).andTypeEqualTo(type).andDeletedEqualTo(false);
-        example.setOrderByClause(LitemallCollect.Column.addTime.desc());
-        PageHelper.startPage(page, size);
+        LitemallCollectExample.Criteria criteria = example.createCriteria();
+
+        if (type != null) {
+            criteria.andTypeEqualTo(type);
+        }
+        criteria.andUserIdEqualTo(userId);
+        criteria.andDeletedEqualTo(false);
+
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
+        PageHelper.startPage(page, limit);
         return collectMapper.selectByExample(example);
     }
 

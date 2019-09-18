@@ -63,9 +63,9 @@ Page({
 
         that.setData({
           scrollTop: 0,
-          topicList: res.data.data,
+          topicList: res.data.list,
           showPage: true,
-          count: res.data.count
+          count: res.data.total
         });
       }
       wx.hideToast();

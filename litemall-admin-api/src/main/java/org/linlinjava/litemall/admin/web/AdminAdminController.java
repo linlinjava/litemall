@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
@@ -21,9 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
 
@@ -39,7 +36,7 @@ public class AdminAdminController {
     private LogHelper logHelper;
 
     @RequiresPermissions("admin:admin:list")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(String username,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -47,12 +44,7 @@ public class AdminAdminController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallAdmin> adminList = adminService.querySelective(username, page, limit, sort, order);
-        long total = PageInfo.of(adminList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", adminList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(adminList);
     }
 
     private Object validate(LitemallAdmin admin) {
@@ -71,7 +63,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:create")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
@@ -95,7 +87,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:read")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallAdmin admin = adminService.findById(id);
@@ -103,7 +95,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:update")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
@@ -128,7 +120,7 @@ public class AdminAdminController {
     }
 
     @RequiresPermissions("admin:admin:delete")
-    @RequiresPermissionsDesc(menu={"系统管理" , "管理员管理"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallAdmin admin) {
         Integer anotherAdminId = admin.getId();

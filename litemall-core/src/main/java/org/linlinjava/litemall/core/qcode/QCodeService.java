@@ -2,6 +2,8 @@ package org.linlinjava.litemall.core.qcode;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import me.chanjar.weixin.common.error.WxErrorException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.storage.StorageService;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.db.domain.LitemallGroupon;
@@ -18,6 +20,7 @@ import java.net.URL;
 
 @Service
 public class QCodeService {
+    private final Log logger = LogFactory.getLog(QCodeService.class);
     @Autowired
     WxMaService wxMaService;
 
@@ -28,21 +31,23 @@ public class QCodeService {
     public String createGrouponShareImage(String goodName, String goodPicUrl, LitemallGroupon groupon) {
         try {
             //创建该商品的二维码
-            File file = wxMaService.getQrcodeService().createWxaCodeUnlimit("groupon," + groupon.getId(), "pages/index/index");
+            File file = wxMaService.getQrcodeService().createWxaCodeUnlimit("groupon," + groupon.getId(), "pages" +
+                    "/index/index");
             FileInputStream inputStream = new FileInputStream(file);
             //将商品图片，商品名字,商城名字画到模版图中
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName);
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            LitemallStorage storageInfo = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(groupon.getId().toString()));
+            LitemallStorage storageInfo = storageService.store(inputStream2, imageData.length, "image/jpeg",
+                    getKeyName(groupon.getId().toString()));
 
             return storageInfo.getUrl();
         } catch (WxErrorException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return "";
@@ -68,15 +73,16 @@ public class QCodeService {
             byte[] imageData = drawPicture(inputStream, goodPicUrl, goodName);
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             //存储分享图
-            LitemallStorage litemallStorage = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
+            LitemallStorage litemallStorage = storageService.store(inputStream2, imageData.length, "image/jpeg",
+                    getKeyName(goodId));
 
             return litemallStorage.getUrl();
         } catch (WxErrorException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return "";
@@ -126,7 +132,7 @@ public class QCodeService {
         drawTextInImg(baseImage, goodName, 65, 867);
 
         //写上商城名称
-//        drawTextInImgCenter(baseImage, shopName, 98);
+        //        drawTextInImgCenter(baseImage, shopName, 98);
 
 
         //转jpg
@@ -173,7 +179,8 @@ public class QCodeService {
         g2D.dispose();
     }
 
-    private void drawImgInImg(BufferedImage baseImage, BufferedImage imageToWrite, int x, int y, int width, int heigth) {
+    private void drawImgInImg(BufferedImage baseImage, BufferedImage imageToWrite, int x, int y, int width,
+                              int heigth) {
         Graphics2D g2D = (Graphics2D) baseImage.getGraphics();
         g2D.drawImage(imageToWrite, x, y, width, heigth, null);
         g2D.dispose();

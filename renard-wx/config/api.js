@@ -15,10 +15,6 @@ module.exports = {
   CatalogAll: WxApiRoot + 'catalog/all', //分类目录当前分类数据接口
 
   AuthLoginByWeixin: WxApiRoot + 'auth/login_by_weixin', //微信登录
-  AuthLoginByAccount: WxApiRoot + 'auth/login', //账号登录
-  AuthRegister: WxApiRoot + 'auth/register', //账号注册
-  AuthReset: WxApiRoot + 'auth/reset', //账号密码重置
-  AuthRegisterCaptcha: WxApiRoot + 'auth/regCaptcha', //验证码
 
   GoodsCount: WxApiRoot + 'goods/count', //统计商品总数
   GoodsList: WxApiRoot + 'goods/list', //获得商品列表
@@ -38,11 +34,6 @@ module.exports = {
   CartGoodsCount: WxApiRoot + 'cart/goodscount', // 获取购物车商品件数
   CartCheckout: WxApiRoot + 'cart/checkout', // 下单前信息确认
 
-  CollectList: WxApiRoot + 'collect/list', //收藏列表
-  CollectAddOrDelete: WxApiRoot + 'collect/addordelete', //添加或取消收藏
-
-  CommentList: WxApiRoot + 'comment/list', //评论列表
-  CommentCount: WxApiRoot + 'comment/count', //评论总数
   CommentPost: WxApiRoot + 'comment/post', //发表评论
 
   TopicList: WxApiRoot + 'topic/list', //专题列表
@@ -58,8 +49,6 @@ module.exports = {
   AddressDetail: WxApiRoot + 'address/detail', //收货地址详情
   AddressSave: WxApiRoot + 'address/save', //保存收货地址
   AddressDelete: WxApiRoot + 'address/delete', //保存收货地址
-
-  RegionList: WxApiRoot + 'region/list', //获取区域列表
 
   OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
   OrderPrepay: WxApiRoot + 'order/prepay', // 订单的预支付会话
@@ -78,7 +67,6 @@ module.exports = {
   UserFormIdCreate: WxApiRoot + 'formid/create', //用户FromId，用于发送模版消息
 
   GroupOnList: WxApiRoot + 'groupon/list', //团购列表
-  GroupOn: WxApiRoot + 'groupon/query', //团购API-查询
   GroupOnMy: WxApiRoot + 'groupon/my', //团购API-我的团购
   GroupOnDetail: WxApiRoot + 'groupon/detail', //团购API-详情
   GroupOnJoin: WxApiRoot + 'groupon/join', //团购API-详情

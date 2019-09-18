@@ -63,11 +63,7 @@ public class WxCouponController {
                        @Order @RequestParam(defaultValue = "desc") String order) {
 
         List<LitemallCoupon> couponList = couponService.queryList(page, limit, sort, order);
-        int total = couponService.queryTotal();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", couponList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(couponList);
     }
 
     /**
@@ -94,11 +90,7 @@ public class WxCouponController {
 
         List<LitemallCouponUser> couponUserList = couponUserService.queryList(userId, null, status, page, limit, sort, order);
         List<CouponVo> couponVoList = change(couponUserList);
-        int total = couponService.queryTotal();
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("data", couponVoList);
-        data.put("count", total);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(couponVoList, couponUserList);
     }
 
     private List<CouponVo> change(List<LitemallCouponUser> couponList) {
@@ -179,7 +171,7 @@ public class WxCouponController {
 
         List<CouponVo> couponVoList = change(availableCouponUserList);
 
-        return ResponseUtil.ok(couponVoList);
+        return ResponseUtil.okList(couponVoList);
     }
 
     /**

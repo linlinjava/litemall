@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/brand")
@@ -31,7 +28,7 @@ public class AdminBrandController {
     private LitemallBrandService brandService;
 
     @RequiresPermissions("admin:brand:list")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(String id, String name,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -39,12 +36,7 @@ public class AdminBrandController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallBrand> brandList = brandService.querySelective(id, name, page, limit, sort, order);
-        long total = PageInfo.of(brandList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", brandList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(brandList);
     }
 
     private Object validate(LitemallBrand brand) {
@@ -66,7 +58,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:create")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallBrand brand) {
         Object error = validate(brand);
@@ -78,7 +70,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:read")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallBrand brand = brandService.findById(id);
@@ -86,7 +78,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:update")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallBrand brand) {
         Object error = validate(brand);
@@ -100,7 +92,7 @@ public class AdminBrandController {
     }
 
     @RequiresPermissions("admin:brand:delete")
-    @RequiresPermissionsDesc(menu={"商场管理" , "品牌管理"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"商场管理", "品牌管理"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallBrand brand) {
         Integer id = brand.getId();

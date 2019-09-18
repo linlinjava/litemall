@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -39,7 +38,7 @@ public class AdminGrouponController {
     private LitemallGrouponService grouponService;
 
     @RequiresPermissions("admin:groupon:read")
-    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"推广管理", "团购管理"}, button = "详情")
     @GetMapping("/listRecord")
     public Object listRecord(String grouponId,
                              @RequestParam(defaultValue = "1") Integer page,
@@ -47,36 +46,31 @@ public class AdminGrouponController {
                              @Sort @RequestParam(defaultValue = "add_time") String sort,
                              @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallGroupon> grouponList = grouponService.querySelective(grouponId, page, limit, sort, order);
-        long total = PageInfo.of(grouponList).getTotal();
 
-        List<Map<String, Object>> records = new ArrayList<>();
+        List<Map<String, Object>> groupons = new ArrayList<>();
         for (LitemallGroupon groupon : grouponList) {
             try {
-                Map<String, Object> RecordData = new HashMap<>();
+                Map<String, Object> recordData = new HashMap<>();
                 List<LitemallGroupon> subGrouponList = grouponService.queryJoinRecord(groupon.getId());
                 LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
                 LitemallGoods goods = goodsService.findById(rules.getGoodsId());
 
-                RecordData.put("groupon", groupon);
-                RecordData.put("subGroupons", subGrouponList);
-                RecordData.put("rules", rules);
-                RecordData.put("goods", goods);
+                recordData.put("groupon", groupon);
+                recordData.put("subGroupons", subGrouponList);
+                recordData.put("rules", rules);
+                recordData.put("goods", goods);
 
-                records.add(RecordData);
+                groupons.add(recordData);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", records);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(groupons, grouponList);
     }
 
     @RequiresPermissions("admin:groupon:list")
-    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"推广管理", "团购管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(String goodsId,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -84,12 +78,7 @@ public class AdminGrouponController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallGrouponRules> rulesList = rulesService.querySelective(goodsId, page, limit, sort, order);
-        long total = PageInfo.of(rulesList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", rulesList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(rulesList);
     }
 
     private Object validate(LitemallGrouponRules grouponRules) {
@@ -114,7 +103,7 @@ public class AdminGrouponController {
     }
 
     @RequiresPermissions("admin:groupon:update")
-    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"推广管理", "团购管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallGrouponRules grouponRules) {
         Object error = validate(grouponRules);
@@ -139,7 +128,7 @@ public class AdminGrouponController {
     }
 
     @RequiresPermissions("admin:groupon:create")
-    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"推广管理", "团购管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallGrouponRules grouponRules) {
         Object error = validate(grouponRules);
@@ -162,7 +151,7 @@ public class AdminGrouponController {
     }
 
     @RequiresPermissions("admin:groupon:delete")
-    @RequiresPermissionsDesc(menu={"推广管理" , "团购管理"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"推广管理", "团购管理"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallGrouponRules grouponRules) {
         Integer id = grouponRules.getId();

@@ -15,26 +15,26 @@ ID_RSA=
 if test -z "$REMOTE"
 then
   echo "请设置云主机登录IP地址和账户"
-  exit -1
+  exit 1
 fi
 
 if test -z "$ID_RSA"
 then
   echo "请设置云主机登录IP地址和账户"
-  exit -1
+  exit 1
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-cd $DIR/../..
+cd $DIR/../.. || exit 2
 LITEMALL_HOME=$PWD
 echo "LITEMALL_HOME $LITEMALL_HOME"
 
 # 项目打包
-cd $LITEMALL_HOME
+cd $LITEMALL_HOME || exit 2
 ./deploy/util/package.sh
 
 # 上传云主机
-cd $LITEMALL_HOME
+cd $LITEMALL_HOME || exit 2
 scp -i $ID_RSA -r  ./deploy $REMOTE:/home/ubuntu/
 
 # 远程登录云主机并执行reset脚本

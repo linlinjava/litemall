@@ -4,7 +4,6 @@ import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.notify.NotifyService;
@@ -54,14 +53,9 @@ public class AdminOrderService {
 
     public Object list(Integer userId, String orderSn, List<Short> orderStatusArray,
                        Integer page, Integer limit, String sort, String order) {
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit, sort, order);
-        long total = PageInfo.of(orderList).getTotal();
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", orderList);
-
-        return ResponseUtil.ok(data);
+        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit,
+                sort, order);
+        return ResponseUtil.okList(orderList);
     }
 
     public Object detail(Integer id) {
@@ -126,11 +120,11 @@ public class AdminOrderService {
         wxPayRefundRequest.setTotalFee(totalFee);
         wxPayRefundRequest.setRefundFee(totalFee);
 
-        WxPayRefundResult wxPayRefundResult = null;
+        WxPayRefundResult wxPayRefundResult;
         try {
             wxPayRefundResult = wxPayService.refund(wxPayRefundRequest);
         } catch (WxPayException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return ResponseUtil.fail(ORDER_REFUND_FAILED, "订单退款失败");
         }
         if (!wxPayRefundResult.getReturnCode().equals("SUCCESS")) {
@@ -161,7 +155,8 @@ public class AdminOrderService {
         //TODO 发送邮件和短信通知，这里采用异步发送
         // 退款成功通知用户, 例如“您申请的订单退款 [ 单号:{1} ] 已成功，请耐心等待到账。”
         // 注意订单号只发后6位
-        notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND, new String[]{order.getOrderSn().substring(8, 14)});
+        notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND,
+                new String[]{order.getOrderSn().substring(8, 14)});
 
         logHelper.logOrderSucceed("退款", "订单编号 " + orderId);
         return ResponseUtil.ok();

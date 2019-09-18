@@ -28,7 +28,7 @@ public class AdminRegionController {
     @GetMapping("/clist")
     public Object clist(@NotNull Integer id) {
         List<LitemallRegion> regionList = regionService.queryByPid(id);
-        return ResponseUtil.ok(regionList);
+        return ResponseUtil.okList(regionList);
     }
 
     @GetMapping("/list")
@@ -36,7 +36,7 @@ public class AdminRegionController {
         List<RegionVo> regionVoList = new ArrayList<>();
 
         List<LitemallRegion> provinceList = regionService.queryByPid(0);
-        for(LitemallRegion province : provinceList){
+        for (LitemallRegion province : provinceList) {
             RegionVo provinceVO = new RegionVo();
             provinceVO.setId(province.getId());
             provinceVO.setName(province.getName());
@@ -45,7 +45,7 @@ public class AdminRegionController {
 
             List<LitemallRegion> cityList = regionService.queryByPid(province.getId());
             List<RegionVo> cityVOList = new ArrayList<>();
-            for(LitemallRegion city : cityList){
+            for (LitemallRegion city : cityList) {
                 RegionVo cityVO = new RegionVo();
                 cityVO.setId(city.getId());
                 cityVO.setName(city.getName());
@@ -54,7 +54,7 @@ public class AdminRegionController {
 
                 List<LitemallRegion> areaList = regionService.queryByPid(city.getId());
                 List<RegionVo> areaVOList = new ArrayList<>();
-                for(LitemallRegion area : areaList){
+                for (LitemallRegion area : areaList) {
                     RegionVo areaVO = new RegionVo();
                     areaVO.setId(area.getId());
                     areaVO.setName(area.getName());
@@ -70,6 +70,6 @@ public class AdminRegionController {
             regionVoList.add(provinceVO);
         }
 
-        return ResponseUtil.ok(regionVoList);
+        return ResponseUtil.okList(regionVoList);
     }
 }

@@ -32,7 +32,7 @@ service.interceptors.response.use(
         }, 1500)
       return Promise.reject('error')
     } else if (res.errno === 502) {
-        Toast.alert('网站内部错误，请联系网站维护人员')
+        Toast.fail('网站内部错误，请联系网站维护人员')
       return Promise.reject('error')
     } if (res.errno === 401) {
       Toast.fail('参数不对');

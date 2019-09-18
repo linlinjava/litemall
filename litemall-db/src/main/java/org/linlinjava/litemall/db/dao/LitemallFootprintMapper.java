@@ -51,7 +51,6 @@ public interface LitemallFootprintMapper {
      * This method corresponds to the database table litemall_footprint
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFootprint selectOneByExample(LitemallFootprintExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallFootprintMapper {
      * This method corresponds to the database table litemall_footprint
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFootprint selectOneByExampleSelective(@Param("example") LitemallFootprintExample example, @Param("selective") LitemallFootprint.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallFootprintMapper {
      * This method corresponds to the database table litemall_footprint
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallFootprint> selectByExampleSelective(@Param("example") LitemallFootprintExample example, @Param("selective") LitemallFootprint.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallFootprintMapper {
      * This method corresponds to the database table litemall_footprint
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFootprint selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallFootprint.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallFootprintMapper {
      * This method corresponds to the database table litemall_footprint
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFootprint selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallFootprintMapper {
      * This method corresponds to the database table litemall_footprint
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallFootprintExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallFootprintMapper {
      * This method corresponds to the database table litemall_footprint
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

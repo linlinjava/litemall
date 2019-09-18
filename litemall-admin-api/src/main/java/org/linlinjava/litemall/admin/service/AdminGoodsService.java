@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.service;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.dto.GoodsAllinone;
@@ -38,10 +37,6 @@ public class AdminGoodsService {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallBrandService brandService;
-    @Autowired
-    private LitemallCartService cartService;
-    @Autowired
-    private LitemallOrderGoodsService orderGoodsService;
 
     @Autowired
     private QCodeService qCodeService;
@@ -49,12 +44,7 @@ public class AdminGoodsService {
     public Object list(String goodsSn, String name,
                        Integer page, Integer limit, String sort, String order) {
         List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, order);
-        long total = PageInfo.of(goodsList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", goodsList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(goodsList);
     }
 
     private Object validate(GoodsAllinone goodsAllinone) {

@@ -1,14 +1,13 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.util.AdminResponseCode;
-import org.linlinjava.litemall.admin.vo.PermVo;
 import org.linlinjava.litemall.admin.util.Permission;
 import org.linlinjava.litemall.admin.util.PermissionUtil;
+import org.linlinjava.litemall.admin.vo.PermVo;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
@@ -45,7 +44,7 @@ public class AdminRoleController {
     private LitemallAdminService adminService;
 
     @RequiresPermissions("admin:role:list")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色查询")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "角色查询")
     @GetMapping("/list")
     public Object list(String name,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -53,16 +52,11 @@ public class AdminRoleController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallRole> roleList = roleService.querySelective(name, page, limit, sort, order);
-        long total = PageInfo.of(roleList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", roleList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(roleList);
     }
 
     @GetMapping("/options")
-    public Object options(){
+    public Object options() {
         List<LitemallRole> roleList = roleService.queryAll();
 
         List<Map<String, Object>> options = new ArrayList<>(roleList.size());
@@ -73,11 +67,11 @@ public class AdminRoleController {
             options.add(option);
         }
 
-        return ResponseUtil.ok(options);
+        return ResponseUtil.okList(options);
     }
 
     @RequiresPermissions("admin:role:read")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色详情")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "角色详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallRole role = roleService.findById(id);
@@ -95,7 +89,7 @@ public class AdminRoleController {
     }
 
     @RequiresPermissions("admin:role:create")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色添加")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "角色添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallRole role) {
         Object error = validate(role);
@@ -103,7 +97,7 @@ public class AdminRoleController {
             return error;
         }
 
-        if (roleService.checkExist(role.getName())){
+        if (roleService.checkExist(role.getName())) {
             return ResponseUtil.fail(ROLE_NAME_EXIST, "角色已经存在");
         }
 
@@ -113,7 +107,7 @@ public class AdminRoleController {
     }
 
     @RequiresPermissions("admin:role:update")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色编辑")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "角色编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallRole role) {
         Object error = validate(role);
@@ -126,7 +120,7 @@ public class AdminRoleController {
     }
 
     @RequiresPermissions("admin:role:delete")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="角色删除")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "角色删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallRole role) {
         Integer id = role.getId();
@@ -136,10 +130,10 @@ public class AdminRoleController {
 
         // 如果当前角色所对应管理员仍存在，则拒绝删除角色。
         List<LitemallAdmin> adminList = adminService.all();
-        for(LitemallAdmin admin : adminList){
+        for (LitemallAdmin admin : adminList) {
             Integer[] roleIds = admin.getRoleIds();
-            for(Integer roleId : roleIds){
-                if(id.equals(roleId)){
+            for (Integer roleId : roleIds) {
+                if (id.equals(roleId)) {
                     return ResponseUtil.fail(ROLE_USER_EXIST, "当前角色存在管理员，不能删除");
                 }
             }
@@ -155,9 +149,9 @@ public class AdminRoleController {
     private List<PermVo> systemPermissions = null;
     private Set<String> systemPermissionsString = null;
 
-    private List<PermVo> getSystemPermissions(){
+    private List<PermVo> getSystemPermissions() {
         final String basicPackage = "org.linlinjava.litemall.admin";
-        if(systemPermissions == null){
+        if (systemPermissions == null) {
             List<Permission> permissions = PermissionUtil.listPermission(context, basicPackage);
             systemPermissions = PermissionUtil.listPermVo(permissions);
             systemPermissionsString = PermissionUtil.listPermissionString(permissions);
@@ -165,15 +159,14 @@ public class AdminRoleController {
         return systemPermissions;
     }
 
-    private Set<String> getAssignedPermissions(Integer roleId){
+    private Set<String> getAssignedPermissions(Integer roleId) {
         // 这里需要注意的是，如果存在超级权限*，那么这里需要转化成当前所有系统权限。
         // 之所以这么做，是因为前端不能识别超级权限，所以这里需要转换一下。
         Set<String> assignedPermissions = null;
-        if(permissionService.checkSuperPermission(roleId)){
+        if (permissionService.checkSuperPermission(roleId)) {
             getSystemPermissions();
             assignedPermissions = systemPermissionsString;
-        }
-        else{
+        } else {
             assignedPermissions = permissionService.queryByRoleId(roleId);
         }
 
@@ -186,7 +179,7 @@ public class AdminRoleController {
      * @return 系统所有权限列表和管理员已分配权限
      */
     @RequiresPermissions("admin:role:permission:get")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="权限详情")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "权限详情")
     @GetMapping("/permissions")
     public Object getPermissions(Integer roleId) {
         List<PermVo> systemPermissions = getSystemPermissions();
@@ -206,23 +199,23 @@ public class AdminRoleController {
      * @return
      */
     @RequiresPermissions("admin:role:permission:update")
-    @RequiresPermissionsDesc(menu={"系统管理" , "角色管理"}, button="权限变更")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "权限变更")
     @PostMapping("/permissions")
     public Object updatePermissions(@RequestBody String body) {
         Integer roleId = JacksonUtil.parseInteger(body, "roleId");
         List<String> permissions = JacksonUtil.parseStringList(body, "permissions");
-        if(roleId == null || permissions == null){
+        if (roleId == null || permissions == null) {
             return ResponseUtil.badArgument();
         }
 
         // 如果修改的角色是超级权限，则拒绝修改。
-        if(permissionService.checkSuperPermission(roleId)){
+        if (permissionService.checkSuperPermission(roleId)) {
             return ResponseUtil.fail(AdminResponseCode.ROLE_SUPER_SUPERMISSION, "当前角色的超级权限不能变更");
         }
 
         // 先删除旧的权限，再更新新的权限
         permissionService.deleteByRoleId(roleId);
-        for(String permission : permissions){
+        for (String permission : permissions) {
             LitemallPermission litemallPermission = new LitemallPermission();
             litemallPermission.setRoleId(roleId);
             litemallPermission.setPermission(permission);

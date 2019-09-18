@@ -16,7 +16,7 @@ Page({
     currentSort: 'add_time',
     currentSortOrder: 'desc',
     page: 1,
-    size: 100
+    limit: 10
   },
   getCategoryList: function() {
     var that = this;
@@ -38,7 +38,7 @@ Page({
     util.request(api.GoodsList, {
         isHot: true,
         page: that.data.page,
-        size: that.data.size,
+        limit: that.data.limit,
         order: that.data.currentSortOrder,
         sort: that.data.currentSort,
         categoryId: that.data.categoryId
@@ -46,7 +46,7 @@ Page({
       .then(function(res) {
         if (res.errno === 0) {
           that.setData({
-            goodsList: res.data.goodsList,
+            goodsList: res.data.list,
             filterCategory: res.data.filterCategoryList
           });
         }

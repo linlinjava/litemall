@@ -13,7 +13,6 @@
         icon="username"
         placeholder="请输入测试账号 user123"
         right-icon="clear-full"
-        v-validate="'required'"
         name="user"
         data-vv-as="帐号"
         @right-click="clearText"
@@ -25,7 +24,6 @@
         placeholder="请输入测试密码 user123"
         :type="visiblePass ? 'text' : 'password'"
         :right-icon="visiblePass ? 'eye-open' : 'eye-close'"
-        v-validate="'required'"
         data-vv-as="密码"
         name="password"
         @right-click="visiblePass = !visiblePass"
@@ -82,13 +80,8 @@ export default {
       this.account = '';
     },
 
-    async validate() {
-      const result = await this.$validator.validate();
-      if (!result) {
-        const errMsg = this.errors.items[0].msg;
-        Toast(errMsg);
-        throw new Error(`表单验证: ${errMsg}`);
-      }
+    validate() {
+
     },
 
     login() {
@@ -96,37 +89,27 @@ export default {
       authLoginByAccount(loginData).then(res => {
         this.userInfo = res.data.data.userInfo;
         setLocalStorage({
-          Authorization: res.data.data.token
+          Authorization: res.data.data.token,
+          avatar: this.userInfo.avatarUrl,
+          nickName: this.userInfo.nickName
         });
-        this.getUserProfile();
+
+        this.routerRedirect();
       }).catch(error => {
         Toast.fail(error.data.errmsg);
       });
     },
 
-    async loginSubmit() {
+    loginSubmit() {
       this.isLogining = true;
       try {
-        await this.validate();
-        await this.login();
+        this.validate();
+        this.login();
         this.isLogining = false;
       } catch (err) {
         console.log(err.message);
         this.isLogining = false;
       }
-    },
-
-    getUserProfile() {
-      // const {
-      //   data: { data }
-      // } = await this.$reqGet(USER_PROFILE);
-      setLocalStorage({
-        avatar: this.userInfo.avatarUrl,
-        // background_image: data.background_image,
-        nickName: this.userInfo.nickName
-      });
-
-      this.routerRedirect();
     },
 
     routerRedirect() {

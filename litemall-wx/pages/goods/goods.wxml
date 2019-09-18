@@ -7,7 +7,7 @@
   <!-- 分享 -->
   <view class='goods_name'>
     <view class='goods_name_left'>{{goods.name}}</view>
-    <view class="goods_name_right" bindtap="shareFriendOrCircle">分享</view>
+    <view hidden="{{!canShare}}" class="goods_name_right" bindtap="shareFriendOrCircle">分享</view>
   </view>
   <view class="share-pop-box" hidden="{{!openShare}}">
     <view class="share-pop">
@@ -33,7 +33,7 @@
 
   <view class="goods-info">
     <view class="c">
-      <text class="desc">{{goods.goodsBrief}}</text>
+      <text class="desc">{{goods.brief}}</text>
       <view class="price">
         <view class="counterPrice">原价：￥{{goods.counterPrice}}</view>
         <view class="retailPrice">现价：￥{{checkedSpecPrice}}</view>

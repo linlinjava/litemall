@@ -15,17 +15,17 @@ PASSWORD=
 if test -z "$PASSWORD"
 then
   echo "请设置云主机MySQL的root账号密码"
-  exit -1
+  exit 1
 fi
 
 # 导入数据
-cd /home/ubuntu/deploy/db
+cd /home/ubuntu/deploy/db || exit 2
 mysql -h localhost -u $ROOT -p$PASSWORD < litemall.sql
 
 # 删除storage文件夹内文件
-cd /home/ubuntu/deploy/litemall/storage
+cd /home/ubuntu/deploy/litemall/storage || exit 2
 rm -f ./**
 
 # 重新部署服务
-cd /home/ubuntu/deploy/bin
+cd /home/ubuntu/deploy/bin || exit 2
 sudo ./deploy.sh

@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,9 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/keyword")
@@ -30,7 +27,7 @@ public class AdminKeywordController {
     private LitemallKeywordService keywordService;
 
     @RequiresPermissions("admin:keyword:list")
-    @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"商场管理", "关键词"}, button = "查询")
     @GetMapping("/list")
     public Object list(String keyword, String url,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -38,12 +35,7 @@ public class AdminKeywordController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallKeyword> keywordList = keywordService.querySelective(keyword, url, page, limit, sort, order);
-        long total = PageInfo.of(keywordList).getTotal();
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", keywordList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(keywordList);
     }
 
     private Object validate(LitemallKeyword keywords) {
@@ -55,19 +47,19 @@ public class AdminKeywordController {
     }
 
     @RequiresPermissions("admin:keyword:create")
-    @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"商场管理", "关键词"}, button = "添加")
     @PostMapping("/create")
-    public Object create(@RequestBody LitemallKeyword keywords) {
-        Object error = validate(keywords);
+    public Object create(@RequestBody LitemallKeyword keyword) {
+        Object error = validate(keyword);
         if (error != null) {
             return error;
         }
-        keywordService.add(keywords);
-        return ResponseUtil.ok(keywords);
+        keywordService.add(keyword);
+        return ResponseUtil.ok(keyword);
     }
 
     @RequiresPermissions("admin:keyword:read")
-    @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"商场管理", "关键词"}, button = "详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallKeyword keyword = keywordService.findById(id);
@@ -75,21 +67,21 @@ public class AdminKeywordController {
     }
 
     @RequiresPermissions("admin:keyword:update")
-    @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"商场管理", "关键词"}, button = "编辑")
     @PostMapping("/update")
-    public Object update(@RequestBody LitemallKeyword keywords) {
-        Object error = validate(keywords);
+    public Object update(@RequestBody LitemallKeyword keyword) {
+        Object error = validate(keyword);
         if (error != null) {
             return error;
         }
-        if (keywordService.updateById(keywords) == 0) {
+        if (keywordService.updateById(keyword) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
-        return ResponseUtil.ok(keywords);
+        return ResponseUtil.ok(keyword);
     }
 
     @RequiresPermissions("admin:keyword:delete")
-    @RequiresPermissionsDesc(menu={"商场管理" , "关键词"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"商场管理", "关键词"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallKeyword keyword) {
         Integer id = keyword.getId();
