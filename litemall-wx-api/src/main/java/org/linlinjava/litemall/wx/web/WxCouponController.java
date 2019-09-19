@@ -67,6 +67,30 @@ public class WxCouponController {
     }
 
     /**
+     * app个人优惠券列表
+     *
+     * @param userId
+     * @param page
+     * @param limit
+     * @param sort
+     * @param order
+     * @return
+     */
+    @GetMapping("allcoupon")
+    public Object mylist(@LoginUser Integer userId,
+                         @RequestParam(defaultValue = "1") Integer page,
+                         @RequestParam(defaultValue = "10") Integer limit,
+                         @Sort @RequestParam(defaultValue = "add_time") String sort,
+                         @Order @RequestParam(defaultValue = "desc") String order) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        List<LitemallCouponUser> couponUserList = couponUserService.queryList(userId, null, null, page, limit, sort, order);
+        List<CouponVo> couponVoList = change(couponUserList);
+        return ResponseUtil.okList(couponVoList, couponUserList);
+    }
+
+    /**
      * 个人优惠券列表
      *
      * @param userId
