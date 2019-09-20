@@ -152,6 +152,7 @@ public class WxOrderService {
                 orderGoodsVo.put("number", orderGoods.getNumber());
                 orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
                 orderGoodsVo.put("specifications", orderGoods.getSpecifications());
+                orderGoodsVo.put("price",orderGoods.getPrice());
                 orderGoodsVoList.add(orderGoodsVo);
             }
             orderVo.put("goodsList", orderGoodsVoList);
