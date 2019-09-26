@@ -239,10 +239,12 @@ public class WxAuthController {
         String password = JacksonUtil.parseString(body, "password");
         String mobile = JacksonUtil.parseString(body, "mobile");
         String code = JacksonUtil.parseString(body, "code");
+        // 如果是小程序注册，则必须非空
+        // 其他情况，可以为空
         String wxCode = JacksonUtil.parseString(body, "wxCode");
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(mobile)
-                || StringUtils.isEmpty(wxCode) || StringUtils.isEmpty(code)) {
+                || StringUtils.isEmpty(code)) {
             return ResponseUtil.badArgument();
         }
 
@@ -264,24 +266,28 @@ public class WxAuthController {
             return ResponseUtil.fail(AUTH_CAPTCHA_UNMATCH, "验证码错误");
         }
 
-        String openId = null;
-        try {
-            WxMaJscode2SessionResult result = this.wxService.getUserService().getSessionInfo(wxCode);
-            openId = result.getOpenid();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseUtil.fail(AUTH_OPENID_UNACCESS, "openid 获取失败");
-        }
-        userList = userService.queryByOpenid(openId);
-        if (userList.size() > 1) {
-            return ResponseUtil.serious();
-        }
-        if (userList.size() == 1) {
-            LitemallUser checkUser = userList.get(0);
-            String checkUsername = checkUser.getUsername();
-            String checkPassword = checkUser.getPassword();
-            if (!checkUsername.equals(openId) || !checkPassword.equals(openId)) {
-                return ResponseUtil.fail(AUTH_OPENID_BINDED, "openid已绑定账号");
+        String openId = "";
+        // 非空，则是小程序注册
+        // 继续验证openid
+        if(!StringUtils.isEmpty(wxCode)) {
+            try {
+                WxMaJscode2SessionResult result = this.wxService.getUserService().getSessionInfo(wxCode);
+                openId = result.getOpenid();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseUtil.fail(AUTH_OPENID_UNACCESS, "openid 获取失败");
+            }
+            userList = userService.queryByOpenid(openId);
+            if (userList.size() > 1) {
+                return ResponseUtil.serious();
+            }
+            if (userList.size() == 1) {
+                LitemallUser checkUser = userList.get(0);
+                String checkUsername = checkUser.getUsername();
+                String checkPassword = checkUser.getPassword();
+                if (!checkUsername.equals(openId) || !checkPassword.equals(openId)) {
+                    return ResponseUtil.fail(AUTH_OPENID_BINDED, "openid已绑定账号");
+                }
             }
         }
 
