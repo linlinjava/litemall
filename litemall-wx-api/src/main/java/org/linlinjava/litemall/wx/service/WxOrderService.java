@@ -613,7 +613,7 @@ public class WxOrderService {
         }
 
         // 检查这个订单是否已经处理过
-        if (OrderUtil.isPayStatus(order) && order.getPayId() != null) {
+        if (OrderUtil.hasPayed(order)) {
             return WxPayNotifyResponse.success("订单已经处理成功!");
         }
 
