@@ -25,10 +25,20 @@ public class CouponVerifyService {
      * @param checkedGoodsPrice
      * @return
      */
-    public LitemallCoupon checkCoupon(Integer userId, Integer couponId, BigDecimal checkedGoodsPrice) {
+    public LitemallCoupon checkCoupon(Integer userId, Integer couponId, Integer userCouponId, BigDecimal checkedGoodsPrice) {
         LitemallCoupon coupon = couponService.findById(couponId);
-        LitemallCouponUser couponUser = couponUserService.queryOne(userId, couponId);
-        if (coupon == null || couponUser == null) {
+        if (coupon == null) {
+            return null;
+        }
+
+        LitemallCouponUser couponUser = couponUserService.findById(userCouponId);
+        if (couponUser == null) {
+            couponUser = couponUserService.queryOne(userId, couponId);
+        } else if (!couponId.equals(couponUser.getCouponId())) {
+            return null;
+        }
+
+        if (couponUser == null) {
             return null;
         }
 
