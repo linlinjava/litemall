@@ -147,7 +147,7 @@
     </view>
   </view>
 
-  <view class="a-section a-topic" wx:if="topics.length > 0">
+  <view class="a-section a-topic" wx:if="topics.length > 0" hidden="{{topics.length <= 0}}">
     <view class="h">
       <view>
         <navigator url="/pages/topic/topic">

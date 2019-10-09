@@ -38,25 +38,25 @@
                  class="footer_btn">
               <van-button size="small"
                           v-if="el.handleOption.cancel"
-                          @click="cancelOrder(el.id)">取消订单</van-button>
+                          @click.stop="cancelOrder(el.id)">取消订单</van-button>
               <van-button size="small"
                           v-if="el.handleOption.pay"
                           type="danger"
-                          @click="toPay(el.id)">去支付</van-button>
+                          @click.stop="toPay(el.id)">去支付</van-button>
               <van-button size="small"
                           v-if="el.handleOption.refund"
                           type="danger"
-                          @click="refundOrder(el.id)">退款</van-button>
+                          @click.stop="refundOrder(el.id)">退款</van-button>
               <van-button size="small"
                           v-if="el.handleOption.confirm"
                           type="danger"
-                          @click="confirmOrder(el.id)">确认收货</van-button>
+                          @click.stop="confirmOrder(el.id)">确认收货</van-button>
               <van-button size="small"
                           v-if="el.handleOption.delete"
-                          @click="delOrder(el.id)">删除订单</van-button>
+                          @click.stop="delOrder(el.id)">删除订单</van-button>
               <van-button size="small"
                           v-if="el.handleOption.comment"
-                          @click="commentOrder(el.id)">去评价</van-button>
+                          @click.stop="commentOrder(el.id)">去评价</van-button>
             </div>
 
           </van-panel>
@@ -131,7 +131,7 @@ export default {
       this.$dialog
         .confirm({ message: '确定要取消该订单吗?' })
         .then(() => {
-          orderDelete({ orderId: id }).then(() => {
+          orderCancel({ orderId: id }).then(() => {
             this.init();
             this.$toast('已取消该订单');
           });

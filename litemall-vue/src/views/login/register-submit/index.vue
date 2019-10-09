@@ -2,7 +2,7 @@
 	<md-field-group class="register_submit">
 		<md-field v-model="code" icon="mobile" placeholder="请输入验证码">
 			<div slot="rightIcon" @click="getCode" class="getCode red">
-				<countdown v-if="counting" :time="60000" @countdownend="countdownend">
+				<countdown v-if="counting" :time="60000" @end="countdownend">
 				  <template slot-scope="props">{{ +props.seconds || 60 }}秒后获取</template>
 				</countdown>
 				<span v-else>获取验证码</span>

@@ -219,7 +219,13 @@ V 3.0.0 完成以下目标：
    项目介绍：基于有赞 vant 组件库的移动商城。
 
    项目参考：litemall项目的litemall-vue模块基于vant--mobile-mall项目开发。
+
+## 推荐
+
+1. [Flutter_Mall](https://github.com/youxinLu/mall)
    
+   项目介绍：Flutter_Mall是一款Flutter开源在线商城应用程序。
+
 ## 问题
 
 ![](doc/pic/qq2.png)
