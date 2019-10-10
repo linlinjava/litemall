@@ -8,6 +8,7 @@ Page({
     couponList: [],
     cartId: 0,
     couponId: 0,
+    userCouponId: 0,
     grouponLinkId: 0,
     scrollTop: 0
   },
@@ -46,6 +47,11 @@ Page({
         couponId = 0;
       }
 
+      var userCouponId = wx.getStorageSync('userCouponId');
+      if (!userCouponId) {
+        userCouponId = 0;
+      }
+
       var grouponRulesId = wx.getStorageSync('grouponRulesId');
       if (!grouponRulesId) {
         grouponRulesId = 0;
@@ -54,6 +60,7 @@ Page({
       this.setData({
         cartId: cartId,
         couponId: couponId,
+        userCouponId: userCouponId,
         grouponRulesId: grouponRulesId
       });
 
@@ -116,8 +123,14 @@ Page({
       grouponRulesId: that.data.grouponRulesId,
     }).then(function (res) {
       if (res.errno === 0) {
+        let list = [];
+        for (var i = 0; i < res.data.list.length; i++) {
+          if (res.data.list[i].available) {
+            list.push(res.data.list[i]);
+          }
+        }
         that.setData({
-          couponList: res.data.list
+          couponList: list
         });
       }
       wx.hideToast();
@@ -126,7 +139,8 @@ Page({
   },
   selectCoupon: function (e) {
     try {
-      wx.setStorageSync('couponId', e.currentTarget.dataset.id);
+      wx.setStorageSync('couponId', e.currentTarget.dataset.cid);
+      wx.setStorageSync('userCouponId', e.currentTarget.dataset.id);
     } catch (error) {
 
     }
@@ -137,6 +151,7 @@ Page({
     // 如果优惠券ID设置-1，则表示订单不使用优惠券
     try {
       wx.setStorageSync('couponId', -1);
+      wx.setStorageSync('userCouponId', -1);
     } catch (error) {
 
     }
