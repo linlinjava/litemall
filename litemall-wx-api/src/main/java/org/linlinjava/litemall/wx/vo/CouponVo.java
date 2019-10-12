@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class CouponVo {
     private Integer id;
+    private Integer cid;
     private String name;
     private String desc;
     private String tag;
@@ -11,6 +12,7 @@ public class CouponVo {
     private String discount;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private boolean available;
 
     public Integer getId() {
         return id;
@@ -18,6 +20,14 @@ public class CouponVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCid() {
+        return cid;
+    }
+
+    public void setCid(Integer cid) {
+        this.cid = cid;
     }
 
     public String getName() {
@@ -74,5 +84,13 @@ public class CouponVo {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
