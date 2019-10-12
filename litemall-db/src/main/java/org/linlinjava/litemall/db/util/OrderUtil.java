@@ -144,6 +144,12 @@ public class OrderUtil {
         return OrderUtil.STATUS_CREATE == litemallOrder.getOrderStatus().shortValue();
     }
 
+    public static boolean hasPayed(LitemallOrder order) {
+        return OrderUtil.STATUS_CREATE != order.getOrderStatus().shortValue()
+                && OrderUtil.STATUS_CANCEL != order.getOrderStatus().shortValue()
+                && OrderUtil.STATUS_AUTO_CANCEL != order.getOrderStatus().shortValue();
+    }
+
     public static boolean isPayStatus(LitemallOrder litemallOrder) {
         return OrderUtil.STATUS_PAY == litemallOrder.getOrderStatus().shortValue();
     }
