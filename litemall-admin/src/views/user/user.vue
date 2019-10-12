@@ -13,9 +13,17 @@
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" width="100px" label="用户ID" prop="id" sortable/>
 
+      <el-table-column align="center" label="昵称" prop="nickname"/>
+
       <el-table-column align="center" label="用户名" prop="username"/>
 
       <el-table-column align="center" label="手机号码" prop="mobile"/>
+
+      <el-table-column align="center" label="头像" prop="avatar">
+        <template slot-scope="scope">
+          <img v-if="scope.row.avatar" :src="scope.row.avatar" width="40">
+        </template>
+      </el-table-column>
 
       <el-table-column align="center" label="性别" prop="gender">
         <template slot-scope="scope">
@@ -60,6 +68,7 @@ export default {
         page: 1,
         limit: 20,
         username: undefined,
+        nikename: undefined,
         mobile: undefined,
         sort: 'add_time',
         order: 'desc'
