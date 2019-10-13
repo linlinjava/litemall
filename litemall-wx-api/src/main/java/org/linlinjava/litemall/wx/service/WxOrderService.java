@@ -660,6 +660,37 @@ public class WxOrderService {
             if (grouponService.updateById(groupon) == 0) {
                 return WxPayNotifyResponse.fail("更新数据已失效");
             }
+
+            // 团购已达成，更新关联订单支付状态
+            if (groupon.getGrouponId() > 0) {
+                List<LitemallGroupon> grouponList = grouponService.queryJoinRecord(groupon.getGrouponId());
+                if (grouponList.size() >= grouponRules.getDiscountMember() - 1) {
+                    for (LitemallGroupon grouponActivity : grouponList) {
+                        if (grouponActivity.getOrderId().equals(order.getId())) {
+                            //当前订单
+                            continue;
+                        }
+
+                        LitemallOrder grouponOrder = orderService.findById(grouponActivity.getOrderId());
+                        if (grouponOrder.getOrderStatus().equals(OrderUtil.STATUS_PAY_GROUPON)) {
+                            grouponOrder.setOrderStatus(OrderUtil.STATUS_PAY);
+                            orderService.updateWithOptimisticLocker(grouponOrder);
+                        }
+                    }
+
+                    LitemallGroupon grouponSource = grouponService.queryById(groupon.getGrouponId());
+                    LitemallOrder grouponOrder = orderService.findById(grouponSource.getOrderId());
+                    if (grouponOrder.getOrderStatus().equals(OrderUtil.STATUS_PAY_GROUPON)) {
+                        grouponOrder.setOrderStatus(OrderUtil.STATUS_PAY);
+                        orderService.updateWithOptimisticLocker(grouponOrder);
+                    }
+                }
+
+            } else {
+                order = orderService.findBySn(orderSn);
+                order.setOrderStatus(OrderUtil.STATUS_PAY_GROUPON);
+                orderService.updateWithOptimisticLocker(order);
+            }
         }
 
         //TODO 发送邮件和短信通知，这里采用异步发送

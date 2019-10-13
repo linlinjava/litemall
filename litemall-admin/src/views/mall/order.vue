@@ -39,7 +39,7 @@
         <template slot-scope="scope">
           <el-button v-permission="['GET /admin/order/detail']" type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
           <el-button v-permission="['POST /admin/order/ship']" v-if="scope.row.orderStatus==201" type="primary" size="mini" @click="handleShip(scope.row)">发货</el-button>
-          <el-button v-permission="['POST /admin/order/refund']" v-if="scope.row.orderStatus==202" type="primary" size="mini" @click="handleRefund(scope.row)">退款</el-button>
+          <el-button v-permission="['POST /admin/order/refund']" v-if="scope.row.orderStatus==202||scope.row.orderStatus==204" type="primary" size="mini" @click="handleRefund(scope.row)">退款</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -151,9 +151,11 @@ const statusMap = {
   101: '未付款',
   102: '用户取消',
   103: '系统取消',
+  200: '已付款团购',
   201: '已付款',
   202: '申请退款',
   203: '已退款',
+  204: '已超时团购',
   301: '已发货',
   401: '用户收货',
   402: '系统收货'
