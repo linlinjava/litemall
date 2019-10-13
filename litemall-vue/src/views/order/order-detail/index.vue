@@ -126,15 +126,27 @@ export default {
         .catch(() => {});
     },
     cancelOrder(id) {
+
+
       this.$dialog
-        .confirm({ message: '确定要取消该订单吗?' })
-        .then(() => {
-          orderDelete({ orderId: id }).then(() => {
-            this.init();
-            this.$toast('已取消该订单');
-          });
-        })
-        .catch(() => {});
+          .confirm({ message: '确定要取消该订单吗?' })
+          .then(() => {
+            orderCancel({ orderId: id }).then(() => {
+              this.init();
+              this.$toast('已取消该订单');
+            });
+          })
+          .catch(() => {});
+
+      // this.$dialog
+      //   .confirm({ message: '确定要取消该订单吗?' })
+      //   .then(() => {
+      //     orderDelete({ orderId: id }).then(() => {
+      //       this.init();
+      //       this.$toast('已取消该订单');
+      //     });
+      //   })
+      //   .catch(() => {});
     },
     confirmOrder(id) {
       this.$dialog
