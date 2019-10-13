@@ -867,32 +867,38 @@ litemall:
 
     如果开发者设置SSH密钥，可以采用免密码登录；否则采用账号和密码登录。
     
-#### 1.5.1.2 JDK8
+#### 1.5.1.2 OpenJDK8
 
-https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04
-
-http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html
+这里可以安装openjdk-8-jre
 
 ```bash
-sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
-sudo apt-get install oracle-java8-installer
-sudo apt-get install oracle-java8-set-default
+sudo apt-get install openjdk-8-jre
 ```
 
-警告
-> "ppa:webupd8team/java" 不是Oracle官方PPA，可能存在安全隐患。
+如果希望采用jdk，而不是jre，则可以运行
+
+```bash
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+```
+
+注意
+> 如果用户想采用Oracle JDK8或者其他JDK环境，请查阅相关资料安装。
 
 #### 1.5.1.3 MySQL
-
-https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04
 
 ```
 sudo apt-get update
 sudo apt-get install mysql-server
 sudo apt-get install mysql-client
 ```
-    
+
+如果配置MySQL，可以运行命令
+```
+mysql_secure_installation
+```
+
 #### 1.5.1.4 项目打包
 
 1. 在主机或者开发机打包项目到deploy；
