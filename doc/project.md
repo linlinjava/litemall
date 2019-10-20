@@ -589,24 +589,33 @@ litemall:
     # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
     sms:
       enable: false
-      appid: 111111111
-      appkey: xxxxxxxxxxxxxx
+      # 如果是腾讯云短信，则设置active的值tencent
+      # 如果是阿里云短信，则设置active的值aliyun
+      active: tencent
+      sign: litemall
       template:
-      - name: paySucceed
-        templateId: 156349
-      - name: captcha
-        templateId: 156433
-      - name: ship
-        templateId: 158002
-      - name: refund
-        templateId: 159447
+        - name: paySucceed
+          templateId: 156349
+        - name: captcha
+          templateId: 156433
+        - name: ship
+          templateId: 158002
+        - name: refund
+          templateId: 159447
+      tencent:
+        appid: 111111111
+        appkey: xxxxxxxxxxxxxx
+      aliyun:
+        regionId: xxx
+        accessKeyId: xxx
+        accessKeySecret: xxx
 ```        
 
 配置方式：
-1. 腾讯云短信平台申请，然后设置四个场景的短信模板；
-2. 开发者在配置文件设置`enable`的值`true`，然后其他信息设置
-腾讯云短信平台申请的appid等值。
-这里只测试过腾讯云短信平台，开发者需要自行测试其他短信云平台。
+1. 腾讯云短信平台或者阿里云短信平台申请，然后设置四个场景的短信模板；
+2. 开发者在配置文件设置`enable`的值`true`，设置`active`的值`tencent`或`aliyun`
+3. 然后配置其他信息，例如腾讯云短信平台申请的appid等值。
+这里只测试过腾讯云短信平台和阿里云短信平台，开发者需要自行测试其他短信云平台。
 
 应用场景：
 目前短信通知场景只支持支付成功、验证码、订单发送、退款成功四种情况。
@@ -615,6 +624,17 @@ litemall:
 验证配置成功：
 当配置好信息以后，开发者可以litemall-core模块的`SmsTest`测试类中设置手机号和
 模板所需要的参数值，独立启动`SmsTest`测试类发送短信，然后查看手机是否成功接收短信。
+
+短信模板参数命名：
+这里存在一个问题，即腾讯云短信的官方平台中申请短信模板格式的模板参数是数组，
+例如“你好，验证码是{0}，时间是{1}"; 
+而阿里云短信的官方平台中申请短信模板的模板参数是JSON,
+例如“你好，验证码是{param1}，时间是{param2}"。
+为了保持当前代码的通用性，本项目采用数组传递参数，而对阿里云申请模板的参数做了一定的假设：
+1. 腾讯云模块参数，申请模板时按照官方设置即可，例如“你好，验证码是{0}，时间是{1}"; 
+2. 阿里云模板参数，本项目假定开发者在官方申请的参数格式应该采用"{ code: xxx, code1: xxx, code2: xxx }"，
+例如“你好，验证码是{code}，时间是{code1}"。开发者可以查看`AliyunSmsSender`类的`sendWithTemplate`方法的
+源代码即可理解。如果觉得不合理，可以自行调整相关代码。
 
 #### 1.4.5.7 微信通知配置
 
