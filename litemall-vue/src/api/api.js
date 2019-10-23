@@ -300,6 +300,14 @@ export function orderPrepay(data) {
     data
   })
 }
+const OrderH5pay = 'wx/order/h5pay'; // h5支付
+export function orderH5pay(data) {
+  return request({
+    url: OrderH5pay,
+    method: 'post',
+    data
+  });
+}
 export const OrderList='wx/order/list'; //订单列表
 export function orderList(query) {
   return request({
