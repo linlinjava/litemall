@@ -105,7 +105,7 @@ export default {
 
   methods: {
     onSubmit() {     
-      const {AddressId, CartId, CouponId} = getLocalStorage('AddressId', 'CartId', 'CouponId');
+      const {AddressId, CartId, CouponId, UserCouponId} = getLocalStorage('AddressId', 'CartId', 'CouponId', 'UserCouponId');
 
       if (AddressId === null) {
         Toast.fail('请设置收货地址');
@@ -119,6 +119,7 @@ export default {
         addressId: AddressId,
         cartId: CartId,
         couponId: CouponId,
+        userCouponId: UserCouponId,
         grouponLinkId: 0,
         grouponRulesId: 0,
         message: this.message
@@ -155,15 +156,17 @@ export default {
     getCoupons() {
       const {AddressId, CartId, CouponId} = getLocalStorage('AddressId', 'CartId', 'CouponId');
       couponSelectList({cartId: CartId, grouponRulesId: 0}).then(res => {
-        var cList = res.data.data
+        var cList = res.data.data.list;
         this.coupons = []
+        this.disabledCoupons = [];
         for(var i = 0; i < cList.length; i++){
           var c = cList[i]
 
           var coupon = {
             id: c.id,
+            cid: c.cid,
             name: c.name,
-            condition: c.min,
+            condition: '满' + c.min + '元可用',
             value: c.discount * 100,
             description: c.desc,
             startAt: new Date(c.startTime).getTime()/1000,
@@ -171,11 +174,10 @@ export default {
             valueDesc: c.discount,
             unitDesc: '元'            
           }
-          this.coupons.push(coupon)
-
-          if(c.id === this.couponId){
-            this.chosenCoupon = i;
-            break;
+          if (c.available) {
+            this.coupons.push(coupon);
+          } else {
+            this.disabledCoupons.push(coupon);
           }
         }
         
@@ -183,9 +185,9 @@ export default {
       })
     },
     init() {
-      const {AddressId, CartId, CouponId} = getLocalStorage('AddressId', 'CartId', 'CouponId');
+      const {AddressId, CartId, CouponId, UserCouponId} = getLocalStorage('AddressId', 'CartId', 'CouponId', 'UserCouponId');
 
-      cartCheckout({cartId: CartId, addressId: AddressId, couponId: CouponId, grouponRulesId: 0}).then(res => {
+      cartCheckout({cartId: CartId, addressId: AddressId, couponId: CouponId, userCouponId: UserCouponId, grouponRulesId: 0}).then(res => {
           var data = res.data.data
 
           this.checkedGoodsList = data.checkedGoodsList;
@@ -198,7 +200,7 @@ export default {
           this.goodsTotalPrice= data.goodsTotalPrice;
           this.orderTotalPrice= data.orderTotalPrice;
 
-          setLocalStorage({AddressId: data.addressId, CartId: data.cartId, CouponId: data.couponId});
+          setLocalStorage({AddressId: data.addressId, CartId: data.cartId, CouponId: data.couponId, UserCouponId: data.userCouponId});
       });
 
     },
@@ -207,11 +209,12 @@ export default {
       this.chosenCoupon = index;
       
       if(index === -1 ){
-        setLocalStorage({CouponId: -1});
+        setLocalStorage({CouponId: -1, UserCouponId: -1});
       }
       else{
-        const couponId = this.coupons[index].id;
-        setLocalStorage({CouponId: couponId});  
+        const couponId = this.coupons[index].cid;
+        const userCouponId = this.coupons[index].id;
+        setLocalStorage({CouponId: couponId, UserCouponId: userCouponId});
       }
 
       this.init()
@@ -226,7 +229,7 @@ export default {
     [SubmitBar.name]: SubmitBar,
     [Card.name]: Card,
     [Field.name]: Field,
-    [Tag.name]: Field,
+    [Tag.name]: Tag,
     [CouponCell.name]: CouponCell,
     [CouponList.name]: CouponList,
     [Popup.name]: Popup

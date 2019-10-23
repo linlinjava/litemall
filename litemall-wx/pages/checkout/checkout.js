@@ -17,6 +17,7 @@ Page({
     cartId: 0,
     addressId: 0,
     couponId: 0,
+    userCouponId: 0,
     message: '',
     grouponLinkId: 0, //参与的团购，如果是发起则为0
     grouponRulesId: 0 //团购规则ID
@@ -32,6 +33,7 @@ Page({
       cartId: that.data.cartId,
       addressId: that.data.addressId,
       couponId: that.data.couponId,
+      userCouponId: that.data.userCouponId,
       grouponRulesId: that.data.grouponRulesId
     }).then(function(res) {
       if (res.errno === 0) {
@@ -47,6 +49,7 @@ Page({
           orderTotalPrice: res.data.orderTotalPrice,
           addressId: res.data.addressId,
           couponId: res.data.couponId,
+          userCouponId: res.data.userCouponId,
           grouponRulesId: res.data.grouponRulesId,
         });
       }
@@ -90,6 +93,10 @@ Page({
       if (couponId === "") {
         couponId = 0;
       }
+      var userCouponId = wx.getStorageSync('userCouponId');
+      if (userCouponId === "") {
+        userCouponId = 0;
+      }
       var grouponRulesId = wx.getStorageSync('grouponRulesId');
       if (grouponRulesId === "") {
         grouponRulesId = 0;
@@ -103,6 +110,7 @@ Page({
         cartId: cartId,
         addressId: addressId,
         couponId: couponId,
+        userCouponId: userCouponId,
         grouponRulesId: grouponRulesId,
         grouponLinkId: grouponLinkId
       });
@@ -131,6 +139,7 @@ Page({
       cartId: this.data.cartId,
       addressId: this.data.addressId,
       couponId: this.data.couponId,
+      userCouponId: this.data.userCouponId,
       message: this.data.message,
       grouponRulesId: this.data.grouponRulesId,
       grouponLinkId: this.data.grouponLinkId
