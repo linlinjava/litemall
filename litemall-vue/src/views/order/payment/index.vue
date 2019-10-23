@@ -39,8 +39,9 @@
 
 <script>
 import { Radio, RadioGroup, Dialog } from 'vant';
-import { orderDetail, orderPrepay } from '@/api/api';
+import { orderDetail, orderPrepay, orderH5pay } from '@/api/api';
 import _ from 'lodash';
+import { getLocalStorage, setLocalStorage } from '@/utils/local-storage';
 
 export default {
   name: 'payment',
@@ -72,20 +73,109 @@ export default {
       Dialog.alert({
         message: '你选择了' + (this.payWay === 'wx' ? '微信支付' : '支付宝支付')
       }).then(() => {
+        if (this.payWay === 'wx') {
+          let ua = navigator.userAgent.toLowerCase();
+          let isWeixin = ua.indexOf('micromessenger') != -1;
+          if (isWeixin) {
+            orderPrepay({ orderId: this.orderId })
+              .then(res => {
+                let data = res.data.data;
+                let prepay_data = JSON.stringify({
+                  appId: data.appId,
+                  timeStamp: data.timeStamp,
+                  nonceStr: data.nonceStr,
+                  package: data.packageValue,
+                  signType: 'MD5',
+                  paySign: data.paySign
+                });
+                setLocalStorage({ prepay_data: prepay_data });
 
-        this.$router.push({
-          name: 'paymentStatus',
-          params: {
-            status: 'success'
+                if (typeof WeixinJSBridge == 'undefined') {
+                  if (document.addEventListener) {
+                    document.addEventListener(
+                      'WeixinJSBridgeReady',
+                      this.onBridgeReady,
+                      false
+                    );
+                  } else if (document.attachEvent) {
+                    document.attachEvent(
+                      'WeixinJSBridgeReady',
+                      this.onBridgeReady
+                    );
+                    document.attachEvent(
+                      'onWeixinJSBridgeReady',
+                      this.onBridgeReady
+                    );
+                  }
+                } else {
+                  this.onBridgeReady();
+                }
+              })
+              .catch(err => {
+                Dialog.alert({ message: err.data.errmsg });
+                that.$router.replace({
+                  name: 'paymentStatus',
+                  params: {
+                    status: 'failed'
+                  }
+                });
+              });
+          } else {
+            orderH5pay({ orderId: this.orderId })
+              .then(res => {
+                let data = res.data.data;
+                window.location.replace(
+                  data.mwebUrl +
+                  '&redirect_url=' +
+                  encodeURIComponent(
+                    window.location.origin +
+                    '/#/?orderId=' +
+                    this.orderId +
+                    '&tip=yes'
+                  )
+                );
+              })
+              .catch(err => {
+                Dialog.alert({ message: err.data.errmsg });
+              });
           }
-        });
+        } else {
+          //todo : alipay
+        }
       });
-
-      // // 利用weixin-js-sdk调用微信支付
-      // orderPrepay({orderId: this.orderId}).then(res => {
-      //   var payParams = res.data.data;
-  
-      // });
+    },
+    onBridgeReady() {
+      let that = this;
+      let data = getLocalStorage('prepay_data');
+      // eslint-disable-next-line no-undef
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest',
+        JSON.parse(data.prepay_data),
+        function(res) {
+          if (res.err_msg == 'get_brand_wcpay_request:ok') {
+            that.$router.replace({
+              name: 'paymentStatus',
+              params: {
+                status: 'success'
+              }
+            });
+          } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+            that.$router.replace({
+              name: 'paymentStatus',
+              params: {
+                status: 'cancel'
+              }
+            });
+          } else {
+            that.$router.replace({
+              name: 'paymentStatus',
+              params: {
+                status: 'failed'
+              }
+            });
+          }
+        }
+      );
     }
   },
 
