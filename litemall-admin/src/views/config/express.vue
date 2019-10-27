@@ -50,18 +50,21 @@ export default {
     update() {
       this.$refs['dataForm'].validate((valid) => {
         if (!valid) {
-          return
+          return false
         }
-        updateExpress(this.dataForm).then(response => {
-          this.$notify.success({
-            title: '成功',
-            message: '运费配置修改成功'
-          })
-        }).catch(response => {
-          this.$notify.error({
-            title: '失败',
-            message: response.data.errmsg
-          })
+        this.doUpdate()
+      })
+    },
+    doUpdate() {
+      updateExpress(this.dataForm).then(response => {
+        this.$notify.success({
+          title: '成功',
+          message: '运费配置修改成功'
+        })
+      }).catch(response => {
+        this.$notify.error({
+          title: '失败',
+          message: response.data.errmsg
         })
       })
     }
