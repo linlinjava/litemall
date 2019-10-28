@@ -91,6 +91,18 @@ public class WxOrderController {
     }
 
     /**
+     * 微信H5支付
+     * @param userId
+     * @param body
+     * @param request
+     * @return
+     */
+    @PostMapping("h5pay")
+    public Object h5pay(@LoginUser Integer userId, @RequestBody String body, HttpServletRequest request) {
+        return wxOrderService.h5pay(userId, body, request);
+    }
+
+    /**
      * 微信付款成功或失败回调接口
      * <p>
      *  TODO

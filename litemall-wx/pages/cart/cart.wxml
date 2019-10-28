@@ -31,7 +31,7 @@
                     <text class="name">{{item.goodsName}}</text>
                     <text class="num">x{{item.number}}</text>
                   </view>
-                  <view class="attr">{{ isEditCart ? '已选择:' : ''}}{{item.goodsSpecificationValues||''}}</view>
+                  <view class="attr">{{ isEditCart ? '已选择:' : ''}}{{item.specifications||''}}</view>
                   <view class="b">
                     <text class="price">￥{{item.price}}</text>
                     <view class="selnum">

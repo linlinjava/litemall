@@ -3,6 +3,7 @@ package org.linlinjava.litemall.wx.service;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
+import com.github.binarywang.wxpay.bean.order.WxPayMwebOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.BaseWxPayResult;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
@@ -563,6 +564,60 @@ public class WxOrderService {
     }
 
     /**
+     * 微信H5支付
+     *
+     * @param userId
+     * @param body
+     * @param request
+     * @return
+     */
+    @Transactional
+    public Object h5pay(Integer userId, String body, HttpServletRequest request) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        Integer orderId = JacksonUtil.parseInteger(body, "orderId");
+        if (orderId == null) {
+            return ResponseUtil.badArgument();
+        }
+
+        LitemallOrder order = orderService.findById(orderId);
+        if (order == null) {
+            return ResponseUtil.badArgumentValue();
+        }
+        if (!order.getUserId().equals(userId)) {
+            return ResponseUtil.badArgumentValue();
+        }
+
+        // 检测是否能够取消
+        OrderHandleOption handleOption = OrderUtil.build(order);
+        if (!handleOption.isPay()) {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "订单不能支付");
+        }
+
+        WxPayMwebOrderResult result = null;
+        try {
+            WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
+            orderRequest.setOutTradeNo(order.getOrderSn());
+            orderRequest.setTradeType("MWEB");
+            orderRequest.setBody("订单：" + order.getOrderSn());
+            // 元转成分
+            int fee = 0;
+            BigDecimal actualPrice = order.getActualPrice();
+            fee = actualPrice.multiply(new BigDecimal(100)).intValue();
+            orderRequest.setTotalFee(fee);
+            orderRequest.setSpbillCreateIp(IpUtil.getIpAddr(request));
+
+            result = wxPayService.createOrder(orderRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResponseUtil.ok(result);
+    }
+
+    /**
      * 微信付款成功或失败回调接口
      * <p>
      * 1. 检测当前订单是否是付款状态;
@@ -659,6 +714,37 @@ public class WxOrderService {
             groupon.setPayed(true);
             if (grouponService.updateById(groupon) == 0) {
                 return WxPayNotifyResponse.fail("更新数据已失效");
+            }
+
+            // 团购已达成，更新关联订单支付状态
+            if (groupon.getGrouponId() > 0) {
+                List<LitemallGroupon> grouponList = grouponService.queryJoinRecord(groupon.getGrouponId());
+                if (grouponList.size() >= grouponRules.getDiscountMember() - 1) {
+                    for (LitemallGroupon grouponActivity : grouponList) {
+                        if (grouponActivity.getOrderId().equals(order.getId())) {
+                            //当前订单
+                            continue;
+                        }
+
+                        LitemallOrder grouponOrder = orderService.findById(grouponActivity.getOrderId());
+                        if (grouponOrder.getOrderStatus().equals(OrderUtil.STATUS_PAY_GROUPON)) {
+                            grouponOrder.setOrderStatus(OrderUtil.STATUS_PAY);
+                            orderService.updateWithOptimisticLocker(grouponOrder);
+                        }
+                    }
+
+                    LitemallGroupon grouponSource = grouponService.queryById(groupon.getGrouponId());
+                    LitemallOrder grouponOrder = orderService.findById(grouponSource.getOrderId());
+                    if (grouponOrder.getOrderStatus().equals(OrderUtil.STATUS_PAY_GROUPON)) {
+                        grouponOrder.setOrderStatus(OrderUtil.STATUS_PAY);
+                        orderService.updateWithOptimisticLocker(grouponOrder);
+                    }
+                }
+
+            } else {
+                order = orderService.findBySn(orderSn);
+                order.setOrderStatus(OrderUtil.STATUS_PAY_GROUPON);
+                orderService.updateWithOptimisticLocker(order);
             }
         }
 
