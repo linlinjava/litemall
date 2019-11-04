@@ -14,7 +14,7 @@ PASSWORD=
 
 if test -z "$PASSWORD"
 then
-  echo "请设置云主机MySQL的root账号密码"
+  echo "请设置云服务器MySQL的root账号密码"
   exit 1
 fi
 
