@@ -6,7 +6,7 @@
 # 3. 远程登录云服务器并执行reset脚本
 
 # 请设置云服务器的IP地址和账户
-# 例如 ubuntu@118.24.0.153
+# 例如 ubuntu@122.51.199.160
 REMOTE=
 # 请设置本地SSH私钥文件id_rsa路径
 # 例如 /home/litemall/id_rsa
