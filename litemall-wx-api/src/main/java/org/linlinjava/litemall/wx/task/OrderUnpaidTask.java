@@ -19,6 +19,11 @@ public class OrderUnpaidTask extends Task {
     private final Log logger = LogFactory.getLog(OrderUnpaidTask.class);
     private int orderId = -1;
 
+    public OrderUnpaidTask(Integer orderId, long delayInMilliseconds){
+        super("OrderUnpaidTask-" + orderId, delayInMilliseconds);
+        this.orderId = orderId;
+    }
+
     public OrderUnpaidTask(Integer orderId){
         super("OrderUnpaidTask-" + orderId, SystemConfig.getOrderUnpaid() * 60 * 1000);
         this.orderId = orderId;
@@ -26,7 +31,7 @@ public class OrderUnpaidTask extends Task {
 
     @Override
     public void run() {
-        logger.info("系统开始处理订单超时未付款订单 " + this.orderId);
+        logger.info("系统开始处理延时任务---订单超时未付款---" + this.orderId);
 
         LitemallOrderService orderService = BeanUtil.getBean(LitemallOrderService.class);
         LitemallOrderGoodsService orderGoodsService = BeanUtil.getBean(LitemallOrderGoodsService.class);
@@ -57,6 +62,6 @@ public class OrderUnpaidTask extends Task {
                 throw new RuntimeException("商品货品库存增加失败");
             }
         }
-        logger.info("系统成功处理订单超时未付款订单 " + this.orderId);
+        logger.info("系统结束处理延时任务---订单超时未付款---" + this.orderId);
     }
 }

@@ -33,32 +33,6 @@ public class OrderJob {
     private LitemallGrouponRulesService rulesService;
 
     /**
-     * 自动取消订单
-     * <p>
-     * 定时检查订单未付款情况，如果超时 LITEMALL_ORDER_UNPAID 分钟则自动取消订单
-     * 定时时间是每次相隔半个小时。
-     * <p>
-     * TODO
-     * 注意，因为是相隔半小时检查，因此导致订单真正超时时间是 [LITEMALL_ORDER_UNPAID, 30 + LITEMALL_ORDER_UNPAID]
-     */
-    @Scheduled(fixedDelay = 30 * 60 * 1000)
-    @Transactional(rollbackFor = Exception.class)
-    public void checkOrderUnpaid() {
-        logger.info("系统开启任务检查订单是否已经超期自动取消订单");
-
-        List<LitemallOrder> orderList = orderService.queryUnpaid(SystemConfig.getOrderUnpaid());
-        for (LitemallOrder order : orderList) {
-            // 设置订单已取消状态
-            order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
-            order.setEndTime(LocalDateTime.now());
-
-            cancelOrderScope(order);
-
-            logger.info("订单 ID" + order.getId() + " 已经超期自动取消订单");
-        }
-    }
-
-    /**
      * 自动确认订单
      * <p>
      * 定时检查订单未确认情况，如果超时 LITEMALL_ORDER_UNCONFIRM 天则自动确认订单
@@ -69,7 +43,7 @@ public class OrderJob {
      */
     @Scheduled(cron = "0 0 3 * * ?")
     public void checkOrderUnconfirm() {
-        logger.info("系统开启任务检查订单是否已经超期自动确认收货");
+        logger.info("系统开启定时任务检查订单是否已经超期自动确认收货");
 
         List<LitemallOrder> orderList = orderService.queryUnconfirm(SystemConfig.getOrderUnconfirm());
         for (LitemallOrder order : orderList) {
@@ -117,7 +91,7 @@ public class OrderJob {
     @Scheduled(initialDelay = 5000, fixedDelay = 10 * 60 * 1000)
     @Transactional(rollbackFor = Exception.class)
     public void checkGrouponOrderTimeout() {
-        logger.info("系统开启任务检查团购订单是否已经拼团超期自动取消订单");
+        logger.info("系统开启定时任务检查团购订单是否已经拼团超期自动取消订单");
 
         List<LitemallGroupon> grouponList = grouponService.queryJoinRecord(0);
         for (LitemallGroupon groupon : grouponList) {
