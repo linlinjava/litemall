@@ -97,7 +97,7 @@ litemall:
   # 对象存储配置
   storage:
     # 当前工作的对象存储模式，分别是local、aliyun、tencent、qiniu
-    active: tencent
+    active: local
     # 本地对象存储配置信息
     local:
       storagePath: storage
