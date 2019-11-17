@@ -41,7 +41,7 @@ litemall:
     app-secret: e04004829d4c383b4db7769d88dfbca1
     mch-id: 111111
     mch-key: xxxxxx
-    notify-url: http://118.24.0.153:8080/wx/order/pay-notify
+    notify-url: http://122.51.199.160:8080/wx/order/pay-notify
     # 商户证书文件路径
     # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
     key-path: xxxxx
@@ -61,8 +61,10 @@ litemall:
     # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
     sms:
       enable: false
-      appid: 111111111
-      appkey: xxxxxxxxxxxxxx
+      # 如果是腾讯云短信，则设置active的值tencent
+      # 如果是阿里云短信，则设置active的值aliyun
+      active: tencent
+      sign: litemall
       template:
         - name: paySucceed
           templateId: 156349
@@ -72,6 +74,13 @@ litemall:
           templateId: 158002
         - name: refund
           templateId: 159447
+      tencent:
+        appid: 111111111
+        appkey: xxxxxxxxxxxxxx
+      aliyun:
+        regionId: xxx
+        accessKeyId: xxx
+        accessKeySecret: xxx
 
     # 微信模版通知配置
     # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
@@ -127,7 +136,7 @@ litemall:
     # 本地对象存储配置信息
     local:
       storagePath: storage
-      address: http://118.24.0.153:8080/wx/storage/fetch/
+      address: http://122.51.199.160:8080/wx/storage/fetch/
     # 阿里云对象存储配置信息
     aliyun:
       endpoint: oss-cn-shenzhen.aliyuncs.com

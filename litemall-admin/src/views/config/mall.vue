@@ -33,6 +33,20 @@ export default {
         litemall_mall_address: '',
         litemall_mall_phone: '',
         litemall_mall_qq: ''
+      },
+      rules: {
+        litemall_mall_name: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_mall_address: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_mall_phone: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_mall_qq: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -49,6 +63,14 @@ export default {
       this.init()
     },
     update() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        this.doUpdate()
+      })
+    },
+    doUpdate() {
       updateMall(this.dataForm)
         .then(response => {
           this.$notify.success({
