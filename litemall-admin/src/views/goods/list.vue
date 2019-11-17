@@ -34,6 +34,9 @@
             <el-form-item label="品牌商ID">
               <span>{{ props.row.brandId }}</span>
             </el-form-item>
+            <el-form-item label="商品ID">
+              <span>{{ props.row.id }}</span>
+            </el-form-item>
           </el-form>
         </template>
       </el-table-column>
