@@ -118,7 +118,21 @@ export function goodsDetail(query) {
 const GoodsRelated='wx/goods/related'; //商品详情页的关联商品（大家都在看）
 
 const BrandList='wx/brand/list'; //品牌列表
+export function brandList(query) {
+  return request({
+    url: BrandList,
+    method: 'get',
+    params: query
+  })
+}
 const BrandDetail='wx/brand/detail'; //品牌详情
+export function brandDetail(query) {
+  return request({
+    url: BrandDetail,
+    method: 'get',
+    params: query
+  })
+}
 
 const CartList='wx/cart/index'; //获取购物车的数据
 export function cartList(query) {
@@ -147,7 +161,7 @@ export function cartFastAdd(data) {
 const CartUpdate='wx/cart/update'; // 更新购物车的商品
 export function cartUpdate(data) {
   return request({
-    url: cartUpdate,
+    url: CartUpdate,
     method: 'post',
     data
   })
@@ -205,8 +219,29 @@ const CommentCount='wx/comment/count'; //评论总数
 const CommentPost='wx/comment/post'; //发表评论
 
 const TopicList='wx/topic/list'; //专题列表
+export function topicList(query) {
+  return request({
+    url: TopicList,
+    method: 'get',
+    params: query
+  })
+}
 const TopicDetail='wx/topic/detail'; //专题详情
+export function topicDetail(query) {
+  return request({
+    url: TopicDetail,
+    method: 'get',
+    params: query
+  })
+}
 const TopicRelated='wx/topic/related'; //相关专题
+export function topicRelated(query) {
+  return request({
+    url: TopicRelated,
+    method: 'get',
+    params: query
+  })
+}
 
 const SearchIndex='wx/search/index'; //搜索关键字
 const SearchResult='wx/search/result'; //搜索结果
@@ -265,6 +300,14 @@ export function orderPrepay(data) {
     data
   })
 }
+const OrderH5pay = 'wx/order/h5pay'; // h5支付
+export function orderH5pay(data) {
+  return request({
+    url: OrderH5pay,
+    method: 'post',
+    data
+  });
+}
 export const OrderList='wx/order/list'; //订单列表
 export function orderList(query) {
   return request({
@@ -292,7 +335,7 @@ export function orderCancel(data) {
 const OrderRefund='wx/order/refund'; //退款取消订单
 export function orderRefund(data) {
   return request({
-    url: OrderSubmit,
+    url: OrderRefund,
     method: 'post',
     data
   })
@@ -330,7 +373,14 @@ const FootprintDelete='wx/footprint/delete'; //删除足迹
 
 const UserFormIdCreate='wx/formid/create'; //用户FromId，用于发送模版消息
 
-const GroupOnList='wx/groupon/list'; //团购列表
+const GrouponList='wx/groupon/list'; //团购列表
+export function grouponList(query) {
+  return request({
+    url: GrouponList,
+    method: 'get',
+    params: query
+  })
+}
 const GroupOn='wx/groupon/query'; //团购API-查询
 const GroupOnMy='wx/groupon/my'; //团购API-我的团购
 const GroupOnDetail='wx/groupon/detail'; //团购API-详情

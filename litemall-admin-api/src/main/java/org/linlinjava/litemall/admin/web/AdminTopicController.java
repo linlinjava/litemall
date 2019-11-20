@@ -35,7 +35,7 @@ public class AdminTopicController {
     private LitemallGoodsService goodsService;
 
     @RequiresPermissions("admin:topic:list")
-    @RequiresPermissionsDesc(menu={"推广管理" , "专题管理"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"推广管理", "专题管理"}, button = "查询")
     @GetMapping("/list")
     public Object list(String title, String subtitle,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -63,7 +63,7 @@ public class AdminTopicController {
     }
 
     @RequiresPermissions("admin:topic:create")
-    @RequiresPermissionsDesc(menu={"推广管理" , "专题管理"}, button="添加")
+    @RequiresPermissionsDesc(menu = {"推广管理", "专题管理"}, button = "添加")
     @PostMapping("/create")
     public Object create(@RequestBody LitemallTopic topic) {
         Object error = validate(topic);
@@ -75,16 +75,15 @@ public class AdminTopicController {
     }
 
     @RequiresPermissions("admin:topic:read")
-    @RequiresPermissionsDesc(menu={"推广管理" , "专题管理"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"推广管理", "专题管理"}, button = "详情")
     @GetMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallTopic topic = topicService.findById(id);
         Integer[] goodsIds = topic.getGoods();
         List<LitemallGoods> goodsList = null;
-        if(goodsIds == null || goodsIds.length == 0){
+        if (goodsIds == null || goodsIds.length == 0) {
             goodsList = new ArrayList<>();
-        }
-        else{
+        } else {
             goodsList = goodsService.queryByIds(goodsIds);
         }
         Map<String, Object> data = new HashMap<>(2);
@@ -94,7 +93,7 @@ public class AdminTopicController {
     }
 
     @RequiresPermissions("admin:topic:update")
-    @RequiresPermissionsDesc(menu={"推广管理" , "专题管理"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"推广管理", "专题管理"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallTopic topic) {
         Object error = validate(topic);
@@ -108,7 +107,7 @@ public class AdminTopicController {
     }
 
     @RequiresPermissions("admin:topic:delete")
-    @RequiresPermissionsDesc(menu={"推广管理" , "专题管理"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"推广管理", "专题管理"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallTopic topic) {
         topicService.deleteById(topic.getId());

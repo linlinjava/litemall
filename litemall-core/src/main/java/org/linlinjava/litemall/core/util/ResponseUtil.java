@@ -65,8 +65,7 @@ public class ResponseUtil {
             data.put("page", page.getPageNum());
             data.put("limit", page.getPageSize());
             data.put("pages", page.getPages());
-        }
-        else{
+        } else {
             data.put("total", list.size());
             data.put("page", 1);
             data.put("limit", list.size());
@@ -86,8 +85,7 @@ public class ResponseUtil {
             data.put("page", page.getPageNum());
             data.put("limit", page.getPageSize());
             data.put("pages", page.getPages());
-        }
-        else{
+        } else {
             data.put("total", pagedList.size());
             data.put("page", 1);
             data.put("limit", pagedList.size());

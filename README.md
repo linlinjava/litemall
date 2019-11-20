@@ -31,7 +31,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
 ![](./doc/pic/mobmall.png)    
 
-或者浏览器采用手机模式访问以下网址: [http://118.24.0.153:8080/vue/index.html#/](http://118.24.0.153:8080/vue/index.html#/)
+或者浏览器采用手机模式访问以下网址: [http://122.51.199.160:8080/vue/index.html#/](http://122.51.199.160:8080/vue/index.html#/)
 
 注意：
 > 1. 由于第一次加载数据量较大，建议wifi网络访问，且耐心等待数秒。
@@ -41,7 +41,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
 ![](./doc/pic/4.png)    
 
-1. 浏览器打开，输入以下网址: [http://118.24.0.153:8080/#/login](http://118.24.0.153:8080/#/login)
+1. 浏览器打开，输入以下网址: [http://122.51.199.160:8080/#/login](http://122.51.199.160:8080/#/login)
 2. 管理员用户名`admin123`，管理员密码`admin123`
 > 注意：此实例只是测试管理后台，不是前两个小商城的管理后台。
 
@@ -154,7 +154,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
         
 ## 开发计划
 
-当前版本[v1.4.0](https://linlinjava.gitbook.io/litemall/changelog)
+当前版本[v1.5.0](https://linlinjava.gitbook.io/litemall/changelog)
 
 目前项目开发中，存在诸多不足，以下是目前规划的开发计划。
 
@@ -219,7 +219,13 @@ V 3.0.0 完成以下目标：
    项目介绍：基于有赞 vant 组件库的移动商城。
 
    项目参考：litemall项目的litemall-vue模块基于vant--mobile-mall项目开发。
+
+## 推荐
+
+1. [Flutter_Mall](https://github.com/youxinLu/mall)
    
+   项目介绍：Flutter_Mall是一款Flutter开源在线商城应用程序。
+
 ## 问题
 
 ![](doc/pic/qq2.png)

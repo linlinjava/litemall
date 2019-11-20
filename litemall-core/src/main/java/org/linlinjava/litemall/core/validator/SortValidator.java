@@ -1,8 +1,9 @@
 package org.linlinjava.litemall.core.validator;
 
+import com.google.common.collect.Lists;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SortValidator implements ConstraintValidator<Sort, String> {
@@ -10,7 +11,7 @@ public class SortValidator implements ConstraintValidator<Sort, String> {
 
     @Override
     public void initialize(Sort sort) {
-        valueList = new ArrayList<String>();
+        valueList = Lists.newArrayList();
         for (String val : sort.accepts()) {
             valueList.add(val.toUpperCase());
         }

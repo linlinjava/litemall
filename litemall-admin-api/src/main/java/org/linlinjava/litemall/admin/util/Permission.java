@@ -2,7 +2,6 @@ package org.linlinjava.litemall.admin.util;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 public class Permission {
     private RequiresPermissions requiresPermissions;

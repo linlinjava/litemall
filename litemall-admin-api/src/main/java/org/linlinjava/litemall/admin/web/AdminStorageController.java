@@ -32,7 +32,7 @@ public class AdminStorageController {
     private LitemallStorageService litemallStorageService;
 
     @RequiresPermissions("admin:storage:list")
-    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"系统管理", "对象存储"}, button = "查询")
     @GetMapping("/list")
     public Object list(String key, String name,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -44,16 +44,17 @@ public class AdminStorageController {
     }
 
     @RequiresPermissions("admin:storage:create")
-    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="上传")
+    @RequiresPermissionsDesc(menu = {"系统管理", "对象存储"}, button = "上传")
     @PostMapping("/create")
     public Object create(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
-        LitemallStorage litemallStorage = storageService.store(file.getInputStream(), file.getSize(), file.getContentType(), originalFilename);
+        LitemallStorage litemallStorage = storageService.store(file.getInputStream(), file.getSize(),
+                file.getContentType(), originalFilename);
         return ResponseUtil.ok(litemallStorage);
     }
 
     @RequiresPermissions("admin:storage:read")
-    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="详情")
+    @RequiresPermissionsDesc(menu = {"系统管理", "对象存储"}, button = "详情")
     @PostMapping("/read")
     public Object read(@NotNull Integer id) {
         LitemallStorage storageInfo = litemallStorageService.findById(id);
@@ -64,7 +65,7 @@ public class AdminStorageController {
     }
 
     @RequiresPermissions("admin:storage:update")
-    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="编辑")
+    @RequiresPermissionsDesc(menu = {"系统管理", "对象存储"}, button = "编辑")
     @PostMapping("/update")
     public Object update(@RequestBody LitemallStorage litemallStorage) {
         if (litemallStorageService.update(litemallStorage) == 0) {
@@ -74,7 +75,7 @@ public class AdminStorageController {
     }
 
     @RequiresPermissions("admin:storage:delete")
-    @RequiresPermissionsDesc(menu={"系统管理" , "对象存储"}, button="删除")
+    @RequiresPermissionsDesc(menu = {"系统管理", "对象存储"}, button = "删除")
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallStorage litemallStorage) {
         String key = litemallStorage.getKey();

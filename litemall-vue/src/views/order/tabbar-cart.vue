@@ -37,7 +37,7 @@
       label="总计"
       @submit="cartSubmit"
     >
-      <van-checkbox v-model="allCheckedStatus" @change="setCheckAll" style="padding: 0 10px;">全选</van-checkbox>
+      <van-checkbox v-model="checkedAll" @click="setCheckAll" style="padding: 0 10px;">全选</van-checkbox>
     </van-submit-bar>
   </div>
 </template>
@@ -57,25 +57,16 @@ export default {
       checkedAll: false,
       isSubmit: false,
       checkedGoods: [],
-      AllGoods: [],
-      allCheckedStatus: false,
-      goods: [],
-      count: 0
+      allGoods: [],
+      goods: []
     };
-  },
-
-  activated() {
-    this.checkedAll = false;
-    this.isEditor = false;
-    this.isSubmit = false;
   },
   created() {
     this.init();
   },
   computed: {
     submitBarText() {
-      const count = this.count;
-      return this.isEditor ? '删除' : `结算${count ? `(${count})` : ''}`;
+      return this.isEditor ? '删除' : '结算';
     },
     totalPrice() {
       return this.goods.reduce(
@@ -102,9 +93,8 @@ export default {
     init() {
       cartList().then(res => {
         this.goods = res.data.data.cartList;
-        this.AllGoods = this.getAllList();
+        this.allGoods = this.getAllList();
         this.checkedGoods = this.getCheckedList(this.goods);
-        this.count = this.checkedGoods.length;
       });
     },
     getAllList() {
@@ -145,14 +135,14 @@ export default {
       } else {
         this.isSubmit = true;
         setLocalStorage({AddressId: 0, CartId: 0, CouponId: 0});
-        this.$router.push({ name: 'placeOrderEntity'});
+        this.$router.push('/order/checkout');
       }
     },
     setCheckAll(val) {
-      if (this.checkedGoods.length === this.AllGoods.length) {
+      if (this.checkedGoods.length === this.allGoods.length) {
         this.checkedGoods = [];
       } else {
-        this.checkedGoods = this.AllGoods;
+        this.checkedGoods = this.allGoods;
       }
     },
     deleteCart(o) {
@@ -175,18 +165,24 @@ export default {
       });
 
       let delProductIds = [];
-      _.each(_.difference(this.AllGoods, index), v => {
+      _.each(_.difference(this.allGoods, index), v => {
         let productId = _.find(this.goods, result => {
           return result.id === v;
         }).productId;
         delProductIds.push(productId);
       });
-      //没选中的不掉接口
       if (delProductIds.length > 0) {
         cartChecked({productIds: delProductIds, isChecked: 0});
       }
       if (addProductIds.length > 0) {
         cartChecked({productIds: addProductIds, isChecked: 1});
+      }
+
+      if(index.length === this.allGoods.length){
+        this.checkedAll = true
+      }
+      else{
+        this.checkedAll = false
       }
     },
     deleteNext(o) {
@@ -199,9 +195,8 @@ export default {
 
       cartDelete({productIds: productIds}).then(res => {
         this.goods = res.data.data.cartList;
-        this.AllGoods = this.getAllList();
+        this.allGoods = this.getAllList();
         this.checkedGoods = this.getCheckedList(this.goods);
-        this.count = this.checkedGoods.length;
       });
     }
   },

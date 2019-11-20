@@ -3,12 +3,8 @@ package org.linlinjava.litemall.admin.job;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.system.SystemConfig;
-import org.linlinjava.litemall.db.domain.LitemallGoodsProduct;
-import org.linlinjava.litemall.db.domain.LitemallOrder;
-import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
-import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
-import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
-import org.linlinjava.litemall.db.service.LitemallOrderService;
+import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,43 +27,10 @@ public class OrderJob {
     private LitemallOrderService orderService;
     @Autowired
     private LitemallGoodsProductService productService;
-
-    /**
-     * 自动取消订单
-     * <p>
-     * 定时检查订单未付款情况，如果超时 LITEMALL_ORDER_UNPAID 分钟则自动取消订单
-     * 定时时间是每次相隔半个小时。
-     * <p>
-     * TODO
-     * 注意，因为是相隔半小时检查，因此导致订单真正超时时间是 [LITEMALL_ORDER_UNPAID, 30 + LITEMALL_ORDER_UNPAID]
-     */
-    @Scheduled(fixedDelay = 30 * 60 * 1000)
-    @Transactional
-    public void checkOrderUnpaid() {
-        logger.info("系统开启任务检查订单是否已经超期自动取消订单");
-
-        List<LitemallOrder> orderList = orderService.queryUnpaid(SystemConfig.getOrderUnpaid());
-        for (LitemallOrder order : orderList) {
-            // 设置订单已取消状态
-            order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
-            order.setEndTime(LocalDateTime.now());
-            if (orderService.updateWithOptimisticLocker(order) == 0) {
-                throw new RuntimeException("更新数据已失效");
-            }
-
-            // 商品货品数量增加
-            Integer orderId = order.getId();
-            List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
-            for (LitemallOrderGoods orderGoods : orderGoodsList) {
-                Integer productId = orderGoods.getProductId();
-                Short number = orderGoods.getNumber();
-                if (productService.addStock(productId, number) == 0) {
-                    throw new RuntimeException("商品货品库存增加失败");
-                }
-            }
-            logger.info("订单 ID=" + order.getId() + " 已经超期自动取消订单");
-        }
-    }
+    @Autowired
+    private LitemallGrouponService grouponService;
+    @Autowired
+    private LitemallGrouponRulesService rulesService;
 
     /**
      * 自动确认订单
@@ -80,7 +43,7 @@ public class OrderJob {
      */
     @Scheduled(cron = "0 0 3 * * ?")
     public void checkOrderUnconfirm() {
-        logger.info("系统开启任务检查订单是否已经超期自动确认收货");
+        logger.info("系统开启定时任务检查订单是否已经超期自动确认收货");
 
         List<LitemallOrder> orderList = orderService.queryUnconfirm(SystemConfig.getOrderUnconfirm());
         for (LitemallOrder order : orderList) {
@@ -109,7 +72,6 @@ public class OrderJob {
     public void checkOrderComment() {
         logger.info("系统开启任务检查订单是否已经超期未评价");
 
-        LocalDateTime now = LocalDateTime.now();
         List<LitemallOrder> orderList = orderService.queryComment(SystemConfig.getOrderComment());
         for (LitemallOrder order : orderList) {
             order.setComments((short) 0);
@@ -119,6 +81,57 @@ public class OrderJob {
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
                 orderGoods.setComment(-1);
                 orderGoodsService.updateById(orderGoods);
+            }
+        }
+    }
+
+    /**
+     * 团购订单拼团超期自动取消
+     */
+    @Scheduled(initialDelay = 5000, fixedDelay = 10 * 60 * 1000)
+    @Transactional(rollbackFor = Exception.class)
+    public void checkGrouponOrderTimeout() {
+        logger.info("系统开启定时任务检查团购订单是否已经拼团超期自动取消订单");
+
+        List<LitemallGroupon> grouponList = grouponService.queryJoinRecord(0);
+        for (LitemallGroupon groupon : grouponList) {
+            LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
+            if (rulesService.isExpired(rules)) {
+                List<LitemallGroupon> subGrouponList = grouponService.queryJoinRecord(groupon.getId());
+                for (LitemallGroupon subGroupon : subGrouponList) {
+                    cancelGrouponScope(subGroupon);
+                }
+
+                cancelGrouponScope(groupon);
+            }
+        }
+    }
+
+    private void cancelGrouponScope(LitemallGroupon groupon) {
+        LitemallOrder order = orderService.findById(groupon.getOrderId());
+        if (order.getOrderStatus().equals(OrderUtil.STATUS_PAY_GROUPON)) {
+            order.setOrderStatus(OrderUtil.STATUS_TIMEOUT_GROUPON);
+            order.setEndTime(LocalDateTime.now());
+
+            cancelOrderScope(order);
+
+            logger.info("团购订单 ID" + order.getId() + " 已经拼团超期自动取消订单");
+        }
+    }
+
+    private void cancelOrderScope(LitemallOrder order) {
+        if (orderService.updateWithOptimisticLocker(order) == 0) {
+            throw new RuntimeException("更新数据已失效");
+        }
+
+        // 商品货品数量增加
+        Integer orderId = order.getId();
+        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
+        for (LitemallOrderGoods orderGoods : orderGoodsList) {
+            Integer productId = orderGoods.getProductId();
+            Short number = orderGoods.getNumber();
+            if (productService.addStock(productId, number) == 0) {
+                throw new RuntimeException("商品货品库存增加失败");
             }
         }
     }
