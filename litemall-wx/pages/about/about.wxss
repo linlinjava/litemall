@@ -1,19 +1,11 @@
 /* about.wxss */
 
-page{
-  height: 100%;
-  background-color: #F2f2f2;
-}
-.page-view{
-  height: 100%;
-}
-.banner-image{
-  width: 100%;
-  height: 350rpx;
-  background: #ee1;
-  margin-bottom: 30rpx;
-  border-bottom: solid #f2f2f2 0.5dp;
-}
+.label {
+  font-size: 26rpx;
+  margin-left: 20rpx;
+  padding: 10rpx 0;
+} 
+
 
 .about-item{
   background: white;
@@ -27,18 +19,18 @@ page{
 }
 
 .item-left{
-  font-size: 32rpx;
-  margin-left: 15rpx;
+  font-size: 38rpx;
+  margin-left: 40rpx;
   margin-top: auto;
   margin-bottom: auto;
 }
+
 .item-right{
-   
   margin-right: 15rpx;
   margin-top: auto;
   margin-bottom: auto;
 }
 .right-icon{
   width: 40rpx;
-   height: 40rpx;
+  height: 40rpx;
 }
