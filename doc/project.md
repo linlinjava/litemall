@@ -418,12 +418,12 @@ flush privilege
 
 **项目配置结构**
 
-1. 管理后台前端，即litemall-admin模块，配置文件在litemall-admin/config中，存在三个配置文件`dev.env.js`,`dep.env.js`
-和`dep.env.js`。这里面配置信息都是一样，最主要的配置是`BASE_API`，即管理后台的服务根地址。
+1. 管理后台前端，即litemall-admin模块，配置文件在litemall-admin中，存在三个配置文件`env.development`,`env.deployment`
+和`.env.production`。这里面配置信息都是一样，最主要的配置是`VUE_APP_BASE_API`，即管理后台的服务根地址。
 
-   * 开发阶段，开发者运行命令`cnpm run dev`，这里就会采用`dev.env.js`配置文件；
-   * 部署阶段，当开发者运行命令`cnpm run build:dep`，这里就会采用`dep.env.js`配置文件；
-   * 上线阶段，当开发者运行命令`cnpm run build:prod`，这里就会采用`prod.env.js`配置文件。
+   * 开发阶段，开发者运行命令`cnpm run dev`，这里就会采用`env.development`配置文件；
+   * 部署阶段，当开发者运行命令`cnpm run build:dep`，这里就会采用`env.deployment`配置文件；
+   * 上线阶段，当开发者运行命令`cnpm run build:prod`，这里就会采用`.env.production`配置文件。
 
 2. 小商场前端，即litemall-wx模块，配置文件是`litemall-wx/project.config.json`和`litemall-wx/api.js`。
 这里面最主要的配置信息是`project.config.json`中的`appid`，开发者需要设置自己申请的appid；
@@ -835,7 +835,7 @@ litemall:
 1. MySQL数据库设置合适的用户名和密码信息；
 2. 后端服务模块设置合适的配置信息；
 3. 小商场前端litemall-wx模块`config/api.js`的`WxApiRoot`设置小商场后端服务的服务地址；
-4. 管理后台前端litemall-admin模块`config/dep.env.js`中的`BASE_API`设置管理后台后端服务的服务地址。
+4. 管理后台前端litemall-admin模块`.env.deployment`中的`VUE_APP_BASE_API`设置管理后台后端服务的服务地址。
 
 实际上，最终的部署方案是灵活的：
 
@@ -1232,7 +1232,7 @@ http://www.example.com
 1. MySQL数据库设置合适的用户名和密码信息；
 2. 管理后台后端服务模块设置合适的配置信息，建议开发者参考deploy/litemall的外部配置文件，
    这样可以避免开发者对模块内部的开发配置文件造成修改；
-3. 管理后台前端litemall-admin模块`config/prod.env.js`中的`BASE_API`设置管理后台后端服务的服务地址。
+3. 管理后台前端litemall-admin模块`.env.production`中的`VUE_APP_BASE_API`设置管理后台后端服务的服务地址。
 
 ### 1.6.5 项目评估
 
