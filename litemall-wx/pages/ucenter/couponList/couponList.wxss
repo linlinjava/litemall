@@ -129,7 +129,7 @@ page {
 .container .b .item {
   position: relative;
   height: 290rpx;
-  background: gray;
+  background: #ccc7c7;
   margin-bottom: 30rpx;
   margin-left: 30rpx;
   margin-right: 30rpx;
