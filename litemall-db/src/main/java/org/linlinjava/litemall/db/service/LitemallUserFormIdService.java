@@ -23,6 +23,7 @@ public class LitemallUserFormIdService {
         LitemallUserFormidExample example = new LitemallUserFormidExample();
         //符合找到该用户记录，且可用次数大于1，且还未过期
         example.or().andOpenidEqualTo(openId).andExpireTimeGreaterThan(LocalDateTime.now());
+        example.setOrderByClause("add_time desc");
         return formidMapper.selectOneByExample(example);
     }
 
