@@ -1,42 +1,31 @@
 <template>
-  <div v-if="!item.hidden&&item.children" class="menu-wrapper">
-
+  <div v-if="!item.hidden" class="menu-wrapper">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-      <app-link :to="resolvePath(onlyOneChild.path)">
+      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon" :title="onlyOneChild.meta.title" />
+          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
         </el-menu-item>
       </app-link>
     </template>
-
-    <el-submenu v-else ref="submenu" :index="resolvePath(item.path)">
+    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta.icon" :title="item.meta.title" />
+        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
-
-      <template v-for="child in item.children" v-if="!child.hidden">
-        <sidebar-item
-          v-if="child.children&&child.children.length>0"
-          :is-nest="true"
-          :item="child"
-          :key="child.path"
-          :base-path="resolvePath(child.path)"
-          class="nest-menu" />
-
-        <app-link v-else :to="resolvePath(child.path)" :key="child.name">
-          <el-menu-item :index="resolvePath(child.path)">
-            <item v-if="child.meta" :icon="child.meta.icon" :title="child.meta.title" />
-          </el-menu-item>
-        </app-link>
-      </template>
+      <sidebar-item
+        v-for="child in item.children"
+        :key="child.path"
+        :is-nest="true"
+        :item="child"
+        :base-path="resolvePath(child.path)"
+        class="nest-menu"
+      />
     </el-submenu>
-
   </div>
 </template>
 
 <script>
 import path from 'path'
-import { isExternal } from '@/utils'
+import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
@@ -61,12 +50,13 @@ export default {
     }
   },
   data() {
-    return {
-      onlyOneChild: null
-    }
+    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
+    // TODO: refactor with render function
+    this.onlyOneChild = null
+    return {}
   },
   methods: {
-    hasOneShowingChild(children, parent) {
+    hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
@@ -91,13 +81,13 @@ export default {
       return false
     },
     resolvePath(routePath) {
-      if (this.isExternalLink(routePath)) {
+      if (isExternal(routePath)) {
         return routePath
       }
+      if (isExternal(this.basePath)) {
+        return this.basePath
+      }
       return path.resolve(this.basePath, routePath)
-    },
-    isExternalLink(routePath) {
-      return isExternal(routePath)
     }
   }
 }
