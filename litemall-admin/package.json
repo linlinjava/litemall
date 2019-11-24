@@ -43,7 +43,7 @@
     "url": "https://github.com/linlinjava/litemall/issues"
   },
   "dependencies": {
-    "@tinymce/tinymce-vue": "1.1.0",
+    "@tinymce/tinymce-vue": "3.0.1",
     "v-charts": "1.19.0",
     "axios": "0.18.1",
     "clipboard": "2.0.4",
