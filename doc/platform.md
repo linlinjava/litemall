@@ -1153,7 +1153,7 @@ public interface Storage {
 
 ## 2.4 litemall-all
 
-在章节1.5中讨论的部署方案中设计了一种单主机单服务方案，
+在章节1.5中讨论的部署方案中设计了一种单服务器单服务方案，
 也就是说两个后台服务和静态文件都部署在一个Spring Boot可执行jar包中。
 
 查看litemall-all模块，代码仅仅只有一个Application类。

@@ -115,8 +115,7 @@
   border-top-right-radius: 0rpx;
   border-bottom-right-radius: 0rpx;
   letter-spacing: 3rpx;
-  /* background-image: linear-gradient(to right, #ff7701 100%); */
-  background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
+  background-image: linear-gradient(to right, #f3d10e 0%, #f48f18 100%)
 }
 
 .goods-info .desc {
