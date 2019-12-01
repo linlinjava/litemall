@@ -203,6 +203,7 @@ public class WxOrderService {
         orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
         orderVo.put("handleOption", OrderUtil.build(order));
         orderVo.put("expCode", order.getShipChannel());
+        orderVo.put("expName", expressService.getVendorName(order.getShipChannel()));
         orderVo.put("expNo", order.getShipSn());
 
         List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
@@ -215,7 +216,15 @@ public class WxOrderService {
         //"YTO", "800669400640887922"
         if (order.getOrderStatus().equals(OrderUtil.STATUS_SHIP)) {
             ExpressInfo ei = expressService.getExpressInfo(order.getShipChannel(), order.getShipSn());
-            result.put("expressInfo", ei);
+            if(ei == null){
+                result.put("expressInfo", new ArrayList<>());
+            }
+            else {
+                result.put("expressInfo", ei);
+            }
+        }
+        else{
+            result.put("expressInfo", new ArrayList<>());
         }
 
         return ResponseUtil.ok(result);

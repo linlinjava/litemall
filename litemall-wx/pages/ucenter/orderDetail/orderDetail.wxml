@@ -73,12 +73,11 @@
     </view>
   </view>
 
-  <!-- 物流信息,仅收货状态下可见 -->
-  <view class="order-express" bindtap="expandDetail" wx:if="{{ handleOption.confirm }}">
+  <view class="order-express" bindtap="expandDetail" wx:if="{{ orderInfo.expNo }}">
     <view class="order-express">
       <view class="title">
-        <view class="t">快递公司：{{expressInfo.shipperName}}</view>
-        <view class="b">物流单号：{{expressInfo.logisticCode}}</view>
+        <view class="t">快递公司：{{orderInfo.expName}}</view>
+        <view class="b">物流单号：{{orderInfo.expNo}}</view>
       </view>
       <image class="ti" src="/static/images/address_right.png" background-size="cover"></image>
     </view>
