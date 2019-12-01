@@ -3,8 +3,9 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.goodsSn" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品编号"/>
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品名称"/>
+      <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品ID" />
+      <el-input v-model="listQuery.goodsSn" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品编号" />
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品名称" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
@@ -16,6 +17,9 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" class="table-expand">
+            <el-form-item label="商品编号">
+              <span>{{ props.row.goodsSn }}</span>
+            </el-form-item>
             <el-form-item label="宣传画廊">
               <img v-for="pic in props.row.gallery" :key="pic" :src="pic" class="gallery">
             </el-form-item>
@@ -34,16 +38,14 @@
             <el-form-item label="品牌商ID">
               <span>{{ props.row.brandId }}</span>
             </el-form-item>
-            <el-form-item label="商品ID">
-              <span>{{ props.row.id }}</span>
-            </el-form-item>
+
           </el-form>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="商品编号" prop="goodsSn"/>
+      <el-table-column align="center" label="商品ID" prop="id" />
 
-      <el-table-column align="center" min-width="100" label="名称" prop="name"/>
+      <el-table-column align="center" min-width="100" label="名称" prop="name" />
 
       <el-table-column align="center" property="iconUrl" label="图片">
         <template slot-scope="scope">
@@ -60,15 +62,15 @@
       <el-table-column align="center" label="详情" prop="detail">
         <template slot-scope="scope">
           <el-dialog :visible.sync="detailDialogVisible" title="商品详情">
-            <div v-html="goodsDetail"/>
+            <div v-html="goodsDetail" />
           </el-dialog>
           <el-button type="primary" size="mini" @click="showDetail(scope.row.detail)">查看</el-button>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="专柜价格" prop="counterPrice"/>
+      <el-table-column align="center" label="专柜价格" prop="counterPrice" />
 
-      <el-table-column align="center" label="当前价格" prop="retailPrice"/>
+      <el-table-column align="center" label="当前价格" prop="retailPrice" />
 
       <el-table-column align="center" label="是否新品" prop="isNew">
         <template slot-scope="scope">
