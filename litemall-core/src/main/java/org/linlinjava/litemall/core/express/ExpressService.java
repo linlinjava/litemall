@@ -11,6 +11,7 @@ import org.springframework.util.Base64Utils;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +47,10 @@ public class ExpressService {
                 return item.get("name");
         }
         return null;
+    }
+
+    public List<Map<String, String>> getVendors() {
+        return properties.getVendors();
     }
 
     /**
