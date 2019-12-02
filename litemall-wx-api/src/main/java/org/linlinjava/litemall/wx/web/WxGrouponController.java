@@ -274,8 +274,8 @@ public class WxGrouponController {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("count", grouponVoList.size());
-        result.put("data", grouponVoList);
+        result.put("total", grouponVoList.size());
+        result.put("list", grouponVoList);
 
         return ResponseUtil.ok(result);
     }
