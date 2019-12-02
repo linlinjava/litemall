@@ -90,11 +90,11 @@
         </el-form-item>
 
         <el-form-item label="所属分类">
-          <el-cascader :options="categoryList" expand-trigger="hover" @change="handleCategoryChange" />
+          <el-cascader :options="categoryList" expand-trigger="hover" clearable @change="handleCategoryChange" />
         </el-form-item>
 
         <el-form-item label="所属品牌商">
-          <el-select v-model="goods.brandId">
+          <el-select v-model="goods.brandId" clearable>
             <el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -254,7 +254,7 @@
 
     <el-card class="box-card">
       <h3>商品参数</h3>
-      <el-button :plain="true" type="primary" @click="handleAttributeShow">添加</el-button>
+      <el-button type="primary" @click="handleAttributeShow">添加</el-button>
       <el-table :data="attributes">
         <el-table-column property="attribute" label="商品参数名称" />
         <el-table-column property="value" label="商品参数值" />
@@ -360,7 +360,7 @@ export default {
       keywords: [],
       categoryList: [],
       brandList: [],
-      goods: { picUrl: '', gallery: [] },
+      goods: { picUrl: '', gallery: [], isHot: false, isNew: true, isOnSale: true },
       specVisiable: false,
       specForm: { specification: '', value: '', picUrl: '' },
       multipleSpec: false,

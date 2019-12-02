@@ -86,11 +86,11 @@
         </el-form-item>
 
         <el-form-item label="所属分类">
-          <el-cascader v-model="categoryIds" :options="categoryList" expand-trigger="hover" @change="handleCategoryChange" />
+          <el-cascader v-model="categoryIds" :options="categoryList" clearable expand-trigger="hover" @change="handleCategoryChange" />
         </el-form-item>
 
         <el-form-item label="所属品牌商">
-          <el-select v-model="goods.brandId">
+          <el-select v-model="goods.brandId" clearable>
             <el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -391,6 +391,13 @@ export default {
       const goodsId = this.$route.query.id
       detailGoods(goodsId).then(response => {
         this.goods = response.data.data.goods
+        // 稍微调整一下前后端不一致
+        if (this.goods.brandId === 0) {
+          this.goods.brandId = null
+        }
+        if (this.goods.keywords === '') {
+          this.goods.keywords = null
+        }
         this.specifications = response.data.data.specifications
         this.products = response.data.data.products
         this.attributes = response.data.data.attributes
