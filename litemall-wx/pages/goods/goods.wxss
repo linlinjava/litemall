@@ -36,27 +36,6 @@
   padding-top: 20rpx;
 }
 
-/* .service-policy {
-  width: 750rpx;
-  height: 73rpx;
-  background: #f4f4f4;
-  padding: 0 31.25rpx;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.service-policy .item {
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/servicePolicyRed-518d32d74b.png) 0 center no-repeat;
-  background-size: 10rpx;
-  padding-left: 15rpx;
-  display: flex;
-  align-items: center;
-  font-size: 25rpx;
-  color: #666;
-} */
-
 .goods-info {
   width: 750rpx;
   height: 306rpx;
@@ -80,14 +59,12 @@
 }
 
 .goods_name {
-  /* border: 1px solid black; */
   height: 86rpx;
   line-height: 86rpx;
   border-bottom: 1px solid #fafafa;
 }
 
 .goods_name_left {
-  /* border: 1px solid #757575; */
   float: left;
   height: 86rpx;
   font-weight: 550;
@@ -627,27 +604,6 @@
   left: 0;
 }
 
-.bottom-btn .l.l-kefu .kefu-count {
-  height: 28rpx;
-  width: 28rpx;
-  z-index: 10;
-  position: absolute;
-  top: 0;
-  right: 0;
-  /* background: #b4282d; */
-  text-align: center;
-  font-size: 18rpx;
-  color: #fff;
-  line-height: 28rpx;
-  border-radius: 50%;
-}
-
-.bottom-btn .l.l-kefu .icon {
-  position: absolute;
-  top: 10rpx;
-  left: 0;
-}
-
 .bottom-btn .l .icon {
   display: block;
   height: 44rpx;
@@ -662,7 +618,6 @@
   flex: 1;
   text-align: center;
   color: #fff;
-  /* border-top: 2px solid #f4f4f4; *//* border-bottom: 2px solid #f4f4f4;  */
 }
 
 .bottom-btn .r {
@@ -756,15 +711,14 @@
 }
 
 .spec-con .name {
-  height: 32rpx;
-  margin-bottom: 22rpx;
+  margin-bottom: 6rpx;
   font-size: 29rpx;
   color: #333;
 }
 
 .spec-con .values {
   height: auto;
-  margin-bottom: 31.25rpx;
+  margin-bottom: 10rpx;
   font-size: 0;
 }
 
