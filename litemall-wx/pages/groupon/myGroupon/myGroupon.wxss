@@ -4,15 +4,6 @@ page {
   background: #f4f4f4;
 }
 
-.capsule-tag {
-  float: right;
-  /* padding-right: 10rpx; */
-}
-
-.zan-capsule + .zan-capsule {
-  margin-left: 5px;
-}
-
 .orders-switch {
   width: 100%;
   background: #fff;

@@ -40,12 +40,8 @@
       </view>
       <view class="b">
         <view class="l">实付：￥{{item.actualPrice}}</view>
-        <view class="capsule-tag">
-          <zan-capsule color="#a78845" leftText="状态" rightText="{{item.joinerCount>=item.rules.discountMember?'已达成':'团购中'}}" />
-        </view>
-        <view class="capsule-tag">
-          <zan-capsule color="#a78845" leftText="发起" rightText="{{item.creator}}" wx:if="{{!item.isCreator}}" />
-        </view>
+        <van-tag type="primary">{{item.joinerCount>=item.rules.discountMember?'已达成':'团购中'}}</van-tag>
+        <van-tag round type="warning" wx:if="{{!item.isCreator}}">{{item.creator}}发起</van-tag>
       </view>
     </navigator>
   </view>

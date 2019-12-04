@@ -242,16 +242,6 @@
   font-size: 30rpx;
 }
 
-.a-groupon .capsule-tag {
-  float: right;
-  padding-right: 0rpx;
-  padding-top: 8rpx;
-}
-
-.a-groupon .zan-capsule + .zan-capsule {
-  margin-left: 10px;
-}
-
 .a-groupon .b .desc {
   width: 476rpx;
   display: block;

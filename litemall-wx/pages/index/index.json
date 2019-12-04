@@ -1,7 +1,4 @@
 {
   "navigationBarTitleText": "首页",
-  "enablePullDownRefresh": true,
-  "usingComponents": {
-    "zan-capsule": "../../lib/zanui-weapp/capsule/index"
-  }
+  "enablePullDownRefresh": true
 }

@@ -54,16 +54,6 @@ page, .container {
   font-size: 30rpx;
 }
 
-.groupon-list .capsule-tag {
-  float: right;
-  padding-right: 0rpx;
-  padding-top: 8rpx;
-}
-
-.groupon-list .zan-capsule + .zan-capsule {
-  margin-left: 10px;
-}
-
 .groupon-list .desc {
   width: 476rpx;
   display: block;
