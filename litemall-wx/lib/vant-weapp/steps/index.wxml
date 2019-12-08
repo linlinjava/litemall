@@ -1,0 +1,51 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+
+<view class="custom-class {{ utils.bem('steps', [direction]) }}">
+  <view class="van-step__wrapper">
+    <view
+      wx:for="{{ steps }}"
+      wx:key="index"
+      class="{{ utils.bem('step', [direction, status(index, active)]) }} van-hairline"
+    >
+      <view class="van-step__title" style="{{ index === active ? 'color: ' + activeColor : '' }}">
+        <view>{{ item.text }}</view>
+        <view>{{ item.desc }}</view>
+      </view>
+      <view class="van-step__circle-container">
+        <block wx:if="{{ index !== active }}">
+          <van-icon
+            wx:if="{{ inactiveIcon }}"
+            color="#969799"
+            name="{{ inactiveIcon }}"
+            custom-class="van-step__icon"
+          />
+          <view
+            wx:else
+            class="van-step__circle"
+            style="{{ index < active ? 'background-color: ' + activeColor : '' }}"
+          />
+        </block>
+
+        <van-icon wx:else name="{{ activeIcon }}" color="{{ activeColor }}" custom-class="van-step__icon" />
+      </view>
+      <view
+        wx:if="{{ index !== steps.length - 1 }}"
+        class="van-step__line" style="{{ index < active ? 'background-color: ' + activeColor : '' }}"
+      />
+    </view>
+  </view>
+</view>
+
+<wxs module="status">
+function get(index, active) {
+  if (index < active) {
+    return 'finish';
+  } else if (index === active) {
+    return 'process';
+  }
+
+  return '';
+}
+
+module.exports = get;
+</wxs>
