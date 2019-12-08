@@ -138,6 +138,7 @@ public class AdminOrderService {
 
         // 设置订单取消状态
         order.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
+        order.setEndTime(LocalDateTime.now());
         if (orderService.updateWithOptimisticLocker(order) == 0) {
             throw new RuntimeException("更新数据已失效");
         }

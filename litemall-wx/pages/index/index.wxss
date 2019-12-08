@@ -235,7 +235,6 @@
 
 .a-groupon .b .name {
   float: left;
-  width: 330rpx;
   display: block;
   color: #333;
   line-height: 50rpx;

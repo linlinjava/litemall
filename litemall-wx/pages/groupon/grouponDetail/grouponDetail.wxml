@@ -1,13 +1,17 @@
 <view class="container">
-  <view class="order-info">
-    <view class="item-a">下单时间：{{orderInfo.addTime}}</view>
-    <view class="item-b">订单编号：{{orderInfo.orderSn}}</view>
-    <view class="item-c">
-      <view class="l">实付：
-        <text class="cost">￥{{orderInfo.actualPrice}}</text>
+  <view class="progress">
+    <view class="item-a">
+      <van-steps steps="{{ steps }}" active="{{ active }}" active-icon="{{ activeIcon }}"
+  active-color="{{ activeColor }}" />
+    </view>
+    <view class="item-c" wx:if="{{groupon.status === 1}}">
+      <view class="l">
+        开团还缺
+        <van-tag type="danger">{{rules.discountMember - joiners.length}}</van-tag>
+        人
       </view>
       <view class="r">
-        <view class="btn active" bindtap="shareGroupon">邀请参团</view>
+        <button class="btn active" open-type="share">邀请参团</button>
       </view>
     </view>
   </view>
@@ -26,7 +30,6 @@
   <view class="order-goods">
     <view class="h">
       <view class="label">商品信息</view>
-      <view class="status">{{orderInfo.orderStatusText}}</view>
     </view>
     <view class="goods">
       <view class="item" wx:for="{{orderGoods}}" wx:key="id">
@@ -45,47 +48,20 @@
     </view>
 
     <view class="order-bottom">
-      <view class="address">
-        <view class="t">
-          <text class="name">{{orderInfo.consignee}}</text>
-          <text class="mobile">{{orderInfo.mobile}}</text>
-        </view>
-        <view class="b">{{orderInfo.address}}</view>
-      </view>
       <view class="total">
         <view class="t">
           <text class="label">商品合计：</text>
           <text class="txt">￥{{orderInfo.goodsPrice}}</text>
         </view>
         <view class="t">
-          <text class="label">运费：</text>
+          <text class="label">商品运费：</text>
           <text class="txt">￥{{orderInfo.freightPrice}}</text>
         </view>
       </view>
       <view class="pay-fee">
-        <text class="label">实付：</text>
+        <text class="label">商品实付：</text>
         <text class="txt">￥{{orderInfo.actualPrice}}</text>
       </view>
     </view>
   </view>
-
-  <!-- 物流信息,仅收货状态下可见 -->
-  <view class="order-express" bindtap="expandDetail" wx:if="{{ handleOption.confirm }}">
-    <view class="expand">
-      <view class="title">
-        <view class="t">快递公司：{{expressInfo.shipperName}}</view>
-        <view class="b">物流单号：{{expressInfo.logisticCode}}</view>
-      </view>
-      <image class="ti" src="/static/images/address_right.png" background-size="cover"></image>
-    </view>
-
-    <!-- <view class="order-express" > -->
-    <view class="traces" wx:for="{{expressInfo.Traces}}" wx:key="item" wx:for-item="iitem" wx:if="{{ flag }}">
-      <view class="trace">
-        <view class="acceptStation">{{iitem.AcceptStation}}</view>
-        <view class="acceptTime">{{iitem.AcceptTime}}</view>
-      </view>
-    </view>
-  </view>
-  <!-- </view> -->
 </view>

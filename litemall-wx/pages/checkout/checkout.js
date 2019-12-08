@@ -19,7 +19,7 @@ Page({
     couponId: 0,
     userCouponId: 0,
     message: '',
-    grouponLinkId: 0, //参与的团购，如果是发起则为0
+    grouponLinkId: 0, //参与的团购
     grouponRulesId: 0 //团购规则ID
   },
   onLoad: function(options) {
@@ -145,7 +145,7 @@ Page({
       grouponLinkId: this.data.grouponLinkId
     }, 'POST').then(res => {
       if (res.errno === 0) {
-        
+
         // 下单成功，重置couponId
         try {
           wx.setStorageSync('couponId', 0);
@@ -154,6 +154,7 @@ Page({
         }
 
         const orderId = res.data.orderId;
+        const grouponLinkId = res.data.grouponLinkId;
         util.request(api.OrderPrepay, {
           orderId: orderId
         }, 'POST').then(function(res) {
@@ -168,9 +169,17 @@ Page({
               'paySign': payParam.paySign,
               'success': function(res) {
                 console.log("支付过程成功");
-                wx.redirectTo({
-                  url: '/pages/payResult/payResult?status=1&orderId=' + orderId
-                });
+                if (grouponLinkId) {
+                  setTimeout(() => {
+                    wx.redirectTo({
+                      url: '/pages/groupon/grouponDetail/grouponDetail?id=' + grouponLinkId
+                    })
+                  }, 1000);
+                } else {
+                  wx.redirectTo({
+                    url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+                  });
+                }
               },
               'fail': function(res) {
                 console.log("支付过程失败");
