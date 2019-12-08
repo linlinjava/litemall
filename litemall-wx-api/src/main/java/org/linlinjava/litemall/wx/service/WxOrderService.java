@@ -279,13 +279,19 @@ public class WxOrderService {
 
             if (grouponLinkId != null && grouponLinkId > 0) {
                 //团购人数已满
-                if(grouponService.countGroupon(grouponLinkId) >= rules.getDiscountMember()){
+                if(grouponService.countGroupon(grouponLinkId) >= (rules.getDiscountMember() - 1)){
                     return ResponseUtil.fail(GROUPON_FULL, "团购活动人数已满!");
                 }
                 // NOTE
                 // 这里业务方面允许用户多次开团，以及多次参团，
-                // 但是不允许参加已经参加过的团购
+                // 但是会限制以下两点：
+                // （1）不允许参加已经加入的团购
                 if(grouponService.hasJoin(userId, grouponLinkId)){
+                    return ResponseUtil.fail(GROUPON_JOIN, "团购活动已经参加!");
+                }
+                // （2）不允许参加自己开团的团购
+                LitemallGroupon groupon = grouponService.queryById(grouponLinkId);
+                if(groupon.getCreatorUserId().equals(userId)){
                     return ResponseUtil.fail(GROUPON_JOIN, "团购活动已经参加!");
                 }
             }
