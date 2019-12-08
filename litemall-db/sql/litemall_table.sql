@@ -413,17 +413,18 @@ DROP TABLE IF EXISTS `litemall_groupon`;
 CREATE TABLE `litemall_groupon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL COMMENT '关联的订单ID',
-  `groupon_id` int(11) DEFAULT '0' COMMENT '参与的团购ID，仅当user_type不是1',
+  `groupon_id` int(11) DEFAULT '0' COMMENT '如果是开团用户，则groupon_id是0；如果是参团用户，则groupon_id是团购活动ID',
   `rules_id` int(11) NOT NULL COMMENT '团购规则ID，关联litemall_groupon_rules表ID字段',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
-  `creator_user_id` int(11) NOT NULL COMMENT '创建者ID',
+  `share_url` varchar(255) DEFAULT NULL COMMENT '团购分享图片地址',
+  `creator_user_id` int(11) NOT NULL COMMENT '开团用户ID',
+  `creator_user_time` datetime DEFAULT NULL COMMENT '开团时间',
+  `status` smallint(6) DEFAULT '0' COMMENT '团购活动状态，开团未支付则0，开团中则1，开团失败则2',
   `add_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `share_url` varchar(255) DEFAULT NULL COMMENT '团购分享图片地址',
-  `payed` tinyint(1) NOT NULL COMMENT '是否已经支付',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='团购活动表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -440,12 +441,13 @@ CREATE TABLE `litemall_groupon_rules` (
   `pic_url` varchar(255) DEFAULT NULL COMMENT '商品图片或者商品货品图片',
   `discount` decimal(63,0) NOT NULL COMMENT '优惠金额',
   `discount_member` int(11) NOT NULL COMMENT '达到优惠条件的人数',
+  `expire_time` datetime DEFAULT NULL COMMENT '团购过期时间',
+  `status` smallint(6) DEFAULT '0' COMMENT '团购规则状态，正常上线则0，到期自动下线则1，管理手动下线则2',
   `add_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `expire_time` datetime DEFAULT NULL COMMENT '团购过期时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='团购规则表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
