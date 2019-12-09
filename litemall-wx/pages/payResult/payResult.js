@@ -31,30 +31,6 @@ Page({
   },
   payOrder() {
     let that = this;
-    // 模拟支付成功，同理，后台也仅仅是返回一个成功的消息而已
-    // wx.showModal({
-    //   title: '目前不能微信支付',
-    //   content: '点击确定模拟支付成功，点击取消模拟未支付成功',
-    //   success: function (res) {
-    //     if (res.confirm) {
-    //       util.request(api.OrderPrepay, { orderId: that.data.orderId }, 'POST').then(res => {
-    //         if (res.errno === 0) {
-    //           that.setData({
-    //             status: true
-    //           });
-    //         }
-    //         else {
-    //           util.showErrorToast('支付失败');
-    //         }
-    //       });
-    //     }
-    //     else if (res.cancel) {
-    //       util.showErrorToast('支付失败');
-    //     }
-
-    //   }
-    // });
-
     util.request(api.OrderPrepay, {
       orderId: that.data.orderId
     }, 'POST').then(function(res) {

@@ -28,6 +28,9 @@ public class WxResponseCode {
     public static final Integer ORDER_COMMENT_EXPIRED = 727;
 
     public static final Integer GROUPON_EXPIRED = 730;
+    public static final Integer GROUPON_OFFLINE = 731;
+    public static final Integer GROUPON_FULL = 732;
+    public static final Integer GROUPON_JOIN = 733;
 
     public static final int COUPON_EXCEED_LIMIT = 740;
     public static final int COUPON_RECEIVE_FAIL= 741;

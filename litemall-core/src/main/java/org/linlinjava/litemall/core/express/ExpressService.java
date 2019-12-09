@@ -11,6 +11,7 @@ import org.springframework.util.Base64Utils;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,6 +49,10 @@ public class ExpressService {
         return null;
     }
 
+    public List<Map<String, String>> getVendors() {
+        return properties.getVendors();
+    }
+
     /**
      * 获取物流信息
      *
@@ -56,6 +61,10 @@ public class ExpressService {
      * @return
      */
     public ExpressInfo getExpressInfo(String expCode, String expNo) {
+        if (!properties.isEnable()) {
+            return null;
+        }
+
         try {
             String result = getOrderTracesByJson(expCode, expNo);
             ObjectMapper objMap = new ObjectMapper();
@@ -75,10 +84,6 @@ public class ExpressService {
      * @throws Exception
      */
     private String getOrderTracesByJson(String expCode, String expNo) throws Exception {
-        if (!properties.isEnable()) {
-            return null;
-        }
-
         String requestData = "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
 
         Map<String, String> params = new HashMap<String, String>();

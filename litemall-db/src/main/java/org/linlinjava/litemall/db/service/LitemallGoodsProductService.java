@@ -57,4 +57,9 @@ public class LitemallGoodsProductService {
     public int reduceStock(Integer id, Short num){
         return goodsProductMapper.reduceStock(id, num);
     }
+
+    public void updateById(LitemallGoodsProduct product) {
+        product.setUpdateTime(LocalDateTime.now());
+        litemallGoodsProductMapper.updateByPrimaryKeySelective(product);
+    }
 }

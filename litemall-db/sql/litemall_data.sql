@@ -126,6 +126,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `litemall_footprint` WRITE;
 /*!40000 ALTER TABLE `litemall_footprint` DISABLE KEYS */;
+INSERT INTO `litemall_footprint` VALUES (1,4,1109008,'2019-12-08 19:12:05','2019-12-08 19:12:05',0),(2,4,1110016,'2019-12-08 19:13:42','2019-12-08 19:13:42',0);
 /*!40000 ALTER TABLE `litemall_footprint` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +186,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `litemall_groupon_rules` WRITE;
 /*!40000 ALTER TABLE `litemall_groupon_rules` DISABLE KEYS */;
-INSERT INTO `litemall_groupon_rules` VALUES (1,1039051,'多功能午睡枕','http://yanxuan.nosdn.127.net/c8ca0600fa7ba11ca8be6a3173dd38c9.png',20,20,'2018-11-08 13:41:44','2018-11-08 13:41:44','2019-12-31 00:00:00',0),(2,1109008,'云端沙发组合','http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png',50,5,'2018-11-08 13:42:44','2018-11-08 13:42:44','2019-12-31 00:00:00',0);
+INSERT INTO `litemall_groupon_rules` VALUES (1,1039051,'多功能午睡枕','http://yanxuan.nosdn.127.net/c8ca0600fa7ba11ca8be6a3173dd38c9.png',20,20,'2019-12-31 00:00:00',0,'2018-11-08 13:41:44','2018-11-08 13:41:44',0),(2,1109008,'云端沙发组合','http://yanxuan.nosdn.127.net/c5be2604c0e4186a4e7079feeb742cee.png',50,5,'2019-12-31 00:00:00',0,'2018-11-08 13:42:44','2018-11-08 13:42:44',0),(3,1110016,'天然硅胶宠物除毛按摩刷','http://yanxuan.nosdn.127.net/3bd73b7279a83d1cbb50c0e45778e6d6.png',39,2,'2020-12-31 00:00:00',0,'2019-12-08 19:13:25','2019-12-08 19:13:25',0);
 /*!40000 ALTER TABLE `litemall_groupon_rules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,6 +216,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `litemall_log` WRITE;
 /*!40000 ALTER TABLE `litemall_log` DISABLE KEYS */;
+INSERT INTO `litemall_log` VALUES (1,'admin123','0:0:0:0:0:0:0:1',1,'登录',1,'','','2019-12-08 19:12:40','2019-12-08 19:12:40',0);
 /*!40000 ALTER TABLE `litemall_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,6 +292,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `litemall_system` WRITE;
 /*!40000 ALTER TABLE `litemall_system` DISABLE KEYS */;
+INSERT INTO `litemall_system` VALUES (1,'litemall_order_unpaid','30','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(2,'litemall_wx_index_new','6','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(3,'litemall_mall_latitude','31.201900','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(4,'litemall_order_unconfirm','7','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(5,'litemall_wx_share','false','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(6,'litemall_express_freight_min','88','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(7,'litemall_mall_name','litemall','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(8,'litemall_express_freight_value','8','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(9,'litemall_mall_qq','705144434','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(10,'litemall_wx_index_hot','6','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(11,'litemall_order_comment','7','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(12,'litemall_wx_catlog_goods','4','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(13,'litemall_mall_longitude','121.587839','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(14,'litemall_mall_phone','021-xxxx-xxxx','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(15,'litemall_wx_catlog_list','4','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(16,'litemall_mall_address','上海','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(17,'litemall_wx_index_brand','4','2019-12-08 19:11:18','2019-12-08 19:11:18',0),(18,'litemall_wx_index_topic','4','2019-12-08 19:11:18','2019-12-08 19:11:18',0);
 /*!40000 ALTER TABLE `litemall_system` ENABLE KEYS */;
 UNLOCK TABLES;
 

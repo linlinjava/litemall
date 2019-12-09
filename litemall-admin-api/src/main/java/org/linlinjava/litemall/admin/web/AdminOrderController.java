@@ -5,6 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.service.AdminOrderService;
+import org.linlinjava.litemall.core.express.ExpressService;
+import org.linlinjava.litemall.core.notify.NotifyService;
+import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ public class AdminOrderController {
 
     @Autowired
     private AdminOrderService adminOrderService;
+    @Autowired
+    private ExpressService expressService;
 
     /**
      * 查询订单
@@ -45,6 +50,16 @@ public class AdminOrderController {
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         return adminOrderService.list(userId, orderSn, orderStatusArray, page, limit, sort, order);
+    }
+
+    /**
+     * 查询物流公司
+     *
+     * @return
+     */
+    @GetMapping("/channel")
+    public Object channel() {
+        return ResponseUtil.ok(expressService.getVendors());
     }
 
     /**
@@ -99,5 +114,4 @@ public class AdminOrderController {
     public Object reply(@RequestBody String body) {
         return adminOrderService.reply(body);
     }
-
 }

@@ -150,12 +150,10 @@
         </view>
       </view>
 
-      <view class="spec-con" wx:if="{{groupon.length > 0}}">
-        <view class="spec-item">
-          <view class="name">团购立减</view>
-          <view class="values">
-            <view class="value {{vitem.checked ? 'selected' : ''}}" bindtap="clickGroupon" wx:for="{{groupon}}" wx:for-item="vitem" wx:key="{{vitem.id}}" data-value-id="{{vitem.id}}" data-name="{{vitem.specification}}">￥{{vitem.discount}} ({{vitem.discountMember}}人)</view>
-          </view>
+      <view class="spec-item" wx:if="{{groupon.length > 0}}">
+        <view class="name">团购立减</view>
+        <view class="values">
+          <view class="value {{vitem.checked ? 'selected' : ''}}" bindtap="clickGroupon" wx:for="{{groupon}}" wx:for-item="vitem" wx:key="{{vitem.id}}" data-value-id="{{vitem.id}}" data-name="{{vitem.specification}}">￥{{vitem.discount}} ({{vitem.discountMember}}人)</view>
         </view>
       </view>
 

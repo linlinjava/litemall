@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallGrouponMapper;
 import org.linlinjava.litemall.db.domain.LitemallGroupon;
 import org.linlinjava.litemall.db.domain.LitemallGrouponExample;
+import org.linlinjava.litemall.db.util.GrouponConstant;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,7 +25,7 @@ public class LitemallGrouponService {
      */
     public List<LitemallGroupon> queryMyGroupon(Integer userId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andUserIdEqualTo(userId).andCreatorUserIdEqualTo(userId).andGrouponIdEqualTo(0).andDeletedEqualTo(false).andPayedEqualTo(true);
+        example.or().andUserIdEqualTo(userId).andCreatorUserIdEqualTo(userId).andGrouponIdEqualTo(0).andStatusNotEqualTo(GrouponConstant.STATUS_NONE).andDeletedEqualTo(false);
         example.orderBy("add_time desc");
         return mapper.selectByExample(example);
     }
@@ -37,7 +38,7 @@ public class LitemallGrouponService {
      */
     public List<LitemallGroupon> queryMyJoinGroupon(Integer userId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andUserIdEqualTo(userId).andGrouponIdNotEqualTo(0).andDeletedEqualTo(false).andPayedEqualTo(true);
+        example.or().andUserIdEqualTo(userId).andGrouponIdNotEqualTo(0).andStatusNotEqualTo(GrouponConstant.STATUS_NONE).andDeletedEqualTo(false);
         example.orderBy("add_time desc");
         return mapper.selectByExample(example);
     }
@@ -62,7 +63,7 @@ public class LitemallGrouponService {
      */
     public List<LitemallGroupon> queryJoinRecord(Integer id) {
         LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andGrouponIdEqualTo(id).andDeletedEqualTo(false).andPayedEqualTo(true);
+        example.or().andGrouponIdEqualTo(id).andStatusNotEqualTo(GrouponConstant.STATUS_NONE).andDeletedEqualTo(false);
         example.orderBy("add_time desc");
         return mapper.selectByExample(example);
     }
@@ -75,7 +76,7 @@ public class LitemallGrouponService {
      */
     public LitemallGroupon queryById(Integer id) {
         LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andIdEqualTo(id).andDeletedEqualTo(false).andPayedEqualTo(true);
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         return mapper.selectOneByExample(example);
     }
 
@@ -87,8 +88,14 @@ public class LitemallGrouponService {
      */
     public int countGroupon(Integer grouponId) {
         LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andGrouponIdEqualTo(grouponId).andDeletedEqualTo(false).andPayedEqualTo(true);
+        example.or().andGrouponIdEqualTo(grouponId).andStatusNotEqualTo(GrouponConstant.STATUS_NONE).andDeletedEqualTo(false);
         return (int) mapper.countByExample(example);
+    }
+
+    public boolean hasJoin(Integer userId, Integer grouponId) {
+        LitemallGrouponExample example = new LitemallGrouponExample();
+        example.or().andUserIdEqualTo(userId).andGrouponIdEqualTo(grouponId).andStatusNotEqualTo(GrouponConstant.STATUS_NONE).andDeletedEqualTo(false);
+        return  mapper.countByExample(example) != 0;
     }
 
     public int updateById(LitemallGroupon groupon) {
@@ -127,10 +134,16 @@ public class LitemallGrouponService {
             criteria.andRulesIdEqualTo(Integer.parseInt(rulesId));
         }
         criteria.andDeletedEqualTo(false);
-        criteria.andPayedEqualTo(true);
+        criteria.andStatusNotEqualTo(GrouponConstant.STATUS_NONE);
         criteria.andGrouponIdEqualTo(0);
 
         PageHelper.startPage(page, size);
+        return mapper.selectByExample(example);
+    }
+
+    public List<LitemallGroupon> queryByRuleId(int grouponRuleId) {
+        LitemallGrouponExample example = new LitemallGrouponExample();
+        example.or().andRulesIdEqualTo(grouponRuleId).andDeletedEqualTo(false);
         return mapper.selectByExample(example);
     }
 }

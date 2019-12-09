@@ -235,21 +235,10 @@
 
 .a-groupon .b .name {
   float: left;
-  width: 330rpx;
   display: block;
   color: #333;
   line-height: 50rpx;
   font-size: 30rpx;
-}
-
-.a-groupon .capsule-tag {
-  float: right;
-  padding-right: 0rpx;
-  padding-top: 8rpx;
-}
-
-.a-groupon .zan-capsule + .zan-capsule {
-  margin-left: 10px;
 }
 
 .a-groupon .b .desc {
