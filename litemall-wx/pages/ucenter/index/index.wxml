@@ -101,6 +101,7 @@
       <view class='user_column_item_text'>关于我们</view>
     </view>
   </view>
+  <view class='separate'></view>
 
   <view class="logout" wx:if="{{hasLogin}}" bindtap="exitLogin">退出登录</view>
 </view>

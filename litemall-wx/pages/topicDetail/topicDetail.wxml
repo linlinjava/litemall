@@ -49,10 +49,7 @@
       </view>
     </view>
     <view class="no-comments" wx:if="{{commentList.length <= 0}}">
-      <view class="b">
-        <image class="icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-comment-560f87660a.png"></image>
-        <text class="txt">等你来留言</text>
-      </view>
+      <text class="txt">等你来留言</text>
     </view>
   </scroll-view>
   <scroll-view class="rec-box">

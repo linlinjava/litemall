@@ -114,7 +114,6 @@ page {
   line-height: 72rpx;
   text-align: right;
   padding-right: 30rpx;
-  background: url(https://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/couponHelp-4768607555.png) 590rpx center no-repeat;
   background-size: 28rpx;
   color: #999;
   font-size: 24rpx;

@@ -144,7 +144,7 @@ page {
   flex-wrap: wrap;
   float: left;
   background: #fff;
-  border-bottom: 1px solid #fafafa;
+  border-bottom: 6px solid #fafafa;
 }
 
 .user_column_item_phone::after {
