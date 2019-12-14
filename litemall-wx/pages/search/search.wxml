@@ -1,9 +1,9 @@
 <scroll-view class="container" style="height: 100%;">
   <view class="search-header">
     <view class="input-box">
-      <image class="icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png"></image>
+      <van-icon name="search"/>
       <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" placeholder="{{defaultKeyword.keyword}}" />
-      <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"></image>
+      <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="/static/images/icon_close.png"></image>
     </view>
     <view class="right" bindtap="closeSearch">取消</view>
   </view>
@@ -11,7 +11,7 @@
     <view class="search-keywords search-history" wx:if="{{!keyword  && historyKeyword.length}}">
       <view class="h">
         <text class="title">历史记录</text>
-        <image class="icon" bindtap="clearHistory" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/del1-93f0a4add4.png"></image>
+        <image class="icon" bindtap="clearHistory" src="/static/images/delete.png"></image>
       </view>
       <view class="b">
         <view class="item" bindtap="onKeywordTap" data-keyword="{{item.keyword}}" wx:for="{{historyKeyword}}" wx:key="keyword" hover-class="navigator-hover">{{item.keyword}}</view>

@@ -10,7 +10,7 @@
         <view class="address">{{item.addressDetail}}</view>
       </view>
       <view class="r">
-        <image catchtap="deleteAddress" data-address-id="{{item.id}}" class="del" src="/static/images/del-address.png"></image>
+        <image catchtap="deleteAddress" data-address-id="{{item.id}}" class="del" src="/static/images/delete.png"></image>
       </view>
     </view>
   </view>

@@ -21,6 +21,10 @@ page {
   color: #333;
 }
 
+.search-header .van-icon-search {
+  line-height: 59rpx;
+}
+
 .search-header .input-box {
   position: relative;
   margin-top: 16rpx;

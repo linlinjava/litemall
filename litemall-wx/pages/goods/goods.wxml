@@ -54,7 +54,10 @@
     <view class="h">
       <navigator url="/pages/comment/comment?valueId={{goods.id}}&type=0">
         <text class="t">评价({{comment.count > 999 ? '999+' : comment.count}})</text>
-        <text class="i">查看全部</text>
+        <view class="i">
+          查看全部
+          <van-icon name="arrow" />
+        </view>
       </navigator>
     </view>
     <view class="b">

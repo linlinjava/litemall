@@ -136,8 +136,7 @@
   border: 1px solid #f48f18;
   font-size: 25rpx;
   color: #f48f18;
-  border-radius: 4px;
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/detailTagArrow-18bee52dab.png) 95% center no-repeat;
+  border-radius: 4rpx;
   background-size: 10.75rpx 18.75rpx;
 }
 
@@ -220,14 +219,13 @@
   line-height: 100.5rpx;
   width: 718.75rpx;
   padding-right: 16rpx;
-  border-bottom: 1px solid #d9d9d9;
 }
 
 .comments .h .t {
   display: block;
   float: left;
   width: 50%;
-  font-size: 38.5rpx;
+  font-size: 30rpx;
   color: #333;
 }
 
@@ -237,7 +235,6 @@
   width: 164rpx;
   height: 100.5rpx;
   line-height: 100.5rpx;
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/address-right-990628faa7.png) right center no-repeat;
   background-size: 52rpx;
 }
 
@@ -250,6 +247,7 @@
   height: auto;
   width: 720rpx;
   overflow: hidden;
+  border-top: 1px solid #d9d9d9;
 }
 
 .comments .info {
