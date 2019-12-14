@@ -1,0 +1,3 @@
+<view class="van-sidebar van-hairline--top-bottom custom-class">
+  <slot />
+</view>

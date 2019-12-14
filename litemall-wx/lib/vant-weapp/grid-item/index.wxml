@@ -1,0 +1,22 @@
+<wxs src="../wxs/utils.wxs" module="utils" />
+
+<view class="{{ utils.bem('grid-item', { square }) }}" style="{{ style }}" bindtap="onClick">
+  <view
+    class="{{ utils.bem('grid-item__content', { center, square, clickable, surround: border && gutter }) }} {{ border ? 'van-hairline--surround' : '' }}"
+    style="{{ contentStyle }}"
+  >
+    <block wx:if="{{ useSlot }}">
+      <slot />
+    </block>
+    <block wx:else>
+      <view class="van-grid-item__icon">
+        <van-icon wx:if="{{ icon }}" name="{{ icon }}" dot="{{ dot }}" info="{{ info }}" />
+        <slot wx:else name="icon"></slot>
+      </view>
+      <view class="van-grid-item__text">
+        <text wx:if="{{ text }}">{{ text }}</text>
+        <slot wx:else name="text"></slot>
+      </view>
+    </block>
+  </view>
+</view>
