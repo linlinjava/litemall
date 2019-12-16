@@ -43,7 +43,7 @@ public class NotifyProperties {
         private String password;
         private String sendfrom;
         private String sendto;
-
+        private Integer port;
         public boolean isEnable() {
             return enable;
         }
@@ -90,6 +90,14 @@ public class NotifyProperties {
 
         public void setSendto(String sendto) {
             this.sendto = sendto;
+        }
+
+        public Integer getPort() {
+            return port;
+        }
+
+        public void setPort(Integer port) {
+            this.port = port;
         }
     }
 
