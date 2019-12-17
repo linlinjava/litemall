@@ -4,8 +4,7 @@
     <view class="picker">
       <view class="fb-type">
         <view class="type-label">{{array[index]}}</view>
-        <image class="type-icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/pickerArrow-a8b918f05f.png"></image>
-
+        <image class="type-icon" src="/static/images/down.png"></image>
       </view>
     </view>
   </picker>

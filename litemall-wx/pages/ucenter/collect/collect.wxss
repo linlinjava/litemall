@@ -20,15 +20,7 @@ page {
 .no-collect .c {
   width: 100%;
   height: auto;
-  margin-top: 200rpx;
-}
-
-.no-collect .c image {
-  margin: 0 auto;
-  display: block;
-  text-align: center;
-  width: 258rpx;
-  height: 258rpx;
+  margin-top: 400rpx;
 }
 
 .no-collect .c text {

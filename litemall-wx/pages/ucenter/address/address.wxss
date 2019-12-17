@@ -11,7 +11,7 @@ page {
 
 .address-list {
   padding-left: 31.25rpx;
-  background: #fff url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/address-bg-bd30f2bfeb.png) 0 0 repeat-x;
+  background: #fff;
   background-size: auto 10.5rpx;
   margin-bottom: 90rpx;
 }
@@ -122,12 +122,6 @@ page {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.empty-view .icon {
-  height: 248rpx;
-  width: 258rpx;
-  margin-bottom: 10rpx;
 }
 
 .empty-view .text {

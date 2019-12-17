@@ -43,15 +43,7 @@ page {
 .no-order .c {
   width: 100%;
   height: auto;
-  margin-top: 200rpx;
-}
-
-.no-order .c image {
-  margin: 0 auto;
-  display: block;
-  text-align: center;
-  width: 258rpx;
-  height: 258rpx;
+  margin-top: 400rpx;
 }
 
 .no-order .c text {

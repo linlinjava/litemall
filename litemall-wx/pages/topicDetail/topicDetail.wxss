@@ -126,13 +126,7 @@
   text-align: center;
   font-size: 29rpx;
   color: #7f7f7f;
-}
-
-.no-comments .icon {
-  margin: 48rpx auto 18rpx auto;
-  height: 130rpx;
-  display: block;
-  width: 115rpx;
+  padding-top: 150rpx;
 }
 
 .sv-goods {

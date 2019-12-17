@@ -16,7 +16,7 @@
 				<input class="code" value="{{code}}" bindinput="bindCodeInput" placeholder="验证码"/>
 				<image class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
 			</view>
-			<image class="code-img" src="https://dl.reg.163.com/cp?pd=yanxuan_web&pkid=SkeBZeG&random=1489903563234"></image>
+			<image class="code-img" src="captcha.png"></image>
 		</view>  -->
 
     <button type="primary" class="login-btn" bindtap="accountLogin">账号登录</button>

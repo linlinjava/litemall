@@ -36,6 +36,10 @@ public class LitemallGoodsAttributeService {
         goodsAttributeMapper.logicalDeleteByExample(example);
     }
 
+    public void deleteById(Integer id) {
+        goodsAttributeMapper.logicalDeleteByPrimaryKey(id);
+    }
+
     public void updateById(LitemallGoodsAttribute attribute) {
         attribute.setUpdateTime(LocalDateTime.now());
         goodsAttributeMapper.updateByPrimaryKeySelective(attribute);

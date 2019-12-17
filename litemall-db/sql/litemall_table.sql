@@ -540,6 +540,10 @@ CREATE TABLE `litemall_order` (
   `ship_sn` varchar(63) DEFAULT NULL COMMENT '发货编号',
   `ship_channel` varchar(63) DEFAULT NULL COMMENT '发货快递公司',
   `ship_time` datetime DEFAULT NULL COMMENT '发货开始时间',
+  `refund_amount` decimal(10,2) DEFAULT NULL COMMENT '实际退款金额，（有可能退款金额小于实际支付金额）',
+  `refund_type` varchar(63) DEFAULT NULL COMMENT '退款方式',
+  `refund_content` varchar(127) DEFAULT NULL COMMENT '退款备注',
+  `refund_time` datetime DEFAULT NULL COMMENT '退款时间',
   `confirm_time` datetime DEFAULT NULL COMMENT '用户确认收货时间',
   `comments` smallint(6) DEFAULT '0' COMMENT '待评价订单商品数量',
   `end_time` datetime DEFAULT NULL COMMENT '订单关闭时间',
@@ -691,7 +695,7 @@ CREATE TABLE `litemall_system` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统配置表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -779,4 +783,4 @@ CREATE TABLE `litemall_user_formid` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-10 16:59:09
+-- Dump completed on 2019-12-16 23:12:57

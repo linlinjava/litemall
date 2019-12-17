@@ -68,7 +68,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="专柜价格" prop="counterPrice" />
+      <el-table-column align="center" label="市场售价" prop="counterPrice" />
 
       <el-table-column align="center" label="当前价格" prop="retailPrice" />
 

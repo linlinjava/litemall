@@ -1,7 +1,7 @@
 <view class="container">
   <view class="search">
     <navigator url="/pages/search/search" class="input">
-      <image class="icon"></image>
+      <van-icon name="search"/>
       <text class="txt">商品搜索, 共{{goodsCount}}款好物</text>
     </navigator>
   </view>

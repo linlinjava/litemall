@@ -99,6 +99,12 @@
             <span>（快递单号）{{ orderDetail.order.shipSn }}</span>
             <span>（发货时间）{{ orderDetail.order.shipTime }}</span>
           </el-form-item>
+          <el-form-item label="退款信息">
+            <span>（退款金额）{{ orderDetail.order.refundAmount }}元</span>
+            <span>（退款类型）{{ orderDetail.order.refundType }}</span>
+            <span>（退款备注）{{ orderDetail.order.refundContent }}</span>
+            <span>（退款时间）{{ orderDetail.order.refundTime }}</span>
+          </el-form-item>
           <el-form-item label="收货信息">
             <span>（确认收货时间）{{ orderDetail.order.confirmTime }}</span>
           </el-form-item>

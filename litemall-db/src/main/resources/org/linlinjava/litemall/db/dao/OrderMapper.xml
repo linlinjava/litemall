@@ -64,6 +64,18 @@
             <if test="order.shipTime != null">
                 ship_time = #{order.shipTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="order.refundAmount != null">
+                refund_amount = #{order.refundAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="order.refundType != null">
+                refund_type = #{order.refundType,jdbcType=VARCHAR},
+            </if>
+            <if test="order.refundContent != null">
+                refund_content = #{order.refundContent,jdbcType=VARCHAR},
+            </if>
+            <if test="order.refundTime != null">
+                refund_time = #{order.refundTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="order.confirmTime != null">
                 confirm_time = #{order.confirmTime,jdbcType=TIMESTAMP},
             </if>
