@@ -12,7 +12,7 @@
   <view class="share-pop-box" hidden="{{!openShare}}">
     <view class="share-pop">
       <view class="close" bindtap="closeShare">
-        <image class="icon" src="/static/images/icon_close.png"></image>
+        <van-icon class="icon" name="cross" />      
       </view>
       <view class='share-info'>
         <button class="sharebtn" open-type="share" wx:if="{{!isGroupon}}">
@@ -48,7 +48,7 @@
   </view>
   <view class="section-nav section-attr" bindtap="switchAttrPop">
     <view class="t">{{checkedSpecText}}</view>
-    <image class="i" src="/static/images/address_right.png" background-size="cover"></image>
+    <van-icon class="i" name="arrow" />
   </view>
   <view class="comments" wx:if="{{comment.count > 0}}">
     <view class="h">
@@ -132,7 +132,7 @@
 <view class="attr-pop-box" hidden="{{!openAttr}}">
   <view class="attr-pop">
     <view class="close" bindtap="closeAttr">
-      <image class="icon" src="/static/images/icon_close.png"></image>
+      <van-icon  class="icon" name="cross" />      
     </view>
     <view class="img-info">
       <image class="img" src="{{goods.picUrl}}"></image>
@@ -184,12 +184,13 @@
 <!-- 底部按钮 -->
 <view class="bottom-btn">
   <view class="l l-collect" bindtap="addCollectOrNot" wx:if="{{!isGroupon}}">
-    <image class="icon" src="{{ collectImage }}"></image>
+    <van-icon class="icon" name="star" color="#ab956d" wx:if="{{collect}}"/>
+    <van-icon class="icon" name="star-o" wx:else/>
   </view>
   <view class="l l-cart" wx:if="{{!isGroupon}}">
     <view class="box">
       <text class="cart-count">{{cartGoodsCount}}</text>
-      <image bindtap="openCartPage" class="icon" src="/static/images/ic_menu_shoping_nor.png"></image>
+      <van-icon bindtap="openCartPage" class="icon" name="cart-o" />
     </view>
   </view>
   <view class="r" bindtap="addToCart" wx:if="{{!soldout}}" wx:if="{{!isGroupon}}">加入购物车</view>

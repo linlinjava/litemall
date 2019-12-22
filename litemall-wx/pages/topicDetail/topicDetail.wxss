@@ -36,7 +36,6 @@
 .comments .h .i {
   display: block;
   float: right;
-  margin-top: 30rpx;
   width: 33rpx;
   height: 33rpx;
 }

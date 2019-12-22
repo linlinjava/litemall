@@ -3,7 +3,7 @@
     <view class="input-box">
       <van-icon name="search"/>
       <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" placeholder="{{defaultKeyword.keyword}}" />
-      <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="/static/images/icon_close.png"></image>
+      <van-icon class="del" wx:if="{{keyword}}" bindtap="clearKeyword" name="cross" />
     </view>
     <view class="right" bindtap="closeSearch">取消</view>
   </view>
@@ -11,7 +11,7 @@
     <view class="search-keywords search-history" wx:if="{{!keyword  && historyKeyword.length}}">
       <view class="h">
         <text class="title">历史记录</text>
-        <image class="icon" bindtap="clearHistory" src="/static/images/delete.png"></image>
+        <van-icon bindtap="clearHistory" name="delete" class="icon"/>
       </view>
       <view class="b">
         <view class="item" bindtap="onKeywordTap" data-keyword="{{item.keyword}}" wx:for="{{historyKeyword}}" wx:key="keyword" hover-class="navigator-hover">{{item.keyword}}</view>

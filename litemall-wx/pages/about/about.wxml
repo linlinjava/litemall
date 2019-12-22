@@ -13,7 +13,7 @@
       <text>{{address}}</text> 
     </view>
     <view class="item-right" bindtap="showLocation">
-      <image src="/static/images/ico-addr.png" class="right-icon"></image>
+      <van-icon class="right-icon" name="location-o" />    
     </view>
   </view>
 
@@ -23,7 +23,7 @@
       <text>{{phone}}</text> 
     </view>
     <view class="item-right" bindtap="callPhone">
-      <image src="/static/images/telephone.png" class="right-icon"></image>
+      <van-icon class="right-icon" name="phone-o" />
     </view>
   </view>
 
@@ -33,7 +33,7 @@
       <text>{{qq}}</text> 
     </view>
     <view class="item-right">
-      <image src="/static/images/mobile.png" class="right-icon"></image>
+      <van-icon class="right-icon" name="friends-o" />
     </view>
   </view>
 
