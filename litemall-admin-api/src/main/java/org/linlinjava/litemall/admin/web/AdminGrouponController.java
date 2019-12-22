@@ -48,12 +48,12 @@ public class AdminGrouponController {
     @RequiresPermissions("admin:groupon:read")
     @RequiresPermissionsDesc(menu = {"推广管理", "团购管理"}, button = "详情")
     @GetMapping("/listRecord")
-    public Object listRecord(String grouponId,
+    public Object listRecord(String grouponRuleId,
                              @RequestParam(defaultValue = "1") Integer page,
                              @RequestParam(defaultValue = "10") Integer limit,
                              @Sort @RequestParam(defaultValue = "add_time") String sort,
                              @Order @RequestParam(defaultValue = "desc") String order) {
-        List<LitemallGroupon> grouponList = grouponService.querySelective(grouponId, page, limit, sort, order);
+        List<LitemallGroupon> grouponList = grouponService.querySelective(grouponRuleId, page, limit, sort, order);
 
         List<Map<String, Object>> groupons = new ArrayList<>();
         for (LitemallGroupon groupon : grouponList) {
