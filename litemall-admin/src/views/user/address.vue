@@ -70,7 +70,7 @@ export default {
     getList() {
       this.listLoading = true
       listAddress(this.listQuery).then(response => {
-        this.list = response.data.data.items
+        this.list = response.data.data.list
         this.total = response.data.data.total
         this.listLoading = false
       }).catch(() => {
@@ -86,7 +86,7 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['地址ID', '用户ID', '收获人', '手机号', '省', '市', '区', '地址', '是否默认']
+        const tHeader = ['地址ID', '用户ID', '收货人', '手机号', '省', '市', '区', '地址', '是否默认']
         const filterVal = ['id', 'userId', 'name', 'tel', 'province', 'city', 'county', 'addressDetail', 'isDefault']
         excel.export_json_to_excel2(tHeader, this.list, filterVal, '用户地址信息')
         this.downloadLoading = false

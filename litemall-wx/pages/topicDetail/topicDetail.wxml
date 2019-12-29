@@ -7,7 +7,6 @@
     <view class="topic-goods">
       <view class="h">
         <text class="t">专题商品</text>
-        <image bindtap="postComment" class="i" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/comment-add-2aca147c3f.png"></image>
       </view>
       <view class="b">
         <view class="item" wx:for="{{topicGoods}}" wx:for-index="index" wx:for-item="item" wx:key="id">
@@ -28,7 +27,7 @@
   <scroll-view class="comments">
     <view class="h">
       <text class="t">精选留言</text>
-      <image bindtap="postComment" class="i" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/comment-add-2aca147c3f.png"></image>
+      <van-icon bindtap="postComment" class="i" name="comment-o" />      
     </view>
     <view class="has-comments" wx:if="{{commentList.length > 0 }}">
       <view class="b">
@@ -50,10 +49,7 @@
       </view>
     </view>
     <view class="no-comments" wx:if="{{commentList.length <= 0}}">
-      <view class="b">
-        <image class="icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/no-comment-560f87660a.png"></image>
-        <text class="txt">等你来留言</text>
-      </view>
+      <text class="txt">等你来留言</text>
     </view>
   </scroll-view>
   <scroll-view class="rec-box">

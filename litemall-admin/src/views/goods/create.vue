@@ -5,18 +5,13 @@
       <h3>商品介绍</h3>
       <el-form ref="goods" :rules="rules" :model="goods" label-width="150px">
         <el-form-item label="商品编号" prop="goodsSn">
-          <el-input v-model="goods.goodsSn"/>
+          <el-input v-model="goods.goodsSn" />
         </el-form-item>
         <el-form-item label="商品名称" prop="name">
-          <el-input v-model="goods.name"/>
+          <el-input v-model="goods.name" />
         </el-form-item>
-        <el-form-item label="专柜价格" prop="counterPrice">
+        <el-form-item label="市场售价" prop="counterPrice">
           <el-input v-model="goods.counterPrice" placeholder="0.00">
-            <template slot="append">元</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="当前价格" prop="retailPrice">
-          <el-input v-model="goods.retailPrice" placeholder="0.00">
             <template slot="append">元</template>
           </el-input>
         </el-form-item>
@@ -46,9 +41,10 @@
             :headers="headers"
             :on-success="uploadPicUrl"
             class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif">
+            accept=".jpg,.jpeg,.png,.gif"
+          >
             <img v-if="goods.picUrl" :src="goods.picUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
 
@@ -62,13 +58,14 @@
             :on-remove="handleRemove"
             multiple
             accept=".jpg,.jpeg,.png,.gif"
-            list-type="picture-card">
-            <i class="el-icon-plus"/>
+            list-type="picture-card"
+          >
+            <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
 
         <el-form-item label="商品单位">
-          <el-input v-model="goods.unit" placeholder="件 / 个 / 盒"/>
+          <el-input v-model="goods.unit" placeholder="件 / 个 / 盒" />
         </el-form-item>
 
         <el-form-item label="关键字">
@@ -82,26 +79,27 @@
             class="input-new-keyword"
 
             @keyup.enter.native="handleInputConfirm"
-            @blur="handleInputConfirm"/>
+            @blur="handleInputConfirm"
+          />
           <el-button v-else class="button-new-keyword" type="primary" @click="showInput">+ 增加</el-button>
         </el-form-item>
 
         <el-form-item label="所属分类">
-          <el-cascader :options="categoryList" expand-trigger="hover" @change="handleCategoryChange"/>
+          <el-cascader :options="categoryList" expand-trigger="hover" clearable @change="handleCategoryChange" />
         </el-form-item>
 
         <el-form-item label="所属品牌商">
-          <el-select v-model="goods.brandId">
-            <el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value"/>
+          <el-select v-model="goods.brandId" clearable>
+            <el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="商品简介">
-          <el-input v-model="goods.brief"/>
+          <el-input v-model="goods.brief" />
         </el-form-item>
 
         <el-form-item label="商品详细介绍">
-          <editor :init="editorInit" v-model="goods.detail"/>
+          <editor v-model="goods.detail" :init="editorInit" />
         </el-form-item>
       </el-form>
     </el-card>
@@ -121,7 +119,7 @@
       </el-row>
 
       <el-table :data="specifications">
-        <el-table-column property="specification" label="规格名"/>
+        <el-table-column property="specification" label="规格名" />
         <el-table-column property="value" label="规格值">
           <template slot-scope="scope">
             <el-tag type="primary">
@@ -139,7 +137,8 @@
           align="center"
           label="操作"
           width="250"
-          class-name="small-padding fixed-width">
+          class-name="small-padding fixed-width"
+        >
           <template slot-scope="scope">
             <el-button type="danger" size="mini" @click="handleSpecificationDelete(scope.row)">删除</el-button>
           </template>
@@ -154,12 +153,13 @@
           status-icon
           label-position="left"
           label-width="100px"
-          style="width: 400px; margin-left:50px;">
+          style="width: 400px; margin-left:50px;"
+        >
           <el-form-item label="规格名" prop="specification">
-            <el-input v-model="specForm.specification"/>
+            <el-input v-model="specForm.specification" />
           </el-form-item>
           <el-form-item label="规格值" prop="value">
-            <el-input v-model="specForm.value"/>
+            <el-input v-model="specForm.value" />
           </el-form-item>
           <el-form-item label="规格图片" prop="picUrl">
             <el-upload
@@ -168,9 +168,10 @@
               :headers="headers"
               :on-success="uploadSpecPicUrl"
               class="avatar-uploader"
-              accept=".jpg,.jpeg,.png,.gif">
+              accept=".jpg,.jpeg,.png,.gif"
+            >
               <img v-if="specForm.picUrl" :src="specForm.picUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"/>
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
         </el-form>
@@ -191,8 +192,8 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column property="price" width="100" label="货品售价"/>
-        <el-table-column property="number" width="100" label="货品数量"/>
+        <el-table-column property="price" width="100" label="货品售价" />
+        <el-table-column property="number" width="100" label="货品数量" />
         <el-table-column property="url" width="100" label="货品图片">
           <template slot-scope="scope">
             <img v-if="scope.row.url" :src="scope.row.url" width="40">
@@ -205,24 +206,25 @@
         </el-table-column>
       </el-table>
 
-      <el-dialog :visible.sync="productVisiable" title="设置货品">
+      <el-dialog :visible.sync="productVisiable" title="添加货品">
         <el-form
           ref="productForm"
           :model="productForm"
           status-icon
           label-position="left"
           label-width="100px"
-          style="width: 400px; margin-left:50px;">
+          style="width: 400px; margin-left:50px;"
+        >
           <el-form-item label="货品规格列" prop="specifications">
             <el-tag v-for="tag in productForm.specifications" :key="tag">
               {{ tag }}
             </el-tag>
           </el-form-item>
           <el-form-item label="货品售价" prop="price">
-            <el-input v-model="productForm.price"/>
+            <el-input v-model="productForm.price" />
           </el-form-item>
           <el-form-item label="货品数量" prop="number">
-            <el-input v-model="productForm.number"/>
+            <el-input v-model="productForm.number" />
           </el-form-item>
           <el-form-item label="货品图片" prop="url">
             <el-upload
@@ -231,9 +233,10 @@
               :headers="headers"
               :on-success="uploadProductUrl"
               class="avatar-uploader"
-              accept=".jpg,.jpeg,.png,.gif">
+              accept=".jpg,.jpeg,.png,.gif"
+            >
               <img v-if="productForm.url" :src="productForm.url" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"/>
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
         </el-form>
@@ -246,10 +249,10 @@
 
     <el-card class="box-card">
       <h3>商品参数</h3>
-      <el-button :plain="true" type="primary" @click="handleAttributeShow">添加</el-button>
+      <el-button type="primary" @click="handleAttributeShow">添加</el-button>
       <el-table :data="attributes">
-        <el-table-column property="attribute" label="商品参数名称"/>
-        <el-table-column property="value" label="商品参数值"/>
+        <el-table-column property="attribute" label="商品参数名称" />
+        <el-table-column property="value" label="商品参数值" />
         <el-table-column align="center" label="操作" width="100" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button type="danger" size="mini" @click="handleAttributeDelete(scope.row)">删除</el-button>
@@ -257,19 +260,20 @@
         </el-table-column>
       </el-table>
 
-      <el-dialog :visible.sync="attributeVisiable" title="设置商品参数">
+      <el-dialog :visible.sync="attributeVisiable" title="添加商品参数">
         <el-form
           ref="attributeForm"
           :model="attributeForm"
           status-icon
           label-position="left"
           label-width="100px"
-          style="width: 400px; margin-left:50px;">
+          style="width: 400px; margin-left:50px;"
+        >
           <el-form-item label="商品参数名称" prop="attribute">
-            <el-input v-model="attributeForm.attribute"/>
+            <el-input v-model="attributeForm.attribute" />
           </el-form-item>
           <el-form-item label="商品参数值" prop="value">
-            <el-input v-model="attributeForm.value"/>
+            <el-input v-model="attributeForm.value" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -351,7 +355,7 @@ export default {
       keywords: [],
       categoryList: [],
       brandList: [],
-      goods: { picUrl: '', gallery: [] },
+      goods: { picUrl: '', gallery: [], isHot: false, isNew: true, isOnSale: true },
       specVisiable: false,
       specForm: { specification: '', value: '', picUrl: '' },
       multipleSpec: false,
@@ -368,6 +372,7 @@ export default {
       },
       editorInit: {
         language: 'zh_CN',
+        height: 500,
         convert_urls: false,
         plugins: ['advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools importcss insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount'],
         toolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample', 'hr bullist numlist link image charmap preview anchor pagebreak insertdatetime media table emoticons forecolor backcolor fullscreen'],

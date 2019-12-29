@@ -13,20 +13,16 @@
     "build:prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint"
   },
-
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^1.1.2",
-    "axios": "^0.18.0",
+    "axios": ">=0.18.1",
     "dayjs": "^1.7.7",
-    "js-md5": "^0.7.3",
-    "lodash": "^4.17.11",
-    "vant": "^1.6.15",
-    "vee-validate": "^2.1.4",
-    "vue": "^2.5.17",
     "js-cookie": "2.2.0",
-    "vuex": "3.0.1",
+    "lodash": "^4.17.11",
+    "vant": "^2.0.6",
+    "vue": "^2.5.17",
     "vue-router": "^3.0.1",
-    "vuelidation": "^1.1.0"
+    "vuelidate": "^0.7.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.5",

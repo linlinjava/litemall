@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.admin.web;
 
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/address")
@@ -35,7 +31,7 @@ public class AdminAddressController {
     private LitemallRegionService regionService;
 
     @RequiresPermissions("admin:address:list")
-    @RequiresPermissionsDesc(menu={"用户管理" , "收货地址"}, button="查询")
+    @RequiresPermissionsDesc(menu = {"用户管理", "收货地址"}, button = "查询")
     @GetMapping("/list")
     public Object list(Integer userId, String name,
                        @RequestParam(defaultValue = "1") Integer page,
@@ -44,13 +40,6 @@ public class AdminAddressController {
                        @Order @RequestParam(defaultValue = "desc") String order) {
 
         List<LitemallAddress> addressList = addressService.querySelective(userId, name, page, limit, sort, order);
-        long total = PageInfo.of(addressList).getTotal();
-
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", addressList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(addressList);
     }
 }

@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.system.SystemConfig;
@@ -14,10 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.linlinjava.litemall.wx.util.WxResponseCode.GOODS_NO_STOCK;
 import static org.linlinjava.litemall.wx.util.WxResponseCode.GOODS_UNSHELVE;
@@ -60,7 +58,22 @@ public class WxCartController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallCart> cartList = cartService.queryByUid(userId);
+        List<LitemallCart> list = cartService.queryByUid(userId);
+        List<LitemallCart> cartList = new ArrayList<>();
+        // TODO
+        // 如果系统检查商品已删除或已下架，则系统自动删除。
+        // 更好的效果应该是告知用户商品失效，允许用户点击按钮来清除失效商品。
+        for (LitemallCart cart : list) {
+            LitemallGoods goods = goodsService.findById(cart.getGoodsId());
+            if (goods == null || !goods.getIsOnSale()) {
+                cartService.deleteById(cart.getId());
+                logger.debug("系统自动删除失效购物车商品 goodsId=" + cart.getGoodsId() + " productId=" + cart.getProductId());
+            }
+            else{
+                cartList.add(cart);
+            }
+        }
+
         Integer goodsCount = 0;
         BigDecimal goodsAmount = new BigDecimal(0.00);
         Integer checkedGoodsCount = 0;
@@ -111,6 +124,9 @@ public class WxCartController {
         if (!ObjectUtils.allNotNull(productId, number, goodsId)) {
             return ResponseUtil.badArgument();
         }
+        if(number <= 0){
+            return ResponseUtil.badArgument();
+        }
 
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
@@ -130,7 +146,12 @@ public class WxCartController {
             cart.setId(null);
             cart.setGoodsSn(goods.getGoodsSn());
             cart.setGoodsName((goods.getName()));
-            cart.setPicUrl(goods.getPicUrl());
+            if(StringUtils.isEmpty(product.getUrl())){
+                cart.setPicUrl(goods.getPicUrl());
+            }
+            else{
+                cart.setPicUrl(product.getUrl());
+            }
             cart.setPrice(product.getPrice());
             cart.setSpecifications(product.getSpecifications());
             cart.setUserId(userId);
@@ -177,6 +198,9 @@ public class WxCartController {
         if (!ObjectUtils.allNotNull(productId, number, goodsId)) {
             return ResponseUtil.badArgument();
         }
+        if(number <= 0){
+            return ResponseUtil.badArgument();
+        }
 
         //判断商品是否可以购买
         LitemallGoods goods = goodsService.findById(goodsId);
@@ -196,7 +220,12 @@ public class WxCartController {
             cart.setId(null);
             cart.setGoodsSn(goods.getGoodsSn());
             cart.setGoodsName((goods.getName()));
-            cart.setPicUrl(goods.getPicUrl());
+            if(StringUtils.isEmpty(product.getUrl())){
+                cart.setPicUrl(goods.getPicUrl());
+            }
+            else{
+                cart.setPicUrl(product.getUrl());
+            }
             cart.setPrice(product.getPrice());
             cart.setSpecifications(product.getSpecifications());
             cart.setUserId(userId);
@@ -237,6 +266,9 @@ public class WxCartController {
         Integer goodsId = cart.getGoodsId();
         Integer id = cart.getId();
         if (!ObjectUtils.allNotNull(id, productId, number, goodsId)) {
+            return ResponseUtil.badArgument();
+        }
+        if(number <= 0){
             return ResponseUtil.badArgument();
         }
 
@@ -377,7 +409,7 @@ public class WxCartController {
      * @return 购物车操作结果
      */
     @GetMapping("checkout")
-    public Object checkout(@LoginUser Integer userId, Integer cartId, Integer addressId, Integer couponId, Integer grouponRulesId) {
+    public Object checkout(@LoginUser Integer userId, Integer cartId, Integer addressId, Integer couponId, Integer userCouponId, Integer grouponRulesId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
@@ -386,7 +418,7 @@ public class WxCartController {
         LitemallAddress checkedAddress = null;
         if (addressId == null || addressId.equals(0)) {
             checkedAddress = addressService.findDefault(userId);
-            // 如果仍然没有地址，则是没有收获地址
+            // 如果仍然没有地址，则是没有收货地址
             // 返回一个空的地址id=0，这样前端则会提醒添加地址
             if (checkedAddress == null) {
                 checkedAddress = new LitemallAddress();
@@ -406,7 +438,7 @@ public class WxCartController {
 
         // 团购优惠
         BigDecimal grouponPrice = new BigDecimal(0.00);
-        LitemallGrouponRules grouponRules = grouponRulesService.queryById(grouponRulesId);
+        LitemallGrouponRules grouponRules = grouponRulesService.findById(grouponRulesId);
         if (grouponRules != null) {
             grouponPrice = grouponRules.getDiscount();
         }
@@ -436,10 +468,12 @@ public class WxCartController {
         // 计算优惠券可用情况
         BigDecimal tmpCouponPrice = new BigDecimal(0.00);
         Integer tmpCouponId = 0;
+        Integer tmpUserCouponId = 0;
         int tmpCouponLength = 0;
         List<LitemallCouponUser> couponUserList = couponUserService.queryAll(userId);
         for(LitemallCouponUser couponUser : couponUserList){
-            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponUser.getCouponId(), checkedGoodsPrice);
+            tmpUserCouponId = couponUser.getId();
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponUser.getCouponId(), tmpUserCouponId, checkedGoodsPrice);
             if(coupon == null){
                 continue;
             }
@@ -459,17 +493,20 @@ public class WxCartController {
         // 3. 用户已选择优惠券，则测试优惠券是否合适
         if (couponId == null || couponId.equals(-1)){
             couponId = -1;
+            userCouponId = -1;
         }
         else if (couponId.equals(0)) {
             couponPrice = tmpCouponPrice;
             couponId = tmpCouponId;
+            userCouponId = tmpUserCouponId;
         }
         else {
-            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, checkedGoodsPrice);
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, userCouponId, checkedGoodsPrice);
             // 用户选择的优惠券有问题，则选择合适优惠券，否则使用用户选择的优惠券
             if(coupon == null){
                 couponPrice = tmpCouponPrice;
                 couponId = tmpCouponId;
+                userCouponId = tmpUserCouponId;
             }
             else {
                 couponPrice = coupon.getDiscount();
@@ -486,12 +523,14 @@ public class WxCartController {
         BigDecimal integralPrice = new BigDecimal(0.00);
 
         // 订单费用
-        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
+        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice).max(new BigDecimal(0.00));
+
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
         Map<String, Object> data = new HashMap<>();
         data.put("addressId", addressId);
         data.put("couponId", couponId);
+        data.put("userCouponId", userCouponId);
         data.put("cartId", cartId);
         data.put("grouponRulesId", grouponRulesId);
         data.put("grouponPrice", grouponPrice);

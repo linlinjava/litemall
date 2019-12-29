@@ -5,7 +5,7 @@ var app = getApp();
 Page({
   data: {
     bannerInfo: {
-      'imgUrl': 'http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png',
+      'imgUrl': '/static/images/new.png',
       'name': '大家都在买的'
     },
     categoryFilter: false,
@@ -16,7 +16,7 @@ Page({
     currentSort: 'add_time',
     currentSortOrder: 'desc',
     page: 1,
-    limit: 100
+    limit: 10
   },
   getGoodsList: function() {
     var that = this;
@@ -24,7 +24,7 @@ Page({
     util.request(api.GoodsList, {
         isNew: true,
         page: that.data.page,
-        size: that.data.size,
+        limit: that.data.limit,
         order: that.data.currentSortOrder,
         sort: that.data.currentSort,
         categoryId: that.data.categoryId
@@ -32,7 +32,7 @@ Page({
       .then(function(res) {
         if (res.errno === 0) {
           that.setData({
-            goodsList: res.data.goodsList,
+            goodsList: res.data.list,
             filterCategory: res.data.filterCategoryList
           });
         }

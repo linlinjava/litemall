@@ -57,7 +57,7 @@ export default {
       this.listLoading = true
       listFootprint(this.listQuery)
         .then(response => {
-          this.list = response.data.data.items
+          this.list = response.data.data.list
           this.total = response.data.data.total
           this.listLoading = false
         })

@@ -24,7 +24,6 @@ page {
 }
 
 .service-policy .item {
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/servicePolicyRed-518d32d74b.png) 0 center no-repeat;
   background-size: 10rpx;
   padding-left: 15rpx;
   display: flex;
@@ -42,15 +41,7 @@ page {
 .no-login .c {
   width: 100%;
   height: auto;
-  margin-top: 200rpx;
-}
-
-.no-login .c image {
-  margin: 0 auto;
-  display: block;
-  text-align: center;
-  width: 258rpx;
-  height: 258rpx;
+  margin-top: 400rpx;
 }
 
 .no-login .c text {
@@ -100,15 +91,7 @@ page {
 .no-cart .c {
   width: 100%;
   height: auto;
-  margin-top: 200rpx;
-}
-
-.no-cart .c image {
-  margin: 0 auto;
-  display: block;
-  text-align: center;
-  width: 258rpx;
-  height: 258rpx;
+  margin-top: 400rpx;
 }
 
 .no-cart .c text {
@@ -148,18 +131,13 @@ page {
   overflow: hidden;
 }
 
-.cart-view .item .checkbox {
+.cart-view .item .van-checkbox {
   float: left;
-  height: 34rpx;
-  width: 34rpx;
-  margin: 65rpx 18rpx 65rpx 26rpx;
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-0e09baa37e.png) no-repeat;
-  background-size: 34rpx;
+  margin: 65rpx 18rpx 65rpx 18rpx;
 }
 
-.cart-view .item .checkbox.checked {
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-checked-822e54472a.png) no-repeat;
-  background-size: 34rpx;
+.cart-view .item .van-checkbox .van-icon {
+  color: #fff;
 }
 
 .cart-view .item .cart-goods {
@@ -228,24 +206,12 @@ page {
   float: left;
 }
 
-.cart-view .item .open {
-  height: 28rpx;
-  width: 150rpx;
-  display: block;
-  float: right;
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/arrowDown-d48093db25.png) right center no-repeat;
-  background-size: 25rpx;
-  font-size: 25rpx;
-  color: #333;
-}
-
 .cart-view .item.edit .t {
   display: none;
 }
 
 .cart-view .item.edit .attr {
   text-align: right;
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/arrow-right1-e9828c5b35.png) right center no-repeat;
   padding-right: 25rpx;
   background-size: 12rpx 20rpx;
   margin-bottom: 24rpx;
@@ -367,19 +333,14 @@ page {
   display: flex;
 }
 
-.cart-bottom .checkbox {
-  height: 34rpx;
-  padding-left: 60rpx;
-  line-height: 34rpx;
+.cart-bottom .van-checkbox {
+  float: left;
   margin: 33rpx 18rpx 33rpx 26rpx;
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-0e09baa37e.png) no-repeat;
-  background-size: 34rpx;
-  font-size: 29rpx;
+    font-size: 29rpx;
 }
 
-.cart-bottom .checkbox.checked {
-  background: url(http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/checkbox-checked-822e54472a.png) no-repeat;
-  background-size: 34rpx;
+.cart-bottom .van-checkbox .van-icon {
+  color: #fff;
 }
 
 .cart-bottom .total {

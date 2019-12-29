@@ -20,13 +20,15 @@ litemall:
       password: XXXXXXXXXXXXX
       sendfrom: ex@ex.com.cn
       sendto: ex@qq.com
-
+      port: 465
     # 短消息模版通知配置
     # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
     sms:
       enable: false
-      appid: 111111111
-      appkey: xxxxxxxxxxxxxx
+      # 如果是腾讯云短信，则设置active的值tencent
+      # 如果是阿里云短信，则设置active的值aliyun
+      active: tencent
+      sign: litemall
       template:
       - name: paySucceed
         templateId: 156349
@@ -36,6 +38,14 @@ litemall:
         templateId: 158002
       - name: refund
         templateId: 159447
+      tencent:
+        appid: 111111111
+        appkey: xxxxxxxxxxxxxx
+      aliyun:
+        regionId: xxx
+        accessKeyId: xxx
+        accessKeySecret: xxx
+
 
     # 微信模版通知配置
     # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
@@ -102,10 +112,10 @@ litemall:
     # 腾讯对象存储配置信息
     # 请参考 https://cloud.tencent.com/document/product/436/6249
     tencent:
-      secretId: 111111
-      secretKey: xxxxxx
-      region: xxxxxx
-      bucketName: litemall
+      secretId: AKIDOccMr856uoU1Tsa2MQL5aqseBUWRrb5i
+      secretKey: XqtgEhIdrupTs4ygaWlkUUXv3w3FiwuD
+      region: ap-shanghai
+      bucketName: vytech-1300096589
     # 七牛云对象存储配置信息
     qiniu:
       endpoint: http://pd5cb6ulu.bkt.clouddn.com

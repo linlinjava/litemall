@@ -30,6 +30,20 @@ public class WxCatalogController {
     @Autowired
     private LitemallCategoryService categoryService;
 
+    @GetMapping("/getfirstcategory")
+    public Object getFirstCategory() {
+        // 所有一级分类目录
+        List<LitemallCategory> l1CatList = categoryService.queryL1();
+        return ResponseUtil.ok(l1CatList);
+    }
+
+    @GetMapping("/getsecondcategory")
+    public Object getSecondCategory(@NotNull Integer id) {
+        // 所有二级分类目录
+        List<LitemallCategory> currentSubCategory = categoryService.queryByPid(id);
+        return ResponseUtil.ok(currentSubCategory);
+    }
+
     /**
      * 分类详情
      *
@@ -119,6 +133,9 @@ public class WxCatalogController {
     public Object current(@NotNull Integer id) {
         // 当前分类
         LitemallCategory currentCategory = categoryService.findById(id);
+        if(currentCategory == null){
+            return ResponseUtil.badArgumentValue();
+        }
         List<LitemallCategory> currentSubCategory = categoryService.queryByPid(currentCategory.getId());
 
         Map<String, Object> data = new HashMap<String, Object>();

@@ -64,12 +64,12 @@ public class LitemallOrderService {
         String now = df.format(LocalDate.now());
         String orderSn = now + getRandomNum(6);
         while (countByOrderSn(userId, orderSn) != 0) {
-            orderSn = getRandomNum(6);
+            orderSn = now + getRandomNum(6);
         }
         return orderSn;
     }
 
-    public List<LitemallOrder> queryByOrderStatus(Integer userId, List<Short> orderStatus, Integer page, Integer limit) {
+    public List<LitemallOrder> queryByOrderStatus(Integer userId, List<Short> orderStatus, Integer page, Integer limit, String sort, String order) {
         LitemallOrderExample example = new LitemallOrderExample();
         example.setOrderByClause(LitemallOrder.Column.addTime.desc());
         LitemallOrderExample.Criteria criteria = example.or();
@@ -78,6 +78,10 @@ public class LitemallOrderService {
             criteria.andOrderStatusIn(orderStatus);
         }
         criteria.andDeletedEqualTo(false);
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            example.setOrderByClause(sort + " " + order);
+        }
+
         PageHelper.startPage(page, limit);
         return litemallOrderMapper.selectByExample(example);
     }
@@ -122,10 +126,8 @@ public class LitemallOrderService {
     }
 
     public List<LitemallOrder> queryUnpaid(int minutes) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expired = now.minusMinutes(minutes);
         LitemallOrderExample example = new LitemallOrderExample();
-        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_CREATE).andAddTimeLessThan(expired).andDeletedEqualTo(false);
+        example.or().andOrderStatusEqualTo(OrderUtil.STATUS_CREATE).andDeletedEqualTo(false);
         return litemallOrderMapper.selectByExample(example);
     }
 

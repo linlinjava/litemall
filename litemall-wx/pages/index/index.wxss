@@ -235,21 +235,10 @@
 
 .a-groupon .b .name {
   float: left;
-  width: 330rpx;
   display: block;
   color: #333;
   line-height: 50rpx;
   font-size: 30rpx;
-}
-
-.a-groupon .capsule-tag {
-  float: right;
-  padding-right: 0rpx;
-  padding-top: 8rpx;
-}
-
-.a-groupon .zan-capsule + .zan-capsule {
-  margin-left: 10px;
 }
 
 .a-groupon .b .desc {
@@ -523,6 +512,10 @@
   align-items: center;
 }
 
+.search .van-icon-search {
+  line-height: 59rpx;
+}
+
 .search .input {
   width: 690rpx;
   height: 56rpx;
@@ -531,13 +524,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.search .icon {
-  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png) center no-repeat;
-  background-size: 100%;
-  width: 28rpx;
-  height: 28rpx;
 }
 
 .search .txt {

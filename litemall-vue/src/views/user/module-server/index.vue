@@ -2,7 +2,7 @@
   <div>
     <van-cell-group>
       <van-cell title="联系客服" @click="showKefu = true" isLink></van-cell>
-      <van-cell title="意见反馈" isLink></van-cell>
+      <van-cell title="意见反馈" to="/user/feedback" isLink></van-cell>
       <van-cell title="常见问题" to="/user/help" isLink/>
     </van-cell-group>
     <van-popup v-model="showKefu">

@@ -1,4 +1,12 @@
 <view class="comments">
+  <view class="h">
+    <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
+      <view class="txt">全部({{allCount}})</view>
+    </view>
+    <view class="item {{ showType == 0 ? '' : 'active'}}" bindtap="switchTab">
+      <view class="txt">有图({{hasPicCount}})</view>
+    </view>
+  </view>
   <view class="b">
     <view class="item" wx:for="{{comments}}" wx:key="id">
       <view class="info">
@@ -10,7 +18,7 @@
       </view>
       <view class="comment">{{item.content}}</view>
       <view class="imgs" wx:if="{{item.picList.length > 0}}">
-        <image class="img" wx:for="{{item.picList}}" wx:key="id" wx:for-item="pitem" src="{{pitem.picUrl}}"></image>
+        <image class="img" wx:for="{{item.picList}}" wx:key="*this" wx:for-item="pitem" src="{{pitem}}"></image>
       </view>
     </view>
 

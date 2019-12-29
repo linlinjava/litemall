@@ -14,18 +14,14 @@
         </van-uploader>
       </van-cell>
 
-      <!-- <van-cell title="背景图" to="/user/information/setbg" isLink></van-cell> -->
-      <!-- <van-cell title="昵称" to="/user/information/setNickname" :value="nickName" isLink/> -->
-      <!-- <van-cell title="性别" :value="genderText" @click="showSex = true" isLink/> -->
-      <!-- <van-cell title="密码设置" to="/user/information/setPassword" isLink/> -->
-      <!-- <van-cell title="手机号" to="/user/information/setMobile" :value="mobile" isLink></van-cell> -->
-      <van-cell title="背景图" isLink></van-cell>
-      <van-cell title="昵称" :value="nickName" isLink/>
-      <van-cell title="性别" isLink/>
-      <!-- <van-cell title="密码设置" to="/user/information/setPassword" isLink/> -->
-      <van-cell title="手机号" :value="mobile" isLink></van-cell>
+      <van-cell title="昵称" to="/user/information/setNickname" :value="nickName" isLink/>
+      <van-cell title="性别" :value="genderText" @click="showSex = true" isLink/>
+      <van-cell title="密码设置" to="/user/information/setPassword" isLink/>
+      <van-cell title="手机号" to="/user/information/setMobile" :value="mobile" isLink></van-cell>
     </van-cell-group>
-    <van-button class="bottom_btn" @click="loginOut" type="primary" bottomAction>退出登录</van-button>
+
+    <van-button size="large" class="user_quit" @click="loginOut">退出当前账户</van-button>
+
     <van-popup v-model="showSex" position="bottom">
       <van-picker
         showToolbar
@@ -40,10 +36,9 @@
 
 <script>
 import { Uploader, Picker, Popup, Button } from 'vant';
-import { USER_PROFILE } from '@/api/user';
 import { removeLocalStorage } from '@/utils/local-storage';
 import { getLocalStorage } from '@/utils/local-storage';
-import { authLogout } from '@/api/api';
+import { authInfo, authLogout, authProfile } from '@/api/api';
 
 export default {
   data() {
@@ -57,7 +52,7 @@ export default {
       showSex: false,
       avatar: '',
       nickName: '',
-      gender: -1,
+      gender: 0,
       mobile: ''
     };
   },
@@ -78,34 +73,24 @@ export default {
       console.log(file);
     },
     onSexConfirm(value, index) {
-      this.$reqPut(USER_PROFILE, {
-        gender: index[0]
-      }).then(res => {
-        this.gender = res.data.data.gender;
-        this.showSex = false;
-      });
+      this.showSex = false;
     },
     getUserInfo() {
-      const infoData = getLocalStorage(
-        'nickName',
-        'background_image',
-        'avatar'
-      );
-      // debugger;
-      this.avatar = infoData.avatar;
-      this.nickName = infoData.nickName;
-      // this.gender = infoData.gender;
-      // this.mobile = infoData.mobile;
+      authInfo().then(res => {
+        this.avatar = res.data.data.avatar;
+        this.nickName = res.data.data.nickName;
+        this.gender = res.data.data.gender;
+        this.mobile = res.data.data.mobile;
+      })
     },
     loginOut() {
-      authLogout();
-      removeLocalStorage(
-        'Authorization',
-        'avatar',
-        // 'background_image',
-        'nickName'
-      );
-      this.$router.push({ name: 'home' });
+      authLogout().then(res => {
+        removeLocalStorage('Authorization')
+        removeLocalStorage('avatar')
+        removeLocalStorage('nickName')
+        this.$router.push({ name: 'home' });
+      });
+
     }
   },
 
@@ -138,6 +123,9 @@ export default {
       font-size: 20px;
       color: $border-color;
     }
+  }
+  .user_quit {
+    margin-top: 20px;
   }
 }
 </style>

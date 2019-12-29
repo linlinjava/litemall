@@ -15,6 +15,7 @@ public class TencentSmsSender implements SmsSender {
     private final Log logger = LogFactory.getLog(TencentSmsSender.class);
 
     private SmsSingleSender sender;
+    private String sign;
 
     public SmsSingleSender getSender() {
         return sender;
@@ -35,16 +36,18 @@ public class TencentSmsSender implements SmsSender {
             smsResult.setResult(result);
             return smsResult;
         } catch (HTTPException | IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
-        return null;
+        SmsResult smsResult = new SmsResult();
+        smsResult.setSuccessful(false);
+        return smsResult;
     }
 
     @Override
-    public SmsResult sendWithTemplate(String phone, int templateId, String[] params) {
+    public SmsResult sendWithTemplate(String phone, String templateId, String[] params) {
         try {
-            SmsSingleSenderResult result = sender.sendWithParam("86", phone, templateId, params, "", "", "");
+            SmsSingleSenderResult result = sender.sendWithParam("86", phone, Integer.parseInt(templateId), params, this.sign, "", "");
             logger.debug(result);
 
             SmsResult smsResult = new SmsResult();
@@ -52,9 +55,15 @@ public class TencentSmsSender implements SmsSender {
             smsResult.setResult(result);
             return smsResult;
         } catch (HTTPException | IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
-        return null;
+        SmsResult smsResult = new SmsResult();
+        smsResult.setSuccessful(false);
+        return smsResult;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 }

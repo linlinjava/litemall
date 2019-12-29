@@ -1,56 +1,39 @@
 <view class="container">
 
+  <view class="label">项目名称:</view>
   <view class="about-item">
-
     <view class="item-left">
-      <label>项目名称: </label>
-       <text>{{shopInfo.name}}</text> 
+      <text>{{name}}</text> 
     </view>
-
   </view>
 
+  <view class="label">项目地址:</view>
   <view class="about-item">
     <view class="item-left">
-      <label>项目地址: </label>
-       <text>{{shopInfo.address}}</text> 
+      <text>{{address}}</text> 
     </view>
-
     <view class="item-right" bindtap="showLocation">
-      <image src="/static/images/ico-addr.png" class="right-icon"></image>
+      <van-icon class="right-icon" name="location-o" />    
     </view>
   </view>
 
+  <view class="label">电话号码:</view>
   <view class="about-item">
     <view class="item-left">
-      <label>电话号码:    </label>
-       <text>{{shopInfo.linkPhone}}</text> 
+      <text>{{phone}}</text> 
     </view>
     <view class="item-right" bindtap="callPhone">
-      <image src="/static/images/telephone.png" class="right-icon"></image>
+      <van-icon class="right-icon" name="phone-o" />
     </view>
   </view>
 
+  <view class="label">QQ交流群: </view>
   <view class="about-item">
     <view class="item-left">
-      <label>QQ交流群: </label>
-       <text>{{shopInfo.qqNumber}}</text> 
+      <text>{{qq}}</text> 
     </view>
     <view class="item-right">
-      <image src="/static/images/mobile.png" class="right-icon"></image>
-    </view>
-  </view>
-
-  <view class="about-item">
-    <view class="item-left">
-      <label>当前版本: </label>
-       <text>1.0.0</text> 
-    </view>
-  </view>
-
-  <view class="about-item">
-    <view class="item-left">
-      <label>开源协议: </label>
-       <text>MIT</text> 
+      <van-icon class="right-icon" name="friends-o" />
     </view>
   </view>
 

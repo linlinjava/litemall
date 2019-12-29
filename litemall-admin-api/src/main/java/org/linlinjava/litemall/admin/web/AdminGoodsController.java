@@ -27,6 +27,7 @@ public class AdminGoodsController {
     /**
      * 查询商品
      *
+     * @param goodsId
      * @param goodsSn
      * @param name
      * @param page
@@ -38,12 +39,12 @@ public class AdminGoodsController {
     @RequiresPermissions("admin:goods:list")
     @RequiresPermissionsDesc(menu = {"商品管理", "商品管理"}, button = "查询")
     @GetMapping("/list")
-    public Object list(String goodsSn, String name,
+    public Object list(Integer goodsId, String goodsSn, String name,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        return adminGoodsService.list(goodsSn, name, page, limit, sort, order);
+        return adminGoodsService.list(goodsId, goodsSn, name, page, limit, sort, order);
     }
 
     @GetMapping("/catAndBrand")

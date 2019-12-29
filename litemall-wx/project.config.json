@@ -267,6 +267,13 @@
 					"pathName": "pages/help/help",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的团购",
+					"pathName": "pages/groupon/myGroupon/myGroupon",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

@@ -65,7 +65,7 @@ export const constantRouterMap = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: '首页', icon: 'dashboard', noCache: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   }
@@ -332,6 +332,28 @@ export const asyncRouterMap = [
         }
       },
       {
+        path: 'topic-create',
+        component: () => import('@/views/promotion/topicCreate'),
+        name: 'topicCreate',
+        meta: {
+          perms: ['POST /admin/topic/create'],
+          title: '专题创建',
+          noCache: true
+        },
+        hidden: true
+      },
+      {
+        path: 'topic-edit',
+        component: () => import('@/views/promotion/topicEdit'),
+        name: 'topicEdit',
+        meta: {
+          perms: ['GET /admin/topic/read', 'POST /admin/topic/update'],
+          title: '专题编辑',
+          noCache: true
+        },
+        hidden: true
+      },
+      {
         path: 'groupon-rule',
         component: () => import('@/views/promotion/grouponRule'),
         name: 'grouponRule',
@@ -380,7 +402,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/sys/log'),
         name: 'log',
         meta: {
-          perms: ['GET /admin/admin/log'],
+          perms: ['GET /admin/log/list'],
           title: '操作日志',
           noCache: true
         }
@@ -400,7 +422,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/sys/os'),
         name: 'os',
         meta: {
-          perms: ['GET /admin/os/list', 'POST /admin/os/create', 'POST /admin/os/update', 'POST /admin/os/delete'],
+          perms: ['GET /admin/storage/list', 'POST /admin/storage/create', 'POST /admin/storage/update', 'POST /admin/storage/delete'],
           title: '对象存储',
           noCache: true
         }

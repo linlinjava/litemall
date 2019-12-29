@@ -36,7 +36,7 @@
       :goods="skuGoods"
       :goodsId="goods.info.id"
       @buy-clicked="buyGoods"
-      @add-cart="addCart"    
+      @add-cart="addCart"
     />
     <van-popup v-model="propsPopup" position="bottom">
       <popup-props :propsStr="props_str"></popup-props>
@@ -52,10 +52,10 @@
     </div>
 
     <van-goods-action>
-      <van-goods-action-mini-btn @click="toCart" icon="cart-o" :info="(cartInfo > 0) ? cartInfo : ''"/>
-      <van-goods-action-mini-btn @click="addCollect" icon="star-o" :style="(goods.userHasCollect !== 0) ? 'color: #f7b444;':''"/>
-      <van-goods-action-big-btn @click="skuClick" text="加入购物车"/>
-      <van-goods-action-big-btn primary @click="skuClick" text="立即购买"/>
+      <van-goods-action-icon @click="toCart" icon="cart-o" :info="(cartInfo > 0) ? cartInfo : ''"/>
+      <van-goods-action-icon @click="addCollect" icon="star-o" :style="(goods.userHasCollect !== 0) ? 'color: #f7b444;':''"/>
+      <van-goods-action-button type="warning" @click="skuClick" text="加入购物车"/>
+      <van-goods-action-button type="danger" @click="skuClick" text="立即购买"/>
     </van-goods-action>
 
   </div>
@@ -65,7 +65,7 @@
 
 import { goodsDetail, cartGoodsCount, collectAddOrDelete, cartAdd, cartFastAdd } from '@/api/api';
 
-import { Sku, Swipe, SwipeItem, GoodsAction, GoodsActionBigBtn, GoodsActionMiniBtn, Popup } from 'vant';
+import { Sku, Swipe, SwipeItem, GoodsAction, GoodsActionButton, GoodsActionIcon, Popup } from 'vant';
 import { setLocalStorage } from '@/utils/local-storage';
 import popupProps from './popup-props';
 import _ from 'lodash';
@@ -83,13 +83,13 @@ export default {
       goods: {
         userHasCollect: 0,
         info: {
-          gallery:[]
+          gallery: []
         }
       },
       sku: {
         tree: [],
         list: [],
-        price: '1.00', // 默认价格（单位元）
+        price: '1.00' // 默认价格（单位元）
       },
       skuGoods: {
         // 商品标题
@@ -109,8 +109,7 @@ export default {
     };
   },
 
-
-computed: {
+  computed: {
     props_str() {
       let props_arr = [];
       _.each(this.goods.attribute, json => {
@@ -129,17 +128,14 @@ computed: {
       this.showSku = true;
     },
     initData() {
-      goodsDetail({id: this.itemId}).then(
-        res => {
-          this.goods = res.data.data;
-          this.skuAdapter();
-        }
-      );
+      goodsDetail({ id: this.itemId }).then(res => {
+        this.goods = res.data.data;
+        this.skuAdapter();
+      });
 
       cartGoodsCount().then(res => {
         this.cartInfo = res.data.data;
       });
-
     },
     toCart() {
       this.$router.push({
@@ -147,13 +143,16 @@ computed: {
       });
     },
     addCollect() {
-      collectAddOrDelete({valueId: this.itemId, type: 0}).then(res => {
-        let type = res.data.data.type;
-        this.goods.userHasCollect = type === 'add' ? 1 : 0;
-        this.$toast({
-          message: type === 'add' ? '添加成功' : '取消成功',
-          duration: 1500
-        });
+      collectAddOrDelete({ valueId: this.itemId, type: 0 }).then(res => {
+        if (this.goods.userHasCollect === 1) {
+          this.goods.userHasCollect = 0;
+        } else {
+          this.goods.userHasCollect = 1;
+          this.$toast({
+            message: '收藏成功',
+            duration: 1500
+          });
+        }
       });
     },
     getProductId(s1, s2) {
@@ -164,8 +163,7 @@ computed: {
         _.each(specification.valueList, specValue => {
           if (specValue.id === s1) {
             s1_name = specValue.value;
-          }
-          else if (specValue.id === s2) {
+          } else if (specValue.id === s2) {
             s2_name = specValue.value;
           }
         });
@@ -211,18 +209,16 @@ computed: {
           message: '目前仅支持两规格',
           duration: 1500
         });
-        return
-      }
-      else if (_.has(data.selectedSkuComb, 's2')) {
+        return;
+      } else if (_.has(data.selectedSkuComb, 's2')) {
         params.productId = this.getProductId(
           data.selectedSkuComb.s1,
           data.selectedSkuComb.s2
         );
+      } else {
+        params.productId = this.getProductIdByOne(data.selectedSkuComb.s1);
       }
-      else {
-        params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
-      }
-     cartAdd(params).then(() => {
+      cartAdd(params).then(() => {
         this.cartInfo = this.cartInfo + data.selectedNum;
         this.$toast({
           message: '已添加至购物车',
@@ -243,22 +239,20 @@ computed: {
           message: '目前仅支持两规格',
           duration: 1500
         });
-        return
-      }
-      else if (_.has(data.selectedSkuComb, 's2')) {
+        return;
+      } else if (_.has(data.selectedSkuComb, 's2')) {
         params.productId = this.getProductId(
           data.selectedSkuComb.s1,
           data.selectedSkuComb.s2
         );
+      } else {
+        params.productId = this.getProductIdByOne(data.selectedSkuComb.s1);
       }
-      else {
-        params.productId = this.getProductIdByOne(data.selectedSkuComb.s1)
-      }
-     cartFastAdd(params).then(res => {
-      let cartId = res.data.data;
-      setLocalStorage({CartId: cartId})
-      that.showSku = false;
-        this.$router.push({ name: 'placeOrderEntity'});
+      cartFastAdd(params).then(res => {
+        let cartId = res.data.data;
+        setLocalStorage({ CartId: cartId });
+        that.showSku = false;
+        this.$router.push('/order/checkout');
       });
     },
     skuAdapter() {
@@ -279,23 +273,23 @@ computed: {
       this.skuGoods = {
         title: this.goods.info.name,
         picture: this.goods.info.picUrl
-      }
+      };
     },
     setSkuList() {
       var sku_list = [];
-        _.each(this.goods.productList, v => {
-            var sku_list_obj = {};
-            _.each(v.specifications, (specificationName, index) => {
-              sku_list_obj[
-                's' + (~~index + 1)
-              ] = this.findSpecValueIdByName(specificationName);
-            });
-          
-          sku_list_obj.price = v.price * 100;
-          sku_list_obj.stock_num = v.number;
-          sku_list.push(sku_list_obj);
+      _.each(this.goods.productList, v => {
+        var sku_list_obj = {};
+        _.each(v.specifications, (specificationName, index) => {
+          sku_list_obj['s' + (~~index + 1)] = this.findSpecValueIdByName(
+            specificationName
+          );
         });
-    
+
+        sku_list_obj.price = v.price * 100;
+        sku_list_obj.stock_num = v.number;
+        sku_list.push(sku_list_obj);
+      });
+
       return sku_list;
     },
     findSpecValueIdByName(name) {
@@ -307,7 +301,7 @@ computed: {
             return;
           }
         });
-        if(id !== 0){
+        if (id !== 0) {
           return;
         }
       });
@@ -324,7 +318,7 @@ computed: {
             id: vv.id,
             name: vv.value,
             imUrl: vv.picUrl
-          })
+          });
         });
 
         specifications.push({
@@ -336,7 +330,7 @@ computed: {
 
       return specifications;
     }
-  },    
+  },
 
   components: {
     [Popup.name]: Popup,
@@ -344,11 +338,11 @@ computed: {
     [SwipeItem.name]: SwipeItem,
     [Sku.name]: Sku,
     [GoodsAction.name]: GoodsAction,
-    [GoodsActionBigBtn.name]: GoodsActionBigBtn,
-    [GoodsActionMiniBtn.name]: GoodsActionMiniBtn,
-    [popupProps.name]: popupProps    
+    [GoodsActionButton.name]: GoodsActionButton,
+    [GoodsActionIcon.name]: GoodsActionIcon,
+    [popupProps.name]: popupProps
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -397,8 +391,10 @@ computed: {
 
 .item_desc {
   background-color: #fff;
-  p {
+  /deep/ p {
     padding: 0 10px;
+    margin-block-start: 0 !important;
+    margin-block-end: 0 !important;
   }
   /deep/ img {
     max-width: 100%;

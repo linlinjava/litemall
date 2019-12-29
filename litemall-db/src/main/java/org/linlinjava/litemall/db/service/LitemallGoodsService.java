@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -126,10 +127,13 @@ public class LitemallGoodsService {
         return goodsMapper.selectByExampleSelective(example, columns);
     }
 
-    public List<LitemallGoods> querySelective(String goodsSn, String name, Integer page, Integer size, String sort, String order) {
+    public List<LitemallGoods> querySelective(Integer goodsId, String goodsSn, String name, Integer page, Integer size, String sort, String order) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         LitemallGoodsExample.Criteria criteria = example.createCriteria();
 
+        if (goodsId != null) {
+            criteria.andIdEqualTo(goodsId);
+        }
         if (!StringUtils.isEmpty(goodsSn)) {
             criteria.andGoodsSnEqualTo(goodsSn);
         }
@@ -246,5 +250,11 @@ public class LitemallGoodsService {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andNameEqualTo(name).andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
         return goodsMapper.countByExample(example) != 0;
+    }
+
+    public List<LitemallGoods> queryByIds(Integer[] ids) {
+        LitemallGoodsExample example = new LitemallGoodsExample();
+        example.or().andIdIn(Arrays.asList(ids)).andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
+        return goodsMapper.selectByExampleSelective(example, columns);
     }
 }

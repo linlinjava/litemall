@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.dao.LitemallGrouponRulesMapper;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallGrouponRules;
 import org.linlinjava.litemall.db.domain.LitemallGrouponRulesExample;
+import org.linlinjava.litemall.db.util.GrouponConstant;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,10 +37,8 @@ public class LitemallGrouponRulesService {
      * @param id
      * @return
      */
-    public LitemallGrouponRules queryById(Integer id) {
-        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
-        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
-        return mapper.selectOneByExample(example);
+    public LitemallGrouponRules findById(Integer id) {
+        return mapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -50,47 +49,43 @@ public class LitemallGrouponRulesService {
      */
     public List<LitemallGrouponRules> queryByGoodsId(Integer goodsId) {
         LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
-        example.or().andGoodsIdEqualTo(goodsId).andDeletedEqualTo(false);
+        example.or().andGoodsIdEqualTo(goodsId).andStatusEqualTo(GrouponConstant.RULE_STATUS_ON).andDeletedEqualTo(false);
+        return mapper.selectByExample(example);
+    }
+
+    public int countByGoodsId(Integer goodsId) {
+        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
+        example.or().andGoodsIdEqualTo(goodsId).andStatusEqualTo(GrouponConstant.RULE_STATUS_ON).andDeletedEqualTo(false);
+        return (int)mapper.countByExample(example);
+    }
+
+    public List<LitemallGrouponRules> queryByStatus(Short status) {
+        LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
+        example.or().andStatusEqualTo(status).andDeletedEqualTo(false);
         return mapper.selectByExample(example);
     }
 
     /**
-     * 获取首页团购活动列表
+     * 获取首页团购规则列表
      *
-     * @param offset
+     * @param page
      * @param limit
      * @return
      */
-    public List<Map<String, Object>> queryList(int offset, int limit) {
-        return queryList(offset, limit, "add_time", "desc");
+    public List<LitemallGrouponRules> queryList(Integer page, Integer limit) {
+        return queryList(page, limit, "add_time", "desc");
     }
 
-    public List<Map<String, Object>> queryList(int offset, int limit, String sort, String order) {
+    public List<LitemallGrouponRules> queryList(Integer page, Integer limit, String sort, String order) {
         LitemallGrouponRulesExample example = new LitemallGrouponRulesExample();
-        example.or().andDeletedEqualTo(false);
+        example.or().andStatusEqualTo(GrouponConstant.RULE_STATUS_ON).andDeletedEqualTo(false);
         example.setOrderByClause(sort + " " + order);
-        PageHelper.startPage(offset, limit);
-        List<LitemallGrouponRules> grouponRules = mapper.selectByExample(example);
-
-        List<Map<String, Object>> grouponList = new ArrayList<>(grouponRules.size());
-        for (LitemallGrouponRules rule : grouponRules) {
-            Integer goodsId = rule.getGoodsId();
-            LitemallGoods goods = goodsMapper.selectByPrimaryKeySelective(goodsId, goodsColumns);
-            if (goods == null)
-                continue;
-
-            Map<String, Object> item = new HashMap<>();
-            item.put("goods", goods);
-            item.put("groupon_price", goods.getRetailPrice().subtract(rule.getDiscount()));
-            item.put("groupon_member", rule.getDiscountMember());
-            grouponList.add(item);
-        }
-
-        return grouponList;
+        PageHelper.startPage(page, limit);
+        return mapper.selectByExample(example);
     }
 
     /**
-     * 判断某个团购活动是否已经过期
+     * 判断某个团购规则是否已经过期
      *
      * @return
      */
@@ -99,7 +94,7 @@ public class LitemallGrouponRulesService {
     }
 
     /**
-     * 获取团购活动列表
+     * 获取团购规则列表
      *
      * @param goodsId
      * @param page

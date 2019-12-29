@@ -4,7 +4,7 @@ page {
   background: #f4f4f4;
 }
 
-.order-info {
+.progress {
   padding-top: 25rpx;
   background: #fff;
   height: auto;
@@ -12,27 +12,11 @@ page {
 }
 
 .item-a {
-  padding-left: 31.25rpx;
-  height: 42.5rpx;
-  padding-bottom: 12.5rpx;
-  line-height: 30rpx;
-  font-size: 30rpx;
-  color: #666;
-}
-
-.item-b {
-  padding-left: 31.25rpx;
-  height: 29rpx;
-  line-height: 29rpx;
-  margin-top: 12.5rpx;
-  margin-bottom: 41.5rpx;
-  font-size: 30rpx;
-  color: #666;
+  padding: 0 21.25rpx;
 }
 
 .item-c {
   margin-left: 31.25rpx;
-  border-top: 1px solid #f4f4f4;
   height: 103rpx;
   line-height: 103rpx;
 }
@@ -49,16 +33,10 @@ page {
   padding-right: 16rpx;
 }
 
-.item-c .r .btn {
-  float: right;
-}
-
-.item-c .cost {
-  color: #b4282d;
-}
-
 .item-c .btn {
+  float: right;
   line-height: 66rpx;
+  font-size: 30rpx;
   border-radius: 5rpx;
   text-align: center;
   margin: 0 15rpx;
@@ -236,23 +214,21 @@ page {
   height: 30rpx;
   line-height: 30rpx;
   margin-bottom: 7.5rpx;
-  display: flex;
 }
 
-.order-bottom .total .label {
+.order-bottom .total .t .label {
   width: 150rpx;
-  display: inline-block;
   height: 35rpx;
   line-height: 35rpx;
   font-size: 30rpx;
 }
 
-.order-bottom .total .txt {
-  flex: 1;
-  display: inline-block;
+.order-bottom .total .t .txt {
+  float: right;
   height: 35rpx;
   line-height: 35rpx;
   font-size: 30rpx;
+  padding-right: 31.25rpx;
 }
 
 .order-bottom .pay-fee {
@@ -261,79 +237,12 @@ page {
 }
 
 .order-bottom .pay-fee .label {
-  display: inline-block;
   width: 140rpx;
-  color: #b4282d;
 }
 
 .order-bottom .pay-fee .txt {
-  display: inline-block;
-  width: 140rpx;
-  color: #b4282d;
-}
-
-.order-express {
-  margin-top: 20rpx;
-  width: 100%;
-  height: 100rpx;
-  background: #fff;
-}
-
-.order-express .expand {
-  /* margin-top: 20rpx; */
-  width: 100%;
-  height: 100rpx;
-  background: #fff;
-  /* border: 10rpx #a78845; */
-}
-
-.order-express .title {
-  float: left;
-  margin-bottom: 20rpx;
-  padding: 10rpx;
-}
-
-.order-express .ti {
   float: right;
-  width: 52rpx;
-  height: 52rpx;
-  margin-right: 16rpx;
-  margin-top: 28rpx;
-}
-
-.order-express .t {
-  font-size: 29rpx;
-  margin-left: 10.25rpx;
-  color: #a78845;
-}
-
-.order-express .b {
-  font-size: 29rpx;
-  margin-left: 10.25rpx;
-  color: #a78845;
-}
-
-.order-express .traces {
-  padding: 17.5rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #f1e6cdcc;
-}
-
-.order-express .trace {
-  padding-bottom: 17.5rpx;
-  padding-top: 17.5rpx;
-  background: #fff;
-}
-
-.order-express .acceptTime {
-  margin-top: 20rpx;
-  margin-right: 40rpx;
-  text-align: right;
-  font-size: 26rpx;
-}
-
-.order-express .acceptStation {
-  font-size: 26rpx;
+  padding-right: 31.25rpx;
 }
 
 .menu-list-pro {

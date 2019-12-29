@@ -5,9 +5,7 @@
       :rules="rules"
       :model="dataForm"
       status-icon
-      label-width="300px"
-
-    >
+      label-width="300px">
       <el-tabs tab-position="left" >
         <el-tab-pane label="首页配置">
           <el-form-item label="新品首发栏目商品显示数量" prop="litemall_wx_index_new">
@@ -51,7 +49,35 @@ export default {
   name: 'ConfigWx',
   data() {
     return {
-      dataForm: { }
+      dataForm: {
+        litemall_wx_index_new: 0,
+        litemall_wx_index_hot: 0,
+        litemall_wx_index_brand: 0,
+        litemall_wx_index_topic: 0,
+        litemall_wx_catlog_list: 0,
+        litemall_wx_catlog_goods: 0,
+        litemall_wx_share: false
+      },
+      rules: {
+        litemall_wx_index_new: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_wx_index_hot: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_wx_index_brand: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_wx_index_topic: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_wx_catlog_list: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_wx_catlog_goods: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -67,6 +93,14 @@ export default {
       this.init()
     },
     update() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        this.doUpdate()
+      })
+    },
+    doUpdate() {
       updateWx(this.dataForm)
         .then(response => {
           this.$notify.success({

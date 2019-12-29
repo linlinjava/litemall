@@ -2,15 +2,20 @@
 <view class="container">
 <view class="search">
     <navigator url="/pages/search/search" class="input">
-      <image class="icon"></image>
+      <van-icon name="search"/>
       <text class="txt">商品搜索, 共{{goodsCount}}款好物</text>
     </navigator>
   </view>
   <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
     <swiper-item wx:for="{{banner}}" wx:key="id">
-      <!-- <navigator url="{{item.link}}"> -->
-      <image src="{{item.url}}" background-size="cover"></image>
-      <!-- </navigator> -->
+      <block wx:if="{{item.link>0}}">
+        <navigator url="/pages/goods/goods?id={{item.link}}">
+        <image src="{{item.url}}" background-size="cover"></image>
+        </navigator>
+      </block>
+      <block wx:else>
+        <image src="{{item.url}}" background-size="cover"></image>
+      </block>
     </swiper-item>
   </swiper>
   <view class="m-menu">
@@ -61,20 +66,21 @@
     </view>
     <view class="b">
       <view class="item" wx:for="{{groupons}}" wx:for-index="index" wx:for-item="item" wx:key="id">
-        <navigator url="/pages/goods/goods?id={{item.goods.id}}">
-          <image class="img" src="{{item.goods.picUrl}}" background-size="cover"></image>
+        <navigator url="/pages/goods/goods?id={{item.id}}">
+          <image class="img" src="{{item.picUrl}}" background-size="cover"></image>
           <view class="right">
             <view class="text">
               <view class="header">
-                <text class="name">{{item.goods.name}}</text>
-                <view class="capsule-tag">
-                  <zan-capsule color="#a78845" leftText="团购" rightText="{{item.groupon_member}}" />
-                </view>
+                <text class="name">{{item.name}}</text>
+                <van-tag type="primary">{{item.grouponMember}}人成团</van-tag>
               </view>
-              <text class="desc">{{item.goods.brief}}</text>
+              <view class="expire">
+                <van-tag round type="warning">有效期至 {{item.expireTime}}</van-tag>
+              </view>
+              <text class="desc">{{item.brief}}</text>
               <view class="price">
-                <view class="counterPrice">原价：￥{{item.goods.counterPrice}}</view>
-                <view class="retailPrice">现价：￥{{item.groupon_price}}</view>
+                <view class="counterPrice">现价：￥{{item.retailPrice}}</view>
+                <view class="retailPrice">团购价：￥{{item.grouponPrice}}</view>
               </view>
             </view>
           </view>
@@ -147,7 +153,7 @@
     </view>
   </view>
 
-  <view class="a-section a-topic" wx:if="topics.length > 0">
+  <view class="a-section a-topic" wx:if="topics.length > 0" hidden="{{topics.length <= 0}}">
     <view class="h">
       <view>
         <navigator url="/pages/topic/topic">

@@ -5,15 +5,14 @@ litemall轻商城，是商城移动版本。
 技术：
 
 * 轻商城前端，即litemall-vue模块
-  * power by vue-cli3 
+  * vue-cli3 
   * Vue + Vue-router + Vant + Sass
   * axios
-  * vee-validate
   * fastclick
   * babel-polyfill
   * @xkeshi/vue-countdown
   * Vant
-* 轻商城前端，即litemall-wx-api模块，也就是和小商城后端是一样的。
+* 轻商城后端，即litemall-wx-api模块，也就是和小商城后端是一样的。
   * Spring Boot 2.x
   * Spring MVC
   * [weixin-java-tools](https://gitee.com/binary/weixin-java-tools)

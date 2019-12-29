@@ -51,7 +51,6 @@ public interface LitemallFeedbackMapper {
      * This method corresponds to the database table litemall_feedback
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFeedback selectOneByExample(LitemallFeedbackExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallFeedbackMapper {
      * This method corresponds to the database table litemall_feedback
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFeedback selectOneByExampleSelective(@Param("example") LitemallFeedbackExample example, @Param("selective") LitemallFeedback.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallFeedbackMapper {
      * This method corresponds to the database table litemall_feedback
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallFeedback> selectByExampleSelective(@Param("example") LitemallFeedbackExample example, @Param("selective") LitemallFeedback.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallFeedbackMapper {
      * This method corresponds to the database table litemall_feedback
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFeedback selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallFeedback.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallFeedbackMapper {
      * This method corresponds to the database table litemall_feedback
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallFeedback selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallFeedbackMapper {
      * This method corresponds to the database table litemall_feedback
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallFeedbackExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallFeedbackMapper {
      * This method corresponds to the database table litemall_feedback
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

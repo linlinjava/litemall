@@ -1,16 +1,19 @@
 package org.linlinjava.litemall.wx.vo;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class CouponVo {
     private Integer id;
+    private Integer cid;
     private String name;
     private String desc;
     private String tag;
-    private String min;
-    private String discount;
+    private BigDecimal min;
+    private BigDecimal discount;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private boolean available;
 
     public Integer getId() {
         return id;
@@ -18,6 +21,14 @@ public class CouponVo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCid() {
+        return cid;
+    }
+
+    public void setCid(Integer cid) {
+        this.cid = cid;
     }
 
     public String getName() {
@@ -44,19 +55,19 @@ public class CouponVo {
         this.tag = tag;
     }
 
-    public String getMin() {
+    public BigDecimal getMin() {
         return min;
     }
 
-    public void setMin(String min) {
+    public void setMin(BigDecimal min) {
         this.min = min;
     }
 
-    public String getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
@@ -74,5 +85,13 @@ public class CouponVo {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

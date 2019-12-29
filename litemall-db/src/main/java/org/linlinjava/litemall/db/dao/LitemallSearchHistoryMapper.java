@@ -51,7 +51,6 @@ public interface LitemallSearchHistoryMapper {
      * This method corresponds to the database table litemall_search_history
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallSearchHistory selectOneByExample(LitemallSearchHistoryExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallSearchHistoryMapper {
      * This method corresponds to the database table litemall_search_history
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallSearchHistory selectOneByExampleSelective(@Param("example") LitemallSearchHistoryExample example, @Param("selective") LitemallSearchHistory.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallSearchHistoryMapper {
      * This method corresponds to the database table litemall_search_history
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallSearchHistory> selectByExampleSelective(@Param("example") LitemallSearchHistoryExample example, @Param("selective") LitemallSearchHistory.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallSearchHistoryMapper {
      * This method corresponds to the database table litemall_search_history
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallSearchHistory selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallSearchHistory.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallSearchHistoryMapper {
      * This method corresponds to the database table litemall_search_history
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallSearchHistory selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallSearchHistoryMapper {
      * This method corresponds to the database table litemall_search_history
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallSearchHistoryExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallSearchHistoryMapper {
      * This method corresponds to the database table litemall_search_history
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

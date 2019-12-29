@@ -51,7 +51,6 @@ public interface LitemallCommentMapper {
      * This method corresponds to the database table litemall_comment
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallComment selectOneByExample(LitemallCommentExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallCommentMapper {
      * This method corresponds to the database table litemall_comment
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallComment selectOneByExampleSelective(@Param("example") LitemallCommentExample example, @Param("selective") LitemallComment.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallCommentMapper {
      * This method corresponds to the database table litemall_comment
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallComment> selectByExampleSelective(@Param("example") LitemallCommentExample example, @Param("selective") LitemallComment.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallCommentMapper {
      * This method corresponds to the database table litemall_comment
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallComment selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallComment.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallCommentMapper {
      * This method corresponds to the database table litemall_comment
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallComment selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallCommentMapper {
      * This method corresponds to the database table litemall_comment
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallCommentExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallCommentMapper {
      * This method corresponds to the database table litemall_comment
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

@@ -9,7 +9,7 @@ Page({
     code: '',
     status: 0,
     page: 1,
-    size: 10,
+    limit: 10,
     count: 0,
     scrollTop: 0,
     showPage: false
@@ -54,8 +54,11 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
-
+  onPullDownRefresh() {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    this.getCouponList();
+    wx.hideNavigationBarLoading() //完成停止加载
+    wx.stopPullDownRefresh() //停止下拉刷新
   },
 
   /**
@@ -82,15 +85,15 @@ Page({
     util.request(api.CouponMyList, {
       status: that.data.status,
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
 
         that.setData({
           scrollTop: 0,
-          couponList: res.data.data,
-          showPage: true,
-          count: res.data.count
+          couponList: res.data.list,
+          showPage: res.data.total > that.data.limit,
+          count: res.data.total
         });
       }
     });
@@ -131,7 +134,7 @@ Page({
   },
   nextPage: function(event) {
     var that = this;
-    if (this.data.page > that.data.count / that.data.size) {
+    if (this.data.page > that.data.count / that.data.limit) {
       return true;
     }
 
@@ -159,7 +162,7 @@ Page({
       couponList: [],
       status: e.currentTarget.dataset.index,
       page: 1,
-      size: 10,
+      limit: 10,
       count: 0,
       scrollTop: 0,
       showPage: false

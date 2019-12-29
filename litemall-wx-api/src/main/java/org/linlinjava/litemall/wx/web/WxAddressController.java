@@ -45,7 +45,7 @@ public class WxAddressController extends GetRegionService {
 			return ResponseUtil.unlogin();
 		}
 		List<LitemallAddress> addressList = addressService.queryByUid(userId);
-		return ResponseUtil.ok(addressList);
+		return ResponseUtil.okList(addressList);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class WxAddressController extends GetRegionService {
 		}
 
 		if (address.getIsDefault()) {
-			// 重置其他收获地址的默认选项
+			// 重置其他收货地址的默认选项
 			addressService.resetDefault(userId);
 		}
 

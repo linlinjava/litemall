@@ -6,6 +6,7 @@ var user = require('../../utils/user.js');
 
 Page({
   data: {
+    canShare: false,
     id: 0,
     goods: {},
     groupon: [], //该商品支持的团购规格
@@ -25,9 +26,7 @@ Page({
     checkedSpecPrice: 0,
     openAttr: false,
     openShare: false,
-    noCollectImage: '/static/images/icon_collect.png',
-    hasCollectImage: '/static/images/icon_collect_checked.png',
-    collectImage: '/static/images/icon_collect.png',
+    collect: false,
     shareImage: '',
     isGroupon: false, //标识是否是一个参团购买
     soldout: false,
@@ -166,7 +165,8 @@ Page({
           userHasCollect: res.data.userHasCollect,
           shareImage: res.data.shareImage,
           checkedSpecPrice: res.data.info.retailPrice,
-          groupon: res.data.groupon
+          groupon: res.data.groupon,
+          canShare: res.data.share,
         });
 
         //如果是通过分享的团购参加团购，则团购项目应该与分享的一致并且不可更改
@@ -187,11 +187,11 @@ Page({
 
         if (res.data.userHasCollect == 1) {
           that.setData({
-            collectImage: that.data.hasCollectImage
+            collect: true
           });
         } else {
           that.setData({
-            collectImage: that.data.noCollectImage
+            collect: false
           });
         }
 
@@ -210,7 +210,7 @@ Page({
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          relatedGoods: res.data.goodsList,
+          relatedGoods: res.data.list,
         });
       }
     });
@@ -467,23 +467,15 @@ Page({
         valueId: this.data.id
       }, "POST")
       .then(function(res) {
-        let _res = res;
-        if (_res.errno == 0) {
-          if (_res.data.type == 'add') {
-            that.setData({
-              collectImage: that.data.hasCollectImage
-            });
-          } else {
-            that.setData({
-              collectImage: that.data.noCollectImage
-            });
-          }
-
+        if (that.data.userHasCollect == 1) {
+          that.setData({
+            collect: false,
+            userHasCollect: 0
+          });
         } else {
-          wx.showToast({
-            image: '/static/images/icon_error.png',
-            title: _res.errmsg,
-            mask: true
+          that.setData({
+            collect: true,
+            userHasCollect: 1
           });
         }
 
@@ -503,10 +495,7 @@ Page({
 
       //提示选择完整规格
       if (!this.isCheckedAllSpec()) {
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '请选择完整规格'
-        });
+        util.showErrorToast('请选择完整规格');
         return false;
       }
 
@@ -514,20 +503,14 @@ Page({
       let checkedProductArray = this.getCheckedProductItem(this.getCheckedSpecKey());
       if (!checkedProductArray || checkedProductArray.length <= 0) {
         //找不到对应的product信息，提示没有库存
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '没有库存'
-        });
+        util.showErrorToast('没有库存');
         return false;
       }
 
       let checkedProduct = checkedProductArray[0];
       //验证库存
       if (checkedProduct.number <= 0) {
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '没有库存'
-        });
+        util.showErrorToast('没有库存');
         return false;
       }
 
@@ -554,11 +537,7 @@ Page({
             } catch (e) {}
 
           } else {
-            wx.showToast({
-              image: '/static/images/icon_error.png',
-              title: res.errmsg,
-              mask: true
-            });
+            util.showErrorToast(res.errmsg);
           }
         });
     }
@@ -578,10 +557,7 @@ Page({
 
       //提示选择完整规格
       if (!this.isCheckedAllSpec()) {
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '请选择完整规格'
-        });
+        util.showErrorToast('请选择完整规格');
         return false;
       }
 
@@ -589,20 +565,14 @@ Page({
       let checkedProductArray = this.getCheckedProductItem(this.getCheckedSpecKey());
       if (!checkedProductArray || checkedProductArray.length <= 0) {
         //找不到对应的product信息，提示没有库存
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '没有库存'
-        });
+        util.showErrorToast('没有库存');
         return false;
       }
 
       let checkedProduct = checkedProductArray[0];
       //验证库存
       if (checkedProduct.number <= 0) {
-        wx.showToast({
-          image: '/static/images/icon_error.png',
-          title: '没有库存'
-        });
+        util.showErrorToast('没有库存');
         return false;
       }
 
@@ -624,19 +594,15 @@ Page({
             });
             if (that.data.userHasCollect == 1) {
               that.setData({
-                collectImage: that.data.hasCollectImage
+                collect: true
               });
             } else {
               that.setData({
-                collectImage: that.data.noCollectImage
+                collect: false
               });
             }
           } else {
-            wx.showToast({
-              image: '/static/images/icon_error.png',
-              title: _res.errmsg,
-              mask: true
-            });
+            util.showErrorToast(_res.errmsg);
           }
 
         });

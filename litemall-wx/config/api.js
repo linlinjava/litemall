@@ -4,12 +4,14 @@ var WxApiRoot = 'http://localhost:8080/wx/';
 // 局域网测试使用
 // var WxApiRoot = 'http://192.168.0.101:8080/wx/';
 // 云平台部署时使用
-// var WxApiRoot = 'http://118.24.0.153:8080/wx/';
+// var WxApiRoot = 'http://122.51.199.160:8080/wx/';
 // 云平台上线时使用
 // var WxApiRoot = 'https://www.menethil.com.cn/wx/';
 
 module.exports = {
   IndexUrl: WxApiRoot + 'home/index', //首页数据接口
+  AboutUrl: WxApiRoot + 'home/about', //介绍信息
+
   CatalogList: WxApiRoot + 'catalog/index', //分类目录全部分类数据接口
   CatalogCurrent: WxApiRoot + 'catalog/current', //分类目录当前分类数据接口
 
@@ -82,7 +84,6 @@ module.exports = {
   UserFormIdCreate: WxApiRoot + 'formid/create', //用户FromId，用于发送模版消息
 
   GroupOnList: WxApiRoot + 'groupon/list', //团购列表
-  GroupOn: WxApiRoot + 'groupon/query', //团购API-查询
   GroupOnMy: WxApiRoot + 'groupon/my', //团购API-我的团购
   GroupOnDetail: WxApiRoot + 'groupon/detail', //团购API-详情
   GroupOnJoin: WxApiRoot + 'groupon/join', //团购API-详情
@@ -97,5 +98,4 @@ module.exports = {
 
   UserIndex: WxApiRoot + 'user/index', //个人页面用户相关信息
   IssueList: WxApiRoot + 'issue/list', //帮助信息
-
 };

@@ -16,9 +16,7 @@ import org.linlinjava.litemall.core.util.IpUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
-import org.linlinjava.litemall.db.domain.LitemallLog;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
-import org.linlinjava.litemall.db.service.LitemallLogService;
 import org.linlinjava.litemall.db.service.LitemallPermissionService;
 import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +80,16 @@ public class AdminAuthController {
         adminService.updateById(admin);
 
         logHelper.logAuthSucceed("登录");
-        return ResponseUtil.ok(currentUser.getSession().getId());
+
+        // userInfo
+        Map<String, Object> adminInfo = new HashMap<String, Object>();
+        adminInfo.put("nickName", admin.getUsername());
+        adminInfo.put("avatar", admin.getAvatar());
+
+        Map<Object, Object> result = new HashMap<Object, Object>();
+        result.put("token", currentUser.getSession().getId());
+        result.put("adminInfo", adminInfo);
+        return ResponseUtil.ok(result);
     }
 
     /*
@@ -115,7 +122,7 @@ public class AdminAuthController {
         data.put("roles", roles);
         // NOTE
         // 这里需要转换perms结构，因为对于前端而已API形式的权限更容易理解
-        data.put("perms", toAPI(permissions));
+        data.put("perms", toApi(permissions));
         return ResponseUtil.ok(data);
     }
 
@@ -123,7 +130,7 @@ public class AdminAuthController {
     private ApplicationContext context;
     private HashMap<String, String> systemPermissionsMap = null;
 
-    private Collection<String> toAPI(Set<String> permissions) {
+    private Collection<String> toApi(Set<String> permissions) {
         if (systemPermissionsMap == null) {
             systemPermissionsMap = new HashMap<>();
             final String basicPackage = "org.linlinjava.litemall.admin";
@@ -144,7 +151,7 @@ public class AdminAuthController {
                 apis.clear();
                 apis.add("*");
                 return apis;
-//                return systemPermissionsMap.values();
+                //                return systemPermissionsMap.values();
 
             }
         }

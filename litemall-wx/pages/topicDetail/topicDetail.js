@@ -37,7 +37,7 @@ Page({
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          topicList: res.data
+          topicList: res.data.list
         });
       }
     });
@@ -49,12 +49,12 @@ Page({
       type: 1,
       showType: 0,
       page: 1,
-      size: 5
+      limit: 5
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          commentList: res.data.data,
-          commentCount: res.data.count
+          commentList: res.data.list,
+          commentCount: res.data.total
         });
       }
     });
