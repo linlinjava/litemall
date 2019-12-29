@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/region")
@@ -43,16 +45,16 @@ public class AdminRegionController {
             provinceVO.setCode(province.getCode());
             provinceVO.setType(province.getType());
 
-            List<LitemallRegion> cityList = regionService.queryByPid(province.getId());
+            List<LitemallRegion> cityList = cityListMap.get(province.getId());
             List<RegionVo> cityVOList = new ArrayList<>();
             for (LitemallRegion city : cityList) {
                 RegionVo cityVO = new RegionVo();
-                cityVO.setId(city.getId());
-                cityVO.setName(city.getName());
-                cityVO.setCode(city.getCode());
-                cityVO.setType(city.getType());
+                cityVO.setId(cityVo.getId());
+                cityVO.setName(cityVo.getName());
+                cityVO.setCode(cityVo.getCode());
+                cityVO.setType(cityVo.getType());
 
-                List<LitemallRegion> areaList = regionService.queryByPid(city.getId());
+                List<LitemallRegion> areaList = areaListMap.get(cityVo.getId());
                 List<RegionVo> areaVOList = new ArrayList<>();
                 for (LitemallRegion area : areaList) {
                     RegionVo areaVO = new RegionVo();
