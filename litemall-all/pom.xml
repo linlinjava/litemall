@@ -37,6 +37,20 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <configuration>
+                            <executable>true</executable>
+                            <classifier>exec</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
@@ -77,8 +91,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
         </plugins>
     </build>
 
