@@ -91,8 +91,6 @@ public class WxOrderService {
     @Autowired
     private NotifyService notifyService;
     @Autowired
-    private LitemallUserFormIdService formIdService;
-    @Autowired
     private LitemallGrouponRulesService grouponRulesService;
     @Autowired
     private LitemallGrouponService grouponService;
@@ -588,18 +586,6 @@ public class WxOrderService {
             orderRequest.setSpbillCreateIp(IpUtil.getIpAddr(request));
 
             result = wxPayService.createOrder(orderRequest);
-
-            //缓存prepayID用于后续模版通知
-            String prepayId = result.getPackageValue();
-            prepayId = prepayId.replace("prepay_id=", "");
-            LitemallUserFormid userFormid = new LitemallUserFormid();
-            userFormid.setOpenid(user.getWeixinOpenid());
-            userFormid.setFormid(prepayId);
-            userFormid.setIsprepay(true);
-            userFormid.setUseamount(3);
-            userFormid.setExpireTime(LocalDateTime.now().plusDays(7));
-            formIdService.addUserFormid(userFormid);
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.fail(ORDER_PAY_FAIL, "订单不能支付");
@@ -777,8 +763,6 @@ public class WxOrderService {
                 order.getMobile(),
                 order.getAddress()
         };
-
-        notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "pages/index/index?orderId=" + order.getId());
 
         // 取消订单超时未支付任务
         taskService.removeTask(new OrderUnpaidTask(order.getId()));

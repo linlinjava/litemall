@@ -46,21 +46,6 @@ litemall:
         accessKeyId: xxx
         accessKeySecret: xxx
 
-
-    # 微信模版通知配置
-    # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
-    wx:
-      enable: false
-      template:
-      - name: paySucceed
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      - name: captcha
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      - name: ship
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      - name: refund
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
   # 快鸟物流查询配置
   express:
     enable: false

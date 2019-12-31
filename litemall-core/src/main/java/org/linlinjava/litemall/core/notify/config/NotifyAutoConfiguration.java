@@ -4,7 +4,6 @@ import com.github.qcloudsms.SmsSingleSender;
 import org.linlinjava.litemall.core.notify.AliyunSmsSender;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.TencentSmsSender;
-import org.linlinjava.litemall.core.notify.WxTemplateSender;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,11 +45,6 @@ public class NotifyAutoConfiguration {
             notifyService.setSmsTemplate(smsConfig.getTemplate());
         }
 
-        NotifyProperties.Wx wxConfig = properties.getWx();
-        if (wxConfig.isEnable()) {
-            notifyService.setWxTemplateSender(wxTemplateSender());
-            notifyService.setWxTemplate(wxConfig.getTemplate());
-        }
         return notifyService;
     }
 
@@ -73,12 +67,6 @@ public class NotifyAutoConfiguration {
         properties.put("debug", true);
         mailSender.setJavaMailProperties(properties);
         return mailSender;
-    }
-
-    @Bean
-    public WxTemplateSender wxTemplateSender() {
-        WxTemplateSender wxTemplateSender = new WxTemplateSender();
-        return wxTemplateSender;
     }
 
     @Bean
