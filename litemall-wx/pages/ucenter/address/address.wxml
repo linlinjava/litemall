@@ -10,13 +10,12 @@
         <view class="address">{{item.addressDetail}}</view>
       </view>
       <view class="r">
-        <image catchtap="deleteAddress" data-address-id="{{item.id}}" class="del" src="/static/images/del-address.png"></image>
+        <van-icon catchtap="deleteAddress" data-address-id="{{item.id}}" class="del" name="delete"/>
       </view>
     </view>
   </view>
   <view class="empty-view" wx:if="{{ addressList.length <= 0 }}">
-    <image class="icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/noAddress-26d570cefa.png"></image>
-    <text class="text">收货地址在哪里</text>
+    <text class="text">收货地址还没有~~~</text>
   </view>
   <view class="add-address" bindtap="addressAddOrUpdate" data-address-id="0">新建</view>
 </view>

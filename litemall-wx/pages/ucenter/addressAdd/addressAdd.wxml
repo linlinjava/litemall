@@ -13,7 +13,7 @@
       <input class="input" bindinput="bindinputAddress" value="{{address.addressDetail}}" placeholder="详细地址, 如街道、楼盘号等" />
     </view>
     <view class="form-default">
-      <text bindtap="bindIsDefault" class="default-input {{address.isDefault == 1 ? 'selected' : ''}}">设为默认地址</text>
+      <van-checkbox value="{{ address.isDefault == 1 }}" bind:change="bindIsDefault">设为默认地址</van-checkbox>
     </view>
   </view>
 

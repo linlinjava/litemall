@@ -8,10 +8,11 @@
           <view class="text">
             <view class="header">
               <text class="name">{{item.name}}</text>
-              <view class="capsule-tag">
-                  <zan-capsule color="#a78845" leftText="{{item.grouponMember}}人成团" rightText="立减{{item.grouponDiscount}}" />
-              </view>
+              <van-tag type="primary">{{item.grouponMember}}人成团</van-tag>
             </view>
+            <view class="expire">
+              <van-tag round type="warning">有效期至 {{item.expireTime}}</van-tag>
+            </view>            
             <text class="desc">{{item.brief}}</text>
             <view class="price">
               <view class="counterPrice">现价：￥{{item.retailPrice}}</view>

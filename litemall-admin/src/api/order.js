@@ -43,3 +43,10 @@ export function replyComment(data) {
     data
   })
 }
+
+export function listChannel(id) {
+  return request({
+    url: '/order/channel',
+    method: 'get'
+  })
+}

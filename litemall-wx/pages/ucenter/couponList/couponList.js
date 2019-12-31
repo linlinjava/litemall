@@ -54,8 +54,11 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
-
+  onPullDownRefresh() {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    this.getCouponList();
+    wx.hideNavigationBarLoading() //完成停止加载
+    wx.stopPullDownRefresh() //停止下拉刷新
   },
 
   /**
@@ -89,7 +92,7 @@ Page({
         that.setData({
           scrollTop: 0,
           couponList: res.data.list,
-          showPage: true,
+          showPage: res.data.total > that.data.limit,
           count: res.data.total
         });
       }

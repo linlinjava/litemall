@@ -127,10 +127,13 @@ public class LitemallGoodsService {
         return goodsMapper.selectByExampleSelective(example, columns);
     }
 
-    public List<LitemallGoods> querySelective(String goodsSn, String name, Integer page, Integer size, String sort, String order) {
+    public List<LitemallGoods> querySelective(Integer goodsId, String goodsSn, String name, Integer page, Integer size, String sort, String order) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         LitemallGoodsExample.Criteria criteria = example.createCriteria();
 
+        if (goodsId != null) {
+            criteria.andIdEqualTo(goodsId);
+        }
         if (!StringUtils.isEmpty(goodsSn)) {
             criteria.andGoodsSnEqualTo(goodsSn);
         }

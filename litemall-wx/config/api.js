@@ -10,6 +10,8 @@ var WxApiRoot = 'https://litemall.hziee.top/wx/';
 
 module.exports = {
   IndexUrl: WxApiRoot + 'home/index', //首页数据接口
+  AboutUrl: WxApiRoot + 'home/about', //介绍信息
+
   CatalogList: WxApiRoot + 'catalog/index', //分类目录全部分类数据接口
   CatalogCurrent: WxApiRoot + 'catalog/current', //分类目录当前分类数据接口
 

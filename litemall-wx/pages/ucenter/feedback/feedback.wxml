@@ -4,8 +4,7 @@
     <view class="picker">
       <view class="fb-type">
         <view class="type-label">{{array[index]}}</view>
-        <image class="type-icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/pickerArrow-a8b918f05f.png"></image>
-
+        <van-icon class="type-icon" name="arrow-down" />        
       </view>
     </view>
   </picker>
@@ -27,7 +26,7 @@
     <view class="label">手机号码</view>
     <view class="mobile-box">
       <input class="mobile" maxlength="11" type="number" placeholder="方便我们与你联系" bindinput="mobileInput" value="{{mobile}}" />
-      <image class="clear-icon" src="/static/images/clear_input.png" wx:if="{{ mobile.length > 0 }}" catchtap="clearMobile"></image>
+      <van-icon class="clear-icon" name="close" wx:if="{{ mobile.length > 0 }}" catchtap="clearMobile"/>
     </view>
   </view>
 

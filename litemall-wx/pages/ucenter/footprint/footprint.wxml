@@ -1,7 +1,6 @@
 <view class="container">
   <view class="no-footprint" wx:if="{{footprintList.length <= 0}}">
     <view class="c">
-      <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
       <text>没有浏览足迹</text>
     </view>
   </view>

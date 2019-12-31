@@ -42,7 +42,7 @@
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "litemall小程序商城",
-    "enablePullDownRefresh": true,
+    "enablePullDownRefresh": false,
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FFFFFF",
     "backgroundTextStyle": "dark"
@@ -86,5 +86,11 @@
     "downloadFile": 10000
   },
   "debug": true,
+  "usingComponents": {
+    "van-tag": "./lib/vant-weapp/tag/index",
+    "van-icon": "./lib/vant-weapp/icon/index",
+    "van-checkbox": "./lib/vant-weapp/checkbox/index",
+    "van-steps": "./lib/vant-weapp/steps/index"
+  },
   "sitemapLocation": "sitemap.json"
 }

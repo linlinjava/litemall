@@ -34,7 +34,22 @@ export default {
   name: 'ConfigOrder',
   data() {
     return {
-      dataForm: {}
+      dataForm: {
+        litemall_order_unpaid: 0,
+        litemall_order_unconfirm: 0,
+        litemall_order_comment: 0
+      },
+      rules: {
+        litemall_order_unpaid: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_order_unconfirm: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ],
+        litemall_order_comment: [
+          { required: true, message: '不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
@@ -50,6 +65,14 @@ export default {
       this.init()
     },
     update() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        this.doUpdate()
+      })
+    },
+    doUpdate() {
       updateOrder(this.dataForm)
         .then(response => {
           this.$notify.success({

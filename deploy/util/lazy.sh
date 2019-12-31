@@ -2,8 +2,8 @@
 
 # 本脚本的作用是
 # 1. 项目打包
-# 2. 上传云主机
-# 3. 远程登录云主机并执行reset脚本
+# 2. 上传云服务器
+# 3. 远程登录云服务器并执行reset脚本
 
 # 请设置云主机的IP地址和账户
 # 例如 ubuntu@118.24.0.153
@@ -14,13 +14,13 @@ ID_RSA=/Users/kingsley/.ssh/id_rsa
 
 if test -z "$REMOTE"
 then
-  echo "请设置云主机登录IP地址和账户"
+  echo "请设置云服务器登录IP地址和账户"
   exit 1
 fi
 
 if test -z "$ID_RSA"
 then
-  echo "请设置云主机登录IP地址和账户"
+  echo "请设置云服务器登录IP地址和账户"
   exit 1
 fi
 
@@ -33,7 +33,7 @@ echo "LITEMALL_HOME $LITEMALL_HOME"
 cd $LITEMALL_HOME || exit 2
 ./deploy/util/package.sh
 
-# 上传云主机
+# 上传云服务器
 cd $LITEMALL_HOME || exit 2
 #scp -i $ID_RSA -r  ./deploy $REMOTE -p 8015:/usr/litemall/
 #scp -P 8015 ../litemall/litemall.jar $REMOTE:/usr/litemall

@@ -5,7 +5,7 @@ var app = getApp();
 Page({
   data: {
     bannerInfo: {
-      'imgUrl': 'http://yanxuan.nosdn.127.net/8976116db321744084774643a933c5ce.png',
+      'imgUrl': '/static/images/new.png',
       'name': '大家都在买的'
     },
     categoryFilter: false,

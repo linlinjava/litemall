@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.wx.vo;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class GrouponRuleVo {
     private Integer id;
@@ -12,6 +13,15 @@ public class GrouponRuleVo {
     private BigDecimal grouponPrice;
     private BigDecimal grouponDiscount;
     private Integer grouponMember;
+    private LocalDateTime expireTime;
+
+    public LocalDateTime getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(LocalDateTime expireTime) {
+        this.expireTime = expireTime;
+    }
 
     public BigDecimal getGrouponDiscount() {
         return grouponDiscount;

@@ -84,13 +84,11 @@ page {
 
 .container .b .clear-icon {
   position: absolute;
-  top: 10rpx;
+  top: 25rpx;
   right: 18rpx;
   z-index: 2;
   display: block;
   background: #fff;
-  height: 44rpx;
-  width: 44rpx;
 }
 
 .container .b .add-btn {
@@ -114,7 +112,6 @@ page {
   line-height: 72rpx;
   text-align: right;
   padding-right: 30rpx;
-  background: url(https://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/couponHelp-4768607555.png) 590rpx center no-repeat;
   background-size: 28rpx;
   color: #999;
   font-size: 24rpx;
@@ -129,7 +126,7 @@ page {
 .container .b .item {
   position: relative;
   height: 290rpx;
-  background: gray;
+  background: #ccc7c7;
   margin-bottom: 30rpx;
   margin-left: 30rpx;
   margin-right: 30rpx;

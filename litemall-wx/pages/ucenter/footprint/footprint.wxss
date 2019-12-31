@@ -20,15 +20,7 @@ page {
 .no-footprint .c {
   width: 100%;
   height: auto;
-  margin-top: 200rpx;
-}
-
-.no-footprint .c image {
-  margin: 0 auto;
-  display: block;
-  text-align: center;
-  width: 258rpx;
-  height: 258rpx;
+  margin-top: 400rpx;
 }
 
 .no-footprint .c text {
