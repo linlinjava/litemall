@@ -91,8 +91,6 @@ public class WxOrderService {
     @Autowired
     private NotifyService notifyService;
     @Autowired
-    private LitemallUserFormIdService formIdService;
-    @Autowired
     private LitemallGrouponRulesService grouponRulesService;
     @Autowired
     private LitemallGrouponService grouponService;
@@ -588,18 +586,6 @@ public class WxOrderService {
             orderRequest.setSpbillCreateIp(IpUtil.getIpAddr(request));
 
             result = wxPayService.createOrder(orderRequest);
-
-            //缓存prepayID用于后续模版通知
-            String prepayId = result.getPackageValue();
-            prepayId = prepayId.replace("prepay_id=", "");
-            LitemallUserFormid userFormid = new LitemallUserFormid();
-            userFormid.setOpenid(user.getWeixinOpenid());
-            userFormid.setFormid(prepayId);
-            userFormid.setIsprepay(true);
-            userFormid.setUseamount(3);
-            userFormid.setExpireTime(LocalDateTime.now().plusDays(7));
-            formIdService.addUserFormid(userFormid);
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.fail(ORDER_PAY_FAIL, "订单不能支付");
@@ -730,23 +716,7 @@ public class WxOrderService {
         order.setPayTime(LocalDateTime.now());
         order.setOrderStatus(OrderUtil.STATUS_PAY);
         if (orderService.updateWithOptimisticLocker(order) == 0) {
-            // 这里可能存在这样一个问题，用户支付和系统自动取消订单发生在同时
-            // 如果数据库首先因为系统自动取消订单而更新了订单状态；
-            // 此时用户支付完成回调这里也要更新数据库，而由于乐观锁机制这里的更新会失败
-            // 因此，这里会重新读取数据库检查状态是否是订单自动取消，如果是则更新成支付状态。
-            order = orderService.findBySn(orderSn);
-            int updated = 0;
-            if (OrderUtil.isAutoCancelStatus(order)) {
-                order.setPayId(payId);
-                order.setPayTime(LocalDateTime.now());
-                order.setOrderStatus(OrderUtil.STATUS_PAY);
-                updated = orderService.updateWithOptimisticLocker(order);
-            }
-
-            // 如果updated是0，那么数据库更新失败
-            if (updated == 0) {
-                return WxPayNotifyResponse.fail("更新数据已失效");
-            }
+            return WxPayNotifyResponse.fail("更新数据已失效");
         }
 
         //  支付成功，有团购信息，更新团购信息
@@ -793,8 +763,6 @@ public class WxOrderService {
                 order.getMobile(),
                 order.getAddress()
         };
-
-        notifyService.notifyWxTemplate(result.getOpenid(), NotifyType.PAY_SUCCEED, parms, "pages/index/index?orderId=" + order.getId());
 
         // 取消订单超时未支付任务
         taskService.removeTask(new OrderUnpaidTask(order.getId()));

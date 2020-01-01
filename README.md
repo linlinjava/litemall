@@ -71,7 +71,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 * 品牌列表、品牌详情
 * 新品首发、人气推荐
 * 优惠券列表、优惠券选择
-* 团购（团购业务有待完善）
+* 团购
 * 搜索
 * 商品详情、商品评价、商品分享
 * 购物车
@@ -154,7 +154,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
         
 ## 开发计划
 
-当前版本[v1.5.0](https://linlinjava.gitbook.io/litemall/changelog)
+当前版本[v1.6.0](https://linlinjava.gitbook.io/litemall/changelog)
 
 目前项目开发中，存在诸多不足，以下是目前规划的开发计划。
 

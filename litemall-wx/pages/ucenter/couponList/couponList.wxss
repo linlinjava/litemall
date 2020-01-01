@@ -84,13 +84,11 @@ page {
 
 .container .b .clear-icon {
   position: absolute;
-  top: 10rpx;
+  top: 25rpx;
   right: 18rpx;
   z-index: 2;
   display: block;
   background: #fff;
-  height: 44rpx;
-  width: 44rpx;
 }
 
 .container .b .add-btn {

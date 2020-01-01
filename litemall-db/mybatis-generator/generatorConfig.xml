@@ -150,10 +150,6 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="litemall_user_formid">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-
         <table tableName="litemall_groupon_rules">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>

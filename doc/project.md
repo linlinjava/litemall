@@ -636,42 +636,6 @@ litemall:
 例如“你好，验证码是{code}，时间是{code1}"。开发者可以查看`AliyunSmsSender`类的`sendWithTemplate`方法的
 源代码即可理解。如果觉得不合理，可以自行调整相关代码。
 
-#### 1.4.5.7 微信通知配置
-
-微信通知是微信上收到的服务通知。
-
-在litemall-core模块的`application-core.yml`文件中配置微信通知服务：
-```
-litemall:
-  notify:
-    # 微信模版通知配置
-    # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
-    wx:
-      enable: false
-      template:
-      - name: paySucceed
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      - name: captcha
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      - name: ship
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      - name: refund
-        templateId: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```        
-
-配置方式：
-1. 微信公众平台申请，然后在`模板消息`中设置四个场景的微信模板；
-2. 开发者在配置文件设置`enable`的值`true`，然后其他信息设置
-微信公众平台中所设置模板ID。
-
-应用场景：
-目前微信通知场景只支持支付成功、验证码、订单发送、退款成功四种情况。
-以后可能需要继续优化扩展。
-
-验证配置成功：
-这里没有实现测试类，因为微信通知需要小程序前端的formId作为参数，因此需要
-小商城前端配合。开发者可以在实际场景中DBEUG看看。
-
 #### 1.4.5.8 物流配置
 
 物流配置是查询商品物流信息，这里主要是基于[第三方快递鸟服务](http://www.kdniao.com/api-track)。

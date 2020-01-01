@@ -3,18 +3,18 @@
 
     	<view class="form-item">
     		<input class="username" value="{{username}}" bindinput="bindUsernameInput" placeholder="账号"/>
-    		<image wx:if="{{ username.length > 0 }}" id="clear-username" class="clear" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+        <van-icon name="close" wx:if="{{ username.length > 0 }}" id="clear-username" class="clear" catchtap="clearInput"/>
     	</view>
 
     	<view class="form-item">
     		<input class="password" value="{{password}}" password bindinput="bindPasswordInput" placeholder="密码"/>
-    		<image class="clear" id="clear-password" wx:if="{{ password.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+        <van-icon class="clear" id="clear-password" wx:if="{{ password.length > 0 }}" name="close" catchtap="clearInput"/>      
     	</view>
 
 		 <!-- <view class="form-item-code" wx-if="{{loginErrorCount >= 3}}">
 			<view class="form-item code-item">
 				<input class="code" value="{{code}}" bindinput="bindCodeInput" placeholder="验证码"/>
-				<image class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearInput"></image>
+        <van-icon class="clear" id="clear-code" wx:if="{{ code.length > 0 }}" name="close" catchtap="clearInput"/>        
 			</view>
 			<image class="code-img" src="captcha.png"></image>
 		</view>  -->

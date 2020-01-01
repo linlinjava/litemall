@@ -569,6 +569,13 @@
   width: 90rpx;
 }
 
+.bottom-btn .l.l-collect .icon {
+  position: absolute;
+  top: 28rpx;
+  left: 20rpx;
+  font-size: 44rpx;
+}
+
 .bottom-btn .l.l-kefu {
   position: relative;
   height: 54rpx;
@@ -600,12 +607,7 @@
   position: absolute;
   top: 10rpx;
   left: 0;
-}
-
-.bottom-btn .l .icon {
-  display: block;
-  height: 44rpx;
-  width: 44rpx;
+  font-size: 44rpx;
 }
 
 .bottom-btn .c {

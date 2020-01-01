@@ -13,11 +13,11 @@
         <navigator url="/pages/goods/goods?id={{item.id}}">
           <swiper-item>
             <view class="swiper-box">
-              <form bindsubmit="saveFormId" report-submit='true' class='form_class'>
+              <view class='form_class'>
                 <button formType="submit" class='form_button'>
                   <image src="{{item.picUrl}}" mode="aspectFill" data-id="{{item.id}}" />
                 </button>
-              </form>
+              </view>
               <view class="swiper-box-info">
                 <view class="name">{{item.name}}</view>
                 <view class="price">

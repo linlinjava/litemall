@@ -10,7 +10,7 @@
         <text class="address">{{checkedAddress.addressDetail}}</text>
       </view>
       <view class="r">
-        <image src="/static/images/address_right.png"></image>
+        <van-icon name="arrow" />
       </view>
     </view>
     <view class="address-item address-empty" bindtap="selectAddress" wx:else>
@@ -18,7 +18,7 @@
         还没有收货地址，去添加
       </view>
       <view class="r">
-        <image src="/static/images/address_right.png"></image>
+        <van-icon name="arrow" />      
       </view>
     </view>
   </view>
@@ -38,7 +38,7 @@
         <text class="txt">-￥{{couponPrice}}元</text>
       </view>      
       <view class="r">
-        <image src="/static/images/address_right.png"></image>
+        <van-icon name="arrow" />      
       </view>
     </view>
   </view>

@@ -316,14 +316,6 @@ INSERT INTO `litemall_user` VALUES (1,'user123','$2a$10$lTu9qi0hr19OC800Db.eludF
 /*!40000 ALTER TABLE `litemall_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Dumping data for table `litemall_user_formid`
---
-
-LOCK TABLES `litemall_user_formid` WRITE;
-/*!40000 ALTER TABLE `litemall_user_formid` DISABLE KEYS */;
-/*!40000 ALTER TABLE `litemall_user_formid` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

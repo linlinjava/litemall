@@ -11,7 +11,7 @@
   <view class='user_area'>
     <view class='user_row' bindtap='goOrder'>
       <view class='user_row_left'>我的订单</view>
-      <image class='user_row_right' src='/static/images/goright.png'></image>
+      <van-icon class='user_row_right' name="arrow" />      
     </view>
     <view class='user_column'>
       <view class='user_column_item' bindtap='goOrderIndex' data-index='1' data-route='/pages/ucenter/order/order'>
@@ -54,7 +54,7 @@
       <view class='user_column_item_text'>优惠卷</view>
     </view>
     <view class='user_column_item' bindtap='goCollect'>
-      <image class='user_column_item_image' src='/static/images/icon_collect.png'></image>
+      <image class='user_column_item_image' src='/static/images/collect.png'></image>
       <view class='user_column_item_text'>商品收藏</view>
     </view>
     <view class='user_column_item' bindtap='goFootprint'>
@@ -83,7 +83,7 @@
       <view class='user_column_item_text'>绑定手机</view>
     </button>
     <view class='user_column_item' bindtap='goHelp'>
-      <image class='user_column_item_image' src='/static/images/ic_menu_topic_nor.png'></image>
+      <image class='user_column_item_image' src='/static/images/help.png'></image>
       <view class='user_column_item_text'>帮助中心</view>
     </view>
     <view class='user_column_item' bindtap='goFeedback'>
@@ -97,7 +97,7 @@
       <view class='user_column_item_text'>联系客服</view>
     </view>
     <view class='user_column_item' bindtap='aboutUs'>
-      <image class='user_column_item_image' src='/static/images/about_us.png'></image>
+      <image class='user_column_item_image' src='/static/images/about.png'></image>
       <view class='user_column_item_text'>关于我们</view>
     </view>
   </view>

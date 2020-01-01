@@ -10,7 +10,6 @@ import java.util.Map;
 public class NotifyProperties {
     private Mail mail;
     private Sms sms;
-    private Wx wx;
 
     public Mail getMail() {
         return mail;
@@ -26,14 +25,6 @@ public class NotifyProperties {
 
     public void setSms(Sms sms) {
         this.sms = sms;
-    }
-
-    public Wx getWx() {
-        return wx;
-    }
-
-    public void setWx(Wx wx) {
-        this.wx = wx;
     }
 
     public static class Mail {
@@ -206,27 +197,6 @@ public class NotifyProperties {
             public void setAccessKeySecret(String accessKeySecret) {
                 this.accessKeySecret = accessKeySecret;
             }
-        }
-    }
-
-    public static class Wx {
-        private boolean enable;
-        private List<Map<String, String>> template = new ArrayList<>();
-
-        public boolean isEnable() {
-            return enable;
-        }
-
-        public void setEnable(boolean enable) {
-            this.enable = enable;
-        }
-
-        public List<Map<String, String>> getTemplate() {
-            return template;
-        }
-
-        public void setTemplate(List<Map<String, String>> template) {
-            this.template = template;
         }
     }
 
