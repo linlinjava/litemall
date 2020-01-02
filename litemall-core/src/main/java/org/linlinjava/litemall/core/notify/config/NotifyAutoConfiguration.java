@@ -48,7 +48,6 @@ public class NotifyAutoConfiguration {
         return notifyService;
     }
 
-    @Bean
     public JavaMailSender mailSender() {
         NotifyProperties.Mail mailConfig = properties.getMail();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -69,7 +68,6 @@ public class NotifyAutoConfiguration {
         return mailSender;
     }
 
-    @Bean
     public TencentSmsSender tencentSmsSender() {
         NotifyProperties.Sms smsConfig = properties.getSms();
         TencentSmsSender smsSender = new TencentSmsSender();
@@ -79,7 +77,6 @@ public class NotifyAutoConfiguration {
         return smsSender;
     }
 
-    @Bean
     public AliyunSmsSender aliyunSmsSender() {
         NotifyProperties.Sms smsConfig = properties.getSms();
         AliyunSmsSender smsSender = new AliyunSmsSender();
