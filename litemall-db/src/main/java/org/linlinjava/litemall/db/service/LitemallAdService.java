@@ -42,21 +42,6 @@ public class LitemallAdService {
         return adMapper.selectByExample(example);
     }
 
-    public int countSelective(String name, String content, Integer page, Integer size, String sort, String order) {
-        LitemallAdExample example = new LitemallAdExample();
-        LitemallAdExample.Criteria criteria = example.createCriteria();
-
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameLike("%" + name + "%");
-        }
-        if (!StringUtils.isEmpty(content)) {
-            criteria.andContentLike("%" + content + "%");
-        }
-        criteria.andDeletedEqualTo(false);
-
-        return (int) adMapper.countByExample(example);
-    }
-
     public int updateById(LitemallAd ad) {
         ad.setUpdateTime(LocalDateTime.now());
         return adMapper.updateByPrimaryKeySelective(ad);

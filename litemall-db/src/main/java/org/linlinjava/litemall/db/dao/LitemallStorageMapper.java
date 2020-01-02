@@ -51,7 +51,6 @@ public interface LitemallStorageMapper {
      * This method corresponds to the database table litemall_storage
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallStorage selectOneByExample(LitemallStorageExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallStorageMapper {
      * This method corresponds to the database table litemall_storage
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallStorage selectOneByExampleSelective(@Param("example") LitemallStorageExample example, @Param("selective") LitemallStorage.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallStorageMapper {
      * This method corresponds to the database table litemall_storage
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallStorage> selectByExampleSelective(@Param("example") LitemallStorageExample example, @Param("selective") LitemallStorage.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallStorageMapper {
      * This method corresponds to the database table litemall_storage
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallStorage selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallStorage.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallStorageMapper {
      * This method corresponds to the database table litemall_storage
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallStorage selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallStorageMapper {
      * This method corresponds to the database table litemall_storage
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallStorageExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallStorageMapper {
      * This method corresponds to the database table litemall_storage
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

@@ -2,20 +2,21 @@
   <scroll-view class="groupon-list" scroll-y="true" scroll-top="{{scrollTop}}">
 
     <view class="item" wx:for="{{grouponList}}" wx:for-index="index" wx:for-item="item" wx:key="id">
-      <navigator url="/pages/goods/goods?id={{item.goods.id}}">
-        <image class="img" src="{{item.goods.picUrl}}" background-size="cover"></image>
+      <navigator url="/pages/goods/goods?id={{item.id}}">
+        <image class="img" src="{{item.picUrl}}" background-size="cover"></image>
         <view class="right">
           <view class="text">
             <view class="header">
-              <text class="name">{{item.goods.name}}</text>
-              <view class="capsule-tag">
-                <zan-capsule color="#a78845" leftText="团购" rightText="{{item.groupon_member}}" />
-              </view>
+              <text class="name">{{item.name}}</text>
+              <van-tag type="primary">{{item.grouponMember}}人成团</van-tag>
             </view>
-            <text class="desc">{{item.goods.brief}}</text>
+            <view class="expire">
+              <van-tag round type="warning">有效期至 {{item.expireTime}}</van-tag>
+            </view>            
+            <text class="desc">{{item.brief}}</text>
             <view class="price">
-              <view class="counterPrice">原价：￥{{item.goods.counterPrice}}</view>
-              <view class="retailPrice">现价：￥{{item.groupon_price}}</view>
+              <view class="counterPrice">现价：￥{{item.retailPrice}}</view>
+              <view class="retailPrice">团购价：￥{{item.grouponPrice}}</view>
             </view>
           </view>
         </view>
@@ -24,7 +25,7 @@
 
     <view class="page" wx:if="{{showPage}}">
       <view class="prev {{ page <= 1 ? 'disabled' : ''}}" bindtap="prevPage">上一页</view>
-      <view class="next {{ (count / size) < page ? 'disabled' : ''}}" bindtap="nextPage">下一页</view>
+      <view class="next {{ (count / limit) < page ? 'disabled' : ''}}" bindtap="nextPage">下一页</view>
     </view>
   </scroll-view>
 </view>

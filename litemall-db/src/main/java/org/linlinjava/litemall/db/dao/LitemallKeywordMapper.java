@@ -51,7 +51,6 @@ public interface LitemallKeywordMapper {
      * This method corresponds to the database table litemall_keyword
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallKeyword selectOneByExample(LitemallKeywordExample example);
 
@@ -60,7 +59,6 @@ public interface LitemallKeywordMapper {
      * This method corresponds to the database table litemall_keyword
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallKeyword selectOneByExampleSelective(@Param("example") LitemallKeywordExample example, @Param("selective") LitemallKeyword.Column ... selective);
 
@@ -69,7 +67,6 @@ public interface LitemallKeywordMapper {
      * This method corresponds to the database table litemall_keyword
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     List<LitemallKeyword> selectByExampleSelective(@Param("example") LitemallKeywordExample example, @Param("selective") LitemallKeyword.Column ... selective);
 
@@ -86,7 +83,6 @@ public interface LitemallKeywordMapper {
      * This method corresponds to the database table litemall_keyword
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallKeyword selectByPrimaryKeySelective(@Param("id") Integer id, @Param("selective") LitemallKeyword.Column ... selective);
 
@@ -103,7 +99,6 @@ public interface LitemallKeywordMapper {
      * This method corresponds to the database table litemall_keyword
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallKeyword selectByPrimaryKeyWithLogicalDelete(@Param("id") Integer id, @Param("andLogicalDeleted") boolean andLogicalDeleted);
 
@@ -144,7 +139,6 @@ public interface LitemallKeywordMapper {
      * This method corresponds to the database table litemall_keyword
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByExample(@Param("example") LitemallKeywordExample example);
 
@@ -153,7 +147,6 @@ public interface LitemallKeywordMapper {
      * This method corresponds to the database table litemall_keyword
      *
      * @mbg.generated
-     * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     int logicalDeleteByPrimaryKey(Integer id);
 }

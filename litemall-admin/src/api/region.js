@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 
-export function listRegion(query) {
+export function listRegion() {
   return request({
     url: '/region/list',
-    method: 'get',
-    params: query
+    method: 'get'
   })
 }
 

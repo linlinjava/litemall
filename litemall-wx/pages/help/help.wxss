@@ -1,0 +1,70 @@
+.common-problem {
+  width: 750rpx;
+  height: auto;
+  overflow: hidden;
+  padding: 0rpx 30rpx;
+  background: #fff;
+}
+
+.item {
+  height: auto;
+  overflow: hidden;
+  padding-bottom: 25rpx;
+}
+
+.question-box .spot {
+  float: left;
+  display: block;
+  height: 10rpx;
+  width: 10rpx;
+  background: #b4282d;
+  border-radius: 50%;
+  margin-top: 11rpx;
+}
+
+.question-box .question {
+  float: left;
+  line-height: 30rpx;
+  padding-left: 8rpx;
+  display: block;
+  font-size: 26rpx;
+  padding-bottom: 15rpx;
+  color: #303030;
+  width: 680rpx;
+
+}
+
+.answer {
+  line-height: 36rpx;
+  padding-left: 16rpx;
+  font-size: 26rpx;
+  color: #787878;
+  display: block;
+
+}
+
+
+.page{
+    width: 750rpx;
+    height: 108rpx;
+    background: #fff;
+    margin-bottom: 20rpx;
+}
+
+.page view{
+    height: 108rpx;
+    width: 50%;
+    float: left;
+    font-size: 29rpx;
+    color: #333;
+    text-align: center;
+    line-height: 108rpx;
+}
+
+.page .prev{
+    border-right: 1px solid #D9D9D9;
+}
+
+.page .disabled{
+    color: #ccc;
+}

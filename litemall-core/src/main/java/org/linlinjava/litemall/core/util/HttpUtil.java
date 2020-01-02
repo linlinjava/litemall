@@ -1,5 +1,8 @@
 package org.linlinjava.litemall.core.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +17,9 @@ import java.util.Map;
  * @return 远程资源的响应结果
  */
 public class HttpUtil {
+
+    private static final Log logger = LogFactory.getLog(HttpUtil.class);
+
     /**
      * 向指定 URL 发送POST方法的请求
      *
@@ -53,9 +59,9 @@ public class HttpUtil {
                     param.append(entry.getKey());
                     param.append("=");
                     param.append(entry.getValue());
-                    //System.out.println(entry.getKey()+":"+entry.getValue());
+
                 }
-                //System.out.println("param:"+param.toString());
+
                 out.write(param.toString());
             }
             // flush输出流的缓冲
@@ -68,7 +74,7 @@ public class HttpUtil {
                 result.append(line);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         //使用finally块来关闭输出流、输入流
         finally {
@@ -80,7 +86,7 @@ public class HttpUtil {
                     in.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                logger.error(ex.getMessage(), ex);
             }
         }
         return result.toString();

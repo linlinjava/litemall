@@ -1,0 +1,318 @@
+@font-face {
+	font-family: "iconfont";
+	src: url('./iconfont.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: "vanIcon";
+	src: url('https://img.yzcdn.cn/vant/vant-icon-66a14a.ttf') format('truetype');
+}
+
+.van-icon {
+	position: relative;
+	font-family: "iconfont", "vanIcon" !important;
+	font-size: 14px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+i.van-icon-huida:before {
+	content: "\e678";
+}
+
+i.van-icon-wen:before {
+	content: "\e715";
+}
+
+i.van-icon-wuliu:before {
+	content: "\e640";
+}
+
+i.van-icon-hint:before {
+	content: "\e62a";
+}
+
+i.van-icon-add:before {
+	content: "\e64f";
+}
+
+i.van-icon-miaosha:before {
+	content: "\e68f";
+}
+
+i.van-icon-lock:before {
+	content: "\e60c";
+}
+
+i.van-icon-wode:before {
+	content: "\e604";
+}
+
+i.van-icon-checked:before {
+	content: "\e607";
+}
+
+i.van-icon-check:before {
+	content: "\e628";
+}
+
+i.van-icon-leimu:before {
+	content: "\e703";
+}
+
+i.van-icon-camera_full:before {
+	content: "\e618";
+}
+
+i.van-icon-cart-full:before {
+	content: "\e73c";
+}
+
+i.van-icon-cart:before {
+	content: "\e73d";
+}
+
+i.van-icon-miaosha-copy:before {
+	content: "\e601";
+}
+
+i.van-icon-id-card:before {
+	content: "\e61e";
+}
+
+i.van-icon-compass-full:before {
+	content: "\e7ac";
+}
+
+i.van-icon-fail:before {
+	content: "\e609";
+}
+
+i.van-icon-success:before {
+	content: "\e626";
+}
+
+i.van-icon-wangwang-full:before {
+	content: "\e605";
+}
+
+i.van-icon-daifahuo:before {
+	content: "\e642";
+}
+
+i.van-icon-arrowupcircle:before {
+	content: "\e6cf";
+}
+
+i.van-icon-class-full:before {
+	content: "\e7f8";
+}
+
+i.van-icon-fenxiang:before {
+	content: "\e610";
+}
+
+i.van-icon-gold-bean:before {
+	content: "\e629";
+}
+
+i.van-icon-coupon-due:before {
+	content: "\e6dd";
+}
+
+i.van-icon-coupon-used:before {
+	content: "\e6df";
+}
+
+i.van-icon-team:before {
+	content: "\e65d";
+}
+
+i.van-icon-dingwei:before {
+	content: "\e622";
+}
+
+i.van-icon-editor:before {
+	content: "\e685";
+}
+
+i.van-icon-coupon:before {
+	content: "\e60e";
+}
+
+i.van-icon-arrow-down:before {
+	content: "\e61b";
+}
+
+i.van-icon-clear:before {
+	content: "\e61f";
+}
+
+i.van-icon-laba:before {
+	content: "\e73b";
+}
+
+i.van-icon-kefu:before {
+	content: "\e616";
+}
+
+i.van-icon-tubiao215:before {
+	content: "\e619";
+}
+
+i.van-icon-jijiangkaishi:before {
+	content: "\e681";
+}
+
+i.van-icon-arrow:before {
+	content: "\e66e";
+}
+
+i.van-icon-mobile:before {
+	content: "\e72c";
+}
+
+i.van-icon-username:before {
+	content: "\e84d";
+}
+
+i.van-icon-icon104:before {
+	content: "\e665";
+}
+
+i.van-icon-list:before {
+	content: "\e68e";
+}
+
+i.van-icon-set:before {
+	content: "\e690";
+}
+
+i.van-icon-good:before {
+	content: "\e699";
+}
+
+i.van-icon-search:before {
+	content: "\e6a4";
+}
+
+i.van-icon-compass:before {
+	content: "\e6a6";
+}
+
+i.van-icon-success-radius:before {
+	content: "\e6b4";
+}
+
+i.van-icon-browse:before {
+	content: "\e6c0";
+}
+
+i.van-icon-phone:before {
+	content: "\e6c2";
+}
+
+i.van-icon-naozhong:before {
+	content: "\e661";
+}
+
+i.van-icon-shiliangzhinengduixiang42:before {
+	content: "\e675";
+}
+
+i.van-icon-dengdai:before {
+	content: "\e60b";
+}
+
+i.van-icon-cancel:before {
+	content: "\e61c";
+}
+
+i.van-icon-shouhouguanli:before {
+	content: "\e608";
+}
+
+i.van-icon-invitation:before {
+	content: "\e932";
+}
+
+i.van-icon-arrow-left:before {
+	content: "\e625";
+}
+
+i.van-icon-clear-full:before {
+	content: "\e658";
+}
+
+i.van-icon-wode1:before {
+	content: "\e602";
+}
+
+i.van-icon-baoguo-shixin:before {
+	content: "\e8fb";
+}
+
+i.van-icon-lajitong:before {
+	content: "\e62f";
+}
+
+i.van-icon-daifukuan:before {
+	content: "\e60a";
+}
+
+i.van-icon-eye-close:before {
+	content: "\e60d";
+}
+
+i.van-icon-eye-open:before {
+	content: "\e623";
+}
+
+i.van-icon-baoguo-kongxin:before {
+	content: "\e61a";
+}
+
+i.van-icon-dingwei1:before {
+	content: "\e7db";
+}
+
+i.van-icon-n4:before {
+	content: "\e79a";
+}
+
+i.van-icon-jiaoyiwancheng:before {
+	content: "\e686";
+}
+
+i.van-icon-jiaoyiguanbi:before {
+	content: "\e687";
+}
+
+i.van-icon-qianshoutixing:before {
+	content: "\e679";
+}
+
+i.van-icon-chulizhong:before {
+	content: "\e68b";
+}
+
+i.van-icon-tuandui1:before {
+	content: "\e63d";
+}
+
+i.van-icon-icon:before {
+	content: "\e603";
+}
+
+i.van-icon-wangwang:before {
+	content: "\e933";
+}
+
+i.van-icon-shoucang:before {
+	content: "\e620";
+}
+
+i.van-icon-shoucang-full:before {
+	content: "\e61d";
+}

@@ -4,9 +4,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.LitemallCategory;
+import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.HomeCacheManager;
+import org.linlinjava.litemall.wx.service.WxGrouponRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * 首页服务
@@ -30,18 +34,30 @@ public class WxHomeController {
 
     @Autowired
     private LitemallAdService adService;
+
     @Autowired
     private LitemallGoodsService goodsService;
+
     @Autowired
     private LitemallBrandService brandService;
+
     @Autowired
     private LitemallTopicService topicService;
+
     @Autowired
     private LitemallCategoryService categoryService;
+
     @Autowired
-    private LitemallGrouponRulesService grouponRulesService;
+    private WxGrouponRuleService grouponService;
+
     @Autowired
     private LitemallCouponService couponService;
+
+    private final static ArrayBlockingQueue<Runnable> WORK_QUEUE = new ArrayBlockingQueue<>(9);
+
+    private final static RejectedExecutionHandler HANDLER = new ThreadPoolExecutor.CallerRunsPolicy();
+
+    private static ThreadPoolExecutor executorService = new ThreadPoolExecutor(9, 9, 1000, TimeUnit.MILLISECONDS, WORK_QUEUE, HANDLER);
 
     @GetMapping("/cache")
     public Object cache(@NotNull String key) {
@@ -56,44 +72,85 @@ public class WxHomeController {
 
     /**
      * 首页数据
-     *
+     * @param userId 当用户已经登录时，非空。为登录状态为null
      * @return 首页数据
      */
     @GetMapping("/index")
-    public Object index() {
+    public Object index(@LoginUser Integer userId) {
         //优先从缓存中读取
         if (HomeCacheManager.hasData(HomeCacheManager.INDEX)) {
             return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.INDEX));
         }
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+        Callable<List> bannerListCallable = () -> adService.queryIndex();
+
+        Callable<List> channelListCallable = () -> categoryService.queryChannel();
+
+        Callable<List> couponListCallable;
+        if(userId == null){
+            couponListCallable = () -> couponService.queryList(0, 3);
+        } else {
+            couponListCallable = () -> couponService.queryAvailableList(userId,0, 3);
+        }
 
 
-        Map<String, Object> data = new HashMap<>();
+        Callable<List> newGoodsListCallable = () -> goodsService.queryByNew(0, SystemConfig.getNewLimit());
 
-        List<LitemallAd> banner = adService.queryIndex();
-        data.put("banner", banner);
+        Callable<List> hotGoodsListCallable = () -> goodsService.queryByHot(0, SystemConfig.getHotLimit());
 
-        List<LitemallCategory> channel = categoryService.queryChannel();
-        data.put("channel", channel);
+        Callable<List> brandListCallable = () -> brandService.query(0, SystemConfig.getBrandLimit());
 
-        List<LitemallCoupon> couponList = couponService.queryList(0, 3);
-        data.put("couponList", couponList);
-
-        List<LitemallGoods> newGoods = goodsService.queryByNew(0, SystemConfig.getNewLimit());
-        data.put("newGoodsList", newGoods);
-
-        List<LitemallGoods> hotGoods = goodsService.queryByHot(0, SystemConfig.getHotLimit());
-        data.put("hotGoodsList", hotGoods);
-
-        List<LitemallBrand> brandList = brandService.queryVO(0, SystemConfig.getBrandLimit());
-        data.put("brandList", brandList);
-
-        List<LitemallTopic> topicList = topicService.queryList(0, SystemConfig.getTopicLimit());
-        data.put("topicList", topicList);
+        Callable<List> topicListCallable = () -> topicService.queryList(0, SystemConfig.getTopicLimit());
 
         //团购专区
-        List<Map<String, Object>> grouponList = grouponRulesService.queryList(0, 5);
-        data.put("grouponList", grouponList);
+        Callable<List> grouponListCallable = () -> grouponService.queryList(0, 5);
 
+        Callable<List> floorGoodsListCallable = this::getCategoryList;
+
+        FutureTask<List> bannerTask = new FutureTask<>(bannerListCallable);
+        FutureTask<List> channelTask = new FutureTask<>(channelListCallable);
+        FutureTask<List> couponListTask = new FutureTask<>(couponListCallable);
+        FutureTask<List> newGoodsListTask = new FutureTask<>(newGoodsListCallable);
+        FutureTask<List> hotGoodsListTask = new FutureTask<>(hotGoodsListCallable);
+        FutureTask<List> brandListTask = new FutureTask<>(brandListCallable);
+        FutureTask<List> topicListTask = new FutureTask<>(topicListCallable);
+        FutureTask<List> grouponListTask = new FutureTask<>(grouponListCallable);
+        FutureTask<List> floorGoodsListTask = new FutureTask<>(floorGoodsListCallable);
+
+        executorService.submit(bannerTask);
+        executorService.submit(channelTask);
+        executorService.submit(couponListTask);
+        executorService.submit(newGoodsListTask);
+        executorService.submit(hotGoodsListTask);
+        executorService.submit(brandListTask);
+        executorService.submit(topicListTask);
+        executorService.submit(grouponListTask);
+        executorService.submit(floorGoodsListTask);
+
+        Map<String, Object> entity = new HashMap<>();
+        try {
+            entity.put("banner", bannerTask.get());
+            entity.put("channel", channelTask.get());
+            entity.put("couponList", couponListTask.get());
+            entity.put("newGoodsList", newGoodsListTask.get());
+            entity.put("hotGoodsList", hotGoodsListTask.get());
+            entity.put("brandList", brandListTask.get());
+            entity.put("topicList", topicListTask.get());
+            entity.put("grouponList", grouponListTask.get());
+            entity.put("floorGoodsList", floorGoodsListTask.get());
+            //缓存数据
+            HomeCacheManager.loadData(HomeCacheManager.INDEX, entity);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            executorService.shutdown();
+        }
+        return ResponseUtil.ok(entity);
+    }
+
+    private List<Map> getCategoryList() {
         List<Map> categoryList = new ArrayList<>();
         List<LitemallCategory> catL1List = categoryService.queryL1WithoutRecommend(0, SystemConfig.getCatlogListLimit());
         for (LitemallCategory catL1 : catL1List) {
@@ -103,23 +160,35 @@ public class WxHomeController {
                 l2List.add(catL2.getId());
             }
 
-            List<LitemallGoods> categoryGoods = null;
+            List<LitemallGoods> categoryGoods;
             if (l2List.size() == 0) {
                 categoryGoods = new ArrayList<>();
             } else {
                 categoryGoods = goodsService.queryByCategory(l2List, 0, SystemConfig.getCatlogMoreLimit());
             }
 
-            Map<String, Object> catGoods = new HashMap<String, Object>();
+            Map<String, Object> catGoods = new HashMap<>();
             catGoods.put("id", catL1.getId());
             catGoods.put("name", catL1.getName());
             catGoods.put("goodsList", categoryGoods);
             categoryList.add(catGoods);
         }
-        data.put("floorGoodsList", categoryList);
+        return categoryList;
+    }
 
-        //缓存数据
-        HomeCacheManager.loadData(HomeCacheManager.INDEX, data);
-        return ResponseUtil.ok(data);
+    /**
+     * 商城介绍信息
+     * @return 商城介绍信息
+     */
+    @GetMapping("/about")
+    public Object about() {
+        Map<String, Object> about = new HashMap<>();
+        about.put("name", SystemConfig.getMallName());
+        about.put("address", SystemConfig.getMallAddress());
+        about.put("phone", SystemConfig.getMallPhone());
+        about.put("qq", SystemConfig.getMallQQ());
+        about.put("longitude", SystemConfig.getMallLongitude());
+        about.put("latitude", SystemConfig.getMallLatitude());
+        return ResponseUtil.ok(about);
     }
 }

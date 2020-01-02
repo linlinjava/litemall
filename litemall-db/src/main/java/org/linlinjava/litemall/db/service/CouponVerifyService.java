@@ -25,26 +25,42 @@ public class CouponVerifyService {
      * @param checkedGoodsPrice
      * @return
      */
-    public LitemallCoupon checkCoupon(Integer userId, Integer couponId, BigDecimal checkedGoodsPrice) {
+    public LitemallCoupon checkCoupon(Integer userId, Integer couponId, Integer userCouponId, BigDecimal checkedGoodsPrice) {
         LitemallCoupon coupon = couponService.findById(couponId);
-        LitemallCouponUser couponUser = couponUserService.queryOne(userId, couponId);
-        if (coupon == null || couponUser == null) {
+        if (coupon == null) {
+            return null;
+        }
+
+        LitemallCouponUser couponUser = couponUserService.findById(userCouponId);
+        if (couponUser == null) {
+            couponUser = couponUserService.queryOne(userId, couponId);
+        } else if (!couponId.equals(couponUser.getCouponId())) {
+            return null;
+        }
+
+        if (couponUser == null) {
             return null;
         }
 
         // 检查是否超期
+        Short timeType = coupon.getTimeType();
         Short days = coupon.getDays();
         LocalDateTime now = LocalDateTime.now();
-        if (days == 0) {
+        if (timeType.equals(CouponConstant.TIME_TYPE_TIME)) {
             if (now.isBefore(coupon.getStartTime()) || now.isAfter(coupon.getEndTime())) {
                 return null;
             }
-        } else {
+        }
+        else if(timeType.equals(CouponConstant.TIME_TYPE_DAYS)) {
             LocalDateTime expired = couponUser.getAddTime().plusDays(days);
             if (now.isAfter(expired)) {
                 return null;
             }
         }
+        else {
+            return null;
+        }
+
         // 检测商品是否符合
         // TODO 目前仅支持全平台商品，所以不需要检测
         Short goodType = coupon.getGoodsType();

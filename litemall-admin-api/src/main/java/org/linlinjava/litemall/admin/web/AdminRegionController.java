@@ -2,23 +2,21 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.linlinjava.litemall.admin.vo.RegionVo;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.core.validator.Order;
-import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallRegion;
 import org.linlinjava.litemall.db.service.LitemallRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/region")
@@ -30,33 +28,60 @@ public class AdminRegionController {
     private LitemallRegionService regionService;
 
     @GetMapping("/clist")
-    public Object clist(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object clist(@NotNull Integer id) {
         List<LitemallRegion> regionList = regionService.queryByPid(id);
-
-        return ResponseUtil.ok(regionList);
+        return ResponseUtil.okList(regionList);
     }
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String name, Integer code,
-                       @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer limit,
-                       @Sort(accepts = {"id"}) @RequestParam(defaultValue = "id") String sort,
-                       @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
+    public Object list() {
+        List<RegionVo> regionVoList = new ArrayList<>();
+
+        List<LitemallRegion> litemallRegions = regionService.getAll();
+        Map<Byte, List<LitemallRegion>> collect = litemallRegions.stream().collect(Collectors.groupingBy(LitemallRegion::getType));
+        byte provinceType = 1;
+        List<LitemallRegion> provinceList = collect.get(provinceType);
+        byte cityType = 2;
+        List<LitemallRegion> city = collect.get(cityType);
+        Map<Integer, List<LitemallRegion>> cityListMap = city.stream().collect(Collectors.groupingBy(LitemallRegion::getPid));
+        byte areaType = 3;
+        List<LitemallRegion> areas = collect.get(areaType);
+        Map<Integer, List<LitemallRegion>> areaListMap = areas.stream().collect(Collectors.groupingBy(LitemallRegion::getPid));
+
+        for (LitemallRegion province : provinceList) {
+            RegionVo provinceVO = new RegionVo();
+            provinceVO.setId(province.getId());
+            provinceVO.setName(province.getName());
+            provinceVO.setCode(province.getCode());
+            provinceVO.setType(province.getType());
+
+            List<LitemallRegion> cityList = cityListMap.get(province.getId());
+            List<RegionVo> cityVOList = new ArrayList<>();
+            for (LitemallRegion cityVo : cityList) {
+                RegionVo cityVO = new RegionVo();
+                cityVO.setId(cityVo.getId());
+                cityVO.setName(cityVo.getName());
+                cityVO.setCode(cityVo.getCode());
+                cityVO.setType(cityVo.getType());
+
+                List<LitemallRegion> areaList = areaListMap.get(cityVo.getId());
+                List<RegionVo> areaVOList = new ArrayList<>();
+                for (LitemallRegion area : areaList) {
+                    RegionVo areaVO = new RegionVo();
+                    areaVO.setId(area.getId());
+                    areaVO.setName(area.getName());
+                    areaVO.setCode(area.getCode());
+                    areaVO.setType(area.getType());
+                    areaVOList.add(areaVO);
+                }
+
+                cityVO.setChildren(areaVOList);
+                cityVOList.add(cityVO);
+            }
+            provinceVO.setChildren(cityVOList);
+            regionVoList.add(provinceVO);
         }
 
-        List<LitemallRegion> regionList = regionService.querySelective(name, code, page, limit, sort, order);
-        int total = regionService.countSelective(name, code, page, limit, sort, order);
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", regionList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(regionVoList);
     }
 }

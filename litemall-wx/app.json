@@ -36,12 +36,13 @@
     "pages/groupon/myGroupon/myGroupon",
     "pages/groupon/grouponDetail/grouponDetail",
     "pages/groupon/grouponList/grouponList",
-    "pages/coupon/coupon"
+    "pages/coupon/coupon",
+    "pages/help/help"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "litemall小程序商城",
-    "enablePullDownRefresh": true,
+    "enablePullDownRefresh": false,
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FFFFFF",
     "backgroundTextStyle": "dark"
@@ -84,5 +85,12 @@
     "uploadFile": 10000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "usingComponents": {
+    "van-tag": "./lib/vant-weapp/tag/index",
+    "van-icon": "./lib/vant-weapp/icon/index",
+    "van-checkbox": "./lib/vant-weapp/checkbox/index",
+    "van-steps": "./lib/vant-weapp/steps/index"
+  },
+  "sitemapLocation": "sitemap.json"
 }

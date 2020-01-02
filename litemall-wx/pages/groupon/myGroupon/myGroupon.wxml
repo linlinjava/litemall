@@ -9,13 +9,18 @@
   </view>
   <view class="no-order" wx:if="{{orderList.length <= 0}}">
     <view class="c">
-      <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
       <text>尚未参加任何团购</text>
     </view>
   </view>
 
   <view class="orders">
     <navigator url="../grouponDetail/grouponDetail?id={{item.id}}" class="order" open-type="navigate" wx:for="{{orderList}}" wx:key="id">
+      <view class="h">
+        <van-tag type="primary" wx:if="{{item.groupon.status === 1}}">开团中</van-tag>
+        <van-tag type="success" wx:if="{{item.groupon.status === 2}}">开团成功</van-tag>
+        <van-tag type="danger" wx:if="{{item.groupon.status === 3}}">开团失败</van-tag>
+        <van-tag round type="warning" wx:if="{{!item.isCreator}}">{{item.creator}}发起</van-tag>
+      </view>
       <view class="h">
         <view class="l">订单编号：{{item.orderSn}}</view>
         <view class="r">{{item.orderStatusText}}</view>
@@ -26,7 +31,7 @@
       </view>
       <view class="i">
         <view class="l">团购要求：{{item.rules.discountMember}}人</view>
-        <view class="r">当前参与：{{item.joinerCount}}</view>
+        <view class="r">当前参团：{{item.joinerCount}}人</view>
       </view>
       <view class="goods" wx:for="{{item.goodsList}}" wx:key="id" wx:for-item="gitem">
         <view class="img">
@@ -40,12 +45,6 @@
       </view>
       <view class="b">
         <view class="l">实付：￥{{item.actualPrice}}</view>
-        <view class="capsule-tag">
-          <zan-capsule color="#a78845" leftText="状态" rightText="{{item.joinerCount>=item.rules.discountMember?'已达成':'团购中'}}" />
-        </view>
-        <view class="capsule-tag">
-          <zan-capsule color="#a78845" leftText="发起" rightText="{{item.creator}}" wx:if="{{!item.isCreator}}" />
-        </view>
       </view>
     </navigator>
   </view>

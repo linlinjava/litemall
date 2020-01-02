@@ -6,9 +6,10 @@ var app = getApp();
 Page({
   data: {
     couponList: [],
+    code: '',
     status: 0,
     page: 1,
-    size: 10,
+    limit: 10,
     count: 0,
     scrollTop: 0,
     showPage: false
@@ -53,8 +54,11 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
-
+  onPullDownRefresh() {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    this.getCouponList();
+    wx.hideNavigationBarLoading() //完成停止加载
+    wx.stopPullDownRefresh() //停止下拉刷新
   },
 
   /**
@@ -78,46 +82,59 @@ Page({
       showPage: false,
       couponList: []
     });
-    // 页面渲染完成
-    wx.showToast({
-      title: '加载中...',
-      icon: 'loading',
-      duration: 2000
-    });
-
     util.request(api.CouponMyList, {
       status: that.data.status,
       page: that.data.page,
-      size: that.data.size
+      limit: that.data.limit
     }).then(function(res) {
       if (res.errno === 0) {
 
         that.setData({
           scrollTop: 0,
-          couponList: res.data.data,
-          showPage: true,
-          count: res.data.count
+          couponList: res.data.list,
+          showPage: res.data.total > that.data.limit,
+          count: res.data.total
         });
       }
-      wx.hideToast();
     });
 
   },
-  goExchange: function() {
-    wx.showToast({
-      title: '目前不支持',
-      icon: 'none',
-      duration: 2000
+  bindExchange: function (e) {
+    this.setData({
+      code: e.detail.value
     });
   },
-  goUse: function() {
-    wx.reLaunch({
-      url: '/pages/index/index'
+  clearExchange: function () {
+    this.setData({
+      code: ''
+    });
+  },
+  goExchange: function() {
+    if (this.data.code.length === 0) {
+      util.showErrorToast("请输入兑换码");
+      return;
+    }
+
+    let that = this;
+    util.request(api.CouponExchange, {
+      code: that.data.code
+    }, 'POST').then(function (res) {
+      if (res.errno === 0) {
+        that.getCouponList();
+        that.clearExchange();
+        wx.showToast({
+          title: "领取成功",
+          duration: 2000
+        })
+      }
+      else{
+        util.showErrorToast(res.errmsg);
+      }
     });
   },
   nextPage: function(event) {
     var that = this;
-    if (this.data.page > that.data.count / that.data.size) {
+    if (this.data.page > that.data.count / that.data.limit) {
       return true;
     }
 
@@ -145,7 +162,7 @@ Page({
       couponList: [],
       status: e.currentTarget.dataset.index,
       page: 1,
-      size: 10,
+      limit: 10,
       count: 0,
       scrollTop: 0,
       showPage: false

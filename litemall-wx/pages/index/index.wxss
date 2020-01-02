@@ -235,21 +235,10 @@
 
 .a-groupon .b .name {
   float: left;
-  width: 330rpx;
   display: block;
   color: #333;
   line-height: 50rpx;
   font-size: 30rpx;
-}
-
-.a-groupon .capsule-tag {
-  float: right;
-  padding-right: 0rpx;
-  padding-top: 8rpx;
-}
-
-.a-groupon .zan-capsule + .zan-capsule {
-  margin-left: 10px;
 }
 
 .a-groupon .b .desc {
@@ -513,4 +502,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.search {
+  height: 88rpx;
+  width: 100%;
+  padding: 0 30rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.search .van-icon-search {
+  line-height: 59rpx;
+}
+
+.search .input {
+  width: 690rpx;
+  height: 56rpx;
+  background: #ededed;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search .txt {
+  height: 42rpx;
+  line-height: 42rpx;
+  color: #666;
+  padding-left: 10rpx;
+  font-size: 30rpx;
 }

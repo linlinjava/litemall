@@ -17,5 +17,11 @@ public class AdminResponseCode {
     public static final Integer USER_INVALID_MOBILE = 632;
     public static final Integer USER_NAME_EXIST = 633;
     public static final Integer USER_MOBILE_EXIST = 634;
+    public static final Integer ROLE_NAME_EXIST = 640;
+    public static final Integer ROLE_SUPER_SUPERMISSION = 641;
+    public static final Integer ROLE_USER_EXIST = 642;
+    public static final Integer GROUPON_GOODS_UNKNOWN = 650;
+    public static final Integer GROUPON_GOODS_EXISTED = 651;
+    public static final Integer GROUPON_GOODS_OFFLINE = 652;
 
 }

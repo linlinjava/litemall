@@ -1,7 +1,10 @@
 package org.linlinjava.litemall.core.config;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.linlinjava.litemall.core.util.ResponseUtil;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,40 +18,43 @@ import javax.validation.ValidationException;
 import java.util.Set;
 
 @ControllerAdvice
+@Order
 public class GlobalExceptionHandler {
+
+    private Log logger = LogFactory.getLog(GlobalExceptionHandler.class);
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseBody
     public Object badArgumentHandler(IllegalArgumentException e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
     public Object badArgumentHandler(MethodArgumentTypeMismatchException e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseBody
     public Object badArgumentHandler(MissingServletRequestParameterException e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
     public Object badArgumentHandler(HttpMessageNotReadableException e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
         return ResponseUtil.badArgumentValue();
     }
 
     @ExceptionHandler(ValidationException.class)
     @ResponseBody
     public Object badArgumentHandler(ValidationException e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
         if (e instanceof ConstraintViolationException) {
             ConstraintViolationException exs = (ConstraintViolationException) e;
             Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
@@ -63,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Object seriousHandler(Exception e) {
-        e.printStackTrace();
+        logger.error(e.getMessage(), e);
         return ResponseUtil.serious();
     }
 }

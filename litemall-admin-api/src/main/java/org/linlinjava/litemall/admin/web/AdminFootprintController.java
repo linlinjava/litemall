@@ -2,7 +2,8 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/footprint")
@@ -28,23 +27,16 @@ public class AdminFootprintController {
     @Autowired
     private LitemallFootprintService footprintService;
 
+    @RequiresPermissions("admin:footprint:list")
+    @RequiresPermissionsDesc(menu = {"用户管理", "用户足迹"}, button = "查询")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String userId, String goodsId,
+    public Object list(String userId, String goodsId,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
-        List<LitemallFootprint> footprintList = footprintService.querySelective(userId, goodsId, page, limit, sort, order);
-        int total = footprintService.countSelective(userId, goodsId, page, limit, sort, order);
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", footprintList);
-
-        return ResponseUtil.ok(data);
+        List<LitemallFootprint> footprintList = footprintService.querySelective(userId, goodsId, page, limit, sort,
+                order);
+        return ResponseUtil.okList(footprintList);
     }
 }

@@ -49,13 +49,11 @@
 
 .form-item .clear {
   position: absolute;
-  top: 26rpx;
+  top: 32rpx;
   right: 18rpx;
   z-index: 2;
   display: block;
   background: #fff;
-  height: 44rpx;
-  width: 44rpx;
 }
 
 .register-btn {

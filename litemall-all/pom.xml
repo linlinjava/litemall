@@ -58,22 +58,27 @@
             </plugin>
 
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
+                <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>copy-resources-vue</id>
+                        <phase>validate</phase>
                         <goals>
-                            <goal>repackage</goal>
+                            <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <classifier>exec</classifier>
+                            <outputDirectory>${basedir}/target/classes/static/vue</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>../litemall-vue/dist</directory>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
         </plugins>
     </build>
 

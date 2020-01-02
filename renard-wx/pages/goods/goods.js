@@ -13,7 +13,6 @@ Page({
     grouponLink: {}, //参与的团购
     attribute: [],
     issueList: [],
-    comment: [],
     brand: {},
     specificationList: [],
     productList: [],
@@ -25,12 +24,10 @@ Page({
     tmpSpecText: '请选择规格数量',
     checkedSpecPrice: 0,
     openAttr: false,
-    noCollectImage: '/static/images/icon_collect.png',
-    hasCollectImage: '/static/images/icon_collect_checked.png',
-    collectImage: '/static/images/icon_collect.png',
     shareImage: '',
     isGroupon: false, //标识是否是一个参团购买
-    soldout: false
+    soldout: false,
+    canWrite: false
   },
 
   // 页面分享
@@ -42,7 +39,27 @@ Page({
       path: '/pages/index/index?goodId=' + this.data.id
     }
   },
-
+  handleSetting: function(e) {
+      var that = this;
+      // console.log(e)
+      if (!e.detail.authSetting['scope.writePhotosAlbum']) {
+          wx.showModal({
+              title: '警告',
+              content: '不授权无法保存',
+              showCancel: false
+          })
+          that.setData({
+              canWrite: false
+          })
+      } else {
+          wx.showToast({
+              title: '保存成功'
+          })
+          that.setData({
+              canWrite: true
+          })
+      }
+  },
   showShare: function() {
     this.sharePop.togglePopup();
   },
@@ -105,7 +122,6 @@ Page({
           goods: res.data.info,
           attribute: res.data.attribute,
           issueList: res.data.issue,
-          comment: res.data.comment,
           brand: res.data.brand,
           specificationList: res.data.specificationList,
           productList: res.data.productList,
@@ -131,16 +147,6 @@ Page({
 
         }
 
-        if (res.data.userHasCollect == 1) {
-          that.setData({
-            collectImage: that.data.hasCollectImage
-          });
-        } else {
-          that.setData({
-            collectImage: that.data.noCollectImage
-          });
-        }
-
         WxParse.wxParse('goodsDetail', 'html', res.data.info.detail, that);
         //获取推荐商品
         that.getGoodsRelated();
@@ -157,7 +163,7 @@ Page({
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
-          relatedGoods: res.data.goodsList,
+          relatedGoods: res.data.list,
         });
       }
     });
@@ -375,6 +381,33 @@ Page({
       });
       this.getGrouponInfo(options.grouponId);
     }
+    let that = this;
+    wx.getSetting({
+        success: function (res) {
+            console.log(res)
+            //不存在相册授权
+            if (!res.authSetting['scope.writePhotosAlbum']) {
+                wx.authorize({
+                    scope: 'scope.writePhotosAlbum',
+                    success: function () {
+                        that.setData({
+                            canWrite: true
+                        })
+                    },
+                    fail: function (err) {
+                        that.setData({
+                            canWrite: false
+                        })
+                    }
+                })
+            } else {
+                that.setData({
+                    canWrite: true
+                });
+            }
+        }
+    })
+
   },
 
   onShow: function() {
@@ -387,38 +420,6 @@ Page({
         });
       }
     });
-  },
-
-  //添加或是取消收藏
-  addCollectOrNot: function() {
-    let that = this;
-    util.request(api.CollectAddOrDelete, {
-        type: 0,
-        valueId: this.data.id
-      }, "POST")
-      .then(function(res) {
-        let _res = res;
-        if (_res.errno == 0) {
-          if (_res.data.type == 'add') {
-            that.setData({
-              collectImage: that.data.hasCollectImage
-            });
-          } else {
-            that.setData({
-              collectImage: that.data.noCollectImage
-            });
-          }
-
-        } else {
-          wx.showToast({
-            image: '/static/images/icon_error.png',
-            title: _res.errmsg,
-            mask: true
-          });
-        }
-
-      });
-
   },
 
   //立即购买（先自动加入购物车）
@@ -551,15 +552,7 @@ Page({
               openAttr: !that.data.openAttr,
               cartGoodsCount: _res.data
             });
-            if (that.data.userHasCollect == 1) {
-              that.setData({
-                collectImage: that.data.hasCollectImage
-              });
-            } else {
-              that.setData({
-                collectImage: that.data.noCollectImage
-              });
-            }
+
           } else {
             wx.showToast({
               image: '/static/images/icon_error.png',
@@ -613,14 +606,5 @@ Page({
     // 页面渲染完成
     this.sharePop = this.selectComponent("#sharePop");
     this.notify = this.selectComponent("#van-notify");
-  },
-  // 下拉刷新
-  onPullDownRefresh() {
-    wx.showNavigationBarLoading() //在标题栏中显示加载
-    this.getGoodsInfo();
-    wx.hideNavigationBarLoading() //完成停止加载
-    wx.stopPullDownRefresh() //停止下拉刷新
-  },
-  //根据已选的值，计算其它值的状态
-  setSpecValueStatus: function() {},
+  }
 })

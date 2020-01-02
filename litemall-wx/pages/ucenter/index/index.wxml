@@ -11,7 +11,7 @@
   <view class='user_area'>
     <view class='user_row' bindtap='goOrder'>
       <view class='user_row_left'>我的订单</view>
-      <image class='user_row_right' src='/static/images/goright.png'></image>
+      <van-icon class='user_row_right' name="arrow" />      
     </view>
     <view class='user_column'>
       <view class='user_column_item' bindtap='goOrderIndex' data-index='1' data-route='/pages/ucenter/order/order'>
@@ -35,6 +35,10 @@
         <image class='user_column_item_image' src='/static/images/comment.png'></image>
         <view class='user_column_item_text'>待评价</view>
       </view>
+      <view class='user_column_item' bindtap='goAfterSale'>
+        <image class='user_column_item_image' src='/static/images/aftersale.png'></image>
+        <view class='user_column_item_text'>售后</view>
+      </view>
     </view>
   </view>
 
@@ -50,7 +54,7 @@
       <view class='user_column_item_text'>优惠卷</view>
     </view>
     <view class='user_column_item' bindtap='goCollect'>
-      <image class='user_column_item_image' src='/static/images/icon_collect.png'></image>
+      <image class='user_column_item_image' src='/static/images/collect.png'></image>
       <view class='user_column_item_text'>商品收藏</view>
     </view>
     <view class='user_column_item' bindtap='goFootprint'>
@@ -61,9 +65,10 @@
       <image class='user_column_item_image' src='/static/images/group.png'></image>
       <view class='user_column_item_text'>我的拼团</view>
     </view>
-    <view class='user_column_item' bindtap='goAfterSale'>
-      <image class='user_column_item_image' src='/static/images/aftersale.png'></image>
-      <view class='user_column_item_text'>售后</view>
+
+    <view class='user_column_item' bindtap='goAddress'>
+      <image class='user_column_item_image' src='/static/images/address.png'></image>
+      <view class='user_column_item_text'>地址管理</view>
     </view>
   </view>
   <view class='separate'></view>
@@ -72,14 +77,15 @@
     <view class='user_row_left'>必备工具</view>
   </view>
   <view class='user_column'>
-    <view class='user_column_item' bindtap='goAddress'>
-      <image class='user_column_item_image' src='/static/images/address.png'></image>
-      <view class='user_column_item_text'>地址管理</view>
-    </view>
+
     <button class="user_column_item_phone" open-type="getPhoneNumber" bindgetphonenumber="bindPhoneNumber">
       <image class='user_column_item_image' src='/static/images/mobile.png'></image>
       <view class='user_column_item_text'>绑定手机</view>
     </button>
+    <view class='user_column_item' bindtap='goHelp'>
+      <image class='user_column_item_image' src='/static/images/help.png'></image>
+      <view class='user_column_item_text'>帮助中心</view>
+    </view>
     <view class='user_column_item' bindtap='goFeedback'>
       <image class='user_column_item_image' src='/static/images/feedback.png'></image>
       <view class='user_column_item_text'>意见反馈</view>
@@ -91,10 +97,11 @@
       <view class='user_column_item_text'>联系客服</view>
     </view>
     <view class='user_column_item' bindtap='aboutUs'>
-      <image class='user_column_item_image' src='/static/images/about_us.png'></image>
+      <image class='user_column_item_image' src='/static/images/about.png'></image>
       <view class='user_column_item_text'>关于我们</view>
     </view>
   </view>
+  <view class='separate'></view>
 
   <view class="logout" wx:if="{{hasLogin}}" bindtap="exitLogin">退出登录</view>
 </view>

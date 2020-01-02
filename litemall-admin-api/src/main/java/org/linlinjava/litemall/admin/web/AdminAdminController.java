@@ -2,8 +2,11 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.admin.service.AdminTokenManager;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
+import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
+import org.linlinjava.litemall.admin.service.LogHelper;
 import org.linlinjava.litemall.core.util.RegexUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.core.util.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
 
@@ -32,48 +32,19 @@ public class AdminAdminController {
 
     @Autowired
     private LitemallAdminService adminService;
+    @Autowired
+    private LogHelper logHelper;
 
-    @GetMapping("/info")
-    public Object info(String token) {
-        Integer adminId = AdminTokenManager.getUserId(token);
-        if (adminId == null) {
-            return ResponseUtil.badArgumentValue();
-        }
-        LitemallAdmin admin = adminService.findById(adminId);
-        if (admin == null) {
-            return ResponseUtil.badArgumentValue();
-        }
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", admin.getUsername());
-        data.put("avatar", admin.getAvatar());
-
-        // 目前roles不支持，这里简单设置admin
-        List<String> roles = new ArrayList<>();
-        roles.add("admin");
-        data.put("roles", roles);
-        data.put("introduction", "admin introduction");
-        return ResponseUtil.ok(data);
-    }
-
+    @RequiresPermissions("admin:admin:list")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "查询")
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String username,
+    public Object list(String username,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallAdmin> adminList = adminService.querySelective(username, page, limit, sort, order);
-        int total = adminService.countSelective(username, page, limit, sort, order);
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("items", adminList);
-
-        return ResponseUtil.ok(data);
+        return ResponseUtil.okList(adminList);
     }
 
     private Object validate(LitemallAdmin admin) {
@@ -91,11 +62,10 @@ public class AdminAdminController {
         return null;
     }
 
+    @RequiresPermissions("admin:admin:create")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "添加")
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object create(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
         if (error != null) {
             return error;
@@ -112,24 +82,22 @@ public class AdminAdminController {
         String encodedPassword = encoder.encode(rawPassword);
         admin.setPassword(encodedPassword);
         adminService.add(admin);
+        logHelper.logAuthSucceed("添加管理员", username);
         return ResponseUtil.ok(admin);
     }
 
+    @RequiresPermissions("admin:admin:read")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "详情")
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, @NotNull Integer id) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object read(@NotNull Integer id) {
         LitemallAdmin admin = adminService.findById(id);
         return ResponseUtil.ok(admin);
     }
 
+    @RequiresPermissions("admin:admin:update")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "编辑")
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object update(@RequestBody LitemallAdmin admin) {
         Object error = validate(admin);
         if (error != null) {
             return error;
@@ -140,30 +108,35 @@ public class AdminAdminController {
             return ResponseUtil.badArgument();
         }
 
-        String rawPassword = admin.getPassword();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(rawPassword);
-        admin.setPassword(encodedPassword);
+        // 不允许管理员通过编辑接口修改密码
+        admin.setPassword(null);
 
         if (adminService.updateById(admin) == 0) {
             return ResponseUtil.updatedDataFailed();
         }
 
+        logHelper.logAuthSucceed("编辑管理员", admin.getUsername());
         return ResponseUtil.ok(admin);
     }
 
+    @RequiresPermissions("admin:admin:delete")
+    @RequiresPermissionsDesc(menu = {"系统管理", "管理员管理"}, button = "删除")
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object delete(@RequestBody LitemallAdmin admin) {
         Integer anotherAdminId = admin.getId();
         if (anotherAdminId == null) {
             return ResponseUtil.badArgument();
         }
 
+        // 管理员不能删除自身账号
+        Subject currentUser = SecurityUtils.getSubject();
+        LitemallAdmin currentAdmin = (LitemallAdmin) currentUser.getPrincipal();
+        if (currentAdmin.getId().equals(anotherAdminId)) {
+            return ResponseUtil.fail(ADMIN_DELETE_NOT_ALLOWED, "管理员不能删除自己账号");
+        }
+
         adminService.deleteById(anotherAdminId);
+        logHelper.logAuthSucceed("删除管理员", admin.getUsername());
         return ResponseUtil.ok();
     }
 }
