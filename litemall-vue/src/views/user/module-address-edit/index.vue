@@ -45,7 +45,7 @@ export default {
     onSave(content) {
       addressSave(content).then(res => {
         this.$toast('成功');
-        this.$router.push({ path: '/user/address' });
+        this.$router.go(-1);
       });
     },
     onDelete(content) {
