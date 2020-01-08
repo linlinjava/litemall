@@ -58,10 +58,10 @@ export function authProfile(data) {
     data    
   })
 }
-const AuthWebRegister='wx/auth/webRegister'; //账号注册
-export function authWebRegister(data) {
+const AuthRegister='wx/auth/register'; //账号注册
+export function authRegister(data) {
   return request({
-    url: AuthWebRegister,
+    url: AuthRegister,
     method: 'post',
     data
   });

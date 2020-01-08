@@ -22,7 +22,7 @@
 import field from '@/components/field/';
 import fieldGroup from '@/components/field-group/';
 import { authRegisterCaptcha } from '@/api/api';
-import { authWebRegister } from '@/api/api';
+import { authRegister } from '@/api/api';
 import {Toast} from "vant";
 
 export default {
@@ -44,8 +44,19 @@ export default {
 
   methods: {
     registerSubmit() {
+      if(this.username === '' || this.code === ''){
+        return
+      }
+      if(this.password === '' || this.repeatPassword === ''){
+        return
+      }
+      if(this.password !== this.repeatPassword){
+        this.password = ''
+        this.repeatPassword = ''
+        return
+      }
       let data = this.getRegisterData();
-      authWebRegister(data).then(res => {
+      authRegister(data).then(res => {
         this.$router.push({
           name: 'registerStatus',
           params: { status: 'success' }
