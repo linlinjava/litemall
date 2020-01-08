@@ -30,7 +30,14 @@ export default {
 
   methods: {
     submitCode() {
-      this.$router.push({ name: 'registerSubmit' });
+    	try {
+        this.$router.push({
+          name: 'registerSubmit',
+          params: { phone: this.mobile}
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
     }
   },
 
