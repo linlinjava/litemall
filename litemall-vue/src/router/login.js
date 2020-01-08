@@ -10,8 +10,9 @@ export default [
     component: () => import('@/views/login/register-getCode')
   },
   {
-    path: '/login/registerSubmit',
+    path: '/login/registerSubmit/:phone',
     name: 'registerSubmit',
+    props: true,
     component: () => import('@/views/login/register-submit')
   },
   {
