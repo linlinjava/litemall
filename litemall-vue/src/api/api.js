@@ -59,6 +59,13 @@ export function authProfile(data) {
   })
 }
 const AuthRegister='wx/auth/register'; //账号注册
+export function authRegister(data) {
+  return request({
+    url: AuthRegister,
+    method: 'post',
+    data
+  });
+}
 const AuthReset='wx/auth/reset'; //账号密码重置
 export function authReset(data) {
   return request({
