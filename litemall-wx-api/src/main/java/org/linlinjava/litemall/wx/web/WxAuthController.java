@@ -318,13 +318,12 @@ public class WxAuthController {
 
         // token
         String token = UserTokenManager.generateToken(user.getId());
-        
+
         Map<Object, Object> result = new HashMap<Object, Object>();
         result.put("token", token);
         result.put("userInfo", userInfo);
         return ResponseUtil.ok(result);
     }
-
 
     /**
      * 请求验证码

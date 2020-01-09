@@ -1,5 +1,8 @@
 package org.linlinjava.litemall.core.task;
 
+import com.google.common.primitives.Ints;
+
+import java.time.LocalDateTime;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +27,7 @@ public abstract class Task implements Delayed, Runnable{
 
     @Override
     public int compareTo(Delayed o) {
-        return (int)(this.getDelay(TimeUnit.MILLISECONDS) - o.getDelay(TimeUnit.MILLISECONDS));
+        return Ints.saturatedCast(this.start - ((Task) o).start);
     }
 
     @Override

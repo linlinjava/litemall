@@ -7,10 +7,10 @@
 
 # 请设置云服务器的IP地址和账户
 # 例如 ubuntu@122.51.199.160
-REMOTE=
+REMOTE=ubuntu@122.51.199.160
 # 请设置本地SSH私钥文件id_rsa路径
 # 例如 /home/litemall/id_rsa
-ID_RSA=
+ID_RSA=/d/00/cloud/litemall.txt
 
 if test -z "$REMOTE"
 then
@@ -38,8 +38,8 @@ cd $LITEMALL_HOME || exit 2
 scp -i $ID_RSA -r  ./docker $REMOTE:/home/ubuntu/
 
 # 远程登录云服务器并执行reset脚本
-#ssh $REMOTE -i $ID_RSA << eeooff
-#cd /home/ubuntu
-#sudo ./docker/bin/reset.sh
-#exit
-#eeooff
+ssh $REMOTE -i $ID_RSA << eeooff
+cd /home/ubuntu
+sudo ./docker/bin/reset.sh
+exit
+eeooff

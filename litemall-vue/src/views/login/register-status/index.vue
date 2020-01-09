@@ -5,39 +5,63 @@
 			<div>{{statusText}}</div>
 		</div>
 
-		<div class="status_text"><span class="red">3秒</span>后返回到登录页, 您也可以<router-link to="/login" class="red">点此登录</router-link></div>
+		<div class="status_text">
+			<span class="red">
+				<countdown v-if="counting" :time="3000" @end="countDownEnd">
+					<template slot-scope="props">{{ +props.seconds || 3 }}</template>秒
+				</countdown>
+			</span>
+			后返回到登录页, 您也可以
+			<router-link to="/login" class="red">点此登录</router-link>
+		</div>
 	</div>
 </template>
 
 <script>
+import field from '@/components/field/';
+import fieldGroup from '@/components/field-group/';
+
 export default {
-  name: 'payment-status',
+	name: 'payment-status',
 
-  props: {
-    status: String
-  },
+	props: {
+		status: String
+	},
 
-  data() {
-    return {
-      isSuccess: true
-    };
-  },
+	data() {
+		return {
+			counting: true,
+			isSuccess: true
+		};
+	},
 
-  computed: {
-    statusText() {
-      return this.isSuccess ? '注册成功' : '注册失败';
-    },
-    statusIcon() {
-      return this.isSuccess ? 'checked' : 'fail';
-    },
-    statusClass() {
-      return this.isSuccess ? 'success_icon' : 'fail_icon';
-    }
-  },
+	methods:{
+		countDownEnd() {
+			this.counting = false;
+			window.location = '#/login/';
+		}
+	},
 
-  activated() {
-    this.isSuccess = this.status === 'success';
-  }
+	computed: {
+		statusText() {
+			return this.isSuccess ? '注册成功' : '注册失败';
+		},
+		statusIcon() {
+			return this.isSuccess ? 'checked' : 'fail';
+		},
+		statusClass() {
+			return this.isSuccess ? 'success_icon' : 'fail_icon';
+		}
+	},
+
+	activated() {
+		this.isSuccess = this.status === 'success';
+	},
+
+	components: {
+		[field.name]: field,
+		[fieldGroup.name]: fieldGroup
+	}
 };
 </script>
 

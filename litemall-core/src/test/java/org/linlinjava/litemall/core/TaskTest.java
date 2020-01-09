@@ -89,4 +89,21 @@ public class TaskTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void test2() {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String now = df.format(LocalDateTime.now());
+        System.out.println("start at time=" + now);
+
+        taskService.addTask(new DemoTask("1", 0));
+        taskService.addTask(new DemoTask("2", 1200));
+        taskService.addTask(new DemoTask("3", 5200));
+
+        try {
+            Thread.sleep(10 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
