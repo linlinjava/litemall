@@ -676,7 +676,8 @@ CREATE TABLE `litemall_storage` (
   `add_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `key` (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文件存储表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
