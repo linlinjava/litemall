@@ -1,0 +1,127 @@
+//loading
+.van-loading--gradient-circle, .van-loading--spinner{
+	margin: 0 auto;
+}
+//tabber
+div.van-tabbar-item--active {
+	color: $red;
+}
+
+.van-tabbar-item__icon .van-icon{
+	font-size: 18px;
+}
+
+//按钮组
+a.van-goods-action__mini-btn i {
+	font-size: 22px;
+}
+
+.van-goods-action .van-button--bottom-action {
+	font-size: $font-size-normal;
+}
+
+.van-button--bottom-action.van-button--primary {
+	background-color: $red;
+}
+
+.van-button--danger {
+	background-color: $red;
+}
+
+.van-address-edit__buttons .van-button--primary{
+	background-color: $red;
+	border-color: $red;
+}
+
+// 多选
+.van-checkbox__control:checked + i.van-icon-success {
+	background-color: $red;
+	border-color: $red;
+}
+
+//单选
+.van-radio i.van-icon-checked {
+	color: $red;
+}
+
+.payment .van-cell-group .van-radio__input{
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translate3d(0, -50%, 0);
+}
+.van-radio .van-radio__input{
+	height: 16px;
+}
+.van-radio i.van-icon{
+	font-size: 16px;
+}
+span.van-radio__input, span.van-radio__label{
+	vertical-align: unset;
+	line-height: 16px;
+}
+.van-cell-group .van-radio__label{
+	margin-left: 0;
+}
+
+//弹窗
+.van-dialog__confirm,
+.van-dialog__confirm:active {
+	color: $red;
+}
+
+//商品卡片
+.van-card__footer {
+	width: 100%;
+	padding-left: 130px;
+	box-sizing: border-box;
+}
+
+div.van-card {
+	font-size: $font-size-normal;
+	background-color: #fff;
+}
+
+div.van-card__footer {
+	font-size: 12px;	
+	color: $font-color-gray;
+}
+
+//cell
+.van-cell__title{
+	vertical-align: middle;
+}
+
+//商品详情
+.item_detail .van-picker__cancel {
+	color: #000;
+}
+
+.item_detail .van-picker__confirm {
+	color: $red;
+}
+
+//购物车
+.tab-cart > .card-goods .van-checkbox {
+	padding-left: 10px;
+	box-sizing: border-box;
+}
+
+.tab-cart > .card-goods .van-card {
+	flex: 1;
+}
+.tab-cart .van-card:not(:first-child){
+	margin-top: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+//设置昵称
+.set_nickname .van-field__control{
+	text-align: right
+}
+
+//商品列表
+.item_list .van-tab--disabled{
+	color: #000;
+}
