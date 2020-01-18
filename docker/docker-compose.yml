@@ -26,6 +26,7 @@ services:
     volumes:
       - ./litemall/storage:/storage
       - ./litemall/logs:/logs
+      - ./litemall/backup:/backup
       - /etc/localtime:/etc/localtime
     depends_on:
       - mysql57
