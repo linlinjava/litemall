@@ -42,7 +42,7 @@ public class AdminTopicController {
     public Object list(String title, String subtitle,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer limit,
-                       @Sort @RequestParam(defaultValue = "add_time") String sort,
+                       @Sort(accepts = {"id", "add_time", "price"}) @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
         List<LitemallTopic> topicList = topicService.querySelective(title, subtitle, page, limit, sort, order);
         return ResponseUtil.okList(topicList);

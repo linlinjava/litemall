@@ -5,13 +5,16 @@
     <div class="filter-container">
       <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" placeholder="请输入专题标题" />
       <el-input v-model="listQuery.subtitle" clearable class="filter-item" style="width: 200px;" placeholder="请输入专题子标题" />
+      <el-select v-model="listQuery.sort" class="filter-item" placeholder="请选择排序字段">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
       <el-button v-permission="['GET /admin/topic/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/topic/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <div class="operator-container">
-      <el-button v-permission="['GET /admin/topic/list']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
+      <el-button v-permission="['POST /admin/topic/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button v-permission="['GET /admin/topic/batch-delete']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -109,6 +112,16 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
+      options: [{
+        value: 'id',
+        label: '按序号排序'
+      }, {
+        value: 'add_time',
+        label: '按时间排序'
+      }, {
+        value: 'price',
+        label: '按价格排序'
+      }],
       multipleSelection: [],
       contentDetail: '',
       contentDialogVisible: false,
