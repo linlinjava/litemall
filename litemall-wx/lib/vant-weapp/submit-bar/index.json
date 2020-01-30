@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "van-button": "../button/index",
-    "van-icon": "../icon/index"
-  }
-}

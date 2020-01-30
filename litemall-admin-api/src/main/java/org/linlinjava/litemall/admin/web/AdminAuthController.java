@@ -9,6 +9,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+import org.linlinjava.litemall.admin.dto.AdminLoginParam;
 import org.linlinjava.litemall.admin.service.LogHelper;
 import org.linlinjava.litemall.admin.util.Permission;
 import org.linlinjava.litemall.admin.util.PermissionUtil;
@@ -50,9 +51,9 @@ public class AdminAuthController {
      *  { username : value, password : value }
      */
     @PostMapping("/login")
-    public Object login(@RequestBody String body, HttpServletRequest request) {
-        String username = JacksonUtil.parseString(body, "username");
-        String password = JacksonUtil.parseString(body, "password");
+    public Object login(@RequestBody AdminLoginParam adminLoginParam, HttpServletRequest request) {
+        String username = adminLoginParam.getUsername();
+        String password = adminLoginParam.getPassword();
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             return ResponseUtil.badArgument();

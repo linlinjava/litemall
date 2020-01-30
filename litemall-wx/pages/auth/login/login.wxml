@@ -1,6 +1,0 @@
-<view class="container">
-  <view class="login-box">
-    <button type="primary" open-type="getUserInfo" class="wx-login-btn" bindgetuserinfo="wxLogin">微信直接登录</button>
-    <button type="primary" class="account-login-btn" bindtap="accountLogin">账号登录</button>
-  </view>
-</view>

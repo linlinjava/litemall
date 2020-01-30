@@ -1,6 +1,0 @@
-<view
-  class="van-notify {{ show ? 'van-notify--show' : '' }}"
-  style="background-color:{{ backgroundColor }}"
->
-  {{ text }}
-</view>

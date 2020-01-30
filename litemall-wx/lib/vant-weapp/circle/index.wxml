@@ -1,7 +1,0 @@
-<view class="van-circle">
-  <canvas class="van-circle__canvas" style="{{ style }}" canvas-id="van-circle"></canvas>
-  <view wx:if="{{ !text }}" class="van-circle__text">
-    <slot></slot>
-  </view>
-  <cover-view wx:else class="van-circle__text">{{ text }}</cover-view>
-</view>

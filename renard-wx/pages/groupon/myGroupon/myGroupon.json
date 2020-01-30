@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "我的团购",
-  "usingComponents": {
-    "zan-capsule": "/components/capsule/index"
-  }
-}

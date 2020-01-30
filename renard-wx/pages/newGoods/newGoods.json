@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "新品首发",
-  "usingComponents": {
-    "goodList": "/components/goodList/goodList"
-  }
-}

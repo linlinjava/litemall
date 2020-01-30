@@ -1,9 +1,0 @@
-<view class="b" wx:if="{{goods.length > 0}}">
- <block wx:for="{{goods}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="id">
-  <view class="item {{iindex % 2 == 0 ? '' : 'item-b'}}">
-   <navigator url="../goods/goods?id={{iitem.id}}" class="a">
-    <good imageUrl='{{iitem.picUrl}}' title='{{iitem.name}}' retailPrice='{{iitem.retailPrice}}' counterPrice='{{iitem.counterPrice}}'></good>
-   </navigator>
-  </view>
- </block>
-</view>
