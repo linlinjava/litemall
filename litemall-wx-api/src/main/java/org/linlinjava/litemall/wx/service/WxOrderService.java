@@ -9,9 +9,8 @@ import com.github.binarywang.wxpay.bean.result.BaseWxPayResult;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.express.ExpressService;
 import org.linlinjava.litemall.core.express.dao.ExpressInfo;
 import org.linlinjava.litemall.core.notify.NotifyService;
@@ -29,7 +28,10 @@ import org.linlinjava.litemall.db.util.GrouponConstant;
 import org.linlinjava.litemall.db.util.OrderHandleOption;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.core.util.IpUtil;
+import org.linlinjava.litemall.wx.dto.CartInfo;
 import org.linlinjava.litemall.wx.task.OrderUnpaidTask;
+import org.linlinjava.litemall.wx.vo.OrderGoodsVo;
+import org.linlinjava.litemall.wx.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
 
@@ -69,8 +72,8 @@ import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
  * 注意：目前不支持订单退货和售后服务
  */
 @Service
+@Slf4j
 public class WxOrderService {
-    private final Log logger = LogFactory.getLog(WxOrderService.class);
 
     @Autowired
     private LitemallUserService userService;
@@ -131,35 +134,32 @@ public class WxOrderService {
         List<Short> orderStatus = OrderUtil.orderStatus(showType);
         List<LitemallOrder> orderList = orderService.queryByOrderStatus(userId, orderStatus, page, limit, sort, order);
 
-        List<Map<String, Object>> orderVoList = new ArrayList<>(orderList.size());
+        List<OrderVo> orderVoList = new ArrayList<>(orderList.size());
         for (LitemallOrder o : orderList) {
-            Map<String, Object> orderVo = new HashMap<>();
-            orderVo.put("id", o.getId());
-            orderVo.put("orderSn", o.getOrderSn());
-            orderVo.put("actualPrice", o.getActualPrice());
-            orderVo.put("orderStatusText", OrderUtil.orderStatusText(o));
-            orderVo.put("handleOption", OrderUtil.build(o));
+            OrderVo orderVo = new OrderVo();
+            orderVo.setId(o.getId());
+            orderVo.setOrderSn(o.getOrderSn());
+            orderVo.setActualPrice(o.getActualPrice());
+            orderVo.setOrderStatusText(OrderUtil.orderStatusText(o));
+            orderVo.setHandleOption(OrderUtil.build(o));
 
             LitemallGroupon groupon = grouponService.queryByOrderId(o.getId());
-            if (groupon != null) {
-                orderVo.put("isGroupin", true);
-            } else {
-                orderVo.put("isGroupin", false);
-            }
+
+            orderVo.setIsGroupin(groupon != null);
 
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(o.getId());
-            List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
+            List<OrderGoodsVo> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
-                Map<String, Object> orderGoodsVo = new HashMap<>();
-                orderGoodsVo.put("id", orderGoods.getId());
-                orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
-                orderGoodsVo.put("number", orderGoods.getNumber());
-                orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
-                orderGoodsVo.put("specifications", orderGoods.getSpecifications());
-                orderGoodsVo.put("price",orderGoods.getPrice());
+                OrderGoodsVo orderGoodsVo = new OrderGoodsVo();
+                orderGoodsVo.setId(orderGoods.getId());
+                orderGoodsVo.setGoodsName(orderGoods.getGoodsName());
+                orderGoodsVo.setNumber(orderGoods.getNumber());
+                orderGoodsVo.setPicUrl(orderGoods.getPicUrl());
+                orderGoodsVo.setSpecifications(orderGoods.getSpecifications());
+                orderGoodsVo.setPrice(orderGoods.getPrice());
                 orderGoodsVoList.add(orderGoodsVo);
             }
-            orderVo.put("goodsList", orderGoodsVoList);
+            orderVo.setOrderGoodsVo(orderGoodsVoList);
 
             orderVoList.add(orderVo);
         }
@@ -240,24 +240,21 @@ public class WxOrderService {
      * 5. 如果是团购商品，则创建团购活动表项。
      *
      * @param userId 用户ID
-     * @param body   订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx, message: xxx, grouponRulesId: xxx,  grouponLinkId: xxx}
+     * @param cartInfo   订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx, message: xxx, grouponRulesId: xxx,  grouponLinkId: xxx}
      * @return 提交订单操作结果
      */
     @Transactional
-    public Object submit(Integer userId, String body) {
+    public Object submit(Integer userId, CartInfo cartInfo) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
-        if (body == null) {
-            return ResponseUtil.badArgument();
-        }
-        Integer cartId = JacksonUtil.parseInteger(body, "cartId");
-        Integer addressId = JacksonUtil.parseInteger(body, "addressId");
-        Integer couponId = JacksonUtil.parseInteger(body, "couponId");
-        Integer userCouponId = JacksonUtil.parseInteger(body, "userCouponId");
-        String message = JacksonUtil.parseString(body, "message");
-        Integer grouponRulesId = JacksonUtil.parseInteger(body, "grouponRulesId");
-        Integer grouponLinkId = JacksonUtil.parseInteger(body, "grouponLinkId");
+        Integer cartId = cartInfo.getCartId();
+        Integer addressId = cartInfo.getAddressId();
+        Integer couponId = cartInfo.getCouponId();
+        Integer userCouponId = cartInfo.getUserCouponId();
+        String message = cartInfo.getMessage();
+        Integer grouponRulesId = cartInfo.getGrouponRulesId();
+        Integer grouponLinkId = cartInfo.getGrouponLinkId();
 
         //如果是团购项目,验证活动是否有效
         if (grouponRulesId != null && grouponRulesId > 0) {
@@ -295,15 +292,8 @@ public class WxOrderService {
             }
         }
 
-        if (cartId == null || addressId == null || couponId == null) {
-            return ResponseUtil.badArgument();
-        }
-
         // 收货地址
         LitemallAddress checkedAddress = addressService.query(userId, addressId);
-        if (checkedAddress == null) {
-            return ResponseUtil.badArgument();
-        }
 
         // 团购优惠
         BigDecimal grouponPrice = new BigDecimal(0);
@@ -322,6 +312,7 @@ public class WxOrderService {
             checkedGoodsList.add(cart);
         }
         if (checkedGoodsList.size() == 0) {
+            log.info("a");
             return ResponseUtil.badArgumentValue();
         }
         BigDecimal checkedGoodsPrice = new BigDecimal(0);
@@ -341,7 +332,7 @@ public class WxOrderService {
         if (couponId != 0 && couponId != -1) {
             LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, userCouponId, checkedGoodsPrice);
             if (coupon == null) {
-                return ResponseUtil.badArgumentValue();
+                return ResponseUtil.badBusiness("优惠券不可用");
             }
             couponPrice = coupon.getDiscount();
         }
@@ -677,11 +668,11 @@ public class WxOrderService {
             result = wxPayService.parseOrderNotifyResult(xmlResult);
 
             if(!WxPayConstants.ResultCode.SUCCESS.equals(result.getResultCode())){
-                logger.error(xmlResult);
+                log.error(xmlResult);
                 throw new WxPayException("微信通知支付失败！");
             }
             if(!WxPayConstants.ResultCode.SUCCESS.equals(result.getReturnCode())){
-                logger.error(xmlResult);
+                log.error(xmlResult);
                 throw new WxPayException("微信通知支付失败！");
             }
         } catch (WxPayException e) {
@@ -689,8 +680,8 @@ public class WxOrderService {
             return WxPayNotifyResponse.fail(e.getMessage());
         }
 
-        logger.info("处理腾讯支付平台的订单支付");
-        logger.info(result);
+        log.info("处理腾讯支付平台的订单支付");
+        log.info(result.toString());
 
         String orderSn = result.getOutTradeNo();
         String payId = result.getTransactionId();

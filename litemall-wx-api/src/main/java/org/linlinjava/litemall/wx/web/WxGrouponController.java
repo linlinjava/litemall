@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.express.ExpressService;
@@ -36,8 +37,8 @@ import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
 @RestController
 @RequestMapping("/wx/groupon")
 @Validated
+@Slf4j
 public class WxGrouponController {
-    private final Log logger = LogFactory.getLog(WxGrouponController.class);
 
     @Autowired
     private LitemallGrouponRulesService rulesService;

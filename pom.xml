@@ -24,7 +24,6 @@
         <module>litemall-db</module>
         <module>litemall-wx-api</module>
         <module>litemall-admin-api</module>
-        <module>litemall-all</module>
     </modules>
 
     <dependencyManagement>
@@ -47,11 +46,6 @@
             <dependency>
                 <groupId>org.linlinjava</groupId>
                 <artifactId>litemall-admin-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.linlinjava</groupId>
-                <artifactId>litemall-all</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -198,6 +192,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
     </dependencies>
 
 

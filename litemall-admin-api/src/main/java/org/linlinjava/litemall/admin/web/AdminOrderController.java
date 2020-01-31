@@ -21,7 +21,6 @@ import java.util.List;
 @RequestMapping("/admin/order")
 @Validated
 public class AdminOrderController {
-    private final Log logger = LogFactory.getLog(AdminOrderController.class);
 
     @Autowired
     private AdminOrderService adminOrderService;

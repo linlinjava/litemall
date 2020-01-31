@@ -56,23 +56,7 @@ public class ResponseUtil {
     }
 
     public static Object okList(List list) {
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("list", list);
-
-        if (list instanceof Page) {
-            Page page = (Page) list;
-            data.put("total", page.getTotal());
-            data.put("page", page.getPageNum());
-            data.put("limit", page.getPageSize());
-            data.put("pages", page.getPages());
-        } else {
-            data.put("total", list.size());
-            data.put("page", 1);
-            data.put("limit", list.size());
-            data.put("pages", 1);
-        }
-
-        return ok(data);
+        return okList(list, list);
     }
 
     public static Object okList(List list, List pagedList) {
@@ -107,6 +91,10 @@ public class ResponseUtil {
         obj.put("errno", errno);
         obj.put("errmsg", errmsg);
         return obj;
+    }
+
+    public static Object badBusiness(String msg) {
+        return fail(411, msg);
     }
 
     public static Object badArgument() {
