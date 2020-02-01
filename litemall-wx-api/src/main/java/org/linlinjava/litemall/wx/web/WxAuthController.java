@@ -16,13 +16,16 @@ import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.CouponAssignService;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.dto.LoginParam;
 import org.linlinjava.litemall.wx.dto.UserInfo;
 import org.linlinjava.litemall.wx.dto.UserToken;
 import org.linlinjava.litemall.wx.dto.WxLoginInfo;
 import org.linlinjava.litemall.wx.service.CaptchaCodeManager;
+import org.linlinjava.litemall.wx.service.UserInfoService;
 import org.linlinjava.litemall.wx.service.UserTokenManager;
 import org.linlinjava.litemall.core.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -42,10 +45,16 @@ import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
 @RequestMapping("/wx/auth")
 @Validated
 public class WxAuthController {
-    private final Log logger = LogFactory.getLog(WxAuthController.class);
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @Autowired
     private LitemallUserService userService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     @Autowired
     private WxMaService wxService;
@@ -59,52 +68,57 @@ public class WxAuthController {
     /**
      * 账号登录
      *
-     * @param body    请求内容，{ username: xxx, password: xxx }
+     * @param loginParam    请求内容，{ username: xxx, password: xxx }
      * @param request 请求对象
      * @return 登录结果
      */
     @PostMapping("login")
-    public Object login(@RequestBody String body, HttpServletRequest request) {
-        String username = JacksonUtil.parseString(body, "username");
-        String password = JacksonUtil.parseString(body, "password");
-        if (username == null || password == null) {
-            return ResponseUtil.badArgument();
-        }
-
-        List<LitemallUser> userList = userService.queryByUsername(username);
-        LitemallUser user = null;
-        if (userList.size() > 1) {
-            return ResponseUtil.serious();
-        } else if (userList.size() == 0) {
-            return ResponseUtil.fail(AUTH_INVALID_ACCOUNT, "账号不存在");
-        } else {
-            user = userList.get(0);
-        }
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(password, user.getPassword())) {
+    public Object login(@RequestBody LoginParam loginParam, HttpServletRequest request) {
+//        String username = loginParam.getUsername();
+//        String password = loginParam.getPassword();
+//
+//        List<LitemallUser> userList = userService.queryByUsername(username);
+//        LitemallUser user = null;
+//        if (userList.size() > 1) {
+//            return ResponseUtil.serious();
+//        } else if (userList.size() == 0) {
+//            return ResponseUtil.fail(AUTH_INVALID_ACCOUNT, "账号不存在");
+//        } else {
+//            user = userList.get(0);
+//        }
+//
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        if (!encoder.matches(password, user.getPassword())) {
+//            return ResponseUtil.fail(AUTH_INVALID_ACCOUNT, "账号密码不对");
+//        }
+//
+//        // 更新登录情况
+//        user.setLastLoginTime(LocalDateTime.now());
+//        user.setLastLoginIp(IpUtil.getIpAddr(request));
+//        if (userService.updateById(user) == 0) {
+//            return ResponseUtil.updatedDataFailed();
+//        }
+//
+//        // userInfo
+//        UserInfo userInfo = new UserInfo();
+//        userInfo.setNickName(username);
+//        userInfo.setAvatarUrl(user.getAvatar());
+//
+//        // token
+//        String token = UserTokenManager.generateToken(user.getId());
+//
+//        Map<Object, Object> result = new HashMap<Object, Object>();
+//        result.put("token", token);
+//        result.put("userInfo", userInfo);
+//        return ResponseUtil.ok(result);
+        String token = userInfoService.login(loginParam.getUsername(), loginParam.getPassword());
+        if (token == null) {
             return ResponseUtil.fail(AUTH_INVALID_ACCOUNT, "账号密码不对");
         }
-
-        // 更新登录情况
-        user.setLastLoginTime(LocalDateTime.now());
-        user.setLastLoginIp(IpUtil.getIpAddr(request));
-        if (userService.updateById(user) == 0) {
-            return ResponseUtil.updatedDataFailed();
-        }
-
-        // userInfo
-        UserInfo userInfo = new UserInfo();
-        userInfo.setNickName(username);
-        userInfo.setAvatarUrl(user.getAvatar());
-
-        // token
-        String token = UserTokenManager.generateToken(user.getId());
-
-        Map<Object, Object> result = new HashMap<Object, Object>();
-        result.put("token", token);
-        result.put("userInfo", userInfo);
-        return ResponseUtil.ok(result);
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+        return ResponseUtil.ok(tokenMap);
     }
 
     /**

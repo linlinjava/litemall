@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
 

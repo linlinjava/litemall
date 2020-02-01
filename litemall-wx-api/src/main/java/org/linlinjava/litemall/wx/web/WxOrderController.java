@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import io.swagger.annotations.Api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.validator.Order;
@@ -18,8 +19,8 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/wx/order")
 @Validated
+@Api(tags = "订单管理")
 public class WxOrderController {
-    private final Log logger = LogFactory.getLog(WxOrderController.class);
 
     @Autowired
     private WxOrderService wxOrderService;
