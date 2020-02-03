@@ -512,7 +512,46 @@ CREATE TABLE `litemall_log` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='操作日志表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_notice`
+--
+
+DROP TABLE IF EXISTS `litemall_notice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_notice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(63) DEFAULT NULL COMMENT '通知标题',
+  `content` varchar(511) DEFAULT NULL COMMENT '通知内容',
+  `admin_id` int(11) DEFAULT '0' COMMENT '创建通知的管理员ID，如果是系统内置通知则是0.',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='通知表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `litemall_notice_admin`
+--
+
+DROP TABLE IF EXISTS `litemall_notice_admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_notice_admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `notice_id` int(11) DEFAULT NULL COMMENT '通知ID',
+  `notice_title` varchar(63) DEFAULT NULL COMMENT '通知标题',
+  `admin_id` int(11) DEFAULT NULL COMMENT '接收通知的管理员ID',
+  `read_time` datetime DEFAULT NULL COMMENT '阅读时间，如果是NULL则是未读状态',
+  `add_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='通知管理员表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
