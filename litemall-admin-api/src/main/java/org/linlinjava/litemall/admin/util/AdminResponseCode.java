@@ -23,5 +23,6 @@ public class AdminResponseCode {
     public static final Integer GROUPON_GOODS_UNKNOWN = 650;
     public static final Integer GROUPON_GOODS_EXISTED = 651;
     public static final Integer GROUPON_GOODS_OFFLINE = 652;
+    public static final Integer NOTICE_UPDATE_NOT_ALLOWED = 660;
 
 }
