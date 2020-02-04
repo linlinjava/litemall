@@ -38,8 +38,11 @@ cd $LITEMALL_HOME || exit 2
 scp -i $ID_RSA -r  ./deploy $REMOTE:/home/ubuntu/
 
 # 远程登录云服务器并执行reset脚本
+# 这里使用tr命令，因为有可能deploy.sh和reset.sh的换行格式是CRLF，而LINUX环境应该是LF
 ssh $REMOTE -i $ID_RSA << eeooff
-cd /home/ubuntu
-sudo ./deploy/bin/reset.sh
+cd /home/ubuntu/deploy/bin
+cat deploy.sh | tr -d '\r' > deploy.sh
+cat reset.sh | tr -d '\r' > reset.sh
+sudo ./reset.sh
 exit
 eeooff
