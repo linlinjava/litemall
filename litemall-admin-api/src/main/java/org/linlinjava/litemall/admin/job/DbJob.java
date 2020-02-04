@@ -2,12 +2,7 @@ package org.linlinjava.litemall.admin.job;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.core.system.SystemConfig;
-import org.linlinjava.litemall.db.domain.LitemallOrder;
-import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
-import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.DbUtil;
-import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,8 +11,6 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 数据库定时备份任务
