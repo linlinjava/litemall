@@ -41,8 +41,12 @@ scp -i $ID_RSA -r  ./docker $REMOTE:/home/ubuntu/
 # 这里使用tr命令，因为有可能deploy.sh和reset.sh的换行格式是CRLF，而LINUX环境应该是LF
 ssh $REMOTE -i $ID_RSA << eeooff
 cd /home/ubuntu/docker/bin
-cat deploy.sh | tr -d '\r' > deploy.sh
-cat reset.sh | tr -d '\r' > reset.sh
+cat deploy.sh | tr -d '\r' > deploy2.sh
+mv deploy2.sh deploy.sh
+chmod +x deploy.sh
+cat reset.sh | tr -d '\r' > reset2.sh
+mv reset2.sh reset.sh
+chmod +x reset.sh
 sudo ./reset.sh
 exit
 eeooff
