@@ -90,6 +90,32 @@ CREATE TABLE `litemall_admin` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `litemall_aftersale`
+--
+
+DROP TABLE IF EXISTS `litemall_aftersale`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `litemall_aftersale` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `aftersale_sn` varchar(63) DEFAULT NULL COMMENT '售后编号',
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `type` smallint(6) DEFAULT '0' COMMENT '售后类型，0是未收货退款，1是已收货（无需退货）退款，2用户退货退款',
+  `reason` varchar(31) DEFAULT '' COMMENT '退款原因',
+  `amount` decimal(10,2) DEFAULT '0.00' COMMENT '退款金额',
+  `pictures` varchar(1023) DEFAULT '[]' COMMENT '退款凭证图片链接数组',
+  `comment` varchar(511) DEFAULT '' COMMENT '退款说明',
+  `status` smallint(6) DEFAULT '0' COMMENT '状态，0是用户初始申请，1是管理员接收申请处理中，2是管理员处理成功完成申请，3是管理员拒绝申请',
+  `handle_time` datetime DEFAULT NULL COMMENT '管理员操作时间',
+  `add_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '售后编号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='售后表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `litemall_brand`
 --
 
