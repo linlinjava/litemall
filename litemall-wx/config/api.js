@@ -1,8 +1,8 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
-var WxApiRoot = 'http://localhost:8080/wx/';
+// var WxApiRoot = 'http://localhost:8080/wx/';
 // 局域网测试使用
-// var WxApiRoot = 'http://192.168.0.101:8080/wx/';
+var WxApiRoot = 'http://192.168.1.3:8080/wx/';
 // 云平台部署时使用
 // var WxApiRoot = 'http://122.51.199.160:8080/wx/';
 // 云平台上线时使用
@@ -76,6 +76,10 @@ module.exports = {
   OrderConfirm: WxApiRoot + 'order/confirm', //确认收货
   OrderGoods: WxApiRoot + 'order/goods', // 代评价商品信息
   OrderComment: WxApiRoot + 'order/comment', // 评价订单商品信息
+
+  AftersaleSubmit: WxApiRoot + 'aftersale/submit', // 提交售后申请
+  AftersaleList: WxApiRoot + 'aftersale/list', // 售后列表
+  AftersaleDetail: WxApiRoot + 'aftersale/detail', // 售后详情
 
   FeedbackAdd: WxApiRoot + 'feedback/submit', //添加反馈
   FootprintList: WxApiRoot + 'footprint/list', //足迹列表
