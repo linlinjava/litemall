@@ -20,9 +20,9 @@
       <view class="imgs" wx:if="{{item.picList.length > 0}}">
         <image class="img" wx:for="{{item.picList}}" wx:key="*this" wx:for-item="pitem" src="{{pitem}}"></image>
       </view>
-      <view class="customer-service" wx:if="{{item.reply}}">
-        <text class="u">小商场回复：</text>
-        <text class="c">{{item.reply}}</text>
+      <view class="customer-service" wx:if="{{item.adminContent}}">
+        <text class="u">商家回复：</text>
+        <text class="c">{{item.adminContent}}</text>
       </view>
     </view>
 

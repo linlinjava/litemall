@@ -141,6 +141,7 @@ public class WxCommentController {
             Map<String, Object> commentVo = new HashMap<>();
             commentVo.put("addTime", comment.getAddTime());
             commentVo.put("content", comment.getContent());
+            commentVo.put("adminContent", comment.getAdminContent());
             commentVo.put("picList", comment.getPicUrls());
 
             UserInfo userInfo = userInfoService.getInfo(comment.getUserId());
