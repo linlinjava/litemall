@@ -97,4 +97,8 @@ public class LitemallCommentService {
     public LitemallComment findById(Integer id) {
         return commentMapper.selectByPrimaryKey(id);
     }
+
+    public int updateById(LitemallComment comment) {
+        return commentMapper.updateByPrimaryKeySelective(comment);
+    }
 }

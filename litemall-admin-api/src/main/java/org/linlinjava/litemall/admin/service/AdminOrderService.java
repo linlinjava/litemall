@@ -229,7 +229,7 @@ public class AdminOrderService {
             return ResponseUtil.badArgument();
         }
         // 目前只支持回复一次
-        if (commentService.findById(commentId) != null) {
+        if (commentService.findById(commentId).getAdminContent().length() != 0) {
             return ResponseUtil.fail(ORDER_REPLY_EXIST, "订单商品已回复！");
         }
         String content = JacksonUtil.parseString(body, "content");
@@ -238,14 +238,9 @@ public class AdminOrderService {
         }
         // 创建评价回复
         LitemallComment comment = new LitemallComment();
-        comment.setType((byte) 2);
-        comment.setValueId(commentId);
-        comment.setContent(content);
-        comment.setUserId(0);                 // 评价回复没有用
-        comment.setStar((short) 0);           // 评价回复没有用
-        comment.setHasPicture(false);        // 评价回复没有用
-        comment.setPicUrls(new String[]{});  // 评价回复没有用
-        commentService.save(comment);
+        comment.setId(commentId);
+        comment.setAdminContent(content);
+        commentService.updateById(comment);
 
         return ResponseUtil.ok();
     }
