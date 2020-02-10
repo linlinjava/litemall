@@ -21,8 +21,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.4.0",
-	"appid": "wxa5b486c6b918ecfb",
-	"projectname": "litemall-wx",
+	"appid": "wx1cd22d00f1fac673",
+	"projectname": "litemall-wx-l",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

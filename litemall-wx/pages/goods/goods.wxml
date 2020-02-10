@@ -75,6 +75,10 @@
         <view class="imgs" wx:if="{{item.picList.length > 0}}">
           <image class="img" wx:for="{{item.picList}}" wx:key="*this" wx:for-item="iitem" src="{{iitem}} "></image>
         </view>
+        <view class="customer-service" wx:if="{{item.adminContent}}">
+          <text class="u">商家回复：</text>
+          <text class="c">{{item.adminContent}}</text>
+        </view>
       </view>
     </view>
   </view>
