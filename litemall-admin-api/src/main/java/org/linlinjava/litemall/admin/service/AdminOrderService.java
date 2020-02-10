@@ -229,16 +229,18 @@ public class AdminOrderService {
             return ResponseUtil.badArgument();
         }
         // 目前只支持回复一次
-        if (commentService.findById(commentId).getAdminContent().length() != 0) {
+        LitemallComment comment = commentService.findById(commentId);
+        if(comment == null){
+            return ResponseUtil.badArgument();
+        }
+        if (!StringUtils.isEmpty(comment.getAdminContent())) {
             return ResponseUtil.fail(ORDER_REPLY_EXIST, "订单商品已回复！");
         }
         String content = JacksonUtil.parseString(body, "content");
         if (StringUtils.isEmpty(content)) {
             return ResponseUtil.badArgument();
         }
-        // 创建评价回复
-        LitemallComment comment = new LitemallComment();
-        comment.setId(commentId);
+        // 更新评价回复
         comment.setAdminContent(content);
         commentService.updateById(comment);
 

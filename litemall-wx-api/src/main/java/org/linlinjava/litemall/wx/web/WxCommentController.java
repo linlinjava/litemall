@@ -147,9 +147,6 @@ public class WxCommentController {
             UserInfo userInfo = userInfoService.getInfo(comment.getUserId());
             commentVo.put("userInfo", userInfo);
 
-            String reply = commentService.queryReply(comment.getId());
-            commentVo.put("reply", reply);
-
             commentVoList.add(commentVo);
         }
         return ResponseUtil.okList(commentVoList, commentList);

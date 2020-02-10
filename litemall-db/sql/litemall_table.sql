@@ -192,8 +192,9 @@ DROP TABLE IF EXISTS `litemall_comment`;
 CREATE TABLE `litemall_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value_id` int(11) NOT NULL DEFAULT '0' COMMENT '如果type=0，则是商品评论；如果是type=1，则是专题评论。',
-  `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '评论类型，如果type=0，则是商品评论；如果是type=1，则是专题评论；如果type=3，则是订单商品评论。',
+  `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '评论类型，如果type=0，则是商品评论；如果是type=1，则是专题评论；',
   `content` varchar(1023) NOT NULL COMMENT '评论内容',
+  `admin_content` varchar(511) NOT NULL COMMENT '管理员回复内容',
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户表的用户ID',
   `has_picture` tinyint(1) DEFAULT '0' COMMENT '是否含有图片',
   `pic_urls` varchar(1023) DEFAULT NULL COMMENT '图片地址列表，采用JSON数组格式',

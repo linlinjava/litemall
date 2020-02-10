@@ -326,6 +326,7 @@
   height: auto;
   overflow: hidden;
   margin-top: 23rpx;
+  margin-bottom: 23rpx;
   background: rgba(0, 0, 0, 0.03);
   padding: 21rpx;
 }
