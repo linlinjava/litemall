@@ -165,7 +165,7 @@ public class AdminOrderService {
         notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND,
                 new String[]{order.getOrderSn().substring(8, 14)});
 
-        logHelper.logOrderSucceed("退款", "订单编号 " + orderId);
+        logHelper.logOrderSucceed("退款", "订单编号 " + order.getOrderSn());
         return ResponseUtil.ok();
     }
 
@@ -210,7 +210,7 @@ public class AdminOrderService {
         // "您的订单已经发货，快递公司 {1}，快递单 {2} ，请注意查收"
         notifyService.notifySmsTemplate(order.getMobile(), NotifyType.SHIP, new String[]{shipChannel, shipSn});
 
-        logHelper.logOrderSucceed("发货", "订单编号 " + orderId);
+        logHelper.logOrderSucceed("发货", "订单编号 " + order.getOrderSn());
         return ResponseUtil.ok();
     }
 

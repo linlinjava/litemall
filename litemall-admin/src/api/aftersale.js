@@ -8,17 +8,41 @@ export function listAftersale(query) {
   })
 }
 
-export function deleteAftersale(data) {
+export function receptAftersale(data) {
   return request({
-    url: '/aftersale/delete',
+    url: '/aftersale/recept',
     method: 'post',
     data
   })
 }
 
-export function batchDeleteAftersale(data) {
+export function batchReceptAftersale(data) {
   return request({
-    url: '/aftersale/batch-delete',
+    url: '/aftersale/batch-recept',
+    method: 'post',
+    data
+  })
+}
+
+export function rejectAftersale(data) {
+  return request({
+    url: '/aftersale/reject',
+    method: 'post',
+    data
+  })
+}
+
+export function batchRejectAftersale(data) {
+  return request({
+    url: '/aftersale/batch-reject',
+    method: 'post',
+    data
+  })
+}
+
+export function refundAftersale(data) {
+  return request({
+    url: '/aftersale/refund',
     method: 'post',
     data
   })
