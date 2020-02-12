@@ -3,18 +3,18 @@ var api = require('../../../config/api.js');
 
 Page({
   data: {
-    aftersaleId: 0,
+    orderId: 0,
     order: {},
     orderGoods: [],
     aftersale: {},
-    statusColumns: ['已申请', '处理中', '退款成功', '已拒绝'],
+    statusColumns: ['未申请', '已申请，待审核', '审核通过，待退款', '退款成功', '审核不通过，已拒绝'],
     typeColumns: ['未收货退款', '不退货退款', '退货退款'],
     fileList: []
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     this.setData({
-      aftersaleId: options.id
+      orderId: options.id
     });
     this.getAftersaleDetail();
   },
@@ -29,7 +29,7 @@ Page({
 
     let that = this;
     util.request(api.AftersaleDetail, {
-      id: that.data.aftersaleId
+      orderId: that.data.orderId
     }).then(function (res) {
       if (res.errno === 0) {
         let _fileList = []

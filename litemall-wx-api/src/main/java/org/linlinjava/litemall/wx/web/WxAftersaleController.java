@@ -27,6 +27,8 @@ import java.util.Map;
  * 售后服务
  *
  * 目前只支持订单整体售后，不支持订单商品单个售后
+ *
+ * 一个订单只能有一个售后记录
  */
 @RestController
 @RequestMapping("/wx/aftersale")
@@ -82,25 +84,18 @@ public class WxAftersaleController {
     /**
      * 售后详情
      *
-     * @param id 售后ID
+     * @param orderId 订单ID
      * @return 售后详情
      */
     @GetMapping("detail")
-    public Object detail(@LoginUser Integer userId, @NotNull Integer id) {
+    public Object detail(@LoginUser Integer userId, @NotNull Integer orderId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
-        LitemallAftersale aftersale = aftersaleService.findById(id);
-        if(id == null){
-            return ResponseUtil.badArgumentValue();
-        }
-        if(!userId.equals(aftersale.getUserId())){
-            return ResponseUtil.badArgumentValue();
-        }
-
-        LitemallOrder order = orderService.findById(aftersale.getOrderId());
-        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
+        LitemallOrder order = orderService.findById(userId, orderId);
+        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
+        LitemallAftersale aftersale = aftersaleService.findByOrderId(userId, orderId);
 
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("aftersale", aftersale);
@@ -130,7 +125,7 @@ public class WxAftersaleController {
         if(orderId == null){
             return ResponseUtil.badArgument();
         }
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if(order == null){
             return ResponseUtil.badArgumentValue();
         }
@@ -138,23 +133,76 @@ public class WxAftersaleController {
             return ResponseUtil.badArgumentValue();
         }
 
+        // 订单必须完成才能进入售后流程。
         if(!OrderUtil.isConfirmStatus(order) && !OrderUtil.isAutoConfirmStatus(order)){
-            return ResponseUtil.fail(WxResponseCode.AFTERSALE_UNALLOWED, "不支持售后");
+            return ResponseUtil.fail(WxResponseCode.AFTERSALE_UNALLOWED, "不能申请售后");
         }
         BigDecimal amount = order.getActualPrice().subtract(order.getFreightPrice());
         if(aftersale.getAmount().compareTo(amount) > 0){
             return ResponseUtil.fail(WxResponseCode.AFTERSALE_INVALID_AMOUNT, "退款金额不正确");
         }
-
-        if(aftersaleService.countByOrderIdWithoutReject(userId, orderId) > 0){
-            return ResponseUtil.fail(WxResponseCode.AFTERSALE_UNALLOWED, "已申请售后");
+        Short afterStatus = order.getAftersaleStatus();
+        if(afterStatus.equals(AftersaleConstant.STATUS_RECEPT) || afterStatus.equals(AftersaleConstant.STATUS_REFUND)){
+            return ResponseUtil.fail(WxResponseCode.AFTERSALE_INVALID_AMOUNT, "已申请售后");
         }
+
+        // 如果有旧的售后记录则删除（例如用户已取消，管理员拒绝）
+        aftersaleService.deleteByOrderId(userId, orderId);
 
         aftersale.setStatus(AftersaleConstant.STATUS_REQUEST);
         aftersale.setAftersaleSn(aftersaleService.generateAftersaleSn(userId));
         aftersale.setUserId(userId);
         aftersaleService.add(aftersale);
 
+        // 订单的aftersale_status和售后记录的status是一致的。
+        orderService.updateAftersaleStatus(orderId, AftersaleConstant.STATUS_REQUEST);
+        return ResponseUtil.ok();
+    }
+
+    /**
+     * 取消售后
+     *
+     * 如果管理员还没有审核，用户可以取消自己的售后申请
+     *
+     * @param userId   用户ID
+     * @param aftersale 用户售后信息
+     * @return 操作结果
+     */
+    @PostMapping("cancel")
+    public Object cancel(@LoginUser Integer userId, @RequestBody LitemallAftersale aftersale) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        Integer id = aftersale.getId();
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
+        LitemallAftersale aftersaleOne = aftersaleService.findById(id);
+        if(aftersaleOne == null){
+            return ResponseUtil.badArgument();
+        }
+
+        Integer orderId = aftersaleOne.getOrderId();
+        LitemallOrder order = orderService.findById(userId, orderId);
+        if(!order.getUserId().equals(userId)){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        // 订单必须完成才能进入售后流程。
+        if(!OrderUtil.isConfirmStatus(order) && !OrderUtil.isAutoConfirmStatus(order)){
+            return ResponseUtil.fail(WxResponseCode.AFTERSALE_UNALLOWED, "不支持售后");
+        }
+        Short afterStatus = order.getAftersaleStatus();
+        if(!afterStatus.equals(AftersaleConstant.STATUS_REQUEST)){
+            return ResponseUtil.fail(WxResponseCode.AFTERSALE_INVALID_STATUS, "不能取消售后");
+        }
+
+        aftersale.setStatus(AftersaleConstant.STATUS_CANCEL);
+        aftersale.setUserId(userId);
+        aftersaleService.updateById(aftersale);
+
+        // 订单的aftersale_status和售后记录的status是一致的。
+        orderService.updateAftersaleStatus(orderId, AftersaleConstant.STATUS_CANCEL);
         return ResponseUtil.ok();
     }
 

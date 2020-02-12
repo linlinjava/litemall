@@ -168,7 +168,7 @@ public class WxAddressController extends GetRegionService {
 			return ResponseUtil.badArgument();
 		}
 
-		addressService.delete(id);
+		addressService.delete(userId, id);
 		return ResponseUtil.ok();
 	}
 }

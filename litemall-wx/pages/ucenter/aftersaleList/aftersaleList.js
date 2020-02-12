@@ -4,7 +4,7 @@ var api = require('../../../config/api.js');
 Page({
   data: {
     aftersaleList: [],
-    showType: 0,
+    showType: 1,
     page: 1,
     limit: 10,
     totalPages: 1

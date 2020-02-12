@@ -38,6 +38,6 @@ public class WxResponseCode {
 
     public static final int AFTERSALE_UNALLOWED = 750;
     public static final int AFTERSALE_INVALID_AMOUNT = 751;
-    public static final int AFTERSALE_IS_REQUESTED = 752;
+    public static final int AFTERSALE_INVALID_STATUS = 752;
 
 }

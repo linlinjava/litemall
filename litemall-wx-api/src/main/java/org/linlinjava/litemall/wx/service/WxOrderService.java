@@ -62,11 +62,8 @@ import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
  * 当101用户未付款时，此时用户可以进行的操作是取消订单，或者付款操作
  * 当201支付完成而商家未发货时，此时用户可以取消订单并申请退款
  * 当301商家已发货时，此时用户可以有确认收货的操作
- * 当401用户确认收货以后，此时用户可以进行的操作是删除订单，评价商品，或者再次购买
- * 当402系统自动确认收货以后，此时用户可以删除订单，评价商品，或者再次购买
- *
- * <p>
- * 注意：目前不支持订单退货和售后服务
+ * 当401用户确认收货以后，此时用户可以进行的操作是删除订单，评价商品，申请售后，或者再次购买
+ * 当402系统自动确认收货以后，此时用户可以删除订单，评价商品，申请售后，或者再次购买
  */
 @Service
 public class WxOrderService {
@@ -108,6 +105,8 @@ public class WxOrderService {
     private CouponVerifyService couponVerifyService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private LitemallAftersaleService aftersaleService;
 
     /**
      * 订单列表
@@ -139,6 +138,7 @@ public class WxOrderService {
             orderVo.put("actualPrice", o.getActualPrice());
             orderVo.put("orderStatusText", OrderUtil.orderStatusText(o));
             orderVo.put("handleOption", OrderUtil.build(o));
+            orderVo.put("aftersaleStatus", o.getAftersaleStatus());
 
             LitemallGroupon groupon = grouponService.queryByOrderId(o.getId());
             if (groupon != null) {
@@ -180,7 +180,7 @@ public class WxOrderService {
         }
 
         // 订单信息
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (null == order) {
             return ResponseUtil.fail(ORDER_UNKNOWN, "订单不存在");
         }
@@ -201,6 +201,7 @@ public class WxOrderService {
         orderVo.put("actualPrice", order.getActualPrice());
         orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
         orderVo.put("handleOption", OrderUtil.build(order));
+        orderVo.put("aftersaleStatus", order.getAftersaleStatus());
         orderVo.put("expCode", order.getShipChannel());
         orderVo.put("expName", expressService.getVendorName(order.getShipChannel()));
         orderVo.put("expNo", order.getShipSn());
@@ -496,7 +497,7 @@ public class WxOrderService {
             return ResponseUtil.badArgument();
         }
 
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (order == null) {
             return ResponseUtil.badArgumentValue();
         }
@@ -553,7 +554,7 @@ public class WxOrderService {
             return ResponseUtil.badArgument();
         }
 
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (order == null) {
             return ResponseUtil.badArgumentValue();
         }
@@ -615,7 +616,7 @@ public class WxOrderService {
             return ResponseUtil.badArgument();
         }
 
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (order == null) {
             return ResponseUtil.badArgumentValue();
         }
@@ -789,7 +790,7 @@ public class WxOrderService {
             return ResponseUtil.badArgument();
         }
 
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (order == null) {
             return ResponseUtil.badArgument();
         }
@@ -834,7 +835,7 @@ public class WxOrderService {
             return ResponseUtil.badArgument();
         }
 
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (order == null) {
             return ResponseUtil.badArgument();
         }
@@ -877,7 +878,7 @@ public class WxOrderService {
             return ResponseUtil.badArgument();
         }
 
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (order == null) {
             return ResponseUtil.badArgument();
         }
@@ -893,6 +894,8 @@ public class WxOrderService {
         // 订单order_status没有字段用于标识删除
         // 而是存在专门的delete字段表示是否删除
         orderService.deleteById(orderId);
+        // 售后也同时删除
+        aftersaleService.deleteByOrderId(userId, orderId);
 
         return ResponseUtil.ok();
     }
@@ -946,7 +949,7 @@ public class WxOrderService {
             return ResponseUtil.badArgumentValue();
         }
         Integer orderId = orderGoods.getOrderId();
-        LitemallOrder order = orderService.findById(orderId);
+        LitemallOrder order = orderService.findById(userId, orderId);
         if (order == null) {
             return ResponseUtil.badArgumentValue();
         }
