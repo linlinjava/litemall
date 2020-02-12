@@ -4,9 +4,6 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" placeholder="请输入标题关键字" />
-      <el-select v-model="listQuery.type" class="filter-item" placeholder="请选择通知类型">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
 
@@ -15,8 +12,14 @@
       <el-button class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
     </div>
 
+    <el-tabs v-model="listQuery.type" @tab-click="handleFilter">
+      <el-tab-pane label="未读通知" name="unread" />
+      <el-tab-pane label="已读通知" name="read" />
+      <el-tab-pane label="所有通知" name="all" />
+    </el-tabs>
+
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row @selection-change="handleSelectionChange">
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" fit highlight-current-row @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
       <el-table-column align="center" label="通知标题" prop="noticeTitle" />
@@ -70,16 +73,6 @@ export default {
         sort: 'add_time',
         order: 'desc'
       },
-      options: [{
-        value: 'all',
-        label: '所有'
-      }, {
-        value: 'read',
-        label: '已读'
-      }, {
-        value: 'unread',
-        label: '未读'
-      }],
       multipleSelection: [],
       notice: {
         title: '',
