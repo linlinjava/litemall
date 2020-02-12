@@ -16,6 +16,9 @@
             <if test="order.orderStatus != null">
                 order_status = #{order.orderStatus,jdbcType=SMALLINT},
             </if>
+            <if test="order.aftersaleStatus != null">
+                aftersale_status = #{order.aftersaleStatus,jdbcType=SMALLINT},
+            </if>
             <if test="order.consignee != null">
                 consignee = #{order.consignee,jdbcType=VARCHAR},
             </if>

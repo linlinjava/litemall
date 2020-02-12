@@ -42,7 +42,7 @@ public class LitemallAftersaleService {
         return aftersaleMapper.selectByExample(example);
     }
 
-    public List<LitemallAftersale> querySelective(Integer orderId, String aftersaleSn, Integer page, Integer limit, String sort, String order) {
+    public List<LitemallAftersale> querySelective(Integer orderId, String aftersaleSn, Short status, Integer page, Integer limit, String sort, String order) {
         LitemallAftersaleExample example = new LitemallAftersaleExample();
         LitemallAftersaleExample.Criteria criteria = example.or();
         if (orderId != null) {
@@ -50,6 +50,9 @@ public class LitemallAftersaleService {
         }
         if (!StringUtils.isEmpty(aftersaleSn)) {
             criteria.andAftersaleSnEqualTo(aftersaleSn);
+        }
+        if (status != null) {
+            criteria.andStatusEqualTo(status);
         }
         criteria.andDeletedEqualTo(false);
         if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
@@ -77,12 +80,6 @@ public class LitemallAftersaleService {
     public int countByAftersaleSn(Integer userId, String aftersaleSn) {
         LitemallAftersaleExample example = new LitemallAftersaleExample();
         example.or().andUserIdEqualTo(userId).andAftersaleSnEqualTo(aftersaleSn).andDeletedEqualTo(false);
-        return (int) aftersaleMapper.countByExample(example);
-    }
-
-    public int countByOrderIdWithoutReject(Integer userId, Integer orderId) {
-        LitemallAftersaleExample example = new LitemallAftersaleExample();
-        example.or().andUserIdEqualTo(userId).andOrderIdEqualTo(orderId).andStatusNotEqualTo(AftersaleConstant.STATUS_REJECT).andDeletedEqualTo(false);
         return (int) aftersaleMapper.countByExample(example);
     }
 
@@ -114,5 +111,25 @@ public class LitemallAftersaleService {
 
     public void deleteById(Integer id) {
         aftersaleMapper.logicalDeleteByPrimaryKey(id);
+    }
+
+    public void deleteByOrderId(Integer userId, Integer orderId) {
+        LitemallAftersaleExample example = new LitemallAftersaleExample();
+        example.or().andOrderIdEqualTo(orderId).andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        LitemallAftersale aftersale = new LitemallAftersale();
+        aftersale.setUpdateTime(LocalDateTime.now());
+        aftersale.setDeleted(true);
+        aftersaleMapper.updateByExampleSelective(aftersale, example);
+    }
+
+    public void updateById(LitemallAftersale aftersale) {
+        aftersale.setUpdateTime(LocalDateTime.now());
+        aftersaleMapper.updateByPrimaryKeySelective(aftersale);
+    }
+
+    public LitemallAftersale findByOrderId(Integer userId, Integer orderId) {
+        LitemallAftersaleExample example = new LitemallAftersaleExample();
+        example.or().andOrderIdEqualTo(orderId).andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        return aftersaleMapper.selectOneByExample(example);
     }
 }
