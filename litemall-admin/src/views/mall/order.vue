@@ -3,8 +3,9 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户ID" />
-      <el-input v-model="listQuery.orderSn" clearable class="filter-item" style="width: 200px;" placeholder="请输入订单编号" />
+      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 160px;" placeholder="请输入用户ID" />
+      <el-input v-model="listQuery.orderSn" clearable class="filter-item" style="width: 160px;" placeholder="请输入订单编号" />
+      <el-date-picker v-model="listQuery.timeArray" type="datetimerange" class="filter-item" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" />
       <el-select v-model="listQuery.orderStatusArray" multiple style="width: 200px" class="filter-item" placeholder="请选择订单状态">
         <el-option v-for="(key, value) in statusMap" :key="key" :label="key" :value="value" />
       </el-select>
@@ -159,11 +160,9 @@ const statusMap = {
   101: '未付款',
   102: '用户取消',
   103: '系统取消',
-  200: '已付款团购',
   201: '已付款',
   202: '申请退款',
   203: '已退款',
-  204: '已超时团购',
   301: '已发货',
   401: '用户收货',
   402: '系统收货'
@@ -187,9 +186,37 @@ export default {
         limit: 20,
         id: undefined,
         name: undefined,
+        timeArray: [],
         orderStatusArray: [],
         sort: 'add_time',
         order: 'desc'
+      },
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
       },
       statusMap,
       orderDialogVisible: false,
@@ -221,6 +248,10 @@ export default {
     checkPermission,
     getList() {
       this.listLoading = true
+      if (this.listQuery.timeArray.length === 2) {
+        this.listQuery.start = this.listQuery.timeArray[0]
+        this.listQuery.end = this.listQuery.timeArray[1]
+      }
       listOrder(this.listQuery).then(response => {
         this.list = response.data.data.list
         this.total = response.data.data.total

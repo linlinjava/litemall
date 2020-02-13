@@ -51,9 +51,9 @@ public class AdminOrderService {
     @Autowired
     private LogHelper logHelper;
 
-    public Object list(Integer userId, String orderSn, List<Short> orderStatusArray,
+    public Object list(Integer userId, String orderSn, LocalDateTime start, LocalDateTime end, List<Short> orderStatusArray,
                        Integer page, Integer limit, String sort, String order) {
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit,
+        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, start, end, orderStatusArray, page, limit,
                 sort, order);
         return ResponseUtil.okList(orderList);
     }
