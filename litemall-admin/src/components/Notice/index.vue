@@ -17,7 +17,7 @@ export default {
     }
   },
   mounted() {
-    this.timer = setInterval(this.checkNotice, 10 * 1000)
+    this.timer = setInterval(this.checkNotice, 30 * 1000)
   },
   beforeDestroy() {
     clearInterval(this.timer)
@@ -30,6 +30,9 @@ export default {
       this.$router.push({ path: '/profile/notice' })
     },
     checkNotice() {
+      if (this.hasNotice) {
+        return
+      }
       nNotice().then(response => {
         this.hasNotice = response.data.data > 0
       })
