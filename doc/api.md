@@ -2,8 +2,6 @@
 
 本项目前后端接口规范和接口文档。
 
-本项目没有采用Swagger技术，开发者可以自行集成。
-
 注意：
 > 1. 以下API部分基于nideshop开源项目的API设计；
 > 2. 以下API是参考API，可能不是很合理，欢迎开发者交流。
@@ -417,9 +415,9 @@ API应该存在版本控制，以保证兼容性。
 
 * 团购API完善
 
-### 1.11 NO Swagger
+### 1.11 Not Like Swagger
 
-暂不支持Swagger，基于以下考虑：
+本项目不是很接受Swagger，基于以下考虑：
 
 * 前后端中立
 
@@ -440,7 +438,11 @@ API应该存在版本控制，以保证兼容性。
 如果使用Swagger，为了得到完整的文档，需要在每一个方法前面加上多个文档注解，文档越是详尽，则注解越多，
 造成代码不是很简洁。特别是具备代码属性的注解和Swagger文档注解混杂在一起，可能不是很好。
 
-如果开发者需要Swagger，可以自行接入。
+当然，本项目也简单地配置了Swagger(见`WxSwagger2Configuration`和`AdminSwagger2Configuration`)，
+在线Swagger文档链接：http://122.51.199.160:8080/swagger-ui.html
+
+当然正如上文讨论，本项目不是很接受Swagger的理念，所以后端没有使用Swagger的相关文档注解，
+这也导致了Swagger接口文档的不具可读性。如果开发者需要，可以自行在后端补充Swagger注解。
 
 ## 2 商城API服务
 

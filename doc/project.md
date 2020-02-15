@@ -87,7 +87,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
 * 购物车
 * 下单
 * 个人
-* 订单列表、订单详情
+* 订单列表、订单详情、订单售后
 * 地址列表、地址添加、地址删除
 * 收藏、足迹、关于
 
@@ -142,6 +142,7 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
   * 团购活动
 * 系统管理
   * 管理员
+  * 通知管理
   * 对象存储
   * 权限管理
   * 定时任务（待定）
@@ -155,6 +156,9 @@ litemall是一个简单的商场系统，基于现有的开源项目，重新实
   * 用户统计
   * 订单统计
   * 商品统计
+* 个人
+  * 通知中心
+  * 密码修改
 
 ## 1.3 项目技术
 
@@ -303,11 +307,11 @@ Spring Boot技术栈参考以下文档或者项目：
 如果开发者运行litemall_schema.sql失败，可以打开该文件：
 ```
 drop database if exists litemall;
-drop user if exists 'litemall'@'localhost';
+drop user if exists 'litemall'@'%';
 create database litemall default character set utf8mb4 collate utf8mb4_unicode_ci;
 use litemall;
-create user 'litemall'@'localhost' identified by 'litemall123456';
-grant all privileges on litemall.* to 'litemall'@'localhost';
+create user 'litemall'@'%' identified by 'litemall123456';
+grant all privileges on litemall.* to 'litemall'@'%';
 flush privilege
 ```
 可以看到几个命令，用于创建数据库、用户和访问权限，因此开发者可以利用
@@ -315,7 +319,7 @@ flush privilege
 
 ### 1.4.2 Spring Boot开发环境
 
-1. 安装JDK8
+1. 安装JDK8（可以是Oracle JDK或者OpenJDK）
 2. 安装Maven
 3. 安装Git（可选）
 4. 安装IDEA Community，建议安装Maven插件和Git插件。
@@ -955,7 +959,7 @@ sudo mysql_secure_installation
 > 这里很可能是开发者litemall-admin模块的`config/dep.env.js`或者`condig/prod.env.js`
 > 没有设置正确的管理后台后端地址，例如这里的`http://xxx.xxx.xxx.xxx:8080/admin`
 
-#### 1.5.1.6 项目辅助脚本
+#### 1.5.1.6 deploy部署脚本
 
 在前面的项目打包和项目部署中都是采用手动命令来部署。
 这里可以写一些脚本简化：
@@ -991,6 +995,10 @@ cd litemall
 
 不过由于需要设置的信息会包含敏感安全信息，强烈建议开发者参考这里的deploy文件夹，
 然后实现自己的deploy文件夹，妥善处置外部配置文件和脚本中的敏感安全信息!!!
+
+#### 1.5.1.7 docker部署脚本
+
+本项目也简单实现了docker部署方案，具体可以看docker文件夹。
 
 ### 1.5.2 单机多服务部署方案
 
