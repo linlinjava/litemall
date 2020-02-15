@@ -94,6 +94,9 @@ public class WxAftersaleController {
         }
 
         LitemallOrder order = orderService.findById(userId, orderId);
+        if (order == null){
+            return ResponseUtil.badArgumentValue();
+        }
         List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
         LitemallAftersale aftersale = aftersaleService.findByOrderId(userId, orderId);
 
@@ -127,9 +130,6 @@ public class WxAftersaleController {
         }
         LitemallOrder order = orderService.findById(userId, orderId);
         if(order == null){
-            return ResponseUtil.badArgumentValue();
-        }
-        if(!order.getUserId().equals(userId)){
             return ResponseUtil.badArgumentValue();
         }
 
@@ -177,7 +177,7 @@ public class WxAftersaleController {
         if(id == null){
             return ResponseUtil.badArgument();
         }
-        LitemallAftersale aftersaleOne = aftersaleService.findById(id);
+        LitemallAftersale aftersaleOne = aftersaleService.findById(userId, id);
         if(aftersaleOne == null){
             return ResponseUtil.badArgument();
         }

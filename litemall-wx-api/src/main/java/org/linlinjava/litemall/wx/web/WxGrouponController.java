@@ -87,7 +87,7 @@ public class WxGrouponController {
             return ResponseUtil.unlogin();
         }
 
-        LitemallGroupon groupon = grouponService.queryById(grouponId);
+        LitemallGroupon groupon = grouponService.queryById(userId, grouponId);
         if (groupon == null) {
             return ResponseUtil.badArgumentValue();
         }

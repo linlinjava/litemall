@@ -139,7 +139,7 @@ public class WxCouponController {
         if (cartId == null || cartId.equals(0)) {
             checkedGoodsList = cartService.queryByUidAndChecked(userId);
         } else {
-            LitemallCart cart = cartService.findById(cartId);
+            LitemallCart cart = cartService.findById(userId, cartId);
             if (cart == null) {
                 return ResponseUtil.badArgumentValue();
             }

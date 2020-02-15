@@ -81,6 +81,19 @@ public class LitemallGrouponService {
     }
 
     /**
+     * 根据ID查询记录
+     *
+     * @param userId
+     * @param id
+     * @return
+     */
+    public LitemallGroupon queryById(Integer userId, Integer id) {
+        LitemallGrouponExample example = new LitemallGrouponExample();
+        example.or().andIdEqualTo(id).andUserIdEqualTo(id).andDeletedEqualTo(false);
+        return mapper.selectOneByExample(example);
+    }
+
+    /**
      * 返回某个发起的团购参与人数
      *
      * @param grouponId

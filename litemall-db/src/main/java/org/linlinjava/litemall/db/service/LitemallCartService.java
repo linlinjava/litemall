@@ -57,6 +57,12 @@ public class LitemallCartService {
         return cartMapper.selectByPrimaryKey(id);
     }
 
+    public LitemallCart findById(Integer userId, Integer id) {
+        LitemallCartExample example = new LitemallCartExample();
+        example.or().andUserIdEqualTo(userId).andIdEqualTo(id).andDeletedEqualTo(false);
+        return cartMapper.selectOneByExample(example);
+    }
+
     public int updateCheck(Integer userId, List<Integer> idsList, Boolean checked) {
         LitemallCartExample example = new LitemallCartExample();
         example.or().andUserIdEqualTo(userId).andProductIdIn(idsList).andDeletedEqualTo(false);

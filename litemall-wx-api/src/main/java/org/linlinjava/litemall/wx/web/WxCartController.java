@@ -258,9 +258,6 @@ public class WxCartController {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
-        if (cart == null) {
-            return ResponseUtil.badArgument();
-        }
         Integer productId = cart.getProductId();
         Integer number = cart.getNumber().intValue();
         Integer goodsId = cart.getGoodsId();
@@ -274,7 +271,7 @@ public class WxCartController {
 
         //判断是否存在该订单
         // 如果不存在，直接返回错误
-        LitemallCart existCart = cartService.findById(id);
+        LitemallCart existCart = cartService.findById(userId, id);
         if (existCart == null) {
             return ResponseUtil.badArgumentValue();
         }
@@ -448,7 +445,7 @@ public class WxCartController {
         if (cartId == null || cartId.equals(0)) {
             checkedGoodsList = cartService.queryByUidAndChecked(userId);
         } else {
-            LitemallCart cart = cartService.findById(cartId);
+            LitemallCart cart = cartService.findById(userId, cartId);
             if (cart == null) {
                 return ResponseUtil.badArgumentValue();
             }

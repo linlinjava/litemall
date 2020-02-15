@@ -39,10 +39,8 @@ public class LitemallAddressService {
         return addressMapper.updateByPrimaryKeySelective(address);
     }
 
-    public void delete(Integer userId, Integer id) {
-        LitemallAddressExample example = new LitemallAddressExample();
-        example.or().andUserIdEqualTo(userId).andIdEqualTo(id).andDeletedEqualTo(false);
-        addressMapper.logicalDeleteByExample(example);
+    public void delete(Integer id) {
+        addressMapper.logicalDeleteByPrimaryKey(id);
     }
 
     public LitemallAddress findDefault(Integer userId) {

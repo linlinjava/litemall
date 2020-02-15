@@ -289,7 +289,7 @@ public class WxOrderService {
                     return ResponseUtil.fail(GROUPON_JOIN, "团购活动已经参加!");
                 }
                 // （2）不允许参加自己开团的团购
-                LitemallGroupon groupon = grouponService.queryById(grouponLinkId);
+                LitemallGroupon groupon = grouponService.queryById(userId, grouponLinkId);
                 if(groupon.getCreatorUserId().equals(userId)){
                     return ResponseUtil.fail(GROUPON_JOIN, "团购活动已经参加!");
                 }
@@ -911,6 +911,10 @@ public class WxOrderService {
     public Object goods(Integer userId, Integer orderId, Integer goodsId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
+        }
+        LitemallOrder order = orderService.findById(userId, orderId);
+        if (order == null) {
+            return ResponseUtil.badArgument();
         }
 
         List<LitemallOrderGoods> orderGoodsList = orderGoodsService.findByOidAndGid(orderId, goodsId);

@@ -23,6 +23,12 @@ public class LitemallAftersaleService {
         return aftersaleMapper.selectByPrimaryKey(id);
     }
 
+    public LitemallAftersale findById(Integer userId, Integer id) {
+        LitemallAftersaleExample example = new LitemallAftersaleExample();
+        example.or().andIdEqualTo(id).andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        return aftersaleMapper.selectOneByExample(example);
+    }
+
     public List<LitemallAftersale> queryList(Integer userId, Short status, Integer page, Integer limit, String sort, String order) {
         LitemallAftersaleExample example = new LitemallAftersaleExample();
         LitemallAftersaleExample.Criteria criteria = example.or();
