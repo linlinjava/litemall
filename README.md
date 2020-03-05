@@ -225,6 +225,11 @@ V 3.0.0 完成以下目标：
 1. [Flutter_Mall](https://github.com/youxinLu/mall)
    
    项目介绍：Flutter_Mall是一款Flutter开源在线商城应用程序。
+   
+2. [Taro_Mall](https://github.com/jiechud/taro-mall)
+
+    项目介绍：Taro_Mall是一款多端开源在线商城应用程序，后台是基于litemall基础上进行开发，前端采用Taro框架编写。
+
 
 ## 问题
 
