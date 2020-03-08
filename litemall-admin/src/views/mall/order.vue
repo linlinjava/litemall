@@ -248,10 +248,14 @@ export default {
     checkPermission,
     getList() {
       this.listLoading = true
-      if (this.listQuery.timeArray.length === 2) {
+      if (this.listQuery.timeArray && this.listQuery.timeArray.length === 2) {
         this.listQuery.start = this.listQuery.timeArray[0]
         this.listQuery.end = this.listQuery.timeArray[1]
+      } else {
+        this.listQuery.start = null
+        this.listQuery.end = null
       }
+
       listOrder(this.listQuery).then(response => {
         this.list = response.data.data.list
         this.total = response.data.data.total
