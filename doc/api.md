@@ -355,7 +355,7 @@ API应该存在版本控制，以保证兼容性。
 
 例如测试2.4.2节商品详情API
 
-![](./pic/get.png)    
+![](./pics/admin/get.png)
 
 #### 1.8.2 GET & Token 示例
 
@@ -365,15 +365,15 @@ API应该存在版本控制，以保证兼容性。
 
 如果没有登录，则返回未登录信息
 
-![](./pic/get_no_token.png)
+![](./pics/admin/get_no_token.png)
 
 因此测试这些API，需要先登录
 
-![](./pic/login.png)
+![](./pics/admin/login.png)
 
 然后，采用自定义`X-Litemall-Token`来携带token访问商场API
 
-![](./pic/get_with_token.png)
+![](./pics/admin/get_with_token.png)
 
 注意：
 > 访问受保护商场API是采用自定义`X-Litemall-Token`头部；
@@ -387,15 +387,15 @@ API应该存在版本控制，以保证兼容性。
 
 如果需要登录才能提交数据，则需要先向后端请求登录，得到token，然后请求时携带token。
 
-![](./pic/post_no_token.png)
+![](./pics/admin/post_no_token.png)
 
 因此测试这些API，需要先登录
 
-![](./pic/login.png)
+![](./pics/admin/login.png)
 
 然后，采用自定义`X-Litemall-Token`来携带token访问商场API
 
-![](./pic/get_with_token.png)
+![](./pics/admin/get_with_token.png)
 
 注意：
 > 访问受保护商场API是采用自定义`X-Litemall-Token`头部；
