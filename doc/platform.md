@@ -183,7 +183,7 @@ litemall_region表保存了行政区域信息，包括省级、市级、县级�
 
 #### 2.1.4.1 订单状态
 
-![](pic2/2-1.png)
+![](./pics/platform/order-status.png)
 
 订单分成几种基本的状态：
 
@@ -587,7 +587,7 @@ litemall-db模块是一个普通的Spring Boot应用，基于mybatis框架实现
 * Mybatis Generator
 * Mybatis Generator非官方插件mybatis-generator-plugin
 
-![](./pic2/2-2.png)
+![](./pics/platform/db-main.png)
 
 这里litemall-db模块可以分成以下几种代码：
 
@@ -610,7 +610,7 @@ mybatis数据库访问代码是指dao接口代码、dao数据库XML文件和doma
 
 #### 2.2.1.1 自动生成代码
 
-![](./pic2/2-3.png)
+![](./pics/platform/mybatis-generator.png)
 
 如上图所示，双击`mybatis-generator:generate`，则mybatis generator插件会：
 

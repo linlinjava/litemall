@@ -4,7 +4,7 @@
 
 litemall是一个简单的商场系统，基于现有的开源项目，重新实现一个完整的前后端项目，包含小程序客户端、移动客户端和网页管理端。
 
-![](./pic1/1-1.png)    
+![](./pics/project/project-structure.png)
 
 
 项目的架构是四个系统和九个模块：
@@ -236,7 +236,7 @@ Spring Boot技术栈参考以下文档或者项目：
 
 接下来，从项目的开发、部署（测试）和上线三个阶段介绍litemall。
 
-![](pic1/1-10.png)
+![](./pics/project/stage.png)
 
 首先需要明确的是三个不同阶段：
 
@@ -277,7 +277,7 @@ Spring Boot技术栈参考以下文档或者项目：
 
 ## 1.4 开发方案
 
-![](pic1/1-2.png)
+![](./pics/project/develop-stage.png)
 
 如图所示，当前开发阶段的方案：
 
@@ -336,7 +336,7 @@ flush privilege
    
    或者采用IDEA的Maven插件安装本项目依赖库，点击`install`
 
-    ![](pic1/1-8.png)
+    ![](./pics/project/idea-maven-insatll.png)
 
 7. 采用Maven命令编译本项目
 
@@ -363,7 +363,7 @@ flush privilege
    如果采用IDEA，则litemall-all模块的Application类
    右键` Run Application.main()`方式运行该模块,
    
-   ![](pic1/1-9.png)
+   ![](./pics/project/idea-run-all.png)
    
    打开浏览器，输入
     ```
@@ -826,7 +826,7 @@ litemall:
 
 主要流程是：创建云服务器，安装ubuntu操作系统，按照JDK和MySQL应用运行环境，部署单一Spring Boot服务。
 
-![](pic1/1-11.png)
+![](./pics/project/deploy-single.png)
 
 #### 1.5.1.1 云服务器
 
@@ -841,7 +841,7 @@ litemall:
 
 3. 创建安全组
 
-    ![](pic1/1-4.png)
+    ![](./pics/project/security-group.png)
 
     目前允许的端口：8080，80，443，22，3306
     
@@ -1037,7 +1037,7 @@ cd litemall
 * 提供管理后台前端所需要的数据；
 * 提供小商城前端所需要的数据。
 
-![](pic1/1-12.png)
+![](./pics/project/online-deploy.png)
 
 
 开发者可以基于自身业务采用其他上线方案。
@@ -1160,7 +1160,7 @@ http://www.example.com
 总结，经过以上不同方面的配置，nginx这里最终的配置是如下：
 1. 证书`1_www.example.com_bundle.crt`和`2_www.example.com.key`放置在
     `/etc/nginx/`文件夹内。
-2. 把`/etc/nginx/nginx.conf`文件进行修改，具体可以参考[本项目的nginx.conf](./pic/nginx.conf)
+2. 把`/etc/nginx/nginx.conf`文件进行修改，具体可以参考[本项目的nginx.conf](./conf/nginx.conf)
 3. 重启nginx
 
 注意：
@@ -1423,9 +1423,9 @@ application配置文件中，但是问题就是数据库信息一旦改变则其
 3. 上线阶段，同样地，在litemall.jar包同级目录创建上线配置文件。
 
 此外，这里还可以采用另外一种思路，如下图：
-![](pic1/1-13.png)
-![](pic1/1-14.png)
-![](pic1/1-15.png)
+![](./pics/project/maven-profile.png)
+![](./pics/project/spring-profile.png)
+![](./pics/project/yml-resource.png)
 
 其实原理也很简单，就是配置文件采用application-{module}-{profile}.yml来支持不同模块不同阶段的配置需求。
 

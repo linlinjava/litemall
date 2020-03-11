@@ -15,13 +15,13 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
 * renard-wx模块实例
 
-![](./doc/pic/renard_wx_demo.png)    
+![](./doc/pics/readme/renard_wx_demo.png)
 
 > 注意：此实例是真实小商场，开发者可以购买商品和付款，但请不要尝试退款操作。
 
 * litemall-wx模块实例
 
-![](./doc/pic/litemall_wx_demo.png)    
+![](./doc/pics/readme/litemall_wx_demo.png)
 
 > 注意：此实例是测试小商场，开发者请不要尝试购买商品、付款、退款操作。
 
@@ -29,7 +29,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
 请手机扫描以下二维码访问:
 
-![](./doc/pic/mobmall.png)    
+![](./doc/pics/readme/mobmall.png)
 
 或者浏览器采用手机模式访问以下网址: [http://122.51.199.160:8080/vue/index.html#/](http://122.51.199.160:8080/vue/index.html#/)
 
@@ -39,7 +39,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
 ### 管理后台实例
 
-![](./doc/pic/4.png)    
+![](./doc/pics/readme/admin-dashboard.png)
 
 1. 浏览器打开，输入以下网址: [http://122.51.199.160:8080/#/login](http://122.51.199.160:8080/#/login)
 2. 管理员用户名`admin123`，管理员密码`admin123`
@@ -51,7 +51,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 * [GitHub](https://github.com/linlinjava/litemall)
 
 ## 项目架构
-![](./doc/pic/1.png)    
+![](./doc/pics/readme/project-structure.png)
 
 ## 技术栈
 
@@ -59,7 +59,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 > 2. Vue
 > 3. 微信小程序
 
-![](doc/pic/2.png)    
+![](doc/pics/readme/technology-stack.png)
 
 ## 功能
 
@@ -233,7 +233,7 @@ V 3.0.0 完成以下目标：
 
 ## 问题
 
-![](doc/pic/qq2.png)
+![](doc/pics/readme/qq2.png)
 
  * 开发者有问题或者好的建议可以用Issues反馈交流，请给出详细信息
  * 在开发交流群中应讨论开发、业务和合作问题
