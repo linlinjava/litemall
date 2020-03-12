@@ -4,15 +4,15 @@ var api = require('../../../config/api.js');
 Page({
   data: {
     id: 0,
-    orderId: 0,
     groupon: {},
-    linkGrouponId: 0,
     joiners: [],
     orderInfo: {},
     orderGoods: [],
-    expressInfo: {},
-    flag: false,
-    handleOption: {}
+    rules: {},
+    active: 0,
+    steps: [],
+    activeIcon: '',
+    activeColor: ''
   },
 
   onLoad: function(options) {
@@ -29,93 +29,8 @@ Page({
     return {
       title: '邀请团购',
       desc: '唯爱与美食不可辜负',
-      path: '/pages/index/index?grouponId=' + this.data.linkGrouponId
+      path: '/pages/index/index?grouponId=' + this.data.id
     }
-  },
-
-  shareGroupon: function() {
-    let that = this;
-    wx.showActionSheet({
-      itemList: ['分享给朋友', '分享到朋友圈'],
-      success: function(res) {
-        if (res.tapIndex == 0) {
-          wx.showModal({
-            title: '提示',
-            content: '点击右上角 "..." 转发给朋友',
-            showCancel: false
-          });
-        } else if (res.tapIndex == 1) {
-          that.saveShare();
-        } else {
-          console.log(res.tapIndex);
-        }
-      },
-      fail: function(res) {
-        console.log(res.errMsg);
-      }
-    })
-  },
-
-  // 保存分享图
-  saveShare: function() {
-    let that = this;
-    wx.downloadFile({
-      url: that.data.groupon.shareUrl,
-      success: function(res) {
-        console.log(res)
-        wx.saveImageToPhotosAlbum({
-          filePath: res.tempFilePath,
-          success: function(res) {
-            wx.showModal({
-              title: '存图成功',
-              content: '图片成功保存到相册了，可以分享到朋友圈了',
-              showCancel: false,
-              confirmText: '好的',
-              confirmColor: '#a78845',
-              success: function(res) {
-                if (res.confirm) {
-                  console.log('用户点击确定');
-                }
-              }
-            })
-          },
-          fail: function(res) {
-            console.log('fail')
-          }
-        })
-      },
-      fail: function() {
-        console.log('fail')
-      }
-    })
-  },
-
-  onPullDownRefresh() {
-    wx.showNavigationBarLoading() //在标题栏中显示加载
-    this.getOrderDetail();
-    wx.hideNavigationBarLoading() //完成停止加载
-    wx.stopPullDownRefresh() //停止下拉刷新
-  },
-
-  //获取物流信息
-  getOrderExpress: function() {
-    let that = this;
-    util.request(api.ExpressQuery, {
-      expCode: that.data.orderInfo.expCode,
-      expNo: that.data.orderInfo.expNo
-    }, 'POST').then(function(res) {
-      if (res.errno === 0) {
-        that.setData({
-          expressInfo: res.data
-        });
-      }
-    });
-  },
-  expandDetail: function() {
-    let that = this;
-    this.setData({
-      flag: !that.data.flag
-    })
   },
   getOrderDetail: function() {
     let that = this;
@@ -123,155 +38,45 @@ Page({
       grouponId: that.data.id
     }).then(function(res) {
       if (res.errno === 0) {
+        let _steps = [{
+            text: '已开团'
+          },
+          {
+            text: '开团中'
+          },
+          {
+            text: '开团成功'
+          }
+        ]
+        let _active = res.data.groupon.status
+        let _activeIcon = 'success'
+        let _activeColor = '#07c160'
+        if (res.data.groupon.status === 3) {
+          _steps = [{
+              text: '已开团'
+            },
+            {
+              text: '开团中'
+            },
+            {
+              text: '开团失败'
+            }
+          ]
+          _active = 2
+          _activeIcon = 'fail'
+          _activeColor = '#EE0A24'
+        }
         that.setData({
           joiners: res.data.joiners,
           groupon: res.data.groupon,
-          linkGrouponId: res.data.linkGrouponId,
-          orderId: res.data.orderInfo.id,
           orderInfo: res.data.orderInfo,
           orderGoods: res.data.orderGoods,
-          handleOption: res.data.orderInfo.handleOption
+          rules: res.data.rules,
+          active: _active,
+          steps: _steps,
+          activeIcon: _activeIcon,
+          activeColor: _activeColor
         });
-
-        // 请求物流信息,仅当订单状态为发货时才请求
-        if (res.data.orderInfo.handleOption.confirm) {
-          that.getOrderExpress();
-        }
-      }
-    });
-  },
-  // “去付款”按钮点击效果
-  payOrder: function() {
-    let that = this;
-    util.request(api.OrderPrepay, {
-      orderId: that.data.orderId
-    }, 'POST').then(function(res) {
-      if (res.errno === 0) {
-        const payParam = res.data;
-        console.log("支付过程开始");
-        wx.requestPayment({
-          'timeStamp': payParam.timeStamp,
-          'nonceStr': payParam.nonceStr,
-          'package': payParam.packageValue,
-          'signType': payParam.signType,
-          'paySign': payParam.paySign,
-          'success': function(res) {
-            console.log("支付过程成功");
-            util.redirect('/pages/ucenter/order/order');
-          },
-          'fail': function(res) {
-            console.log("支付过程失败");
-            util.showErrorToast('支付失败');
-          },
-          'complete': function(res) {
-            console.log("支付过程结束")
-          }
-        });
-      }
-    });
-
-  },
-  // “取消订单”点击效果
-  cancelOrder: function() {
-    let that = this;
-    let orderInfo = that.data.orderInfo;
-
-    wx.showModal({
-      title: '',
-      content: '确定要取消此订单？',
-      success: function(res) {
-        if (res.confirm) {
-          util.request(api.OrderCancel, {
-            orderId: orderInfo.id
-          }, 'POST').then(function(res) {
-            if (res.errno === 0) {
-              wx.showToast({
-                title: '取消订单成功'
-              });
-              util.redirect('/pages/ucenter/order/order');
-            } else {
-              util.showErrorToast(res.errmsg);
-            }
-          });
-        }
-      }
-    });
-  },
-  // “取消订单并退款”点击效果
-  refundOrder: function() {
-    let that = this;
-    let orderInfo = that.data.orderInfo;
-
-    wx.showModal({
-      title: '',
-      content: '确定要取消此订单？',
-      success: function(res) {
-        if (res.confirm) {
-          util.request(api.OrderRefund, {
-            orderId: orderInfo.id
-          }, 'POST').then(function(res) {
-            if (res.errno === 0) {
-              wx.showToast({
-                title: '取消订单成功'
-              });
-              util.redirect('/pages/ucenter/order/order');
-            } else {
-              util.showErrorToast(res.errmsg);
-            }
-          });
-        }
-      }
-    });
-  },
-  // “删除”点击效果
-  deleteOrder: function() {
-    let that = this;
-    let orderInfo = that.data.orderInfo;
-
-    wx.showModal({
-      title: '',
-      content: '确定要删除此订单？',
-      success: function(res) {
-        if (res.confirm) {
-          util.request(api.OrderDelete, {
-            orderId: orderInfo.id
-          }, 'POST').then(function(res) {
-            if (res.errno === 0) {
-              wx.showToast({
-                title: '删除订单成功'
-              });
-              util.redirect('/pages/ucenter/order/order');
-            } else {
-              util.showErrorToast(res.errmsg);
-            }
-          });
-        }
-      }
-    });
-  },
-  // “确认收货”点击效果
-  confirmOrder: function() {
-    let that = this;
-    let orderInfo = that.data.orderInfo;
-
-    wx.showModal({
-      title: '',
-      content: '确认收货？',
-      success: function(res) {
-        if (res.confirm) {
-          util.request(api.OrderConfirm, {
-            orderId: orderInfo.id
-          }, 'POST').then(function(res) {
-            if (res.errno === 0) {
-              wx.showToast({
-                title: '确认收货成功！'
-              });
-              util.redirect('/pages/ucenter/order/order');
-            } else {
-              util.showErrorToast(res.errmsg);
-            }
-          });
-        }
       }
     });
   },

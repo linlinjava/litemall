@@ -6,7 +6,44 @@
   margin: 20rpx 0;
 }
 
+
+.comments .h {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  background: #fff;
+  height: 84rpx;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.comments .h .item {
+  display: inline-block;
+  height: 82rpx;
+  width: 50%;
+  padding: 0 15rpx;
+  text-align: center;
+}
+
+.comments .h .item .txt {
+  display: inline-block;
+  height: 82rpx;
+  padding: 0 20rpx;
+  line-height: 82rpx;
+  color: #333;
+  font-size: 30rpx;
+  width: 170rpx;
+}
+
+.comments .h .item.active .txt {
+  color: #ab2b2b;
+  border-bottom: 4rpx solid #ab2b2b;
+}
+
 .comments .b {
+  margin-top: 85rpx;
   height: auto;
   width: 720rpx;
 }

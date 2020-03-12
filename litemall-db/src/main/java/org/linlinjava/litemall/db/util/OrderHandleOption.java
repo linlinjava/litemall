@@ -8,6 +8,7 @@ public class OrderHandleOption {
     private boolean confirm = false;    // 确认收货操作
     private boolean refund = false;     // 取消订单并退款操作
     private boolean rebuy = false;        // 再次购买
+    private boolean aftersale = false;        // 售后操作
 
     public boolean isCancel() {
         return cancel;
@@ -65,4 +66,11 @@ public class OrderHandleOption {
         this.rebuy = rebuy;
     }
 
+    public boolean isAftersale() {
+        return aftersale;
+    }
+
+    public void setAftersale(boolean aftersale) {
+        this.aftersale = aftersale;
+    }
 }

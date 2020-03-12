@@ -1,7 +1,8 @@
 <view class="container">
   <view class="order-info">
-    <view class="item-a">下单时间：{{orderInfo.addTime}}</view>
-    <view class="item-b">订单编号：{{orderInfo.orderSn}}</view>
+    <view class="item">下单时间：{{orderInfo.addTime}}</view>
+    <view class="item">订单编号：{{orderInfo.orderSn}}</view>
+    <view class="item">订单留言：{{orderInfo.message}}</view>
     <view class="item-c">
       <view class="l">实付：
         <text class="cost">￥{{orderInfo.actualPrice}}</text>
@@ -12,6 +13,7 @@
         <view class="btn active" bindtap="confirmOrder" wx:if="{{handleOption.confirm}}">确认收货</view>
         <view class="btn active" bindtap="deleteOrder" wx:if="{{handleOption.delete}}">删除订单</view>
         <view class="btn active" bindtap="refundOrder" wx:if="{{handleOption.refund}}">申请退款</view>
+        <view class="btn active" bindtap="aftersaleOrder" wx:if="{{handleOption.aftersale}}">申请售后</view>
       </view>
     </view>
   </view>
@@ -72,14 +74,13 @@
     </view>
   </view>
 
-  <!-- 物流信息,仅收货状态下可见 -->
-  <view class="order-express" bindtap="expandDetail" wx:if="{{ handleOption.confirm }}">
+  <view class="order-express" bindtap="expandDetail" wx:if="{{ orderInfo.expNo }}">
     <view class="order-express">
       <view class="title">
-        <view class="t">快递公司：{{expressInfo.shipperName}}</view>
-        <view class="b">物流单号：{{expressInfo.logisticCode}}</view>
+        <view class="t">快递公司：{{orderInfo.expName}}</view>
+        <view class="b">物流单号：{{orderInfo.expNo}}</view>
       </view>
-      <image class="ti" src="/static/images/address_right.png" background-size="cover"></image>
+      <van-icon class="ti" name="arrow" />      
     </view>
     <view class="traces" wx:for="{{expressInfo.Traces}}" wx:key="item" wx:for-item="iitem" wx:if="{{ flag }}">
       <view class="trace">

@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="aftersales-switch">
+    <view class="item {{ showType == 1 ? 'active' : ''}}" bindtap="switchTab" data-index='1'>
+      <view class="txt">申请中</view>
+    </view>
+    <view class="item {{ showType == 2 ? 'active' : ''}}" bindtap="switchTab" data-index='2'>
+      <view class="txt">处理中</view>
+    </view>
+    <view class="item {{ showType == 3 ? 'active' : ''}}" bindtap="switchTab" data-index='3'>
+      <view class="txt">已完成</view>
+    </view>
+    <view class="item {{ showType == 4 ? 'active' : ''}}" bindtap="switchTab" data-index='4'>
+      <view class="txt">已拒绝</view>
+    </view>
+  </view>
+  <view class="no-aftersale" wx:if="{{aftersaleList.length <= 0}}">
+    <view class="c">
+      <text>还没有呢</text>
+    </view>
+  </view>
+
+  <view class="aftersales">
+    <navigator url="../aftersaleDetail/aftersaleDetail?id={{item.aftersale.orderId}}" class="aftersale" open-type="redirect" wx:for="{{aftersaleList}}" wx:key="id">
+      <view class="h">
+        <view class="l">售后编号：{{item.aftersale.aftersaleSn}}</view>
+      </view>
+      <view class="goods" wx:for="{{item.goodsList}}" wx:key="id" wx:for-item="gitem">
+        <view class="img">
+          <image src="{{gitem.picUrl}}"></image>
+        </view>
+        <view class="info">
+          <text class="name">{{gitem.goodsName}}</text>
+          <text class="number">{{gitem.number}}件商品</text>
+        </view>
+        <view class="status"></view>
+      </view>
+      <view class="b">
+        <view class="l">申请退款金额：￥{{item.aftersale.amount}}元</view>
+      </view>
+    </navigator>
+  </view>
+</view>

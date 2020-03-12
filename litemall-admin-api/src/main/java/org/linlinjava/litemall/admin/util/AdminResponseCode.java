@@ -20,5 +20,10 @@ public class AdminResponseCode {
     public static final Integer ROLE_NAME_EXIST = 640;
     public static final Integer ROLE_SUPER_SUPERMISSION = 641;
     public static final Integer ROLE_USER_EXIST = 642;
+    public static final Integer GROUPON_GOODS_UNKNOWN = 650;
+    public static final Integer GROUPON_GOODS_EXISTED = 651;
+    public static final Integer GROUPON_GOODS_OFFLINE = 652;
+    public static final Integer NOTICE_UPDATE_NOT_ALLOWED = 660;
+    public static final Integer AFTERSALE_NOT_ALLOWED = 670;
 
 }

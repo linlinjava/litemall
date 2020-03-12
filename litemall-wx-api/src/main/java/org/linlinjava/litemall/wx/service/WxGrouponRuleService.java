@@ -56,6 +56,7 @@ public class WxGrouponRuleService {
             grouponRuleVo.setGrouponPrice(goods.getRetailPrice().subtract(rule.getDiscount()));
             grouponRuleVo.setGrouponDiscount(rule.getDiscount());
             grouponRuleVo.setGrouponMember(rule.getDiscountMember());
+            grouponRuleVo.setExpireTime(rule.getExpireTime());
             grouponList.add(grouponRuleVo);
         }
 

@@ -59,6 +59,13 @@ export function authProfile(data) {
   })
 }
 const AuthRegister='wx/auth/register'; //账号注册
+export function authRegister(data) {
+  return request({
+    url: AuthRegister,
+    method: 'post',
+    data
+  });
+}
 const AuthReset='wx/auth/reset'; //账号密码重置
 export function authReset(data) {
   return request({
@@ -300,6 +307,14 @@ export function orderPrepay(data) {
     data
   })
 }
+const OrderH5pay = 'wx/order/h5pay'; // h5支付
+export function orderH5pay(data) {
+  return request({
+    url: OrderH5pay,
+    method: 'post',
+    data
+  });
+}
 export const OrderList='wx/order/list'; //订单列表
 export function orderList(query) {
   return request({
@@ -362,8 +377,6 @@ export function feedbackAdd(data) {
 
 const FootprintList='wx/footprint/list'; //足迹列表
 const FootprintDelete='wx/footprint/delete'; //删除足迹
-
-const UserFormIdCreate='wx/formid/create'; //用户FromId，用于发送模版消息
 
 const GrouponList='wx/groupon/list'; //团购列表
 export function grouponList(query) {

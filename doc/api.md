@@ -2,8 +2,6 @@
 
 本项目前后端接口规范和接口文档。
 
-本项目没有采用Swagger技术，开发者可以自行集成。
-
 注意：
 > 1. 以下API部分基于nideshop开源项目的API设计；
 > 2. 以下API是参考API，可能不是很合理，欢迎开发者交流。
@@ -357,7 +355,7 @@ API应该存在版本控制，以保证兼容性。
 
 例如测试2.4.2节商品详情API
 
-![](./pic/get.png)    
+![](./pics/admin/get.png)
 
 #### 1.8.2 GET & Token 示例
 
@@ -367,15 +365,15 @@ API应该存在版本控制，以保证兼容性。
 
 如果没有登录，则返回未登录信息
 
-![](./pic/get_no_token.png)
+![](./pics/admin/get_no_token.png)
 
 因此测试这些API，需要先登录
 
-![](./pic/login.png)
+![](./pics/admin/login.png)
 
 然后，采用自定义`X-Litemall-Token`来携带token访问商场API
 
-![](./pic/get_with_token.png)
+![](./pics/admin/get_with_token.png)
 
 注意：
 > 访问受保护商场API是采用自定义`X-Litemall-Token`头部；
@@ -389,15 +387,15 @@ API应该存在版本控制，以保证兼容性。
 
 如果需要登录才能提交数据，则需要先向后端请求登录，得到token，然后请求时携带token。
 
-![](./pic/post_no_token.png)
+![](./pics/admin/post_no_token.png)
 
 因此测试这些API，需要先登录
 
-![](./pic/login.png)
+![](./pics/admin/login.png)
 
 然后，采用自定义`X-Litemall-Token`来携带token访问商场API
 
-![](./pic/get_with_token.png)
+![](./pics/admin/get_with_token.png)
 
 注意：
 > 访问受保护商场API是采用自定义`X-Litemall-Token`头部；
@@ -417,9 +415,9 @@ API应该存在版本控制，以保证兼容性。
 
 * 团购API完善
 
-### 1.11 NO Swagger
+### 1.11 Not Like Swagger
 
-暂不支持Swagger，基于以下考虑：
+本项目不是很接受Swagger，基于以下考虑：
 
 * 前后端中立
 
@@ -440,7 +438,11 @@ API应该存在版本控制，以保证兼容性。
 如果使用Swagger，为了得到完整的文档，需要在每一个方法前面加上多个文档注解，文档越是详尽，则注解越多，
 造成代码不是很简洁。特别是具备代码属性的注解和Swagger文档注解混杂在一起，可能不是很好。
 
-如果开发者需要Swagger，可以自行接入。
+当然，本项目也简单地配置了Swagger(见`WxSwagger2Configuration`和`AdminSwagger2Configuration`)，
+在线Swagger文档链接：http://122.51.199.160:8080/swagger-ui.html
+
+当然正如上文讨论，本项目不是很接受Swagger的理念，所以后端没有使用Swagger的相关文档注解，
+这也导致了Swagger接口文档的不具可读性。如果开发者需要，可以自行在后端补充Swagger注解。
 
 ## 2 商城API服务
 
@@ -2787,7 +2789,7 @@ API应该存在版本控制，以保证兼容性。
 请求参数
     
     cartId: 购物车ID，如果0则是购物车商品，如果非0则是立即单一商品
-    grouponRulesId: 团购活动ID，如果是团购商品则需要设置具体团购活动ID
+    grouponRulesId: 团购规则ID，如果是团购商品则需要设置具体团购规则ID
     
 响应内容
 

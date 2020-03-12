@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mysql57:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    command:
+      --character-set-server=utf8
+      --collation-server=utf8_general_ci
+      --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/data:/var/lib/mysql
+      - ./db/init-sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: litemall123456
+    restart: always
+  litemall:
+    build:
+      context: litemall
+      dockerfile: Dockerfile
+    container_name: litemall
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./litemall/storage:/storage
+      - ./litemall/logs:/logs
+      - ./litemall/backup:/backup
+      - /etc/localtime:/etc/localtime
+    depends_on:
+      - mysql57
+    restart: always

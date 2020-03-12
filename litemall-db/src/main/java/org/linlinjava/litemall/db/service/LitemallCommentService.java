@@ -83,18 +83,11 @@ public class LitemallCommentService {
         commentMapper.logicalDeleteByPrimaryKey(id);
     }
 
-    public String queryReply(Integer id) {
-        LitemallCommentExample example = new LitemallCommentExample();
-        example.or().andTypeEqualTo((byte) 2).andValueIdEqualTo(id);
-        List<LitemallComment> commentReply = commentMapper.selectByExampleSelective(example, LitemallComment.Column.content);
-        // 目前业务只支持回复一次
-        if (commentReply.size() == 1) {
-            return commentReply.get(0).getContent();
-        }
-        return null;
-    }
-
     public LitemallComment findById(Integer id) {
         return commentMapper.selectByPrimaryKey(id);
+    }
+
+    public int updateById(LitemallComment comment) {
+        return commentMapper.updateByPrimaryKeySelective(comment);
     }
 }

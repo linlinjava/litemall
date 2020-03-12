@@ -1,7 +1,6 @@
 <view class="container">
   <view class="no-login" wx:if="{{!hasLogin}}">
     <view class="c">
-      <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
       <text>还没有登录</text>
       <button style="background-color:#A9A9A9" bindtap="goLogin">去登录</button>
     </view>
@@ -14,7 +13,7 @@
     </view>
     <view class="no-cart" wx:if="{{cartGoods.length <= 0}}">
       <view class="c">
-        <image src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" />
+        <text>空空如也~</text>
         <text>去添加点什么吧</text>
       </view>
     </view>
@@ -23,7 +22,7 @@
         <view class="group-item">
           <view class="goods">
             <view class="item {{isEditCart ? 'edit' : ''}}" wx:for="{{cartGoods}}" wx:key="id">
-              <view class="checkbox {{item.checked ? 'checked' : ''}}" bindtap="checkedItem" data-item-index="{{index}}"></view>
+              <van-checkbox value="{{ item.checked }}" bind:change="checkedItem" data-item-index="{{index}}"></van-checkbox>
               <view class="cart-goods">
                 <image class="img" src="{{item.picUrl}}"></image>
                 <view class="info">
@@ -31,7 +30,7 @@
                     <text class="name">{{item.goodsName}}</text>
                     <text class="num">x{{item.number}}</text>
                   </view>
-                  <view class="attr">{{ isEditCart ? '已选择:' : ''}}{{item.goodsSpecificationValues||''}}</view>
+                  <view class="attr">{{ isEditCart ? '已选择:' : ''}}{{item.specifications||''}}</view>
                   <view class="b">
                     <text class="price">￥{{item.price}}</text>
                     <view class="selnum">
@@ -48,7 +47,7 @@
 
       </view>
       <view class="cart-bottom">
-        <view class="checkbox {{checkedAllStatus ? 'checked' : ''}}" bindtap="checkedAll">全选({{cartTotal.checkedGoodsCount}})</view>
+        <van-checkbox value="{{ checkedAllStatus }}" bind:change="checkedAll">全选（{{cartTotal.checkedGoodsCount}}）</van-checkbox>
         <view class="total">{{!isEditCart ? '￥'+cartTotal.checkedGoodsAmount : ''}}</view>
         <view class='action_btn_area'>
           <view class="{{!isEditCart ? 'edit' : 'sure'}}" bindtap="editCart">{{!isEditCart ? '编辑' : '完成'}}</view>

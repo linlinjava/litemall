@@ -175,4 +175,20 @@ public class WxHomeController {
         }
         return categoryList;
     }
+
+    /**
+     * 商城介绍信息
+     * @return 商城介绍信息
+     */
+    @GetMapping("/about")
+    public Object about() {
+        Map<String, Object> about = new HashMap<>();
+        about.put("name", SystemConfig.getMallName());
+        about.put("address", SystemConfig.getMallAddress());
+        about.put("phone", SystemConfig.getMallPhone());
+        about.put("qq", SystemConfig.getMallQQ());
+        about.put("longitude", SystemConfig.getMallLongitude());
+        about.put("latitude", SystemConfig.getMallLatitude());
+        return ResponseUtil.ok(about);
+    }
 }

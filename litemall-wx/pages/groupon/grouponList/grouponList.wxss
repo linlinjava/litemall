@@ -47,21 +47,10 @@ page, .container {
 
 .groupon-list .name {
   float: left;
-  width: 330rpx;
   display: block;
   color: #333;
   line-height: 50rpx;
   font-size: 30rpx;
-}
-
-.groupon-list .capsule-tag {
-  float: right;
-  padding-right: 0rpx;
-  padding-top: 8rpx;
-}
-
-.groupon-list .zan-capsule + .zan-capsule {
-  margin-left: 10px;
 }
 
 .groupon-list .desc {

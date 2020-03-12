@@ -22,7 +22,7 @@
 
       <el-table-column align="center" label="评论图片" prop="picUrls">
         <template slot-scope="scope">
-          <img v-for="item in scope.row.picUrls" :key="item" :src="item" width="40">
+          <el-image v-for="item in scope.row.picUrls" :key="item" :src="item" :preview-src-list="scope.row.picUrls" :lazy="true" style="width: 40px; height: 40px; margin-right: 5px;"/>
         </template>
       </el-table-column>
 

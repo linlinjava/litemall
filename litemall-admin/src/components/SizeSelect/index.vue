@@ -1,7 +1,7 @@
 <template>
   <el-dropdown trigger="click" @command="handleSetSize">
     <div>
-      <svg-icon class-name="size-icon" icon-class="size" />
+      <i class="el-icon-rank" />
     </div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item :disabled="size==='medium'" command="medium">Medium</el-dropdown-item>
@@ -46,10 +46,13 @@ export default {
 </script>
 
 <style scoped>
-.size-icon {
-  font-size: 20px;
+.el-icon-rank {
+  display: inline-block;
   cursor: pointer;
-  vertical-align: -4px!important;
+  fill: #5a5e66;;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
 }
 </style>
 

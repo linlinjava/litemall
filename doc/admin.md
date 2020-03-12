@@ -8,7 +8,7 @@
   * vue-router
   * axios
   * element
-  * vue-element-admin 3.9.3
+  * vue-element-admin 4.2.1
   * 其他，见package.json
 * 管理后台后端, 即litemall-admin-api模块
   * Spring Boot 2.x
@@ -21,8 +21,6 @@
 * `改善`管理员登录页面打开慢，优化速度
 * `改善`地址优化，目前每一次点击都会请求后台，应该缓存已有的数据
 * `改善`vue和vue-element-admin等及时更新
-* `功能`系统数据字典功能
-* `功能`支持数据库备份
 
 ## 4.1 litemall-admin-api
 

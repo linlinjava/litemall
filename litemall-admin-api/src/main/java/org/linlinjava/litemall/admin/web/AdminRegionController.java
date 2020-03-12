@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/region")
@@ -35,7 +37,17 @@ public class AdminRegionController {
     public Object list() {
         List<RegionVo> regionVoList = new ArrayList<>();
 
-        List<LitemallRegion> provinceList = regionService.queryByPid(0);
+        List<LitemallRegion> litemallRegions = regionService.getAll();
+        Map<Byte, List<LitemallRegion>> collect = litemallRegions.stream().collect(Collectors.groupingBy(LitemallRegion::getType));
+        byte provinceType = 1;
+        List<LitemallRegion> provinceList = collect.get(provinceType);
+        byte cityType = 2;
+        List<LitemallRegion> city = collect.get(cityType);
+        Map<Integer, List<LitemallRegion>> cityListMap = city.stream().collect(Collectors.groupingBy(LitemallRegion::getPid));
+        byte areaType = 3;
+        List<LitemallRegion> areas = collect.get(areaType);
+        Map<Integer, List<LitemallRegion>> areaListMap = areas.stream().collect(Collectors.groupingBy(LitemallRegion::getPid));
+
         for (LitemallRegion province : provinceList) {
             RegionVo provinceVO = new RegionVo();
             provinceVO.setId(province.getId());
@@ -43,16 +55,16 @@ public class AdminRegionController {
             provinceVO.setCode(province.getCode());
             provinceVO.setType(province.getType());
 
-            List<LitemallRegion> cityList = regionService.queryByPid(province.getId());
+            List<LitemallRegion> cityList = cityListMap.get(province.getId());
             List<RegionVo> cityVOList = new ArrayList<>();
-            for (LitemallRegion city : cityList) {
+            for (LitemallRegion cityVo : cityList) {
                 RegionVo cityVO = new RegionVo();
-                cityVO.setId(city.getId());
-                cityVO.setName(city.getName());
-                cityVO.setCode(city.getCode());
-                cityVO.setType(city.getType());
+                cityVO.setId(cityVo.getId());
+                cityVO.setName(cityVo.getName());
+                cityVO.setCode(cityVo.getCode());
+                cityVO.setType(cityVo.getType());
 
-                List<LitemallRegion> areaList = regionService.queryByPid(city.getId());
+                List<LitemallRegion> areaList = areaListMap.get(cityVo.getId());
                 List<RegionVo> areaVOList = new ArrayList<>();
                 for (LitemallRegion area : areaList) {
                     RegionVo areaVO = new RegionVo();

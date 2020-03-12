@@ -87,18 +87,18 @@ public class WxGrouponController {
             return ResponseUtil.unlogin();
         }
 
-        LitemallGroupon groupon = grouponService.queryById(grouponId);
+        LitemallGroupon groupon = grouponService.queryById(userId, grouponId);
         if (groupon == null) {
             return ResponseUtil.badArgumentValue();
         }
 
-        LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
+        LitemallGrouponRules rules = rulesService.findById(groupon.getRulesId());
         if (rules == null) {
             return ResponseUtil.badArgumentValue();
         }
 
         // 订单信息
-        LitemallOrder order = orderService.findById(groupon.getOrderId());
+        LitemallOrder order = orderService.findById(userId, groupon.getOrderId());
         if (null == order) {
             return ResponseUtil.fail(ORDER_UNKNOWN, "订单不存在");
         }
@@ -186,7 +186,7 @@ public class WxGrouponController {
             return ResponseUtil.badArgumentValue();
         }
 
-        LitemallGrouponRules rules = rulesService.queryById(groupon.getRulesId());
+        LitemallGrouponRules rules = rulesService.findById(groupon.getRulesId());
         if (rules == null) {
             return ResponseUtil.badArgumentValue();
         }
@@ -229,8 +229,8 @@ public class WxGrouponController {
         LitemallGrouponRules rules;
         LitemallUser creator;
         for (LitemallGroupon groupon : myGroupons) {
-            order = orderService.findById(groupon.getOrderId());
-            rules = rulesService.queryById(groupon.getRulesId());
+            order = orderService.findById(userId, groupon.getOrderId());
+            rules = rulesService.findById(groupon.getRulesId());
             creator = userService.findById(groupon.getCreatorUserId());
 
             Map<String, Object> grouponVo = new HashMap<>();
@@ -257,7 +257,6 @@ public class WxGrouponController {
             grouponVo.put("orderSn", order.getOrderSn());
             grouponVo.put("actualPrice", order.getActualPrice());
             grouponVo.put("orderStatusText", OrderUtil.orderStatusText(order));
-            grouponVo.put("handleOption", OrderUtil.build(order));
 
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
             List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
@@ -274,8 +273,8 @@ public class WxGrouponController {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("count", grouponVoList.size());
-        result.put("data", grouponVoList);
+        result.put("total", grouponVoList.size());
+        result.put("list", grouponVoList);
 
         return ResponseUtil.ok(result);
     }

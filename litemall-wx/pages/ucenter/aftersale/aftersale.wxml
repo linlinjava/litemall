@@ -1,0 +1,45 @@
+<view class="container">
+  <view class="order-goods">
+    <view class="h">
+      退款商品
+    </view>
+    <view class="goods">
+      <view class="item" wx:for="{{orderGoods}}" wx:key="id">
+        <view class="img">
+          <image src="{{item.picUrl}}"></image>
+        </view>
+        <view class="info">
+          <view class="t">
+            <text class="name">{{item.goodsName}}</text>
+            <text class="number">x{{item.number}}</text>
+          </view>
+          <view class="attr">{{item.specifications}}</view>
+          <view class="price">￥{{item.price}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <van-cell-group title="订单明细">
+    <van-cell title="商品总价" value=" ￥{{orderInfo.goodsPrice}}元" />
+    <van-cell title="    运费" value=" ￥{{orderInfo.freightPrice}}元" />
+    <van-cell title="    优惠" value="-￥{{orderInfo.couponPrice}}元" />
+    <van-cell title="订单实付" value=" ￥{{orderInfo.actualPrice}}元" />
+  </van-cell-group>
+
+  <van-cell-group title="操作">
+    <van-field value="{{ aftersale.typeDesc }}" label="退款类型" placeholder="请选择" input-align="right" required clickable bind:tap="showTypePicker" />
+    <van-field value="{{ aftersale.reason }}" label="退款原因" placeholder="请输入" bind:change="onReasonChange" input-align="right" required clearable />
+    <van-cell title="退款金额" value="￥{{ aftersale.amount }}元" label="不可修改，即订单实付- 运费" required/>
+    <van-field label="退款说明" value="{{ aftersale.comment }}" placeholder="请输入" type="textarea" input-align="right" autosize/>
+    <van-cell title="上传凭证" label="最多上传三张">
+      <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:delete="deleteImage" max-count="3" preview-size="50px"/>
+    </van-cell>    
+  </van-cell-group>
+
+  <van-button type="danger" bind:click="submit" block>申请售后</van-button>
+
+  <van-popup show="{{showPicker}}" position="bottom">
+    <van-picker show-toolbar columns="{{columns}}" bind:cancel="onCancel" bind:confirm="onConfirm" />
+  </van-popup>
+</view>

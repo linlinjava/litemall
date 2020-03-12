@@ -17,12 +17,15 @@
     <view class="coupon-form" wx:if="{{status == 0}}">
       <view class="input-box">
         <input class="coupon-sn" placeholder="请输入优惠码" value="{{code}}" bindinput="bindExchange"/>
-        <image class="clear-icon" wx:if="{{ code.length > 0 }}" src="/static/images/clear_input.png" catchtap="clearExchange"></image>
+        <van-icon name="close" class="clear-icon" wx:if="{{ code.length > 0 }}" catchtap="clearExchange"/>        
       </view>
       <view class="add-btn" bindtap='goExchange'>兑换</view>
     </view>
 
-    <view class="help" wx:if="{{status == 0}}">使用说明</view>
+    <view class="help" wx:if="{{status == 0}}">
+      <van-icon name="question-o" />
+      使用说明
+    </view>
 
     <scroll-view class="coupon-list" scroll-y="true" scroll-top="{{scrollTop}}">
 

@@ -15,8 +15,10 @@
       <view class="item {{currentSortType == 'default' ? 'active' : ''}}" bindtap="openSortFilter" id="defaultSort">
         <text class="txt">综合</text>
       </view>
-      <view class="item by-price {{currentSortType == 'price' ? 'active' : ''}} {{currentSortOrder == 'asc'  ? 'asc' : 'desc'}}" bindtap="openSortFilter" id="priceSort">
+      <view class="item {{currentSortType == 'price' ? 'active' : ''}}" bindtap="openSortFilter" id="priceSort">
         <text class="txt">价格</text>
+        <van-icon name="arrow-up" wx:if="{{ currentSortType == 'price' && currentSortOrder == 'asc' }}" />
+        <van-icon name="arrow-down" wx:elif="{{ currentSortType == 'price' && currentSortOrder == 'desc'}}" />
       </view>
       <view class="item {{currentSortType == 'category' ? 'active' : ''}}" bindtap="openSortFilter" id="categoryFilter">
         <text class="txt">分类</text>

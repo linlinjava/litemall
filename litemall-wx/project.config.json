@@ -6,7 +6,18 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"uglifyFileName": true
+		"coverView": true,
+		"autoAudits": false,
+		"uglifyFileName": true,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		},
+		"nodeModules": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.4.0",
@@ -28,6 +39,10 @@
 			"list": []
 		},
 		"game": {
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
@@ -266,6 +281,34 @@
 					"name": "帮助中心",
 					"pathName": "pages/help/help",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的团购",
+					"pathName": "pages/groupon/myGroupon/myGroupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "申请售后",
+					"pathName": "pages/ucenter/aftersale/aftersale",
+					"query": "id=2",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "售后列表",
+					"pathName": "pages/ucenter/aftersaleList/aftersaleList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "售后详情",
+					"pathName": "pages/ucenter/aftersaleDetail/aftersaleDetail",
+					"query": "id=1",
 					"scene": null
 				}
 			]

@@ -128,6 +128,7 @@ public class WxGoodsController {
 				c.put("id", comment.getId());
 				c.put("addTime", comment.getAddTime());
 				c.put("content", comment.getContent());
+				c.put("adminContent", comment.getAdminContent());
 				LitemallUser user = userService.findById(comment.getUserId());
 				c.put("nickname", user == null ? "" : user.getNickname());
 				c.put("avatar", user == null ? "" : user.getAvatar());

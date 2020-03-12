@@ -11,21 +11,11 @@ page {
   overflow: hidden;
 }
 
-.item-a {
+.item {
   padding-left: 31.25rpx;
   height: 42.5rpx;
   padding-bottom: 12.5rpx;
   line-height: 30rpx;
-  font-size: 30rpx;
-  color: #666;
-}
-
-.item-b {
-  padding-left: 31.25rpx;
-  height: 29rpx;
-  line-height: 29rpx;
-  margin-top: 12.5rpx;
-  margin-bottom: 41.5rpx;
   font-size: 30rpx;
   color: #666;
 }
@@ -196,6 +186,7 @@ page {
 .order-bottom .address {
   height: 128rpx;
   padding-top: 25rpx;
+  border-top: 1px solid #f4f4f4;
   border-bottom: 1px solid #f4f4f4;
 }
 

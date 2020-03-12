@@ -1,0 +1,165 @@
+page {
+  height: 100%;
+  width: 100%;
+  background: #f4f4f4;
+}
+
+.aftersales-switch {
+  width: 100%;
+  background: #fff;
+  height: 84rpx;
+}
+
+.aftersales-switch .item {
+  display: inline-block;
+  height: 82rpx;
+  width: 18%;
+  padding: 0 15rpx;
+  text-align: center;
+}
+
+.aftersales-switch .item .txt {
+  display: inline-block;
+  height: 82rpx;
+  padding: 0 20rpx;
+  line-height: 82rpx;
+  color: #9a9ba1;
+  font-size: 30rpx;
+  width: 170rpx;
+}
+
+.aftersales-switch .item.active .txt {
+  color: #ab956d;
+  border-bottom: 4rpx solid #ab956d;
+}
+
+.no-aftersale {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.no-aftersale .c {
+  width: 100%;
+  height: auto;
+  margin-top: 400rpx;
+}
+
+.no-aftersale .c text {
+  margin: 0 auto;
+  display: block;
+  width: 258rpx;
+  height: 29rpx;
+  line-height: 29rpx;
+  text-align: center;
+  font-size: 29rpx;
+  color: #999;
+}
+
+.aftersales {
+  height: auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+.aftersale {
+  margin-top: 20rpx;
+  background: #fff;
+}
+
+.aftersale .h {
+  height: 83.3rpx;
+  line-height: 83.3rpx;
+  margin-left: 31.25rpx;
+  padding-right: 31.25rpx;
+  border-bottom: 1px solid #f4f4f4;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.aftersale .h .l {
+  float: left;
+}
+
+.aftersale .h .r {
+  float: right;
+  color: #b4282d;
+  font-size: 24rpx;
+}
+
+.aftersale .goods {
+  display: flex;
+  align-items: center;
+  height: 199rpx;
+  margin-left: 31.25rpx;
+}
+
+.aftersale .goods .img {
+  height: 145.83rpx;
+  width: 145.83rpx;
+  background: #f4f4f4;
+}
+
+.aftersale .goods .img image {
+  height: 145.83rpx;
+  width: 145.83rpx;
+}
+
+.aftersale .goods .info {
+  height: 145.83rpx;
+  flex: 1;
+  padding-left: 20rpx;
+}
+
+.aftersale .goods .name {
+  margin-top: 30rpx;
+  display: block;
+  height: 44rpx;
+  line-height: 44rpx;
+  color: #333;
+  font-size: 30rpx;
+}
+
+.aftersale .goods .number {
+  display: block;
+  height: 37rpx;
+  line-height: 37rpx;
+  color: #666;
+  font-size: 25rpx;
+}
+
+.aftersale .goods .status {
+  width: 105rpx;
+  color: #b4282d;
+  font-size: 25rpx;
+}
+
+.aftersale .b {
+  height: 103rpx;
+  line-height: 103rpx;
+  margin-left: 31.25rpx;
+  padding-right: 31.25rpx;
+  border-top: 1px solid #f4f4f4;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.aftersale .b .l {
+  float: left;
+}
+
+.aftersale .b .r {
+  float: right;
+}
+
+.aftersale .b .btn {
+  margin-top: 19rpx;
+  height: 64.5rpx;
+  line-height: 64.5rpx;
+  text-align: center;
+  padding: 0 20rpx;
+  border-radius: 5rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background: #b4282d;
+}
