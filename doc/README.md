@@ -5,6 +5,7 @@
 * [贡献指南](../CONTRIBUTE.md)
 * [FAQ](./FAQ.md)
 * [API](./api.md)
+* [数据库](./database.md)
 * [1. 系统架构](./project.md)
 * [2. 基础系统](./platform.md)
 * [3. 小商场](./wxmall.md)
