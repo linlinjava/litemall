@@ -807,7 +807,7 @@
   right: 10rpx;
   font-size: 20rpx;
   box-sizing: border-box;
-  background: url("https://litemall.oss-cn-shenzhen.aliyuncs.com/kefu.png") no-repeat center 21rpx;
+  background: url("/static/images/customer.png") no-repeat center 21rpx;
   background-size: 55rpx auto;
 }
 
