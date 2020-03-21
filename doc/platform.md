@@ -5,6 +5,7 @@
 * litemall-core模块
 * litemall-db模块
 * litemall-all模块
+* litemall-all-war模块
 
 litemall-db模块提供数据库访问服务。
 
@@ -12,6 +13,8 @@ litemall-core模块提供通用服务。
 
 litemall-all模块则只是一个包裹模块，几乎没有任何代码。该模块的作用是融合两个spring boot模块
 和litemall-admin模块静态文件到一个单独Spring Boot可执行jar包中。
+
+litemall-all-war模块和litemall-all模块是一样的作用，只是采用war打包方式。
 
 ## 2.2 litemall-db
 
@@ -646,3 +649,9 @@ public interface Storage {
    注意：
    > 这个插件只是简单的拷贝操作；因此开发者应该在打包litemall-all
    > 之前确保先编译litemall-admin模块得到最终静态文件。
+
+
+## 2.5 litemall-all-war
+
+litemall-all-war模块就是对litemall-all模块进行少量调整，
+最后打包时会在target目录下面生成litemall.war，用于tomcat部署。

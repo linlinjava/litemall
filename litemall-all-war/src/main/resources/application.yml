@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: db, core, admin, wx
+  messages:
+    encoding: UTF-8
+
+logging:
+  config: classpath:logback-spring.xml
