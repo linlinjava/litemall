@@ -57,7 +57,7 @@ docker-compose配置脚本，运行docker-compose命令会
 
 2. 运行docker-compose
     ```bash
-    cd /home/ubuntu/decker
+    cd /home/ubuntu/docker
    sudo docker-compose
     ```
 
