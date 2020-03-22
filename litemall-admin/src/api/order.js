@@ -36,6 +36,14 @@ export function refundOrder(data) {
   })
 }
 
+export function deleteOrder(data) {
+  return request({
+    url: '/order/delete',
+    method: 'post',
+    data
+  })
+}
+
 export function replyComment(data) {
   return request({
     url: '/order/reply',

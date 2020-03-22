@@ -107,6 +107,19 @@ public class AdminOrderController {
 
 
     /**
+     * 删除订单
+     *
+     * @param body 订单信息，{ orderId：xxx }
+     * @return 订单操作结果
+     */
+    @RequiresPermissions("admin:order:delete")
+    @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单删除")
+    @PostMapping("/delete")
+    public Object delete(@RequestBody String body) {
+        return adminOrderService.delete(body);
+    }
+
+    /**
      * 回复订单商品
      *
      * @param body 订单信息，{ orderId：xxx }

@@ -214,6 +214,37 @@ public class AdminOrderService {
         return ResponseUtil.ok();
     }
 
+    /**
+     * 删除订单
+     * 1. 检测当前订单是否能够删除
+     * 2. 删除订单
+     *
+     * @param body 订单信息，{ orderId：xxx }
+     * @return 订单操作结果
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
+     */
+    public Object delete(String body) {
+        Integer orderId = JacksonUtil.parseInteger(body, "orderId");
+        LitemallOrder order = orderService.findById(orderId);
+        if (order == null) {
+            return ResponseUtil.badArgument();
+        }
+
+        // 如果订单不是关闭状态(已取消、系统取消、已退款、用户已确认、系统已确认)，则不能删除
+        Short status = order.getOrderStatus();
+        if (!status.equals(OrderUtil.STATUS_CANCEL) && !status.equals(OrderUtil.STATUS_AUTO_CANCEL) &&
+                !status.equals(OrderUtil.STATUS_CONFIRM) &&!status.equals(OrderUtil.STATUS_AUTO_CONFIRM) &&
+                !status.equals(OrderUtil.STATUS_REFUND_CONFIRM)) {
+            return ResponseUtil.fail(ORDER_DELETE_FAILED, "订单不能删除");
+        }
+        // 删除订单
+        orderService.deleteById(orderId);
+        // 删除订单商品
+        orderGoodsService.deleteByOrderId(orderId);
+        logHelper.logOrderSucceed("删除", "订单编号 " + order.getOrderSn());
+        return ResponseUtil.ok();
+    }
 
     /**
      * 回复订单商品
