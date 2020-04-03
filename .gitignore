@@ -11,6 +11,7 @@
 .project
 .settings
 .springBeans
+.vscode
 bin/
 
 ### IntelliJ IDEA ###
