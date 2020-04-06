@@ -1,0 +1,42 @@
+<view class="container">
+  <van-cell-group title="退款明细">
+    <van-cell value="{{ statusColumns[aftersale.status] }}" title="售后状态" required/>
+    <van-cell value="{{ aftersale.addTime }}" title="申请时间" required/>
+    <van-cell value="{{ aftersale.aftersaleSn }}" title="服务编号" required/>
+    <van-cell value="{{ typeColumns[aftersale.type] }}" title="退款类型" required/>
+    <van-cell value="{{ aftersale.reason }}" title="退款原因" required/>
+    <van-cell title="退款金额" value="￥{{ aftersale.amount }}元" label="即订单实付- 运费" required/>
+    <van-field label="退款说明" value="{{ aftersale.comment }}" type="textarea" autosize disabled/>
+    <van-cell title="上传凭证" >
+      <van-uploader file-list="{{ fileList }}" disabled deletable="{{false}}" max-count="0" preview-size="50px"/>
+    </van-cell>
+  </van-cell-group>
+
+  <view class="order-goods">
+    <view class="h">
+      退款商品
+    </view>
+    <view class="goods">
+      <view class="item" wx:for="{{orderGoods}}" wx:key="id">
+        <view class="img">
+          <image src="{{item.picUrl}}"></image>
+        </view>
+        <view class="info">
+          <view class="t">
+            <text class="name">{{item.goodsName}}</text>
+            <text class="number">x{{item.number}}</text>
+          </view>
+          <view class="attr">{{item.specifications}}</view>
+          <view class="price">￥{{item.price}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <van-cell-group title="订单明细">
+    <van-cell title="商品总价" value=" ￥{{order.goodsPrice}}元" />
+    <van-cell title="    运费" value=" ￥{{order.freightPrice}}元" />
+    <van-cell title="    优惠" value="-￥{{order.couponPrice}}元" />
+    <van-cell title="订单实付" value=" ￥{{order.actualPrice}}元" />
+  </van-cell-group>
+</view>

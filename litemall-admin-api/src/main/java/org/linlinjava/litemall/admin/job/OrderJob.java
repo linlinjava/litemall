@@ -57,6 +57,8 @@ public class OrderJob {
                 logger.info("订单 ID=" + order.getId() + " 已经超期自动确认收货");
             }
         }
+
+        logger.info("系统结束定时任务检查订单是否已经超期自动确认收货");
     }
 
     /**
@@ -83,5 +85,7 @@ public class OrderJob {
                 orderGoodsService.updateById(orderGoods);
             }
         }
+
+        logger.info("系统结束任务检查订单是否已经超期未评价");
     }
 }

@@ -27,9 +27,11 @@ public class WxOrderController {
      * 订单列表
      *
      * @param userId   用户ID
-     * @param showType 订单信息
+     * @param showType 显示类型，如果是0则是全部订单
      * @param page     分页页数
      * @param limit     分页大小
+     * @param sort     排序字段
+     * @param order     排序方式
      * @return 订单列表
      */
     @GetMapping("list")

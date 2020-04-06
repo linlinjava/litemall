@@ -51,9 +51,9 @@ public class AdminOrderService {
     @Autowired
     private LogHelper logHelper;
 
-    public Object list(Integer userId, String orderSn, List<Short> orderStatusArray,
+    public Object list(Integer userId, String orderSn, LocalDateTime start, LocalDateTime end, List<Short> orderStatusArray,
                        Integer page, Integer limit, String sort, String order) {
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, orderStatusArray, page, limit,
+        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, start, end, orderStatusArray, page, limit,
                 sort, order);
         return ResponseUtil.okList(orderList);
     }
@@ -165,7 +165,7 @@ public class AdminOrderService {
         notifyService.notifySmsTemplate(order.getMobile(), NotifyType.REFUND,
                 new String[]{order.getOrderSn().substring(8, 14)});
 
-        logHelper.logOrderSucceed("退款", "订单编号 " + orderId);
+        logHelper.logOrderSucceed("退款", "订单编号 " + order.getOrderSn());
         return ResponseUtil.ok();
     }
 
@@ -210,10 +210,41 @@ public class AdminOrderService {
         // "您的订单已经发货，快递公司 {1}，快递单 {2} ，请注意查收"
         notifyService.notifySmsTemplate(order.getMobile(), NotifyType.SHIP, new String[]{shipChannel, shipSn});
 
-        logHelper.logOrderSucceed("发货", "订单编号 " + orderId);
+        logHelper.logOrderSucceed("发货", "订单编号 " + order.getOrderSn());
         return ResponseUtil.ok();
     }
 
+    /**
+     * 删除订单
+     * 1. 检测当前订单是否能够删除
+     * 2. 删除订单
+     *
+     * @param body 订单信息，{ orderId：xxx }
+     * @return 订单操作结果
+     * 成功则 { errno: 0, errmsg: '成功' }
+     * 失败则 { errno: XXX, errmsg: XXX }
+     */
+    public Object delete(String body) {
+        Integer orderId = JacksonUtil.parseInteger(body, "orderId");
+        LitemallOrder order = orderService.findById(orderId);
+        if (order == null) {
+            return ResponseUtil.badArgument();
+        }
+
+        // 如果订单不是关闭状态(已取消、系统取消、已退款、用户已确认、系统已确认)，则不能删除
+        Short status = order.getOrderStatus();
+        if (!status.equals(OrderUtil.STATUS_CANCEL) && !status.equals(OrderUtil.STATUS_AUTO_CANCEL) &&
+                !status.equals(OrderUtil.STATUS_CONFIRM) &&!status.equals(OrderUtil.STATUS_AUTO_CONFIRM) &&
+                !status.equals(OrderUtil.STATUS_REFUND_CONFIRM)) {
+            return ResponseUtil.fail(ORDER_DELETE_FAILED, "订单不能删除");
+        }
+        // 删除订单
+        orderService.deleteById(orderId);
+        // 删除订单商品
+        orderGoodsService.deleteByOrderId(orderId);
+        logHelper.logOrderSucceed("删除", "订单编号 " + order.getOrderSn());
+        return ResponseUtil.ok();
+    }
 
     /**
      * 回复订单商品
@@ -229,23 +260,20 @@ public class AdminOrderService {
             return ResponseUtil.badArgument();
         }
         // 目前只支持回复一次
-        if (commentService.findById(commentId) != null) {
+        LitemallComment comment = commentService.findById(commentId);
+        if(comment == null){
+            return ResponseUtil.badArgument();
+        }
+        if (!StringUtils.isEmpty(comment.getAdminContent())) {
             return ResponseUtil.fail(ORDER_REPLY_EXIST, "订单商品已回复！");
         }
         String content = JacksonUtil.parseString(body, "content");
         if (StringUtils.isEmpty(content)) {
             return ResponseUtil.badArgument();
         }
-        // 创建评价回复
-        LitemallComment comment = new LitemallComment();
-        comment.setType((byte) 2);
-        comment.setValueId(commentId);
-        comment.setContent(content);
-        comment.setUserId(0);                 // 评价回复没有用
-        comment.setStar((short) 0);           // 评价回复没有用
-        comment.setHasPicture(false);        // 评价回复没有用
-        comment.setPicUrls(new String[]{});  // 评价回复没有用
-        commentService.save(comment);
+        // 更新评价回复
+        comment.setAdminContent(content);
+        commentService.updateById(comment);
 
         return ResponseUtil.ok();
     }

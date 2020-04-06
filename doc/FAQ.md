@@ -275,8 +275,4 @@ node_modules是litemall-admin和litemall-vue模块所依赖的项目库，可能
 2. 然后分别创建空的node_modules文件夹；
 3. 重新打开IDEA，分别设置litemall-admin模块和litemall-vue模块的node_modules文件夹Excluded状态。
 
-![](./pic/excluded.png)    
-
-### 4.2 项目war打包
-
-目前不支持，请开发者自行实践。
+![](./pics/faq/excluded.png)

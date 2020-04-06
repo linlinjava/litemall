@@ -28,6 +28,12 @@ public class LitemallFootprintService {
         return footprintMapper.selectByPrimaryKey(id);
     }
 
+    public LitemallFootprint findById(Integer userId, Integer id) {
+        LitemallFootprintExample example = new LitemallFootprintExample();
+        example.or().andIdEqualTo(id).andUserIdEqualTo(userId).andDeletedEqualTo(false);
+        return footprintMapper.selectOneByExample(example);
+    }
+
     public void deleteById(Integer id) {
         footprintMapper.logicalDeleteByPrimaryKey(id);
     }

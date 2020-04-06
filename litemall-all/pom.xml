@@ -68,12 +68,6 @@
                             </resources>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
                     <execution>
                         <id>copy-resources-vue</id>
                         <phase>validate</phase>

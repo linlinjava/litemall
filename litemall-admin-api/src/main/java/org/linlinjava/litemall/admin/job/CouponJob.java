@@ -46,6 +46,8 @@ public class CouponJob {
             couponUser.setStatus(CouponUserConstant.STATUS_EXPIRED);
             couponUserService.update(couponUser);
         }
+
+        logger.info("系统结束任务检查优惠券是否已经过期");
     }
 
 }

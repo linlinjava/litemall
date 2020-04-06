@@ -190,11 +190,15 @@ Page({
     });
   },
   goAfterSale: function() {
-    wx.showToast({
-      title: '目前不支持',
-      icon: 'none',
-      duration: 2000
-    });
+    if (this.data.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/ucenter/aftersaleList/aftersaleList"
+      });
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    };
   },
   aboutUs: function() {
     wx.navigateTo({

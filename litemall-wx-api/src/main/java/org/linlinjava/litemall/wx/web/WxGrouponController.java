@@ -87,7 +87,7 @@ public class WxGrouponController {
             return ResponseUtil.unlogin();
         }
 
-        LitemallGroupon groupon = grouponService.queryById(grouponId);
+        LitemallGroupon groupon = grouponService.queryById(userId, grouponId);
         if (groupon == null) {
             return ResponseUtil.badArgumentValue();
         }
@@ -98,7 +98,7 @@ public class WxGrouponController {
         }
 
         // 订单信息
-        LitemallOrder order = orderService.findById(groupon.getOrderId());
+        LitemallOrder order = orderService.findById(userId, groupon.getOrderId());
         if (null == order) {
             return ResponseUtil.fail(ORDER_UNKNOWN, "订单不存在");
         }
@@ -229,7 +229,7 @@ public class WxGrouponController {
         LitemallGrouponRules rules;
         LitemallUser creator;
         for (LitemallGroupon groupon : myGroupons) {
-            order = orderService.findById(groupon.getOrderId());
+            order = orderService.findById(userId, groupon.getOrderId());
             rules = rulesService.findById(groupon.getRulesId());
             creator = userService.findById(groupon.getCreatorUserId());
 

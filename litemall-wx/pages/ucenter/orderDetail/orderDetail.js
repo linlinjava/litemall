@@ -190,6 +190,15 @@ Page({
       }
     });
   },
+  // “申请售后”点击效果
+  aftersaleOrder: function () {
+    if(this.data.orderInfo.aftersaleStatus === 0){
+      util.redirect('/pages/ucenter/aftersale/aftersale?id=' + this.data.orderId );
+    }
+    else{
+      util.redirect('/pages/ucenter/aftersaleDetail/aftersaleDetail?id=' + this.data.orderId);
+    }
+  },
   onReady: function() {
     // 页面渲染完成
   },

@@ -181,6 +181,12 @@ aside {
   }
 }
 
+.operator-container {
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 //refine vue-multiselect plugin
 .multiselect {
   line-height: 16px;

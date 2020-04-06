@@ -186,6 +186,7 @@ page {
 .order-bottom .address {
   height: 128rpx;
   padding-top: 25rpx;
+  border-top: 1px solid #f4f4f4;
   border-bottom: 1px solid #f4f4f4;
 }
 
