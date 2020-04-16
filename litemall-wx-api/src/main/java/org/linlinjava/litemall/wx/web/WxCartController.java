@@ -469,8 +469,7 @@ public class WxCartController {
         int tmpCouponLength = 0;
         List<LitemallCouponUser> couponUserList = couponUserService.queryAll(userId);
         for(LitemallCouponUser couponUser : couponUserList){
-            tmpUserCouponId = couponUser.getId();
-            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponUser.getCouponId(), tmpUserCouponId, checkedGoodsPrice);
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponUser.getCouponId(), couponUser.getId(), checkedGoodsPrice);
             if(coupon == null){
                 continue;
             }
@@ -479,6 +478,7 @@ public class WxCartController {
             if(tmpCouponPrice.compareTo(coupon.getDiscount()) == -1){
                 tmpCouponPrice = coupon.getDiscount();
                 tmpCouponId = coupon.getId();
+                tmpUserCouponId = couponUser.getId();
             }
         }
         // 获取优惠券减免金额，优惠券可用数量
