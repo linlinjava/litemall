@@ -124,12 +124,6 @@ Page({
     // 页面关闭
   },
   getCoupon(e) {
-    if (!app.globalData.hasLogin) {
-      wx.navigateTo({
-        url: "/pages/auth/login/login"
-      });
-    }
-
     let couponId = e.currentTarget.dataset.index
     util.request(api.CouponReceive, {
       couponId: couponId
