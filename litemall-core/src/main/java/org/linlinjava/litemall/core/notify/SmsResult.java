@@ -12,7 +12,7 @@ public class SmsResult {
      *
      * @return
      */
-    public boolean isSuccessful() {
+    public boolean getSuccessful() {
         return successful;
     }
 
