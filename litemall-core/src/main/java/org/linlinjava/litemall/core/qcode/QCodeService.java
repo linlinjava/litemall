@@ -88,7 +88,7 @@ public class QCodeService {
         return "";
     }
 
-    private String getKeyName(String goodId) {
+    private String getGoodName(String goodId) {
         return "GOOD_QCODE_" + goodId + ".jpg";
     }
 
