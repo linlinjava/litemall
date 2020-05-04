@@ -100,7 +100,7 @@ public class NotifyProperties {
         private Aliyun aliyun;
         private List<Map<String, String>> template = new ArrayList<>();
 
-        public boolean isEnable() {
+        public boolean getEnable() {
             return enable;
         }
 
