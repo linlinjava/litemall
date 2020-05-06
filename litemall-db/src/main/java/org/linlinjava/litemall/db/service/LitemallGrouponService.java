@@ -89,7 +89,7 @@ public class LitemallGrouponService {
      */
     public LitemallGroupon queryById(Integer userId, Integer id) {
         LitemallGrouponExample example = new LitemallGrouponExample();
-        example.or().andIdEqualTo(id).andUserIdEqualTo(id).andDeletedEqualTo(false);
+        example.or().andIdEqualTo(id).andUserIdEqualTo(userId).andDeletedEqualTo(false);
         return mapper.selectOneByExample(example);
     }
 
