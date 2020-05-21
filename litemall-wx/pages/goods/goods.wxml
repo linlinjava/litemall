@@ -21,11 +21,11 @@
         </button>
         <button  class="savesharebtn" open-type="openSetting" bindopensetting="handleSetting" wx:if="{{(!isGroupon) && (!canWrite)}}" >
           <image class='sharebtn_image' src='/static/images/friend.png'></image>
-          <view class='sharebtn_text'>发朋友圈</view>
+          <view class='sharebtn_text'>生成海报</view>
         </button>
         <button class="savesharebtn" bindtap="saveShare" wx:if="{{!isGroupon && canWrite}}">
           <image class='sharebtn_image' src='/static/images/friend.png'></image>
-          <view class='sharebtn_text'>发朋友圈</view>
+          <view class='sharebtn_text'>生成海报</view>
         </button>
       </view>
     </view>

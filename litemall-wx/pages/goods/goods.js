@@ -85,8 +85,8 @@ Page({
           filePath: res.tempFilePath,
           success: function(res) {
             wx.showModal({
-              title: '存图成功',
-              content: '图片成功保存到相册了，可以分享到朋友圈了',
+              title: '生成海报成功',
+              content: '海报已成功保存到相册，可以分享到朋友圈了',
               showCancel: false,
               confirmText: '好的',
               confirmColor: '#a78845',
