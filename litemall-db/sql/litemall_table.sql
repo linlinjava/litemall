@@ -351,7 +351,7 @@ CREATE TABLE `litemall_goods` (
   `is_on_sale` tinyint(1) DEFAULT '1' COMMENT '是否上架',
   `sort_order` smallint(4) DEFAULT '100',
   `pic_url` varchar(255) DEFAULT NULL COMMENT '商品页面商品图片',
-  `share_url` varchar(255) DEFAULT NULL COMMENT '商品分享朋友圈图片',
+  `share_url` varchar(255) DEFAULT NULL COMMENT '商品分享海报',
   `is_new` tinyint(1) DEFAULT '0' COMMENT '是否新品首发，如果设置则可以在新品首发页面展示',
   `is_hot` tinyint(1) DEFAULT '0' COMMENT '是否人气推荐，如果设置则可以在人气推荐页面展示',
   `unit` varchar(31) DEFAULT '’件‘' COMMENT '商品单位，例如件、盒',

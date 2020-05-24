@@ -28,6 +28,8 @@ services:
       - ./litemall/logs:/logs
       - ./litemall/backup:/backup
       - /etc/localtime:/etc/localtime
+    environment:
+      - TZ=Asia/Shanghai
     depends_on:
       - mysql57
     restart: always
