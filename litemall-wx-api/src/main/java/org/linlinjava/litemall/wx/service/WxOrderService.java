@@ -411,7 +411,11 @@ public class WxOrderService {
         }
 
         // 删除购物车里面的商品信息
-        cartService.clearGoods(userId);
+        if(cartId.equals(0)){
+            cartService.clearGoods(userId);
+        }else{
+            cartService.deleteById(cartId);
+        }
 
         // 商品货品数量减少
         for (LitemallCart checkGoods : checkedGoodsList) {
