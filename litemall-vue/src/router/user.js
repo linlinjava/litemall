@@ -22,7 +22,10 @@ export default [
     path: '/user',
     name: 'user',
     meta: {
-      keepAlive: true
+      keepAlive: true,
+      login: true,
+      showHeader:false,
+      title:"购物车"
     },
     components: { default: tab_user, tabbar: Tabbar }
   },
