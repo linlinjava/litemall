@@ -143,3 +143,6 @@ litemall:
       accessKey: 111111
       secretKey: xxxxxx
       bucketName: litemall
+
+swagger:
+  production: true

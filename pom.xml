@@ -159,14 +159,14 @@
 		<dependency>
 	 		 <groupId>com.github.xiaoymin</groupId>
 	 		 <artifactId>swagger-bootstrap-ui</artifactId>
-	 		<version>1.9.3</version>
+	 		<version>1.9.6</version>
 		</dependency>
 		<dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>25.1-jre</version>
         </dependency>
-            
+
             <dependency>
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
