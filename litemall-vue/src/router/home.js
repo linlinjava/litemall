@@ -9,8 +9,9 @@ export default [
       tabbar: Tabbar
     },
     meta: {
-      keepAlive: true
-    }
+      keepAlive: true,
+      showHeader:false
+    },
   },
   {
     path: '*',
