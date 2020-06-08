@@ -10,11 +10,9 @@ import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
-import org.linlinjava.litemall.db.domain.LitemallComment;
-import org.linlinjava.litemall.db.domain.LitemallOrder;
-import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
-import org.linlinjava.litemall.db.domain.UserVo;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.util.CouponUserConstant;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +48,8 @@ public class AdminOrderService {
     private NotifyService notifyService;
     @Autowired
     private LogHelper logHelper;
+    @Autowired
+    private LitemallCouponUserService couponUserService;
 
     public Object list(Integer userId, String orderSn, LocalDateTime start, LocalDateTime end, List<Short> orderStatusArray,
                        Integer page, Integer limit, String sort, String order) {
@@ -157,6 +157,15 @@ public class AdminOrderService {
             if (productService.addStock(productId, number) == 0) {
                 throw new RuntimeException("商品货品库存增加失败");
             }
+        }
+
+        // 返还优惠券
+        List<LitemallCouponUser> couponUsers = couponUserService.findByOid(orderId);
+        for (LitemallCouponUser couponUser: couponUsers) {
+            // 优惠券状态设置为可使用
+            couponUser.setStatus(CouponUserConstant.STATUS_USABLE);
+            couponUser.setUpdateTime(LocalDateTime.now());
+            couponUserService.update(couponUser);
         }
 
         //TODO 发送邮件和短信通知，这里采用异步发送

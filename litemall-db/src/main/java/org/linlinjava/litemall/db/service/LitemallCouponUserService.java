@@ -91,4 +91,10 @@ public class LitemallCouponUserService {
         example.or().andStatusEqualTo(CouponUserConstant.STATUS_USABLE).andEndTimeLessThan(LocalDateTime.now()).andDeletedEqualTo(false);
         return couponUserMapper.selectByExample(example);
     }
+
+    public List<LitemallCouponUser> findByOid(Integer orderId) {
+        LitemallCouponUserExample example = new LitemallCouponUserExample();
+        example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
+        return couponUserMapper.selectByExample(example);
+    }
 }
