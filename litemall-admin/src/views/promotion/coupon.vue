@@ -3,12 +3,12 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入优惠券标题"/>
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入优惠券标题" />
       <el-select v-model="listQuery.type" clearable style="width: 200px" class="filter-item" placeholder="请选择优惠券类型">
-        <el-option v-for="type in typeOptions" :key="type.value" :label="type.label" :value="type.value"/>
+        <el-option v-for="type in typeOptions" :key="type.value" :label="type.label" :value="type.value" />
       </el-select>
       <el-select v-model="listQuery.status" clearable style="width: 200px" class="filter-item" placeholder="请选择优惠券状态">
-        <el-option v-for="type in statusOptions" :key="type.value" :label="type.label" :value="type.value"/>
+        <el-option v-for="type in statusOptions" :key="type.value" :label="type.label" :value="type.value" />
       </el-select>
       <el-button v-permission="['GET /admin/coupon/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /admin/coupon/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
@@ -18,13 +18,13 @@
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" label="优惠券ID" prop="id" sortable/>
+      <el-table-column align="center" label="优惠券ID" prop="id" sortable />
 
-      <el-table-column align="center" label="优惠券名称" prop="name"/>
+      <el-table-column align="center" label="优惠券名称" prop="name" />
 
-      <el-table-column align="center" label="介绍" prop="desc"/>
+      <el-table-column align="center" label="介绍" prop="desc" />
 
-      <el-table-column align="center" label="标签" prop="tag"/>
+      <el-table-column align="center" label="标签" prop="tag" />
 
       <el-table-column align="center" label="最低消费" prop="min">
         <template slot-scope="scope">满{{ scope.row.min }}元可用</template>
@@ -69,13 +69,13 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="优惠券名称" prop="name">
-          <el-input v-model="dataForm.name"/>
+          <el-input v-model="dataForm.name" />
         </el-form-item>
         <el-form-item label="介绍" prop="desc">
-          <el-input v-model="dataForm.desc"/>
+          <el-input v-model="dataForm.desc" />
         </el-form-item>
         <el-form-item label="标签" prop="tag">
-          <el-input v-model="dataForm.tag"/>
+          <el-input v-model="dataForm.tag" />
         </el-form-item>
         <el-form-item label="最低消费" prop="min">
           <el-input v-model="dataForm.min">
@@ -98,7 +98,8 @@
               v-for="type in typeOptions"
               :key="type.value"
               :label="type.label"
-              :value="type.value"/>
+              :value="type.value"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="优惠券数量" prop="total">
@@ -119,11 +120,11 @@
         </el-form-item>
         <el-form-item v-show="dataForm.timeType === 1">
           <el-col :span="11">
-            <el-date-picker v-model="dataForm.startTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"/>
+            <el-date-picker v-model="dataForm.startTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" />
           </el-col>
           <el-col :span="2" class="line">至</el-col>
           <el-col :span="11">
-            <el-date-picker v-model="dataForm.endTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;"/>
+            <el-date-picker v-model="dataForm.endTime" type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" />
           </el-col>
         </el-form-item>
         <el-form-item label="商品限制范围">
@@ -408,8 +409,7 @@ export default {
             title: '成功',
             message: '删除优惠券成功'
           })
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          this.getList()
         })
         .catch(response => {
           this.$notify.error({

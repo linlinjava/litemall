@@ -190,8 +190,7 @@ export default {
           title: '成功',
           message: '删除成功'
         })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
+        this.getList()
       }).catch(response => {
         this.$notify.error({
           title: '失败',

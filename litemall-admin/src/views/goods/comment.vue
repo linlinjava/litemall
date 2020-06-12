@@ -129,6 +129,7 @@ export default {
           type: 'success',
           duration: 2000
         })
+        this.getList()
       })
     },
     handleDownload() {
