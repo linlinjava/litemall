@@ -46,8 +46,8 @@
               密码修改
             </router-link>
           </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出</span>
+          <el-dropdown-item divided @click.native="logout">
+            <span style="display:block;">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
