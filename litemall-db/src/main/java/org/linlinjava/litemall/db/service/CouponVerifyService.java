@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.db.service;
 
+import org.linlinjava.litemall.db.domain.LitemallCart;
 import org.linlinjava.litemall.db.domain.LitemallCoupon;
 import org.linlinjava.litemall.db.domain.LitemallCouponUser;
 import org.linlinjava.litemall.db.util.CouponConstant;
@@ -8,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponVerifyService {
@@ -16,6 +21,8 @@ public class CouponVerifyService {
     private LitemallCouponUserService couponUserService;
     @Autowired
     private LitemallCouponService couponService;
+    @Autowired
+    private LitemallGoodsService goodsService;
 
     /**
      * 检测优惠券是否适合
@@ -25,7 +32,7 @@ public class CouponVerifyService {
      * @param checkedGoodsPrice
      * @return
      */
-    public LitemallCoupon checkCoupon(Integer userId, Integer couponId, Integer userCouponId, BigDecimal checkedGoodsPrice) {
+    public LitemallCoupon checkCoupon(Integer userId, Integer couponId, Integer userCouponId, BigDecimal checkedGoodsPrice, List<LitemallCart> cartList) {
         LitemallCoupon coupon = couponService.findById(couponId);
         if (coupon == null) {
             return null;
@@ -62,10 +69,25 @@ public class CouponVerifyService {
         }
 
         // 检测商品是否符合
-        // TODO 目前仅支持全平台商品，所以不需要检测
+        List<Integer> goodsList = cartList.stream().map(item -> item.getGoodsId()).collect(Collectors.toList());
+        for (LitemallCart cart : cartList) {
+            goodsList.add(cart.getGoodsId());
+        }
+        List<Integer> goodsValueList = new ArrayList<>(Arrays.asList(coupon.getGoodsValue()));
         Short goodType = coupon.getGoodsType();
-        if (!goodType.equals(CouponConstant.GOODS_TYPE_ALL)) {
-            return null;
+        if (goodType.equals(CouponConstant.GOODS_TYPE_ARRAY)) {
+            goodsValueList.retainAll(goodsList);
+            if (goodsValueList.size() <= 0) {
+                return null;
+            }
+        } else if (goodType.equals(CouponConstant.GOODS_TYPE_CATEGORY)) {
+            List<Integer> categoryList = cartList.stream()
+                                                .map(item -> goodsService.findById(item.getGoodsId())
+                                                .getCategoryId()).collect(Collectors.toList());
+            goodsValueList.retainAll(categoryList);
+            if (goodsValueList.size() <= 0) {
+                return null;
+            }
         }
 
         // 检测订单状态

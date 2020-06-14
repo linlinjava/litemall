@@ -340,7 +340,7 @@ public class WxOrderService {
         BigDecimal couponPrice = new BigDecimal(0);
         // 如果couponId=0则没有优惠券，couponId=-1则不使用优惠券
         if (couponId != 0 && couponId != -1) {
-            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, userCouponId, checkedGoodsPrice);
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, userCouponId, checkedGoodsPrice, checkedGoodsList);
             if (coupon == null) {
                 return ResponseUtil.badArgumentValue();
             }
@@ -485,7 +485,7 @@ public class WxOrderService {
      * 1. 检测当前订单是否能够取消；
      * 2. 设置订单取消状态；
      * 3. 商品货品库存恢复；
-     * 4. TODO 优惠券；
+     * 4. 返还优惠券；
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
