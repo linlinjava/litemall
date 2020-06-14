@@ -135,10 +135,76 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="dataForm.goodsType === 1">
-          目前不支持
+          <el-cascader
+            v-model="selectGoodsCategory"
+            clearable
+            placeholder="请选择分类名称"
+            :options="goodsCategoryOptions"
+          />
+          <el-button @click="handleAddGoodsCategory()">添加</el-button>
+          <el-table
+            ref="goodsCateRelationTable"
+            :data="couponCategoryList"
+            style="width: 100%;margin-top: 20px"
+            border
+          >
+            <el-table-column label="分类名称" align="center">
+              <template slot-scope="scope">{{ scope.row.parentCategoryName }}>{{ scope.row.goodsCategoryName }}</template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="100">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  @click="handleDeleteGoodsCategory(scope.$index, scope.row)"
+                >删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-form-item>
         <el-form-item v-show="dataForm.goodsType === 2">
-          目前不支持
+          <el-select
+            v-model="selectGoods"
+            filterable
+            remote
+            reserve-keyword
+            placeholder="商品名称/商品货号"
+          >
+            <el-option
+              v-for="item in goodsOptions"
+              :key="item.goodsId"
+              :label="item.goodsName"
+              :value="item.goodsId"
+            >
+              <span style="float: left">{{ item.goodsName }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">NO.{{ item.goodsSn }}</span>
+            </el-option>
+          </el-select>
+          <el-button @click="handleAddGoods()">添加</el-button>
+          <el-table
+            ref="goodsRelationTable"
+            :data="couponGoodsList"
+            style="width: 100%;margin-top: 20px"
+            border
+          >
+            <el-table-column label="商品名称" align="center">
+              <template slot-scope="scope">{{ scope.row.goodsName }}</template>
+            </el-table-column>
+            <el-table-column label="商品编号" align="center" width="80">
+              <template slot-scope="scope">{{ scope.row.goodsSn }}</template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="60">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  @click="handleDeleteGoods(scope.$index, scope.row)"
+                >删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -179,6 +245,8 @@
 
 <script>
 import { listCoupon, createCoupon, updateCoupon, deleteCoupon } from '@/api/coupon'
+import { listCategory } from '@/api/category.js'
+import { listGoods } from '@/api/goods.js'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 const defaultTypeOptions = [
@@ -287,11 +355,19 @@ export default {
           { required: true, message: '优惠券标题不能为空', trigger: 'blur' }
         ]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      selectGoods: null,
+      goodsOptions: [],
+      selectGoodsCategory: null,
+      goodsCategoryOptions: [],
+      couponGoodsList: [],
+      couponCategoryList: []
     }
   },
   created() {
     this.getList()
+    this.getCategoryList()
+    this.getGoodsList()
   },
   methods: {
     getList() {
@@ -331,6 +407,8 @@ export default {
         startTime: null,
         endTime: null
       }
+      this.couponCategoryList = []
+      this.couponGoodsList = []
     },
     handleCreate() {
       this.resetForm()
@@ -343,6 +421,12 @@ export default {
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
+          if (this.dataForm.goodsType === 1) {
+            this.dataForm.goodsValue = this.couponCategoryList.map(item => (item.goodsCategoryId))
+          }
+          if (this.dataForm.goodsType === 2) {
+            this.dataForm.goodsValue = this.couponGoodsList.map(item => (item.goodsId))
+          }
           createCoupon(this.dataForm)
             .then(response => {
               this.list.unshift(response.data.data)
@@ -447,6 +531,84 @@ export default {
         excel.export_json_to_excel2(tHeader, this.list, filterVal, '优惠券信息')
         this.downloadLoading = false
       })
+    },
+    getGoodsList() {
+      listGoods({ limit: 0 }).then(response => {
+        const goodsList = response.data.data.list
+        this.goodsOptions = []
+        for (let i = 0; i < goodsList.length; i++) {
+          const item = goodsList[i]
+          this.goodsOptions.push({ goodsId: item.id, goodsName: item.name, goodsSn: item.goodsSn })
+        }
+      }).catch(() => {
+        this.goodsOptions = []
+      })
+    },
+    handleAddGoods() {
+      if (this.selectGoods === null) {
+        this.$message({
+          message: '请先选择商品',
+          type: 'warning'
+        })
+        return
+      }
+      this.couponGoodsList.push(this.getGoodsById(this.selectGoods))
+      this.selectGoods = null
+    },
+    handleDeleteGoods(index, row) {
+      this.couponGoodsList.splice(index, 1)
+    },
+    handleAddGoodsCategory() {
+      if (this.selectGoodsCategory === null || this.selectGoodsCategory.length === 0) {
+        this.$message({
+          message: '请先选择商品分类',
+          type: 'warning'
+        })
+        return
+      }
+      this.couponCategoryList.push(this.getGoodsCategoryByIds(this.selectGoodsCategory))
+      this.selectGoodsCategory = []
+    },
+    handleDeleteGoodsCategory(index, row) {
+      this.couponCategoryList.splice(index, 1)
+    },
+    getGoodsById(id) {
+      for (let i = 0; i < this.goodsOptions.length; i++) {
+        if (id === this.goodsOptions[i].goodsId) {
+          return this.goodsOptions[i]
+        }
+      }
+      return null
+    },
+    getCategoryList() {
+      listCategory().then(response => {
+        const list = response.data.data.list
+        this.goodsCategoryOptions = []
+        for (let i = 0; i < list.length; i++) {
+          const children = []
+          if (list[i].children != null && list[i].children.length > 0) {
+            for (let j = 0; j < list[i].children.length; j++) {
+              children.push({ label: list[i].children[j].name, value: list[i].children[j].id })
+            }
+          }
+          this.goodsCategoryOptions.push({ label: list[i].name, value: list[i].id, children: children })
+        }
+      })
+    },
+    getGoodsCategoryByIds(ids) {
+      let name
+      let parentName
+      for (let i = 0; i < this.goodsCategoryOptions.length; i++) {
+        if (this.goodsCategoryOptions[i].value === ids[0]) {
+          parentName = this.goodsCategoryOptions[i].label
+          for (let j = 0; j < this.goodsCategoryOptions[i].children.length; j++) {
+            if (this.goodsCategoryOptions[i].children[j].value === ids[1]) {
+              name = this.goodsCategoryOptions[i].children[j].label
+            }
+          }
+        }
+      }
+      return { goodsCategoryId: ids[1], goodsCategoryName: name, parentCategoryName: parentName }
     }
   }
 }
