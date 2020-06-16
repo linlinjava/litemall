@@ -451,11 +451,6 @@ export default {
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
-        if (this.dataForm.days === 0) {
-          this.dataForm.daysType = 1
-        } else {
-          this.dataForm.daysType = 0
-        }
         this.$refs['dataForm'].clearValidate()
       })
     },
