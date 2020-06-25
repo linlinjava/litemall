@@ -5,7 +5,7 @@ spring:
     encoding: UTF-8
   datasource:
     druid:
-      url:  jdbc:mysql://mysql:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      url:  jdbc:mysql://mysql:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=true
       driver-class-name:  com.mysql.jdbc.Driver
       username:  litemall
       password:  litemall123456
