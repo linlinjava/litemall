@@ -110,7 +110,7 @@ CREATE TABLE `litemall_aftersale` (
   `handle_time` datetime DEFAULT NULL COMMENT '管理员操作时间',
   `add_time` datetime DEFAULT NULL COMMENT '添加时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(1) DEFAULT '0' COMMENT '售后编号',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='售后表';
 /*!40101 SET character_set_client = @saved_cs_client */;
