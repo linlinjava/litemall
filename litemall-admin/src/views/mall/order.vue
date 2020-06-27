@@ -261,8 +261,11 @@ export default {
       if(this.listQuery.orderId){
         detailOrder(this.listQuery.orderId).then(response => {
           this.list = [];
-          this.list.push(response.data.data.order)
-          this.listLoading = false
+          if(response.data.data.order){
+            this.list.push(response.data.data.order);
+            this.total = 1;
+            this.listLoading = false
+          }
         }).catch(() => {
           this.list = []
           this.total = 0
