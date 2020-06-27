@@ -67,7 +67,10 @@
             <el-tag>{{ aftersaleDetail.amount }}</el-tag>
           </el-form-item>
           <el-form-item label="订单状态">
-            <el-tag>{{ aftersaleDetail.status }}</el-tag>
+            <el-tag v-if="aftersaleDetail.status === 1">已申请,待审核</el-tag>
+            <el-tag v-if="aftersaleDetail.status === 2">审核通过,待退款</el-tag>
+            <el-tag v-if="aftersaleDetail.status === 3">退款成功</el-tag>
+            <el-tag v-if="aftersaleDetail.status === 4">审核不通过,已拒绝</el-tag>
           </el-form-item>
           <el-form-item label="订单用户id">
             <el-tag>{{ aftersaleDetail.userId }}</el-tag>
