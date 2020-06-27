@@ -11,6 +11,7 @@ import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
 import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
 import org.linlinjava.litemall.db.service.LitemallOrderService;
 import org.linlinjava.litemall.db.util.OrderUtil;
+import org.linlinjava.litemall.wx.service.WxOrderService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +37,7 @@ public class OrderUnpaidTask extends Task {
         LitemallOrderService orderService = BeanUtil.getBean(LitemallOrderService.class);
         LitemallOrderGoodsService orderGoodsService = BeanUtil.getBean(LitemallOrderGoodsService.class);
         LitemallGoodsProductService productService = BeanUtil.getBean(LitemallGoodsProductService.class);
+        WxOrderService wxOrderService = BeanUtil.getBean(WxOrderService.class);
 
         LitemallOrder order = orderService.findById(this.orderId);
         if(order == null){
@@ -62,6 +64,10 @@ public class OrderUnpaidTask extends Task {
                 throw new RuntimeException("商品货品库存增加失败");
             }
         }
+
+        //返还优惠券
+        wxOrderService.releaseCoupon(orderId);
+
         logger.info("系统结束处理延时任务---订单超时未付款---" + this.orderId);
     }
 }

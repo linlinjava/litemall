@@ -14,3 +14,6 @@ logging:
     org.mybatis:  ERROR
     org.linlinjava.litemall.admin:  DEBUG
     org.linlinjava.litemall:  ERROR
+
+swagger:
+  production: false

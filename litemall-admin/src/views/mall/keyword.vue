@@ -3,8 +3,8 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入关键字"/>
-      <el-input v-model="listQuery.url" clearable class="filter-item" style="width: 200px;" placeholder="请输入跳转链接"/>
+      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入关键字" />
+      <el-input v-model="listQuery.url" clearable class="filter-item" style="width: 200px;" placeholder="请输入跳转链接" />
       <el-button v-permission="['GET /admin/keyword/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /admin/keyword/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
@@ -13,11 +13,11 @@
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" width="150px" label="关键词ID" prop="id" sortable/>
+      <el-table-column align="center" width="150px" label="关键词ID" prop="id" sortable />
 
-      <el-table-column align="center" min-width="100px" label="关键词" prop="keyword"/>
+      <el-table-column align="center" min-width="100px" label="关键词" prop="keyword" />
 
-      <el-table-column align="center" min-width="300px" label="跳转链接" prop="url"/>
+      <el-table-column align="center" min-width="300px" label="跳转链接" prop="url" />
 
       <el-table-column align="center" min-width="100px" label="是否推荐" prop="isHot">
         <template slot-scope="scope">
@@ -45,21 +45,21 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="关键词" prop="keyword">
-          <el-input v-model="dataForm.keyword"/>
+          <el-input v-model="dataForm.keyword" />
         </el-form-item>
         <el-form-item label="跳转链接" prop="url">
-          <el-input v-model="dataForm.url"/>
+          <el-input v-model="dataForm.url" />
         </el-form-item>
         <el-form-item label="是否推荐" prop="isHot">
           <el-select v-model="dataForm.isHot" placeholder="请选择">
-            <el-option :value="true" label="推荐"/>
-            <el-option :value="false" label="普通"/>
+            <el-option :value="true" label="推荐" />
+            <el-option :value="false" label="普通" />
           </el-select>
         </el-form-item>
         <el-form-item label="是否默认" prop="isDefault">
           <el-select v-model="dataForm.isDefault" placeholder="请选择">
-            <el-option :value="true" label="默认"/>
-            <el-option :value="false" label="非默认"/>
+            <el-option :value="true" label="默认" />
+            <el-option :value="false" label="非默认" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -207,8 +207,7 @@ export default {
           title: '成功',
           message: '删除成功'
         })
-        const index = this.list.indexOf(row)
-        this.list.splice(index, 1)
+        this.getList()
       }).catch(response => {
         this.$notify.error({
           title: '失败',

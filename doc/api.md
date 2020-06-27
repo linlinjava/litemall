@@ -439,10 +439,25 @@ API应该存在版本控制，以保证兼容性。
 造成代码不是很简洁。特别是具备代码属性的注解和Swagger文档注解混杂在一起，可能不是很好。
 
 当然，本项目也简单地配置了Swagger(见`WxSwagger2Configuration`和`AdminSwagger2Configuration`)，
-在线Swagger文档链接：http://122.51.199.160:8080/swagger-ui.html
+* 在线Swagger文档链接：http://122.51.199.160:8080/swagger-ui.html
+* 本地Swagger文档链接：http://localhost:8080/swagger-ui.html
+
+此外，也使用了swagger-bootstrap-ui对Swagger进一步增强了使用效果。
+* 在线swagger-bootstrap-ui文档链接：http://122.51.199.160:8080/doc.html
+* 本地swagger-bootstrap-ui文档链接：http://localhost:8080/doc.html
 
 当然正如上文讨论，本项目不是很接受Swagger的理念，所以后端没有使用Swagger的相关文档注解，
 这也导致了Swagger接口文档的不具可读性。如果开发者需要，可以自行在后端补充Swagger注解。
+
+需要注意的是：
+> 这里接口默认是公开的，因此项目一旦需要上线，请及时删除swagger和swagger-bootstrap-ui依赖和配置，
+> 或者采取其他手段，防止接口对外暴露造成**安全隐患**。
+
+例如
+```
+swagger:
+  production: false
+```
 
 ## 2 商城API服务
 

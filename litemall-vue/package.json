@@ -22,7 +22,8 @@
     "vant": "^2.0.6",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
-    "vuelidate": "^0.7.4"
+    "vuelidate": "^0.7.4",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.5",

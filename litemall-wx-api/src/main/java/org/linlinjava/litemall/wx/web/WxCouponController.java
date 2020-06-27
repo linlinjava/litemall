@@ -155,12 +155,11 @@ public class WxCouponController {
                 checkedGoodsPrice = checkedGoodsPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
             }
         }
-
         // 计算优惠券可用情况
         List<LitemallCouponUser> couponUserList = couponUserService.queryAll(userId);
         List<CouponVo> couponVoList = change(couponUserList);
         for (CouponVo cv : couponVoList) {
-            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, cv.getCid(), cv.getId(), checkedGoodsPrice);
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, cv.getCid(), cv.getId(), checkedGoodsPrice, checkedGoodsList);
             cv.setAvailable(coupon != null);
         }
 

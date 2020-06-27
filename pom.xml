@@ -134,23 +134,49 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-json</artifactId>
-                <version>2.0.4.RELEASE</version>
+                <version>2.1.5.RELEASE</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-mail</artifactId>
-                <version>2.0.4.RELEASE</version>
+                <version>2.1.5.RELEASE</version>
             </dependency>
+
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>2.2.2</version>
+		       <groupId>io.springfox</groupId>
+			   <artifactId>springfox-swagger2</artifactId>
+			   <version>2.9.2</version>
+		   </dependency>
+		
+		<dependency>
+			  <groupId>io.springfox</groupId>
+			  <artifactId>springfox-swagger-ui</artifactId>
+			  <version>2.9.2</version>
+		</dependency>
+		
+		<!--引入ui包-->
+		<dependency>
+	 		 <groupId>com.github.xiaoymin</groupId>
+	 		 <artifactId>swagger-bootstrap-ui</artifactId>
+	 		<version>1.9.6</version>
+		</dependency>
+		<dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>25.1-jre</version>
+        </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>3.4.1</version>
             </dependency>
+
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>2.2.2</version>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>4.0.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

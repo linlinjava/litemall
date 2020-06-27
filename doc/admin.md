@@ -8,7 +8,7 @@
   * vue-router
   * axios
   * element
-  * vue-element-admin 4.2.1
+  * vue-element-admin 4.3.0
   * 其他，见package.json
 * 管理后台后端, 即litemall-admin-api模块
   * Spring Boot 2.x
@@ -18,9 +18,6 @@
 
 * `缺失`首页中实现一些小组件，同时点击能够跳转相应页面
 * `缺失`支持导出表所有数据
-* `改善`管理员登录页面打开慢，优化速度
-* `改善`地址优化，目前每一次点击都会请求后台，应该缓存已有的数据
-* `改善`vue和vue-element-admin等及时更新
 
 ## 4.1 litemall-admin-api
 

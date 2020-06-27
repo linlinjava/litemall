@@ -419,6 +419,7 @@ export default {
       this.goods.categoryId = value[value.length - 1]
     },
     handleCancel: function() {
+      this.$store.dispatch('tagsView/delView', this.$route)
       this.$router.push({ path: '/goods/list' })
     },
     handleEdit: function() {
@@ -432,8 +433,9 @@ export default {
         .then(response => {
           this.$notify.success({
             title: '成功',
-            message: '创建成功'
+            message: '编辑成功'
           })
+          this.$store.dispatch('tagsView/delView', this.$route)
           this.$router.push({ path: '/goods/list' })
         })
         .catch(response => {

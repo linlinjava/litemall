@@ -340,7 +340,7 @@ public class WxOrderService {
         BigDecimal couponPrice = new BigDecimal(0);
         // 如果couponId=0则没有优惠券，couponId=-1则不使用优惠券
         if (couponId != 0 && couponId != -1) {
-            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, userCouponId, checkedGoodsPrice);
+            LitemallCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, userCouponId, checkedGoodsPrice, checkedGoodsList);
             if (coupon == null) {
                 return ResponseUtil.badArgumentValue();
             }
@@ -411,7 +411,11 @@ public class WxOrderService {
         }
 
         // 删除购物车里面的商品信息
-        cartService.clearGoods(userId);
+        if(cartId.equals(0)){
+            cartService.clearGoods(userId);
+        }else{
+            cartService.deleteById(cartId);
+        }
 
         // 商品货品数量减少
         for (LitemallCart checkGoods : checkedGoodsList) {
@@ -481,7 +485,7 @@ public class WxOrderService {
      * 1. 检测当前订单是否能够取消；
      * 2. 设置订单取消状态；
      * 3. 商品货品库存恢复；
-     * 4. TODO 优惠券；
+     * 4. 返还优惠券；
      *
      * @param userId 用户ID
      * @param body   订单信息，{ orderId：xxx }
@@ -529,6 +533,9 @@ public class WxOrderService {
                 throw new RuntimeException("商品货品库存增加失败");
             }
         }
+
+        // 返还优惠券
+        releaseCoupon(orderId);
 
         return ResponseUtil.ok();
     }
@@ -1009,4 +1016,21 @@ public class WxOrderService {
         return ResponseUtil.ok();
     }
 
+    /**
+     * 取消订单/退款返还优惠券
+     * <br/>
+     * @param orderId
+     * @return void
+     * @author Tyson
+     * @date 2020/6/8/0008 1:41
+     */
+    public void releaseCoupon(Integer orderId) {
+        List<LitemallCouponUser> couponUsers = couponUserService.findByOid(orderId);
+        for (LitemallCouponUser couponUser: couponUsers) {
+            // 优惠券状态设置为可使用
+            couponUser.setStatus(CouponUserConstant.STATUS_USABLE);
+            couponUser.setUpdateTime(LocalDateTime.now());
+            couponUserService.update(couponUser);
+        }
+    }
 }

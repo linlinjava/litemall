@@ -3,8 +3,8 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入广告标题"/>
-      <el-input v-model="listQuery.content" clearable class="filter-item" style="width: 200px;" placeholder="请输入广告内容"/>
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入广告标题" />
+      <el-input v-model="listQuery.content" clearable class="filter-item" style="width: 200px;" placeholder="请输入广告内容" />
       <el-button v-permission="['GET /admin/ad/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /admin/ad/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
@@ -13,11 +13,11 @@
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" label="广告ID" prop="id" sortable/>
+      <el-table-column align="center" label="广告ID" prop="id" sortable />
 
-      <el-table-column align="center" label="广告标题" prop="name"/>
+      <el-table-column align="center" label="广告标题" prop="name" />
 
-      <el-table-column align="center" label="广告内容" prop="content"/>
+      <el-table-column align="center" label="广告内容" prop="content" />
 
       <el-table-column align="center" label="广告图片" prop="url">
         <template slot-scope="scope">
@@ -25,9 +25,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="广告位置" prop="position"/>
+      <el-table-column align="center" label="广告位置" prop="position" />
 
-      <el-table-column align="center" label="活动链接" prop="link"/>
+      <el-table-column align="center" label="活动链接" prop="link" />
 
       <el-table-column align="center" label="是否启用" prop="enabled">
         <template slot-scope="scope">
@@ -49,10 +49,10 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="广告标题" prop="name">
-          <el-input v-model="dataForm.name"/>
+          <el-input v-model="dataForm.name" />
         </el-form-item>
         <el-form-item label="广告内容" prop="content">
-          <el-input v-model="dataForm.content"/>
+          <el-input v-model="dataForm.content" />
         </el-form-item>
         <el-form-item label="广告图片" prop="url">
           <el-upload
@@ -62,24 +62,25 @@
             :on-success="uploadUrl"
             :before-upload="checkFileSize"
             class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif">
+            accept=".jpg,.jpeg,.png,.gif"
+          >
             <img v-if="dataForm.url" :src="dataForm.url" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1024kb</div>
           </el-upload>
         </el-form-item>
         <el-form-item label="广告位置" prop="position">
           <el-select v-model="dataForm.position" placeholder="请选择">
-            <el-option :value="1" label="首页"/>
+            <el-option :value="1" label="首页" />
           </el-select>
         </el-form-item>
         <el-form-item label="活动链接" prop="link">
-          <el-input v-model="dataForm.link"/>
+          <el-input v-model="dataForm.link" />
         </el-form-item>
         <el-form-item label="是否启用" prop="enabled">
           <el-select v-model="dataForm.enabled" placeholder="请选择">
-            <el-option :value="true" label="启用"/>
-            <el-option :value="false" label="不启用"/>
+            <el-option :value="true" label="启用" />
+            <el-option :value="false" label="不启用" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -290,8 +291,7 @@ export default {
             title: '成功',
             message: '删除成功'
           })
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          this.getList()
         })
         .catch(response => {
           this.$notify.error({
