@@ -1,6 +1,6 @@
 <template>
 <div>
-    <van-nav-bar :title="title" left-text="返回" left-arrow @click-left="goBack" v-show="showHeader"/>   
+    <van-nav-bar :title="title" :left-text="$t('navigation.back')" left-arrow @click-left="goBack" v-show="showHeader"/>   
 </div>
      
 </template>
