@@ -48,3 +48,10 @@ export function listHistory(query) {
   })
 }
 
+export function updateUser(data) {
+  return request({
+    url: '/user/edit',
+    method: 'post',
+    params: data
+  })
+}
