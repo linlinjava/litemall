@@ -290,8 +290,13 @@ public class WxOrderService {
                 }
                 // （2）不允许参加自己开团的团购
                 LitemallGroupon groupon = grouponService.queryById(userId, grouponLinkId);
-                if(groupon.getCreatorUserId().equals(userId)){
-                    return ResponseUtil.fail(GROUPON_JOIN, "团购活动已经参加!");
+                // if(groupon.getCreatorUserId().equals(userId)){
+                //     return ResponseUtil.fail(GROUPON_JOIN, "团购活动已经参加!");
+                // }
+                if(groupon!=null) {
+	                if(groupon.getCreatorUserId().equals(userId)){
+	                    return ResponseUtil.fail(GROUPON_JOIN, "团购活动已经参加!");
+	                }
                 }
             }
         }

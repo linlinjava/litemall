@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class CouponVerifyService {
@@ -34,7 +31,7 @@ public class CouponVerifyService {
      */
     public LitemallCoupon checkCoupon(Integer userId, Integer couponId, Integer userCouponId, BigDecimal checkedGoodsPrice, List<LitemallCart> cartList) {
         LitemallCoupon coupon = couponService.findById(couponId);
-        if (coupon == null) {
+        if (coupon == null || coupon.getDeleted()) {
             return null;
         }
 
@@ -69,23 +66,36 @@ public class CouponVerifyService {
         }
 
         // 检测商品是否符合
-        List<Integer> goodsList = cartList.stream().map(item -> item.getGoodsId()).collect(Collectors.toList());
-        for (LitemallCart cart : cartList) {
-            goodsList.add(cart.getGoodsId());
-        }
+        Map<Integer, List<LitemallCart>> cartMap = new HashMap<>();
+        //可使用优惠券的商品或分类
         List<Integer> goodsValueList = new ArrayList<>(Arrays.asList(coupon.getGoodsValue()));
         Short goodType = coupon.getGoodsType();
-        if (goodType.equals(CouponConstant.GOODS_TYPE_ARRAY)) {
-            goodsValueList.retainAll(goodsList);
-            if (goodsValueList.size() <= 0) {
-                return null;
+
+        if (goodType.equals(CouponConstant.GOODS_TYPE_CATEGORY) ||
+                goodType.equals((CouponConstant.GOODS_TYPE_ARRAY))) {
+            for (LitemallCart cart : cartList) {
+                Integer key = goodType.equals(CouponConstant.GOODS_TYPE_ARRAY) ? cart.getGoodsId() :
+                        goodsService.findById(cart.getGoodsId()).getCategoryId();
+                List<LitemallCart> carts = cartMap.get(key);
+                if (carts == null) {
+                    carts = new LinkedList<>();
+                }
+                carts.add(cart);
+                cartMap.put(key, carts);
             }
-        } else if (goodType.equals(CouponConstant.GOODS_TYPE_CATEGORY)) {
-            List<Integer> categoryList = cartList.stream()
-                                                .map(item -> goodsService.findById(item.getGoodsId())
-                                                .getCategoryId()).collect(Collectors.toList());
-            goodsValueList.retainAll(categoryList);
-            if (goodsValueList.size() <= 0) {
+            //购物车中可以使用优惠券的商品或分类
+            goodsValueList.retainAll(cartMap.keySet());
+            //可使用优惠券的商品的总价格
+            BigDecimal total = new BigDecimal(0);
+
+            for (Integer goodsId : goodsValueList) {
+                List<LitemallCart> carts = cartMap.get(goodsId);
+                for (LitemallCart cart : carts) {
+                    total = total.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+                }
+            }
+            //是否达到优惠券满减金额
+            if (total.compareTo(coupon.getMin()) == -1) {
                 return null;
             }
         }
