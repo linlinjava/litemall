@@ -43,14 +43,14 @@ public class AdminUserController {
         return ResponseUtil.okList(userList);
     }
     @RequiresPermissions("admin:user:list")
-    @RequiresPermissionsDesc(menu = {"用户管理", "会员管理"}, button = "查询")
+    @RequiresPermissionsDesc(menu = {"用户管理", "会员管理"}, button = "详情")
     @GetMapping("/detail")
     public Object userDetail(@NotNull Integer id) {
     	LitemallUser user=userService.findById(id);
         return ResponseUtil.ok(user);
     }
     @RequiresPermissions("admin:user:list")
-    @RequiresPermissionsDesc(menu = {"用户管理", "会员管理"}, button = "查询")
+    @RequiresPermissionsDesc(menu = {"用户管理", "会员管理"}, button = "编辑")
     @PostMapping("/update")
     public Object userUpdate(@RequestBody LitemallUser user) {
         return ResponseUtil.ok(userService.updateById(user));
