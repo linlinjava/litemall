@@ -100,6 +100,20 @@ public class WxCommentController {
         commentService.save(comment);
         return ResponseUtil.ok(comment);
     }
+    
+    /**
+     * 发表评论
+     *
+     * @param userId  用户ID
+     * @param comment 评论内容
+     * @return 发表评论操作结果
+     */
+    @GetMapping("/changeContent")
+    public Object changeContent(Integer commentId) {
+    	commentService.changeContentById(commentId);
+        return ResponseUtil.ok("OK");
+    }
+    
 
     /**
      * 评论数量
@@ -151,4 +165,22 @@ public class WxCommentController {
         }
         return ResponseUtil.okList(commentVoList, commentList);
     }
+    
+    
+    /**
+     * invalid comment by commentId
+     *
+     * @param id   commentId
+     * @return boolean means if invalid successfully
+     */
+    @GetMapping("invalid/{id}")
+    public Object count(@PathVariable Integer id) {
+    	if(id == null) {
+            return ResponseUtil.ok("false");
+    	}
+    	commentService.invalidCommentByPrimaryKey(id);
+        return ResponseUtil.ok("true");
+    }
+
+    
 }

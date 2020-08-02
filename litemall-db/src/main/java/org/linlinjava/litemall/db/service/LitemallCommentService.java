@@ -79,6 +79,12 @@ public class LitemallCommentService {
         return commentMapper.selectByExample(example);
     }
 
+    
+    public void changeContentById(Integer commentId) {
+    	LitemallComment comment = findById(commentId);
+    	comment.setContent("junk comment");
+    	updateById(comment);
+    }
     public void deleteById(Integer id) {
         commentMapper.logicalDeleteByPrimaryKey(id);
     }
@@ -89,5 +95,10 @@ public class LitemallCommentService {
 
     public int updateById(LitemallComment comment) {
         return commentMapper.updateByPrimaryKeySelective(comment);
+    }
+    
+    
+    public boolean invalidCommentByPrimaryKey(Integer id) {
+    	return commentMapper.invalidCommentByPrimaryKey(id);
     }
 }

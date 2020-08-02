@@ -149,4 +149,9 @@ public interface LitemallCommentMapper {
      * @mbg.generated
      */
     int logicalDeleteByPrimaryKey(Integer id);
+    
+    /*
+     * This method is to invalid the comment by commenId
+     */
+    Boolean invalidCommentByPrimaryKey(Integer id);
 }
