@@ -187,15 +187,15 @@ public class WxAddressController extends GetRegionService {
 	/**
 	 * 删除收货地址
 	 *
-	 * @param addressId  addressID
+	 * @param id  id
 	 * @return 删除操作结果
 	 */
-	@PostMapping("delete")
-	public Object delete(@RequestBody Integer addressId) {
-		if(addressId == null) {
+	@RequestMapping("delete")
+	public Object delete(Integer id) {
+		if(id == null) {
 			return ResponseUtil.badArgumentValue();
 		}
-		addressService.delete(addressId);
+		addressService.delete(id);
 		return ResponseUtil.ok();
 	}
 }

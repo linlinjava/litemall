@@ -42,14 +42,7 @@ public class LitemallAddressService {
 
     public void delete(Integer id) {
         addressMapper.logicalDeleteByPrimaryKey(id);
-    }
-    
-    public void delete(Long addressId) {
-		addressMapper.logicalDeleteByAddressId(addressId);
-
-    }
-    
-   
+    }   
 
     public LitemallAddress findDefault(Integer userId) {
         LitemallAddressExample example = new LitemallAddressExample();
