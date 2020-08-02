@@ -16,6 +16,7 @@ public class LitemallAddressService {
     @Resource
     private LitemallAddressMapper addressMapper;
 
+
     public List<LitemallAddress> queryByUid(Integer uid) {
         LitemallAddressExample example = new LitemallAddressExample();
         example.or().andUserIdEqualTo(uid).andDeletedEqualTo(false);
@@ -42,6 +43,13 @@ public class LitemallAddressService {
     public void delete(Integer id) {
         addressMapper.logicalDeleteByPrimaryKey(id);
     }
+    
+    public void delete(Long addressId) {
+		addressMapper.logicalDeleteByAddressId(addressId);
+
+    }
+    
+   
 
     public LitemallAddress findDefault(Integer userId) {
         LitemallAddressExample example = new LitemallAddressExample();
