@@ -100,5 +100,5 @@ public class LitemallCommentService {
     
     public boolean invalidCommentByPrimaryKey(Integer id) {
     	return commentMapper.invalidCommentByPrimaryKey(id);
-    }
+    }  
 }

@@ -153,5 +153,5 @@ public interface LitemallCommentMapper {
     /*
      * This method is to invalid the comment by commenId
      */
-    Boolean invalidCommentByPrimaryKey(Integer id);
+    Boolean invalidCommentByPrimaryKey(Integer id);   
 }

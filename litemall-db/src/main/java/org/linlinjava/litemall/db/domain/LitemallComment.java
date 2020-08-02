@@ -772,6 +772,6 @@ public class LitemallComment {
          */
         public String getAliasedEscapedColumnName() {
             return this.getEscapedColumnName();
-        }
+        }  
     }
 }

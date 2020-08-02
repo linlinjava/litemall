@@ -179,7 +179,7 @@ public class WxCommentController {
             return ResponseUtil.ok("false");
     	}
     	commentService.invalidCommentByPrimaryKey(id);
-        return ResponseUtil.ok("true");
+        return ResponseUtil.ok("true");  
     }
 
     
