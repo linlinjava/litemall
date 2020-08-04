@@ -42,15 +42,6 @@ Page({
       return false;
     }
 
-    if (!check.isValidPhone(this.data.mobile)) {
-      wx.showModal({
-        title: '错误信息',
-        content: '手机号输入不正确',
-        showCancel: false
-      });
-      return false;
-    }
-
     wx.request({
       url: api.AuthRegisterCaptcha,
       data: {
@@ -140,15 +131,6 @@ Page({
       wx.showModal({
         title: '错误信息',
         content: '手机号和验证码不能为空',
-        showCancel: false
-      });
-      return false;
-    }
-
-    if (!check.isValidPhone(this.data.mobile)) {
-      wx.showModal({
-        title: '错误信息',
-        content: '手机号输入不正确',
         showCancel: false
       });
       return false;

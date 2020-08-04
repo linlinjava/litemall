@@ -14,7 +14,7 @@
 
     <div class="operator-container">
       <el-button v-permission="['POST /admin/topic/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button v-permission="['GET /admin/topic/batch-delete']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
+      <el-button v-permission="['POST /admin/topic/batch-delete']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -163,8 +163,7 @@ export default {
             title: '成功',
             message: '删除专题成功'
           })
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          this.getList()
         })
         .catch(response => {
           this.$notify.error({

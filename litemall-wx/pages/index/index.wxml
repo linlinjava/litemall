@@ -177,7 +177,7 @@
     </view>
   </view>
   <view class="good-grid" wx:for="{{floorGoods}}" wx:key="id">
-    <view class="h">
+    <view class="h" wx:if="{{item.goodsList.length>0}}">
       <text>{{item.name}}</text>
     </view>
     <view class="b">
@@ -191,7 +191,7 @@
         </view>
       </block>
     </view>
-    <navigator url="/pages/category/category?id={{item.id}}" class="t">
+    <navigator url="/pages/category/category?id={{item.id}}" class="t" wx:if="{{item.goodsList.length>0}}">
       <view class="txt">{{'更多'+item.name+'好物 >'}}</view>
     </navigator>
   </view>

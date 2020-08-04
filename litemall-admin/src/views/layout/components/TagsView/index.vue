@@ -1,6 +1,6 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
@@ -17,10 +17,10 @@
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">刷新</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭</li>
-      <li @click="closeOthersTags">关闭其他</li>
-      <li @click="closeAllTags(selectedTag)">关闭所有</li>
+      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
+      <li @click="closeOthersTags">Close Others</li>
+      <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
   </div>
 </template>
@@ -28,7 +28,6 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
-
 export default {
   components: { ScrollPane },
   data() {
@@ -45,7 +44,7 @@ export default {
       return this.$store.state.tagsView.visitedViews
     },
     routes() {
-      return this.$store.state.permission.routers
+      return this.$store.state.permission.routes
     }
   },
   watch: {
@@ -176,19 +175,20 @@ export default {
       const offsetWidth = this.$el.offsetWidth // container width
       const maxLeft = offsetWidth - menuMinWidth // left boundary
       const left = e.clientX - offsetLeft + 15 // 15: margin right
-
       if (left > maxLeft) {
         this.left = maxLeft
       } else {
         this.left = left
       }
-
       this.top = e.clientY
       this.visible = true
       this.selectedTag = tag
     },
     closeMenu() {
       this.visible = false
+    },
+    handleScroll() {
+      this.closeMenu()
     }
   }
 }

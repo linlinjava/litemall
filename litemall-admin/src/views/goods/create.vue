@@ -410,7 +410,8 @@ export default {
       this.goods.categoryId = value[value.length - 1]
     },
     handleCancel: function() {
-      this.$router.push({ path: '/goods/goods' })
+      this.$store.dispatch('tagsView/delView', this.$route)
+      this.$router.push({ path: '/goods/list' })
     },
     handlePublish: function() {
       const finalGoods = {
@@ -424,6 +425,7 @@ export default {
           title: '成功',
           message: '创建成功'
         })
+        this.$store.dispatch('tagsView/delView', this.$route)
         this.$router.push({ path: '/goods/list' })
       }).catch(response => {
         MessageBox.alert('业务错误：' + response.data.errmsg, '警告', {

@@ -26,6 +26,7 @@ page {
   margin-bottom: 30rpx;
   margin-left: 30rpx;
   margin-right: 30rpx;
+  line-height: 80rpx;
 }
 
 .item {

@@ -79,7 +79,7 @@ public class WxAddressController extends GetRegionService {
 		if (StringUtils.isEmpty(mobile)) {
 			return ResponseUtil.badArgument();
 		}
-		if (!RegexUtil.isMobileExact(mobile)) {
+		if (!RegexUtil.isMobileSimple(mobile)) {
 			return ResponseUtil.badArgument();
 		}
 

@@ -4,6 +4,7 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 160px;" placeholder="请输入用户ID" />
+      <el-input v-model="listQuery.orderId" clearable class="filter-item" style="width: 160px;" placeholder="请输入订单ID" />
       <el-input v-model="listQuery.orderSn" clearable class="filter-item" style="width: 160px;" placeholder="请输入订单编号" />
       <el-date-picker v-model="listQuery.timeArray" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" class="filter-item" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" />
       <el-select v-model="listQuery.orderStatusArray" multiple style="width: 200px" class="filter-item" placeholder="请选择订单状态">
@@ -190,7 +191,8 @@ export default {
         timeArray: [],
         orderStatusArray: [],
         sort: 'add_time',
-        order: 'desc'
+        order: 'desc',
+        orderId:undefined
       },
       pickerOptions: {
         shortcuts: [{
@@ -256,16 +258,30 @@ export default {
         this.listQuery.start = null
         this.listQuery.end = null
       }
-
-      listOrder(this.listQuery).then(response => {
-        this.list = response.data.data.list
-        this.total = response.data.data.total
-        this.listLoading = false
-      }).catch(() => {
-        this.list = []
-        this.total = 0
-        this.listLoading = false
-      })
+      if(this.listQuery.orderId){
+        detailOrder(this.listQuery.orderId).then(response => {
+          this.list = [];
+          if(response.data.data.order){
+            this.list.push(response.data.data.order);
+            this.total = 1;
+            this.listLoading = false
+          }
+        }).catch(() => {
+          this.list = []
+          this.total = 0
+          this.listLoading = false
+        })
+      }else{
+        listOrder(this.listQuery).then(response => {
+          this.list = response.data.data.list
+          this.total = response.data.data.total
+          this.listLoading = false
+        }).catch(() => {
+          this.list = []
+          this.total = 0
+          this.listLoading = false
+        })
+      }
     },
     getChannel() {
       listChannel().then(response => {

@@ -3,7 +3,7 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入管理员名称"/>
+      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入管理员名称" />
       <el-button v-permission="['GET /admin/admin/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button v-permission="['POST /admin/admin/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
@@ -11,9 +11,9 @@
 
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="管理员ID" prop="id" sortable/>
+      <el-table-column align="center" label="管理员ID" prop="id" sortable />
 
-      <el-table-column align="center" label="管理员名称" prop="username"/>
+      <el-table-column align="center" label="管理员名称" prop="username" />
 
       <el-table-column align="center" label="管理员头像" prop="avatar">
         <template slot-scope="scope">
@@ -41,10 +41,10 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="管理员名称" prop="username">
-          <el-input v-model="dataForm.username"/>
+          <el-input v-model="dataForm.username" />
         </el-form-item>
         <el-form-item label="管理员密码" prop="password">
-          <el-input v-model="dataForm.password" type="password" auto-complete="off"/>
+          <el-input v-model="dataForm.password" type="password" auto-complete="off" />
         </el-form-item>
         <el-form-item label="管理员头像" prop="avatar">
           <el-upload
@@ -53,9 +53,10 @@
             :show-file-list="false"
             :on-success="uploadAvatar"
             class="avatar-uploader"
-            accept=".jpg,.jpeg,.png,.gif">
+            accept=".jpg,.jpeg,.png,.gif"
+          >
             <img v-if="dataForm.avatar" :src="dataForm.avatar" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
         <el-form-item label="管理员角色" prop="roleIds">
@@ -64,7 +65,8 @@
               v-for="item in roleOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value"/>
+              :value="item.value"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -275,8 +277,7 @@ export default {
             title: '成功',
             message: '删除管理员成功'
           })
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          this.getList()
         })
         .catch(response => {
           this.$notify.error({

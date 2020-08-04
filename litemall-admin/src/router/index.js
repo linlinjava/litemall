@@ -24,14 +24,14 @@ import Layout from '@/views/layout/Layout'
     noCache: true                if true ,the page will no be cached(default is false)
   }
 **/
-export const constantRouterMap = [
+export const constantRoutes = [
   {
     path: '/redirect',
     component: Layout,
     hidden: true,
     children: [
       {
-        path: '/redirect/:path*',
+        path: '/redirect/:path(.*)',
         component: () => import('@/views/redirect/index')
       }
     ]
@@ -71,13 +71,7 @@ export const constantRouterMap = [
   }
 ]
 
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+export const asyncRoutes = [
   {
     path: '/user',
     component: Layout,
@@ -612,3 +606,19 @@ export const asyncRouterMap = [
 
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+const createRouter = () => new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
+})
+
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router

@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-badge__content.is-fixed.is-dot {
+::v-deep .el-badge__content.is-fixed.is-dot {
   right: 5px;
   top: 10px;
 }
