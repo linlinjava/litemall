@@ -322,11 +322,6 @@ Page({
       return false;
     }
 
-    if (!check.isValidPhone(address.tel)) {
-      util.showErrorToast('手机号不正确');
-      return false;
-    }
-
     let that = this;
     util.request(api.AddressSave, {
       id: address.id,

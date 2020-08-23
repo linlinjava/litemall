@@ -117,14 +117,6 @@ Page({
       return false;
     }
 
-    if (!check.isValidPhone(this.data.mobile)) {
-      this.setData({
-        mobile: ''
-      });
-      util.showErrorToast('请输入手机号码');
-      return false;
-    }
-
     wx.showLoading({
       title: '提交中...',
       mask: true,
