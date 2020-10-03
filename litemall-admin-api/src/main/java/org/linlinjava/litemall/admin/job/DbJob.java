@@ -38,7 +38,7 @@ public class DbJob {
         String db = url.substring(index1+5, index2);
 
         LocalDate localDate = LocalDate.now();
-        String fileName = localDate.toString();
+        String fileName = localDate.toString() + ".sql";
         File file = new File("backup", fileName);
         file.getParentFile().mkdirs();
         file.createNewFile();
@@ -47,8 +47,11 @@ public class DbJob {
         DbUtil.backup(file, user, password, db);
         // 删除七天前数据库备份文件
         LocalDate before = localDate.minusDays(7);
-        File fileBefore = new File("backup", fileName);
-        fileBefore.deleteOnExit();
+        String fileBeforeName = before.toString()+".sql";
+        File fileBefore = new File("backup", fileBeforeName);
+        if (fileBefore.exists()) {
+            fileBefore.delete();
+        }
 
         logger.info("系统结束定时任务数据库备份");
     }
