@@ -183,7 +183,7 @@ public class AdminAftersaleController {
         wxPayRefundRequest.setOutRefundNo("refund_" + order.getOrderSn());
         // 元转成分
         Integer totalFee = aftersaleOne.getAmount().multiply(new BigDecimal(100)).intValue();
-        wxPayRefundRequest.setTotalFee(totalFee);
+        wxPayRefundRequest.setTotalFee(order.getActualPrice().multiply(new BigDecimal(100)).intValue());
         wxPayRefundRequest.setRefundFee(totalFee);
 
         WxPayRefundResult wxPayRefundResult;
