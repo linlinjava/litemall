@@ -198,5 +198,5 @@
   </view>
   <view class="r" bindtap="addToCart" wx:if="{{!soldout}}" wx:if="{{!isGroupon}}">加入购物车</view>
   <view class="c" bindtap="addFast" wx:if="{{!soldout}}">{{isGroupon?'参加团购':'立即购买'}}</view>
-  <view class="c" wx:if="{{soldout}}">商品已售空</view>
+  <view class="n" wx:if="{{soldout}}">商品已售空</view>
 </view>
