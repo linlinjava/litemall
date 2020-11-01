@@ -652,6 +652,16 @@
   text-align: center;
   color: #fff;
 }
+
+.bottom-btn .n {
+  float: left;
+  background: #d5d8d8e7;
+  height: 100rpx;
+  line-height: 96rpx;
+  flex: 1;
+  text-align: center;
+  color: rgb(37, 36, 36);
+}
 @import "../../lib/wxParse/wxParse.wxss";
 
 .attr-pop-box {
