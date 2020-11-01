@@ -127,11 +127,13 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column property="picUrl" label="规格图片">
-          <template slot-scope="scope">
-            <img v-if="scope.row.picUrl" :src="scope.row.picUrl" width="40">
-          </template>
-        </el-table-column>
+        <!--
+          <el-table-column property="picUrl" label="规格图片">
+            <template slot-scope="scope">
+              <img v-if="scope.row.picUrl" :src="scope.row.picUrl" width="40">
+            </template>
+          </el-table-column>
+        -->
         <el-table-column
           v-if="multipleSpec"
           align="center"
@@ -161,19 +163,22 @@
           <el-form-item label="规格值" prop="value">
             <el-input v-model="specForm.value" />
           </el-form-item>
-          <el-form-item label="规格图片" prop="picUrl">
-            <el-upload
-              :action="uploadPath"
-              :show-file-list="false"
-              :headers="headers"
-              :on-success="uploadSpecPicUrl"
-              class="avatar-uploader"
-              accept=".jpg,.jpeg,.png,.gif"
-            >
-              <img v-if="specForm.picUrl" :src="specForm.picUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon" />
-            </el-upload>
-          </el-form-item>
+
+          <!-- <el-form-item label="规格图片" prop="picUrl">
+              <el-upload
+                :action="uploadPath"
+                :show-file-list="false"
+                :headers="headers"
+                :on-success="uploadSpecPicUrl"
+                class="avatar-uploader"
+                accept=".jpg,.jpeg,.png,.gif"
+              >
+                <img v-if="specForm.picUrl" :src="specForm.picUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+            </el-form-item>
+          -->
+
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="specVisiable = false">取消</el-button>
