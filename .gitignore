@@ -52,3 +52,6 @@ Servers
 .metadata
 upload
 gen_code
+
+### database data ignore ###
+docker/db/data

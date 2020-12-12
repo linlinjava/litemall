@@ -13,6 +13,10 @@
     cnpm install
     cnpm run build:dep
     
+    cd ../litemall-vue
+    cnpm install
+    cnpm run build:dep
+   
     cd ..
     mvn clean package
     cp -f ./litemall-all/target/litemall-all-*-exec.jar ./docker/litemall/litemall.jar
