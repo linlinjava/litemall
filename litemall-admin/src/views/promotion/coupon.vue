@@ -447,7 +447,18 @@ export default {
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
-
+      if (this.dataForm.goodsType === 1) {
+        this.couponCategoryList = []
+        for (let i = 0, len = row.goodsValue.length; i < len; i++) {
+          this.couponCategoryList.push(this.getGoodsCategoryById(row.goodsValue[i]))
+        }
+      }
+      if (this.dataForm.goodsType === 2) {
+        this.couponGoodsList = []
+        for (let i = 0, len = row.goodsValue.length; i < len; i++) {
+          this.couponGoodsList.push(this.getGoodsById(row.goodsValue[i]))
+        }
+      }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -600,6 +611,19 @@ export default {
           this.goodsCategoryOptions.push({ label: list[i].name, value: list[i].id, children: children })
         }
       })
+    },
+    getGoodsCategoryById(id) {
+      let name
+      let parentName
+      for (let i = 0; i < this.goodsCategoryOptions.length; i++) {
+        for (let j = 0; j < this.goodsCategoryOptions[i].children.length; j++) {
+          if (this.goodsCategoryOptions[i].children[j].value === id) {
+            parentName = this.goodsCategoryOptions[i].label
+            name = this.goodsCategoryOptions[i].children[j].label
+          }
+        }
+      }
+      return { goodsCategoryId: id, goodsCategoryName: name, parentCategoryName: parentName }
     },
     getGoodsCategoryByIds(ids) {
       let name
