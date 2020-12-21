@@ -45,7 +45,7 @@ public class AdminOrderController {
     @RequiresPermissions("admin:order:list")
     @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "查询")
     @GetMapping("/list")
-    public Object list(Integer userId, String orderSn,
+    public Object list(String nickname, String consignee, String orderSn,
                        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
                        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
                        @RequestParam(required = false) List<Short> orderStatusArray,
@@ -53,7 +53,7 @@ public class AdminOrderController {
                        @RequestParam(defaultValue = "10") Integer limit,
                        @Sort @RequestParam(defaultValue = "add_time") String sort,
                        @Order @RequestParam(defaultValue = "desc") String order) {
-        return adminOrderService.list(userId, orderSn, start, end, orderStatusArray, page, limit, sort, order);
+         return adminOrderService.list(nickname, consignee, orderSn, start, end, orderStatusArray, page, limit, sort, order);
     }
 
     /**
@@ -105,6 +105,12 @@ public class AdminOrderController {
         return adminOrderService.ship(body);
     }
 
+    @RequiresPermissions("admin:order:pay")
+    @RequiresPermissionsDesc(menu = {"商场管理", "订单管理"}, button = "订单收款")
+    @PostMapping("/pay")
+    public Object pay(@RequestBody String body) {
+        return adminOrderService.pay(body);
+    }
 
     /**
      * 删除订单

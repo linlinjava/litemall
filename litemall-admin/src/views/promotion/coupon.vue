@@ -462,6 +462,12 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
+          if (this.dataForm.goodsType === 1) {
+            this.dataForm.goodsValue = this.couponCategoryList.map(item => (item.goodsCategoryId))
+          }
+          if (this.dataForm.goodsType === 2) {
+            this.dataForm.goodsValue = this.couponGoodsList.map(item => (item.goodsId))
+          }
           updateCoupon(this.dataForm)
             .then(() => {
               for (const v of this.list) {

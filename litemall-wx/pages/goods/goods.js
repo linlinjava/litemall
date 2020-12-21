@@ -134,7 +134,7 @@ Page({
     }).then(function(res) {
       if (res.errno === 0) {
 
-        let _specificationList = res.data.productList;
+        let _specificationList = res.data.specificationList;
         let _tmpPicUrl = res.data.productList[0].url;
         //console.log("pic: "+_tmpPicUrl);
         // 如果仅仅存在一种货品，那么商品页面初始化时默认checked

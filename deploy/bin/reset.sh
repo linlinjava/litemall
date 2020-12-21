@@ -28,4 +28,5 @@ rm -f ./**
 
 # 重新部署服务
 cd /home/ubuntu/deploy/bin || exit 2
+sudo ./stop.sh
 sudo ./deploy.sh

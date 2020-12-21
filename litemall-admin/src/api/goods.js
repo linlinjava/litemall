@@ -16,14 +16,6 @@ export function deleteGoods(data) {
   })
 }
 
-export function deleteGoodsBatch(data) {
-  return request({
-    url: '/goods/deleteBatch',
-    method: 'post',
-    data
-  })
-}
-
 export function publishGoods(data) {
   return request({
     url: '/goods/create',

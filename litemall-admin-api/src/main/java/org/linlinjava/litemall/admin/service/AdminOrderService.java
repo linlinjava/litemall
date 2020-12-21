@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.service;
 
+import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
@@ -8,11 +9,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.notify.NotifyService;
 import org.linlinjava.litemall.core.notify.NotifyType;
+import org.linlinjava.litemall.core.util.DateTimeUtil;
 import org.linlinjava.litemall.core.util.JacksonUtil;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.CouponUserConstant;
+import org.linlinjava.litemall.db.util.GrouponConstant;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.ORDER_PAY_FAILED;
 
 @Service
 
@@ -51,11 +55,10 @@ public class AdminOrderService {
     @Autowired
     private LitemallCouponUserService couponUserService;
 
-    public Object list(Integer userId, String orderSn, LocalDateTime start, LocalDateTime end, List<Short> orderStatusArray,
+    public Object list(String nickname, String consignee, String orderSn, LocalDateTime start, LocalDateTime end, List<Short> orderStatusArray,
                        Integer page, Integer limit, String sort, String order) {
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, start, end, orderStatusArray, page, limit,
-                sort, order);
-        return ResponseUtil.okList(orderList);
+        Map<String, Object> data = (Map)orderService.queryVoSelective(nickname, consignee, orderSn, start, end, orderStatusArray, page, limit, sort, order);
+        return ResponseUtil.ok(data);
     }
 
     public Object detail(Integer id) {
@@ -287,4 +290,29 @@ public class AdminOrderService {
         return ResponseUtil.ok();
     }
 
+    public Object pay(String body) {
+        Integer orderId = JacksonUtil.parseInteger(body, "orderId");
+        String newMoney = JacksonUtil.parseString(body, "newMoney");
+
+        if (orderId == null || StringUtils.isEmpty(newMoney)) {
+            return ResponseUtil.badArgument();
+        }
+        BigDecimal actualPrice = new BigDecimal(newMoney);
+
+        LitemallOrder order = orderService.findById(orderId);
+        if (order == null) {
+            return ResponseUtil.badArgument();
+        }
+        if (!order.getOrderStatus().equals(OrderUtil.STATUS_CREATE)) {
+            return ResponseUtil.fail(ORDER_PAY_FAILED, "当前订单状态不支持线下收款");
+        }
+
+        order.setActualPrice(actualPrice);
+        order.setOrderStatus(OrderUtil.STATUS_PAY);
+        if (orderService.updateWithOptimisticLocker(order) == 0) {
+            return WxPayNotifyResponse.fail("更新数据已失效");
+        }
+
+        return ResponseUtil.ok();
+    }
 }

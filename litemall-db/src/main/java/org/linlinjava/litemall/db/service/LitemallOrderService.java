@@ -1,10 +1,12 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallOrderMapper;
 import org.linlinjava.litemall.db.dao.OrderMapper;
 import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.domain.LitemallOrderExample;
+import org.linlinjava.litemall.db.domain.OrderVo;
 import org.linlinjava.litemall.db.util.OrderUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -13,10 +15,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class LitemallOrderService {
@@ -203,5 +202,57 @@ public class LitemallOrderService {
         order.setAftersaleStatus(statusReject);
         order.setUpdateTime(LocalDateTime.now());
         litemallOrderMapper.updateByPrimaryKeySelective(order);
+    }
+
+
+    public Map<String, Object> queryVoSelective(String nickname, String consignee, String orderSn, LocalDateTime start, LocalDateTime end, List<Short> orderStatusArray, Integer page, Integer limit, String sort, String order) {
+        List<String> querys = new ArrayList<>(4);
+        if (!StringUtils.isEmpty(nickname)) {
+            querys.add(" u.nickname like '%" + nickname + "%' ");
+        }
+        if (!StringUtils.isEmpty(consignee)) {
+            querys.add(" o.consignee like '%" + consignee + "%' ");
+        }
+        if (!StringUtils.isEmpty(orderSn)) {
+            querys.add(" o.order_sn = '" + orderSn + "' ");
+        }
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if (start != null) {
+            querys.add(" o.add_time >= '" + df.format(start) + "' ");
+        }
+        if (end != null) {
+            querys.add(" o.add_time < '" + df.format(end) + "' ");
+        }
+        if (orderStatusArray != null && orderStatusArray.size() > 0) {
+            querys.add(" o.order_status in (" + StringUtils.collectionToDelimitedString(orderStatusArray, ",") + ") ");
+        }
+        querys.add(" o.deleted = 0 and og.deleted = 0 ");
+        String query = StringUtils.collectionToDelimitedString(querys, "and");
+        String orderByClause = null;
+        if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
+            orderByClause = "o." + sort + " " + order +", o.id desc ";
+        }
+
+        PageHelper.startPage(page, limit);
+        Page<Map> list1 = (Page) orderMapper.getOrderIds(query, orderByClause);
+        List<Integer> ids = new ArrayList<>();
+        for (Map map : list1) {
+            Integer id = (Integer) map.get("id");
+            ids.add(id);
+        }
+
+        List<OrderVo> list2 = new ArrayList<>();
+        if (!ids.isEmpty()) {
+            querys.add(" o.id in (" + StringUtils.collectionToDelimitedString(ids, ",") + ") ");
+            query = StringUtils.collectionToDelimitedString(querys, "and");
+            list2 = orderMapper.getOrderList(query, orderByClause);
+        }
+        Map<String, Object> data = new HashMap<String, Object>(5);
+        data.put("list", list2);
+        data.put("total", list1.getTotal());
+        data.put("page", list1.getPageNum());
+        data.put("limit", list1.getPageSize());
+        data.put("pages", list1.getPages());
+        return data;
     }
 }

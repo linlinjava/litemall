@@ -22,5 +22,10 @@ spring:
       test-on-return:  false
       test-while-idle:  true
       time-between-eviction-runs-millis:  60000
-      filters:  stat,wall
-
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: false
+      filter:
+        stat:
+          enabled: false
