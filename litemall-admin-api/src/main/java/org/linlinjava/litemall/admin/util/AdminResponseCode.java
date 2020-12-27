@@ -7,6 +7,8 @@ public class AdminResponseCode {
     public static final Integer ADMIN_ALTER_NOT_ALLOWED = 603;
     public static final Integer ADMIN_DELETE_NOT_ALLOWED = 604;
     public static final Integer ADMIN_INVALID_ACCOUNT = 605;
+    public static final Integer ADMIN_INVALID_KAPTCHA = 606;
+    public static final Integer ADMIN_INVALID_KAPTCHA_REQUIRED = 607;
     public static final Integer GOODS_UPDATE_NOT_ALLOWED = 610;
     public static final Integer GOODS_NAME_EXIST = 611;
     public static final Integer ORDER_CONFIRM_NOT_ALLOWED = 620;
