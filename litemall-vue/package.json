@@ -26,15 +26,18 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-plugin-eslint": "^3.0.5",
-    "@vue/cli-service": "^3.0.5",
-    "@vue/eslint-config-prettier": "^3.0.5",
-    "babel-plugin-import": "^1.9.1",
+    "@vue/cli-plugin-babel": "3.5.3",
+    "@vue/cli-plugin-eslint": "^3.9.1",
+    "@vue/cli-service": "3.5.3",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "eslint": "5.15.3",
+    "babel-plugin-import": "^1.13.3",
     "babel-plugin-lodash": "^3.3.4",
-    "node-sass": "^4.9.3",
+    "node-sass": "^4.9.0",
+    "sass": "^1.26.2",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.17"
+    "eslint-plugin-vue": "5.2.2",
+    "vue-template-compiler": "2.6.10"
   },
   "browserslist": [
     "> 1%",
