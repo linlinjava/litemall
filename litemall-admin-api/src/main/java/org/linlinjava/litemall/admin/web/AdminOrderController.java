@@ -33,7 +33,6 @@ public class AdminOrderController {
     /**
      * 查询订单
      *
-     * @param userId
      * @param orderSn
      * @param orderStatusArray
      * @param page
