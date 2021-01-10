@@ -113,7 +113,7 @@ export default {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(response => {
-            if (response.data.errno === 606 || response.data.errno === 605) {
+            if (response.data.data) {
               this.codeImg = response.data.data
             }
             this.$notify.error({

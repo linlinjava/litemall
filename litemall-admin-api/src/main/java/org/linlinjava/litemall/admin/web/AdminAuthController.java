@@ -111,7 +111,7 @@ public class AdminAuthController {
             currentUser.login(new UsernamePasswordToken(username, password));
         } catch (UnknownAccountException uae) {
             logHelper.logAuthFail("登录", "用户帐号或密码不正确");
-            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号或密码不正确");
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号或密码不正确", doKaptcha(request));
         } catch (LockedAccountException lae) {
             logHelper.logAuthFail("登录", "用户帐号已锁定不可用");
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号已锁定不可用");

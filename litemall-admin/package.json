@@ -46,7 +46,7 @@
     "@tinymce/tinymce-vue": "3.0.1",
     "lodash": "^4.17.11",
     "v-charts": "1.19.0",
-    "axios": "0.18.1",
+    "axios": "0.21.1",
     "clipboard": "2.0.4",
     "connect": "3.6.6",
     "echarts": "4.2.1",
