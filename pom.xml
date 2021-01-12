@@ -154,7 +154,13 @@
 			  <artifactId>springfox-swagger-ui</artifactId>
 			  <version>2.9.2</version>
 		</dependency>
-		
+
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
 		<!--引入ui包-->
 		<dependency>
 	 		 <groupId>com.github.xiaoymin</groupId>

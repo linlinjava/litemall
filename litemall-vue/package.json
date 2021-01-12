@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^1.1.2",
-    "axios": ">=0.18.1",
+    "axios": ">=0.21.1",
     "dayjs": "^1.7.7",
     "js-cookie": "2.2.0",
     "lodash": "^4.17.19",
