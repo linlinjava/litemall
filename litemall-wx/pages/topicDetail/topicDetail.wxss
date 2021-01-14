@@ -144,6 +144,13 @@
   border-bottom: 1px solid #d9d9d9;
 }
 
+.topic-goods .h .i {
+  display: block;
+  float: right;
+  width: 33rpx;
+  height: 33rpx;
+}
+
 .topic-goods .h .t {
   display: block;
   float: left;
