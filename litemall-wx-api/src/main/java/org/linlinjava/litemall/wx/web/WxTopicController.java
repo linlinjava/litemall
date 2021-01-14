@@ -7,8 +7,10 @@ import org.linlinjava.litemall.core.validator.Order;
 import org.linlinjava.litemall.core.validator.Sort;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.domain.LitemallTopic;
+import org.linlinjava.litemall.db.service.LitemallCollectService;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.service.LitemallTopicService;
+import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,8 @@ public class WxTopicController {
     private LitemallTopicService topicService;
     @Autowired
     private LitemallGoodsService goodsService;
+	@Autowired
+	private LitemallCollectService collectService;
 
     /**
      * 专题列表
@@ -59,7 +63,7 @@ public class WxTopicController {
      * @return 专题详情
      */
     @GetMapping("detail")
-    public Object detail(@NotNull Integer id) {
+    public Object detail(@LoginUser Integer userId, @NotNull Integer id) {
         LitemallTopic topic = topicService.findById(id);
         List<LitemallGoods> goods = new ArrayList<>();
         for (Integer i : topic.getGoods()) {
@@ -67,10 +71,17 @@ public class WxTopicController {
             if (null != good)
                 goods.add(good);
         }
+        
+		// 用户收藏
+		int userHasCollect = 0;
+		if (userId != null) {
+			userHasCollect = collectService.count(userId, (byte)1, id);
+		}
 
         Map<String, Object> entity = new HashMap<String, Object>();
         entity.put("topic", topic);
         entity.put("goods", goods);
+        entity.put("userHasCollect", userHasCollect);
         return ResponseUtil.ok(entity);
     }
 

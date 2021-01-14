@@ -6,7 +6,9 @@
   <scroll-view class="sv-goods" wx:if="{{topicGoods.length > 0 }}">
     <view class="topic-goods">
       <view class="h">
-        <text class="t">专题商品</text>
+        <text class="t">专题商品</text>     
+        <van-icon class="i" bindtap="addCollectOrNot" name="star" wx:if="{{collect}}" color="#ab956d"/>
+        <van-icon class="i" bindtap="addCollectOrNot" name="star-o" wx:else/>
       </view>
       <view class="b">
         <view class="item" wx:for="{{topicGoods}}" wx:for-index="index" wx:for-item="item" wx:key="id">
