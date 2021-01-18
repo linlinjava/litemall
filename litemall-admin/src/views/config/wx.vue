@@ -87,6 +87,7 @@ export default {
     init: function() {
       listWx().then(response => {
         this.dataForm = response.data.data
+        this.dataForm.litemall_wx_share = this.dataForm.litemall_wx_share === 'true'
       })
     },
     cancel() {

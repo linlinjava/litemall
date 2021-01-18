@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function loginByUsername(username, password) {
+export function loginByUsername(username, password, code) {
   const data = {
     username,
-    password
+    password,
+    code
   }
   return request({
     url: '/auth/login',
@@ -27,3 +28,9 @@ export function getUserInfo(token) {
   })
 }
 
+export function getKaptcha() {
+  return request({
+    url: '/auth/kaptcha',
+    method: 'get'
+  })
+}

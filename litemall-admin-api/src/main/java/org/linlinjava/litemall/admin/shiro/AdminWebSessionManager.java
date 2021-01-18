@@ -14,6 +14,14 @@ public class AdminWebSessionManager extends DefaultWebSessionManager {
     public static final String LOGIN_TOKEN_KEY = "X-Litemall-Admin-Token";
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 
+
+    public AdminWebSessionManager() {
+        super();
+        setGlobalSessionTimeout(MILLIS_PER_HOUR * 6);
+//        setSessionIdCookieEnabled(false);
+        setSessionIdUrlRewritingEnabled(false);
+    }
+
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
         String id = WebUtils.toHttp(request).getHeader(LOGIN_TOKEN_KEY);

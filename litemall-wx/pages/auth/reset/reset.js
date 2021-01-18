@@ -70,15 +70,6 @@ Page({
       return false;
     }
 
-    if (!check.isValidPhone(this.data.mobile)) {
-      wx.showModal({
-        title: '错误信息',
-        content: '手机号输入不正确',
-        showCancel: false
-      });
-      return false;
-    }
-
     if (this.data.password.length < 3) {
       wx.showModal({
         title: '错误信息',

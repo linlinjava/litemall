@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.google.code.kaptcha.Producer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
@@ -24,12 +25,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.BASE64Encoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.linlinjava.litemall.admin.util.AdminResponseCode.ADMIN_INVALID_ACCOUNT;
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
 
 @RestController
 @RequestMapping("/admin/auth")
@@ -46,6 +53,37 @@ public class AdminAuthController {
     @Autowired
     private LogHelper logHelper;
 
+    @Autowired
+    private Producer kaptchaProducer;
+
+    @GetMapping("/kaptcha")
+    public Object kaptcha(HttpServletRequest request) {
+        String kaptcha = doKaptcha(request);
+        if (kaptcha != null) {
+            return ResponseUtil.ok(kaptcha);
+        }
+        return ResponseUtil.fail();
+    }
+
+    private String doKaptcha(HttpServletRequest request) {
+        // 生成验证码
+        String text = kaptchaProducer.createText();
+        BufferedImage image = kaptchaProducer.createImage(text);
+        HttpSession session = request.getSession();
+        session.setAttribute("kaptcha", text);
+
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpeg", outputStream);
+            BASE64Encoder encoder = new BASE64Encoder();
+            String base64 = encoder.encode(outputStream.toByteArray());
+            String captchaBase64 = "data:image/jpeg;base64," + base64.replaceAll("\r\n", "");
+            return captchaBase64;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     /*
      *  { username : value, password : value }
      */
@@ -53,9 +91,19 @@ public class AdminAuthController {
     public Object login(@RequestBody String body, HttpServletRequest request) {
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
+        String code = JacksonUtil.parseString(body, "code");
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             return ResponseUtil.badArgument();
+        }
+        if (StringUtils.isEmpty(code)) {
+            return ResponseUtil.fail(ADMIN_INVALID_KAPTCHA_REQUIRED, "验证码不能空");
+        }
+
+        HttpSession session = request.getSession();
+        String kaptcha = (String)session.getAttribute("kaptcha");
+        if (Objects.requireNonNull(code).compareToIgnoreCase(kaptcha) != 0) {
+            return ResponseUtil.fail(ADMIN_INVALID_KAPTCHA, "验证码不正确", doKaptcha(request));
         }
 
         Subject currentUser = SecurityUtils.getSubject();
@@ -63,7 +111,7 @@ public class AdminAuthController {
             currentUser.login(new UsernamePasswordToken(username, password));
         } catch (UnknownAccountException uae) {
             logHelper.logAuthFail("登录", "用户帐号或密码不正确");
-            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号或密码不正确");
+            return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号或密码不正确", doKaptcha(request));
         } catch (LockedAccountException lae) {
             logHelper.logAuthFail("登录", "用户帐号已锁定不可用");
             return ResponseUtil.fail(ADMIN_INVALID_ACCOUNT, "用户帐号已锁定不可用");

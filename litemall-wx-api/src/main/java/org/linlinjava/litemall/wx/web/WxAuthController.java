@@ -189,7 +189,7 @@ public class WxAuthController {
         if (StringUtils.isEmpty(phoneNumber)) {
             return ResponseUtil.badArgument();
         }
-        if (!RegexUtil.isMobileExact(phoneNumber)) {
+        if (!RegexUtil.isMobileSimple(phoneNumber)) {
             return ResponseUtil.badArgumentValue();
         }
 
@@ -256,7 +256,7 @@ public class WxAuthController {
         if (userList.size() > 0) {
             return ResponseUtil.fail(AUTH_MOBILE_REGISTERED, "手机号已注册");
         }
-        if (!RegexUtil.isMobileExact(mobile)) {
+        if (!RegexUtil.isMobileSimple(mobile)) {
             return ResponseUtil.fail(AUTH_INVALID_MOBILE, "手机号格式不正确");
         }
         //判断验证码是否正确
@@ -343,7 +343,7 @@ public class WxAuthController {
         if (StringUtils.isEmpty(phoneNumber)) {
             return ResponseUtil.badArgument();
         }
-        if (!RegexUtil.isMobileExact(phoneNumber)) {
+        if (!RegexUtil.isMobileSimple(phoneNumber)) {
             return ResponseUtil.badArgumentValue();
         }
         if (StringUtils.isEmpty(captchaType)) {

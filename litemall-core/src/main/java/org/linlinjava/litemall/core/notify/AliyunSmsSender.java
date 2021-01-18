@@ -8,6 +8,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.qcloud.cos.utils.Jackson;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.JacksonUtil;
@@ -25,6 +26,8 @@ public class AliyunSmsSender implements SmsSender {
     private String accessKeyId;
     private String accessKeySecret;
     private String sign;
+
+    private final String okCode = "OK";
 
     public String getRegionId() {
         return regionId;
@@ -106,8 +109,15 @@ public class AliyunSmsSender implements SmsSender {
         try {
             CommonResponse response = client.getCommonResponse(request);
             SmsResult smsResult = new SmsResult();
-            smsResult.setSuccessful(true);
             smsResult.setResult(response);
+            String code =  Jackson.jsonNodeOf(response.getData()).get("Code").asText();
+            if (response.getHttpResponse().isSuccess() && okCode.equals(code) ){
+                smsResult.setSuccessful(true);
+            }else {
+                smsResult.setSuccessful(false);
+                logger.error("短信发送失败："+response.getData());
+            }
+
             return smsResult;
         } catch (ServerException e) {
             e.printStackTrace();
