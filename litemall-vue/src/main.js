@@ -7,6 +7,7 @@ import '@/assets/scss/iconfont/iconfont.css';
 
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import store from './store'
+import i18n from './i18n'
 
 
 import filters from '@/filter';
@@ -35,6 +36,7 @@ Vue.use(Lazyload, {
 Vue.config.productionTip = false;
 
 new Vue({
+  i18n,
   router,
   store,
   render: h => h(App)

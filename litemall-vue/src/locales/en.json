@@ -1,0 +1,10 @@
+{
+  "navigation": {
+    "back": "back"
+  },
+  "locales": {
+    "zh-CN": "ZH",
+    "en-US": "EN",
+    "ja-JP": "JP"
+  }
+}

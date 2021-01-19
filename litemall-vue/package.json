@@ -15,12 +15,14 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^1.1.2",
+    "@kazupon/vue-i18n-loader": "^0.5.0",
     "axios": ">=0.18.1",
     "dayjs": "^1.7.7",
     "js-cookie": "2.2.0",
     "lodash": "^4.17.11",
     "vant": "^2.0.6",
     "vue": "^2.5.17",
+    "vue-i18n": "^8.18.2",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.7.4",
     "vuex": "^3.4.0"
