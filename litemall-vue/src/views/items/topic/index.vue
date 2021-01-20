@@ -71,12 +71,12 @@ export default {
 <style lang="scss" scoped>
 .goods_topic {
   .topic-detail {
-    /deep/ p {
+    ::v-deep p {
       padding: 0 10px;
       margin-block-start: 0 !important;
       margin-block-end: 0 !important;
     }
-    /deep/ img {
+    ::v-deep img {
       max-width: 100%;
       width: 100% !important;
       height: 100% !important;

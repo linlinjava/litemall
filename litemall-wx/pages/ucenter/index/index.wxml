@@ -55,7 +55,7 @@
     </view>
     <view class='user_column_item' bindtap='goCollect'>
       <image class='user_column_item_image' src='/static/images/collect.png'></image>
-      <view class='user_column_item_text'>商品收藏</view>
+      <view class='user_column_item_text'>收藏夹</view>
     </view>
     <view class='user_column_item' bindtap='goFootprint'>
       <image class='user_column_item_image' src='/static/images/footprint.png'></image>

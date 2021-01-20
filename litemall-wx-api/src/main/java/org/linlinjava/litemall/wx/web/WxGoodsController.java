@@ -147,7 +147,7 @@ public class WxGoodsController {
 		// 用户收藏
 		int userHasCollect = 0;
 		if (userId != null) {
-			userHasCollect = collectService.count(userId, id);
+			userHasCollect = collectService.count(userId, (byte)0, id);
 		}
 
 		// 记录用户的足迹 异步处理

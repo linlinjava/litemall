@@ -18,6 +18,16 @@
         <el-input v-model="loginForm.password" :type="passwordType" name="password" auto-complete="on" tabindex="2" show-password placeholder="管理员密码" @keyup.enter.native="handleLogin" />
       </el-form-item>
 
+      <el-form-item prop="code">
+        <span class="svg-container">
+          <svg-icon icon-class="lock" />
+        </span>
+        <el-input v-model="loginForm.code" auto-complete="off" name="code" tabindex="2" placeholder="验证码" style="width: 60%" @keyup.enter.native="handleLogin" />
+        <div class="login-code">
+          <img :src="codeImg" @click="getCode">
+        </div>
+      </el-form-item>
+
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div style="position:relative">
@@ -43,6 +53,8 @@
 </template>
 
 <script>
+import { getKaptcha } from '@/api/login'
+
 export default {
   name: 'Login',
   data() {
@@ -56,8 +68,10 @@ export default {
     return {
       loginForm: {
         username: 'admin123',
-        password: 'admin123'
+        password: 'admin123',
+        code: ''
       },
+      codeImg: '',
       loginRules: {
         username: [{ required: true, message: '管理员账户不允许为空', trigger: 'blur' }],
         password: [
@@ -79,12 +93,18 @@ export default {
 
   },
   created() {
+    this.getCode()
     // window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    getCode() {
+      getKaptcha().then(response => {
+        this.codeImg = response.data.data
+      })
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid && !this.loading) {
@@ -93,6 +113,9 @@ export default {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(response => {
+            if (response.data.data) {
+              this.codeImg = response.data.data
+            }
             this.$notify.error({
               title: '失败',
               message: response.data.errmsg
@@ -174,7 +197,14 @@ $light_gray:#eee;
     margin: 0 auto;
     overflow: hidden;
   }
-
+  .login-code {
+    padding-top: 5px;
+    float: right;
+    img{
+      cursor: pointer;
+      vertical-align:middle
+    }
+  }
   .tips {
     font-size: 14px;
     color: #fff;

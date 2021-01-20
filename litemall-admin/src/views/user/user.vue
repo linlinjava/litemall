@@ -14,7 +14,13 @@
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
       <el-table-column align="center" width="100px" label="用户ID" prop="id" sortable/>
 
-      <el-table-column align="center" label="用户名" prop="username"/>
+      <el-table-column align="center" label="用户昵称" prop="nickname"/>
+
+      <el-table-column align="center" label="用户头像" width="80">
+        <template slot-scope="scope">
+          <el-avatar :src="scope.row.avatar" />
+        </template>
+      </el-table-column>
 
       <el-table-column align="center" label="手机号码" prop="mobile"/>
 
