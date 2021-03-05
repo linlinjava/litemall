@@ -81,7 +81,7 @@ public class WxHomeController {
         if (HomeCacheManager.hasData(HomeCacheManager.INDEX)) {
             return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.INDEX));
         }
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        //ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         Callable<List> bannerListCallable = () -> adService.queryIndex();
 
