@@ -170,7 +170,7 @@
 		<dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>25.1-jre</version>
+            <version>29.0-jre</version>
         </dependency>
 
             <dependency>
