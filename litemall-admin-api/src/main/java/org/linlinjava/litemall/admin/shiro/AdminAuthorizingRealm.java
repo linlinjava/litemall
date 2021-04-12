@@ -13,19 +13,27 @@ import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.linlinjava.litemall.db.service.LitemallPermissionService;
 import org.linlinjava.litemall.db.service.LitemallRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 下面三个Autowired注解需要配合Lazy注解使用，否则会导致这三个service相关的事务失效。
+ * https://gitee.com/linlinjava/litemall/issues/I3I94X#note_4809495
+ */
 public class AdminAuthorizingRealm extends AuthorizingRealm {
 
     @Autowired
+    @Lazy
     private LitemallAdminService adminService;
     @Autowired
+    @Lazy
     private LitemallRoleService roleService;
     @Autowired
+    @Lazy
     private LitemallPermissionService permissionService;
 
     @Override
