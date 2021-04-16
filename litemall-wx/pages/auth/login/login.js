@@ -24,25 +24,21 @@ Page({
 
   },
   wxLogin: function(e) {
-    if (e.detail.userInfo == undefined) {
-      app.globalData.hasLogin = false;
-      util.showErrorToast('微信登录失败');
-      return;
-    }
-
     user.checkLogin().catch(() => {
-
-      user.loginByWeixin(e.detail.userInfo).then(res => {
-        app.globalData.hasLogin = true;
-
-        wx.navigateBack({
-          delta: 1
-        })
-      }).catch((err) => {
-        app.globalData.hasLogin = false;
-        util.showErrorToast('微信登录失败');
-      });
-
+      wx.getUserProfile({
+        desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+        success: (res) => {
+          user.loginByWeixin(res.userInfo).then(res => {
+            app.globalData.hasLogin = true;
+            wx.navigateBack({
+              delta: 1
+            })
+          }).catch((err) => {
+            app.globalData.hasLogin = false;
+            util.showErrorToast('微信登录失败');
+          });
+        }
+      })
     });
   },
   accountLogin: function() {
