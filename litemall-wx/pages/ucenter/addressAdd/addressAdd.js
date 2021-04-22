@@ -310,7 +310,11 @@ Page({
       util.showErrorToast('请输入手机号码');
       return false;
     }
-
+    const phoneReg = /^[1][3,4,5,7,8,9][0-9]{9}$/
+    if (!phoneReg.test(address.tel)) {
+      util.showErrorToast('手机号格式错误');
+      return false;
+    }
 
     if (address.areaCode == 0) {
       util.showErrorToast('请输入省市区');
