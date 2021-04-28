@@ -5,14 +5,19 @@ on: [push, pull_request]
 jobs:
   # Building and testing Java with Maven
   # https://docs.github.com/en/actions/guides/building-and-testing-java-with-maven
-  Java-8:
+  Java:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version:
+        - 8
+        - 11
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 8
+    - name: Set up JDK ${{ matrix.java-version }}
       uses: actions/setup-java@v2
       with:
-        java-version: 8
+        java-version: ${{ matrix.java-version }}
         distribution: adopt
     - name: Cache Maven packages
       uses: actions/cache@v2
