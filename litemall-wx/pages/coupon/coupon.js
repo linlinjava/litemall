@@ -106,6 +106,7 @@ Page({
       wx.navigateTo({
         url: "/pages/auth/login/login"
       });
+      return;
     }
 
     let couponId = e.currentTarget.dataset.index
