@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   # Building and testing Java with Maven
   # https://docs.github.com/en/actions/guides/building-and-testing-java-with-maven
-  Java:
+  Litemall-all:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,7 +30,7 @@ jobs:
 
   # Building and testing Node.js
   # https://docs.github.com/en/actions/guides/building-and-testing-nodejs
-  Node-Admin:
+  Litemall-admin:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -48,7 +48,7 @@ jobs:
     - run: npm --prefix litemall-admin install
     - run: npm --prefix litemall-admin run test
 
-  Node-Vue:
+  Litemall-vue:
     runs-on: ubuntu-latest
     strategy:
       matrix:
