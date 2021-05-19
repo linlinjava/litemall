@@ -67,6 +67,13 @@ Page({
     this.getCommentList();
   },
   onPullDownRefresh() {
+    this.setData({
+      allCommentList: [],
+      allPage: 1,
+      picCommentList: [],
+      picPage: 1,
+      comments: []
+    });
     wx.showNavigationBarLoading() //在标题栏中显示加载
     this.getCommentCount();
     this.getCommentList();
@@ -109,7 +116,6 @@ Page({
     this.getCommentList();
   },
   onReachBottom: function() {
-    console.log('onPullDownRefresh');
     if (this.data.showType == 0) {
 
       if (this.data.allCount / this.data.limit < this.data.allPage) {
