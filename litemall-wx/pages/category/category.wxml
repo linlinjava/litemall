@@ -6,7 +6,7 @@
       </view>
     </scroll-view>
   </view>
-  <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height:{{scrollHeight}};">
+  <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height:{{scrollHeight}}px;">
 
     <view class="cate-item">
       <view class="h">
