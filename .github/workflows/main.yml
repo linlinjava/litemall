@@ -1,0 +1,67 @@
+name: Actions
+
+on: [push, pull_request]
+
+jobs:
+  # Building and testing Java with Maven
+  # https://docs.github.com/en/actions/guides/building-and-testing-java-with-maven
+  Java:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version:
+        - 8
+        - 11
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v2
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: adopt
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    - name: Build with Maven
+      run: mvn --batch-mode --update-snapshots verify
+
+  # Building and testing Node.js
+  # https://docs.github.com/en/actions/guides/building-and-testing-nodejs
+  Node-Admin:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+        - 10.x
+        - 12.x
+        - 14.x
+        # - 15.x
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm --prefix litemall-admin install
+    - run: npm --prefix litemall-admin run test
+
+  Node-Vue:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+        - 10.x
+        - 12.x
+        - 14.x
+        # - 15.x
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm --prefix litemall-vue install
+    - run: npm --prefix litemall-vue run test
