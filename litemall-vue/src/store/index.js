@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 const state = {
   showHeader:true,
+  title:'' 
 }
 
 export default new Vuex.Store({
