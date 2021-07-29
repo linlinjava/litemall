@@ -11,7 +11,8 @@ Page({
     scrollTop: 0,
     scrollHeight: 0,
     page: 1,
-    limit: 10
+    limit: 10,
+    pages:1, //总页数
   },
   onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -89,6 +90,21 @@ Page({
   onHide: function() {
     // 页面隐藏
   },
+  //触底开始下一页
+  onReachBottom: function () {
+    var that=this;
+
+    var pagenum = that.data.page + 1; //获取当前页数并+1
+    if(pagenum <=that.data.pages){
+      that.setData({
+        page: pagenum, //更新当前页数
+      })
+      that.getGoodsList();//重新调用请求获取下一页数据
+    }else{
+      util.showErrorToast("已经是最后一页了");
+    }
+  },
+
   getGoodsList: function() {
     var that = this;
 
@@ -98,8 +114,12 @@ Page({
         limit: that.data.limit
       })
       .then(function(res) {
+        var arr1 = that.data.goodsList; //从data获取当前datalist数组
+        var arr2 = res.data.list; //从此次请求返回的数据中获取新数组
+        arr1 = arr1.concat(arr2); //合并数组
         that.setData({
-          goodsList: res.data.list,
+          goodsList: arr1,
+          pages: res.data.pages //得到总页数
         });
       });
   },
@@ -123,7 +143,9 @@ Page({
       });
     }
     this.setData({
-      id: event.currentTarget.dataset.id
+      id: event.currentTarget.dataset.id,
+      page:1, //从第一页开始查
+      goodsList:[]
     });
 
     this.getCategoryInfo();
