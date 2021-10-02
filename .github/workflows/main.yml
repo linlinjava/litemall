@@ -11,14 +11,16 @@ jobs:
       matrix:
         java-version:
         - 8
+        - 8.0.192
         - 11
+        - 11.0.3
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.java-version }}
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java-version }}
-        distribution: adopt
+        distribution: temurin
     - name: Cache Maven packages
       uses: actions/cache@v2
       with:
