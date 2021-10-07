@@ -21,7 +21,7 @@
               <span>{{ props.row.goodsSn }}</span>
             </el-form-item>
             <el-form-item label="宣传画廊">
-              <img v-for="pic in props.row.gallery" :key="pic" :src="pic" class="gallery">
+              <el-image v-for="pic in props.row.gallery" :key="pic" :src="pic" class="gallery" :preview-src-list="props.row.gallery" style="width: 40px; height: 40px" />
             </el-form-item>
             <el-form-item label="商品介绍">
               <span>{{ props.row.brief }}</span>
@@ -110,6 +110,7 @@
 <style>
   .table-expand {
     font-size: 0;
+    padding-left: 60px;
   }
   .table-expand label {
     width: 100px;

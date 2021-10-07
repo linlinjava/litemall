@@ -60,9 +60,6 @@
         <el-form-item label="用户昵称" prop="nickname">
           <el-input v-model="userDetail.nickname" />
         </el-form-item>
-        <el-form-item label="用户密码" prop="mobile">
-          <el-input v-model="userDetail.password" />
-        </el-form-item>
         <el-form-item label="用户手机" prop="mobile">
           <el-input v-model="userDetail.mobile" />
         </el-form-item>

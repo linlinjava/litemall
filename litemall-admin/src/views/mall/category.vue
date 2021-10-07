@@ -21,7 +21,7 @@
 
       <el-table-column align="center" property="picUrl" label="类目图片">
         <template slot-scope="scope">
-          <img v-if="scope.row.picUrl" :src="scope.row.picUrl" width="80">
+          <el-image :src="thumbnail(scope.row.picUrl)" :preview-src-list="toPreview(scope.row, scope.row.picUrl)" style="width: 80px; height: 40px" />
         </template>
       </el-table-column>
 
@@ -134,11 +134,14 @@
 import { listCategory, listCatL1, createCategory, updateCategory, deleteCategory } from '@/api/category'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
+import { thumbnail, toPreview } from '@/utils/index'
 
 export default {
   name: 'Category',
   data() {
     return {
+      thumbnail,
+      toPreview,
       uploadPath,
       list: [],
       listLoading: true,

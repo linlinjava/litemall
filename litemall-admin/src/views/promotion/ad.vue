@@ -21,7 +21,7 @@
 
       <el-table-column align="center" label="广告图片" prop="url">
         <template slot-scope="scope">
-          <img v-if="scope.row.url" :src="scope.row.url" width="80">
+          <el-image :src="thumbnail(scope.row.url)" :preview-src-list="toPreview(scope.row, scope.row.url)" style="width: 80px; height: 40px" />
         </template>
       </el-table-column>
 
@@ -125,12 +125,15 @@ import { listAd, createAd, updateAd, deleteAd } from '@/api/ad'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { thumbnail, toPreview } from '@/utils/index'
 
 export default {
   name: 'Ad',
   components: { Pagination },
   data() {
     return {
+      thumbnail,
+      toPreview,
       uploadPath,
       list: [],
       total: 0,
