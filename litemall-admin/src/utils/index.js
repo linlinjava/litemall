@@ -35,6 +35,17 @@ export function parseTime(time, cFormat) {
   return time_str
 }
 
+// NOTE: 这里的缩略图只用于阿里云存储。
+// 开发者可以参考其他云存储的缩略图参数。
+export function thumbnail(src) {
+  return src + '?x-oss-process=image/resize,m_lfit,h_250,w_250'
+}
+
+export function toPreview(item, url) {
+  item.preview = [url]
+  return item.preview
+}
+
 export function formatTime(time, option) {
   time = +time * 1000
   const d = new Date(time)

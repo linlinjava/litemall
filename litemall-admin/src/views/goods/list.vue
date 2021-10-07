@@ -49,7 +49,7 @@
 
       <el-table-column align="center" property="iconUrl" label="图片">
         <template slot-scope="scope">
-          <img :src="scope.row.picUrl" width="40">
+          <el-image :src="thumbnail(scope.row.picUrl)" :preview-src-list="toPreview(scope.row, scope.row.picUrl)" style="width: 40px; height: 40px" />
         </template>
       </el-table-column>
 
@@ -132,12 +132,15 @@
 import { listGoods, deleteGoods } from '@/api/goods'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { thumbnail, toPreview } from '@/utils/index'
 
 export default {
   name: 'GoodsList',
   components: { BackToTop, Pagination },
   data() {
     return {
+      thumbnail,
+      toPreview,
       list: [],
       total: 0,
       listLoading: true,

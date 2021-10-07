@@ -27,7 +27,7 @@
 
       <el-table-column align="center" property="picUrl" label="图片">
         <template slot-scope="scope">
-          <img :src="scope.row.picUrl" width="80">
+          <el-image :src="thumbnail(scope.row.picUrl)" :preview-src-list="toPreview(scope.row, scope.row.picUrl)" style="width: 40px; height: 40px" />
         </template>
       </el-table-column>
 
@@ -95,12 +95,15 @@ import { listTopic, deleteTopic, batchDeleteTopic } from '@/api/topic'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import _ from 'lodash'
+import { thumbnail, toPreview } from '@/utils/index'
 
 export default {
   name: 'Topic',
   components: { BackToTop, Pagination },
   data() {
     return {
+      thumbnail,
+      toPreview,
       list: [],
       total: 0,
       listLoading: true,

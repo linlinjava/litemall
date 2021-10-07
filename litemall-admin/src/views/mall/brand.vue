@@ -19,7 +19,7 @@
 
       <el-table-column align="center" property="picUrl" label="品牌商图片">
         <template slot-scope="scope">
-          <img v-if="scope.row.picUrl" :src="scope.row.picUrl" width="80">
+          <el-image :src="thumbnail(scope.row.picUrl)" :preview-src-list="toPreview(scope.row, scope.row.picUrl)" style="width: 40px; height: 40px" />
         </template>
       </el-table-column>
 
@@ -104,12 +104,15 @@ import { listBrand, createBrand, updateBrand, deleteBrand } from '@/api/brand'
 import { uploadPath } from '@/api/storage'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { thumbnail, toPreview } from '@/utils/index'
 
 export default {
   name: 'Brand',
   components: { Pagination },
   data() {
     return {
+      thumbnail,
+      toPreview,
       uploadPath,
       list: [],
       total: 0,
