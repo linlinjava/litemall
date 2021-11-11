@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.bean.WxMaKefuMessage;
 import cn.binarywang.wx.miniapp.bean.WxMaMessage;
 import cn.binarywang.wx.miniapp.message.WxMaXmlOutMessage;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author liyang
@@ -65,16 +64,9 @@ public class WxMsgController {
             String msgType = wxMaMessage.getMsgType();
             if ("text".equals(msgType)) {
                 try {
-                    Map<String, Object> msg = new HashMap<>();
-                    Map<String, String> body = new HashMap<>();
-                    msg.put("access_token", wxMaService.getAccessToken());
-                    msg.put("touser", wxMaMessage.getFromUser());
-                    msg.put("msgtype", wxMaMessage.getMsgType());
-                    body.put("content", wxMaMessage.getContent());
-                    msg.put("text", body);
-                    wxMaService.post("https://api.weixin.qq.com/cgi-bin/message/custom/send", msg);
+                    wxMaService.getMsgService().sendKefuMsg(WxMaKefuMessage.newTextBuilder().content(wxMaMessage.getContent()).toUser(wxMaMessage.getFromUser()).build());
                 } catch (WxErrorException e) {
-                    e.printStackTrace();
+                    logger.error("消息自动回复失败");
                 }
             }
             WxMaXmlOutMessage wxMaXmlOutMessage = new WxMaXmlOutMessage();
