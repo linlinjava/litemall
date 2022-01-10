@@ -12,6 +12,11 @@ module.exports = {
   devServer: {
     //九键输入法的 「mall」= 「6255」
     port: 6255,
+    proxy: {
+      '/wx': {
+        target: 'http://localhost:8080'
+      },
+    },
   },
   chainWebpack: config => {
     config.plugins.delete('prefetch');
