@@ -19,6 +19,26 @@ public class WxProperties {
 
     private String keyPath;
 
+    private String token;
+
+    private String aesKey;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getAesKey() {
+        return aesKey;
+    }
+
+    public void setAesKey(String aesKey) {
+        this.aesKey = aesKey;
+    }
+
     public String getNotifyUrl() {
         return notifyUrl;
     }
