@@ -56,6 +56,9 @@ public class WxAuthController {
     @Autowired
     private CouponAssignService couponAssignService;
 
+
+    // private final byte initializationByteValue = 0;
+
     /**
      * 账号登录
      *
@@ -145,12 +148,12 @@ public class WxAuthController {
             user.setAvatar(userInfo.getAvatarUrl());
             user.setNickname(userInfo.getNickName());
             user.setGender(userInfo.getGender());
-            user.setUserLevel((byte) 0);
-            user.setStatus((byte) 0);
+            byte initializationByteValue = 0;
+            user.setStatus(initializationByteValue);
+            user.setUserLevel(initializationByteValue);
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(IpUtil.getIpAddr(request));
             user.setSessionKey(sessionKey);
-
             userService.add(user);
 
             // 新用户发送注册优惠券
@@ -300,9 +303,10 @@ public class WxAuthController {
         user.setWeixinOpenid(openId);
         user.setAvatar("https://yanxuan.nosdn.127.net/80841d741d7fa3073e0ae27bf487339f.jpg?imageView&quality=90&thumbnail=64x64");
         user.setNickname(username);
-        user.setGender((byte) 0);
-        user.setUserLevel((byte) 0);
-        user.setStatus((byte) 0);
+        byte initializationByteValue = 0;
+        user.setGender(initializationByteValue);
+        user.setUserLevel(initializationByteValue);
+        user.setStatus(initializationByteValue);
         user.setLastLoginTime(LocalDateTime.now());
         user.setLastLoginIp(IpUtil.getIpAddr(request));
         userService.add(user);
