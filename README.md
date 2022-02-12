@@ -108,7 +108,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
     打开命令行，输入以下命令
     ```bash
-    npm install -g cnpm --registry=https://registry.npm.taobao.org
+    npm install -g cnpm --registry=https://registry.npmmirror.com
     cd litemall/litemall-admin
     cnpm install
     cnpm run dev
@@ -132,7 +132,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
     打开命令行，输入以下命令
     ```bash
-    npm install -g cnpm --registry=https://registry.npm.taobao.org
+    npm install -g cnpm --registry=https://registry.npmmirror.com
     cd litemall/litemall-vue
     cnpm install
     cnpm run dev
