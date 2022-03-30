@@ -55,6 +55,23 @@ public class LitemallPermissionService {
         return permissions;
     }
 
+    public Set<String> queryByRoleId(List<Integer> roleIds) {
+        Set<String> permissions = new HashSet<String>();
+        if(roleIds == null || roleIds.isEmpty()){
+            return permissions;
+        }
+
+        LitemallPermissionExample example = new LitemallPermissionExample();
+        example.or().andRoleIdIn(roleIds).andDeletedEqualTo(false);
+        List<LitemallPermission> permissionList = permissionMapper.selectByExample(example);
+
+        for(LitemallPermission permission : permissionList){
+            permissions.add(permission.getPermission());
+        }
+
+        return permissions;
+    }
+
     public boolean checkSuperPermission(Integer roleId) {
         if(roleId == null){
             return false;
@@ -62,6 +79,16 @@ public class LitemallPermissionService {
 
         LitemallPermissionExample example = new LitemallPermissionExample();
         example.or().andRoleIdEqualTo(roleId).andPermissionEqualTo("*").andDeletedEqualTo(false);
+        return permissionMapper.countByExample(example) != 0;
+    }
+
+    public boolean checkSuperPermission(List<Integer> roleIds) {
+        if(roleIds == null || roleIds.isEmpty()){
+            return false;
+        }
+
+        LitemallPermissionExample example = new LitemallPermissionExample();
+        example.or().andRoleIdIn(roleIds).andPermissionEqualTo("*").andDeletedEqualTo(false);
         return permissionMapper.countByExample(example) != 0;
     }
 

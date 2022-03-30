@@ -225,6 +225,25 @@ export default {
         .then(response => {
           this.systemPermissions = response.data.data.systemPermissions
           this.assignedPermissions = response.data.data.assignedPermissions
+          var _curPermissions = response.data.data.curPermissions
+          if (_curPermissions) {
+            var _map = {}
+            _curPermissions.forEach(r => {
+              _map[r] = true
+            })
+
+            this.systemPermissions.forEach(i => {
+              i.children.forEach(j => {
+                j.children.forEach(k => {
+                  if (_map[k.id]) {
+                    k.disabled = false
+                  } else {
+                    k.disabled = true
+                  }
+                })
+              })
+            })
+          }
         })
     },
     updatePermission() {

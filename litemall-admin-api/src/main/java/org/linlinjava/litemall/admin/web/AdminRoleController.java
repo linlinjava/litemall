@@ -1,8 +1,11 @@
 package org.linlinjava.litemall.admin.web;
 
+import io.swagger.models.auth.In;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.util.AdminResponseCode;
 import org.linlinjava.litemall.admin.util.Permission;
@@ -25,10 +28,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.security.Security;
 import java.util.*;
 
-import static org.linlinjava.litemall.admin.util.AdminResponseCode.ROLE_NAME_EXIST;
-import static org.linlinjava.litemall.admin.util.AdminResponseCode.ROLE_USER_EXIST;
+import static org.linlinjava.litemall.admin.util.AdminResponseCode.*;
 
 @RestController
 @RequestMapping("/admin/role")
@@ -159,7 +162,31 @@ public class AdminRoleController {
         return systemPermissions;
     }
 
-    private Set<String> getAssignedPermissions(Integer roleId) {
+    private Set<String> getAssignedPermissions(List<Integer> roleIds) {
+        // 这里需要注意的是，如果存在超级权限*，那么这里需要转化成当前所有系统权限。
+        // 之所以这么做，是因为前端不能识别超级权限，所以这里需要转换一下。
+        Set<String> assignedPermissions = null;
+        if (permissionService.checkSuperPermission(roleIds)) {
+            getSystemPermissions();
+            assignedPermissions = systemPermissionsString;
+        } else {
+            assignedPermissions = permissionService.queryByRoleId(roleIds);
+        }
+
+        return assignedPermissions;
+    }
+
+    /**
+     * 管理员的权限情况
+     *
+     * @return 系统所有权限列表、角色权限、管理员已分配权限
+     */
+    @RequiresPermissions("admin:role:permission:get")
+    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "权限详情")
+    @GetMapping("/permissions")
+    public Object getPermissions(Integer roleId) {
+        List<PermVo> systemPermissions = getSystemPermissions();
+
         // 这里需要注意的是，如果存在超级权限*，那么这里需要转化成当前所有系统权限。
         // 之所以这么做，是因为前端不能识别超级权限，所以这里需要转换一下。
         Set<String> assignedPermissions = null;
@@ -170,24 +197,20 @@ public class AdminRoleController {
             assignedPermissions = permissionService.queryByRoleId(roleId);
         }
 
-        return assignedPermissions;
-    }
+        Subject currentUser = SecurityUtils.getSubject();
+        LitemallAdmin currentAdmin = (LitemallAdmin) currentUser.getPrincipal();
+        Integer[] roles = currentAdmin.getRoleIds();
+        List<Integer> roleIds = Arrays.asList(roles);
+        Set<String> curPermissions = null;
+        if (!permissionService.checkSuperPermission(roleIds)) {
+            curPermissions = permissionService.queryByRoleId(roleIds);
+        }
 
-    /**
-     * 管理员的权限情况
-     *
-     * @return 系统所有权限列表和管理员已分配权限
-     */
-    @RequiresPermissions("admin:role:permission:get")
-    @RequiresPermissionsDesc(menu = {"系统管理", "角色管理"}, button = "权限详情")
-    @GetMapping("/permissions")
-    public Object getPermissions(Integer roleId) {
-        List<PermVo> systemPermissions = getSystemPermissions();
-        Set<String> assignedPermissions = getAssignedPermissions(roleId);
 
         Map<String, Object> data = new HashMap<>();
         data.put("systemPermissions", systemPermissions);
         data.put("assignedPermissions", assignedPermissions);
+        data.put("curPermissions", curPermissions);
         return ResponseUtil.ok(data);
     }
 
