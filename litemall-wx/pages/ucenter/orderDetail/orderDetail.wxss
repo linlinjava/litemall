@@ -11,13 +11,13 @@ page {
   overflow: hidden;
 }
 
-.item {
-  padding-left: 31.25rpx;
-  height: 42.5rpx;
-  padding-bottom: 12.5rpx;
-  line-height: 30rpx;
-  font-size: 30rpx;
-  color: #666;
+.order-info .item {
+  height: 80rpx;
+  line-height: 80rpx;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #f4f4f4;
+  padding: 0 31.25rpx;
 }
 
 .item-c {
@@ -177,73 +177,34 @@ page {
 
 .order-bottom {
   margin-top: 20rpx;
-  padding-left: 31.25rpx;
+  padding: 0 31.25rpx;
   height: auto;
   overflow: hidden;
   background: #fff;
 }
 
-.order-bottom .address {
-  height: 128rpx;
-  padding-top: 25rpx;
-  border-top: 1px solid #f4f4f4;
-  border-bottom: 1px solid #f4f4f4;
-}
-
 .order-bottom .address .t {
-  height: 35rpx;
-  line-height: 35rpx;
-  margin-bottom: 7.5rpx;
-}
-
-.order-bottom .address .name {
-  display: inline-block;
-  height: 35rpx;
-  width: 140rpx;
-  line-height: 35rpx;
-  font-size: 30rpx;
-}
-
-.order-bottom .address .mobile {
-  display: inline-block;
-  height: 35rpx;
-  line-height: 35rpx;
-  font-size: 30rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #f4f4f4;
 }
 
 .order-bottom .address .b {
-  height: 35rpx;
-  line-height: 35rpx;
+  height: 60rpx;
+  line-height: 60rpx;
   font-size: 30rpx;
-}
-
-.order-bottom .total {
-  height: 130rpx;
-  padding-top: 20rpx;
   border-bottom: 1px solid #f4f4f4;
+  text-align: right;
 }
 
 .order-bottom .total .t {
-  height: 30rpx;
-  line-height: 30rpx;
-  margin-bottom: 7.5rpx;
+  height: 80rpx;
+  line-height: 80rpx;
   display: flex;
-}
-
-.order-bottom .total .label {
-  width: 150rpx;
-  display: inline-block;
-  height: 35rpx;
-  line-height: 35rpx;
-  font-size: 30rpx;
-}
-
-.order-bottom .total .txt {
-  flex: 1;
-  display: inline-block;
-  height: 35rpx;
-  line-height: 35rpx;
-  font-size: 30rpx;
+  justify-content: space-between;
+  border-top: 1px solid #f4f4f4;
 }
 
 .order-bottom .pay-fee {

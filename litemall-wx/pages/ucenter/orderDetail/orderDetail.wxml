@@ -1,12 +1,18 @@
 <view class="container">
   <view class="order-info">
-    <view class="item">下单时间：{{orderInfo.addTime}}</view>
-    <view class="item">订单编号：{{orderInfo.orderSn}}</view>
-    <view class="item">订单留言：{{orderInfo.message}}</view>
+    <view class="item">
+      <view class="label">下单时间：</view>
+      <view class="txt">{{orderInfo.addTime}}</view>
+    </view>
+    <view class="item">
+      <view class="label">订单编号：</view>
+      <view class="txt">{{orderInfo.orderSn}}</view>
+    </view>
+    <view class="item">
+      <view class="label">订单留言：</view>
+      <view class="txt">{{orderInfo.message}}</view>
+    </view>
     <view class="item-c">
-      <view class="l">实付：
-        <text class="cost">￥{{orderInfo.actualPrice}}</text>
-      </view>
       <view class="r">
         <view class="btn active" bindtap="cancelOrder" wx:if="{{handleOption.cancel}}">取消订单</view>
         <view class="btn active" bindtap="payOrder" wx:if="{{handleOption.pay}}">去付款</view>
@@ -56,20 +62,20 @@
       <view class="total">
         <view class="t">
           <text class="label">商品合计：</text>
-          <text class="txt">￥{{orderInfo.goodsPrice}}</text>
+          <text class="txt">￥{{orderInfo.goodsPrice}}元</text>
         </view>
         <view class="t">
-          <text class="label">运费：</text>
-          <text class="txt">￥{{orderInfo.freightPrice}}</text>
+          <text class="label">订单运费：</text>
+          <text class="txt">￥{{orderInfo.freightPrice}}元</text>
         </view>
         <view class="t">
-          <text class="label">优惠：</text>
-          <text class="txt">￥-{{orderInfo.couponPrice}}</text>
+          <text class="label">订单优惠：</text>
+          <text class="txt">-￥{{orderInfo.couponPrice}}元</text>
         </view>
-      </view>
-      <view class="pay-fee">
-        <text class="label">实付：</text>
-        <text class="txt">￥{{orderInfo.actualPrice}}</text>
+        <view class="t">
+          <text class="label">订单实付：</text>
+          <text class="txt">￥{{orderInfo.actualPrice}}元</text>
+        </view>        
       </view>
     </view>
   </view>
