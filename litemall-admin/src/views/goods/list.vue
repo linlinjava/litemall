@@ -189,18 +189,25 @@ export default {
       this.detailDialogVisible = true
     },
     handleDelete(row) {
-      deleteGoods(row).then(response => {
-        this.$notify.success({
-          title: '成功',
-          message: '删除成功'
+      this.$confirm('确定删除?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        deleteGoods(row).then(response => {
+          this.$notify.success({
+            title: '成功',
+            message: '删除成功'
+          })
+          this.getList()
+        }).catch(response => {
+          this.$notify.error({
+            title: '失败',
+            message: response.data.errmsg
+          })
         })
-        this.getList()
-      }).catch(response => {
-        this.$notify.error({
-          title: '失败',
-          message: response.data.errmsg
-        })
-      })
+      }).catch(() => {})
     },
     handleDownload() {
       this.downloadLoading = true
