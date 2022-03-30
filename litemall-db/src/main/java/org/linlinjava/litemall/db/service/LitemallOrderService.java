@@ -126,6 +126,11 @@ public class LitemallOrderService {
         return orderMapper.updateWithOptimisticLocker(preUpdateTime, order);
     }
 
+    public int updateSelective(LitemallOrder order) {
+        return litemallOrderMapper.updateByPrimaryKeySelective(order);
+    }
+
+
     public void deleteById(Integer id) {
         litemallOrderMapper.logicalDeleteByPrimaryKey(id);
     }

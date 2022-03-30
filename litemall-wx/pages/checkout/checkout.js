@@ -155,6 +155,13 @@ Page({
 
         const orderId = res.data.orderId;
         const grouponLinkId = res.data.grouponLinkId;
+        const payed = res.data.payed
+        if (payed) {
+          wx.redirectTo({
+            url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+          });
+          return
+        }
         util.request(api.OrderPrepay, {
           orderId: orderId
         }, 'POST').then(function(res) {
