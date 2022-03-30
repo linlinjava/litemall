@@ -413,7 +413,10 @@ public class WxCartController {
 
         // 收货地址
         LitemallAddress checkedAddress = null;
-        if (addressId == null || addressId.equals(0)) {
+        if (addressId != null && !addressId.equals(0)) {
+            checkedAddress = addressService.query(userId, addressId);
+        }
+        if (checkedAddress == null) {
             checkedAddress = addressService.findDefault(userId);
             // 如果仍然没有地址，则是没有收货地址
             // 返回一个空的地址id=0，这样前端则会提醒添加地址
@@ -423,13 +426,6 @@ public class WxCartController {
                 addressId = 0;
             } else {
                 addressId = checkedAddress.getId();
-            }
-
-        } else {
-            checkedAddress = addressService.query(userId, addressId);
-            // 如果null, 则报错
-            if (checkedAddress == null) {
-                return ResponseUtil.badArgumentValue();
             }
         }
 
