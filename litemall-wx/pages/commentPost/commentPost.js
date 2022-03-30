@@ -4,9 +4,7 @@ var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
 Page({
   data: {
-    orderId: 0,
-    type: 0,
-    valueId: 0,
+    ogid: 0,
     orderGoods: {},
     content: '',
     stars: [0, 1, 2, 3, 4],
@@ -97,17 +95,14 @@ Page({
   onLoad: function(options) {
     var that = this;
     that.setData({
-      orderId: options.orderId,
-      type: options.type,
-      valueId: options.valueId
+      ogid: options.ogid
     });
     this.getOrderGoods();
   },
   getOrderGoods: function() {
     let that = this;
     util.request(api.OrderGoods, {
-      orderId: that.data.orderId,
-      goodsId: that.data.valueId
+      ogid: that.data.ogid
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({

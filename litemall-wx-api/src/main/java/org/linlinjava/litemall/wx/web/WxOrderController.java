@@ -159,15 +159,13 @@ public class WxOrderController {
      * 待评价订单商品信息
      *
      * @param userId  用户ID
-     * @param orderId 订单ID
-     * @param goodsId 商品ID
+     * @param ogid 订单商品ID
      * @return 待评价订单商品信息
      */
     @GetMapping("goods")
     public Object goods(@LoginUser Integer userId,
-                        @NotNull Integer orderId,
-                        @NotNull Integer goodsId) {
-        return wxOrderService.goods(userId, orderId, goodsId);
+                        @NotNull Integer ogid) {
+        return wxOrderService.goods(userId, ogid);
     }
 
     /**

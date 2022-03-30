@@ -42,7 +42,7 @@
           <view class="attr">{{item.specifications}}</view>
           <view class="price">￥{{item.price}}</view>
           <view class="btn active" wx:if="{{handleOption.comment && (item.comment == 0)}}">
-            <navigator url="../../commentPost/commentPost?orderId={{item.orderId}}&&valueId={{item.goodsId}}&type=0">去评价</navigator>
+            <navigator url="../../commentPost/commentPost?ogid={{item.id}}">去评价</navigator>
           </view>
           <view class="btn active" wx:if="{{handleOption.rebuy}}">
             <navigator url="../../goods/goods?id={{item.goodsId}}">再次购买</navigator>

@@ -955,29 +955,22 @@ public class WxOrderService {
      * 待评价订单商品信息
      *
      * @param userId  用户ID
-     * @param orderId 订单ID
-     * @param goodsId 商品ID
+     * @param ogid 订单商品ID
      * @return 待评价订单商品信息
      */
-    public Object goods(Integer userId, Integer orderId, Integer goodsId) {
+    public Object goods(Integer userId, Integer ogid) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
-        LitemallOrder order = orderService.findById(userId, orderId);
-        if (order == null) {
-            return ResponseUtil.badArgument();
+        LitemallOrderGoods orderGoods = orderGoodsService.findById(ogid);
+
+        if (orderGoods != null) {
+            Integer orderId = orderGoods.getOrderId();
+            LitemallOrder order = orderService.findById(orderId);
+            if (!order.getUserId().equals(userId)) {
+                return ResponseUtil.badArgument();
+            }
         }
-
-        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.findByOidAndGid(orderId, goodsId);
-        int size = orderGoodsList.size();
-
-        Assert.state(size < 2, "存在多个符合条件的订单商品");
-
-        if (size == 0) {
-            return ResponseUtil.badArgumentValue();
-        }
-
-        LitemallOrderGoods orderGoods = orderGoodsList.get(0);
         return ResponseUtil.ok(orderGoods);
     }
 
@@ -1008,7 +1001,6 @@ public class WxOrderService {
         if (order == null) {
             return ResponseUtil.badArgumentValue();
         }
-        Short orderStatus = order.getOrderStatus();
         if (!OrderUtil.isConfirmStatus(order) && !OrderUtil.isAutoConfirmStatus(order)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION, "当前商品不能评价");
         }
