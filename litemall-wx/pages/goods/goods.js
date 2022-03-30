@@ -156,6 +156,7 @@ Page({
             });
           }
         }
+        res.data.info.path = "pages/goods/goods?id=" + that.data.id
 
         that.setData({
           goods: res.data.info,

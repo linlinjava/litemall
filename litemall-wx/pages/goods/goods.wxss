@@ -577,24 +577,37 @@
 .bottom-btn .l {
   float: left;
   height: 100rpx;
-  width: 162rpx;
+  width: 90rpx;
   border: 1px solid #f4f4f4;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.bottom-btn .l .l-contact {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  line-height: 1;
+  background: #fff;
+  border-radius: 0;
+  height: 55rpx;
+}
+ 
+.bottom-btn .l .l-contact:after {
+  border: none;
+  border-radius: 0;
+}
+
 .bottom-btn .l.l-collect {
   border-right: none;
   border-left: none;
   text-align: center;
-  width: 90rpx;
 }
 
 .bottom-btn .l.l-collect .icon {
-  position: absolute;
-  top: 28rpx;
-  left: 20rpx;
   font-size: 44rpx;
 }
 
@@ -806,19 +819,6 @@
   height: 100%;
   text-align: center;
   line-height: 65rpx;
-}
-
-.contact {
-  height: 100rpx;
-  width: 100rpx;
-  border-radius: 100%;
-  position: fixed;
-  bottom: 96rpx;
-  right: 10rpx;
-  font-size: 20rpx;
-  box-sizing: border-box;
-  background: url("/static/images/customer.png") no-repeat center 21rpx;
-  background-size: 55rpx auto;
 }
 
 .share-pop-box {

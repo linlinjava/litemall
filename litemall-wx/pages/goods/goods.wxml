@@ -178,14 +178,14 @@
   </view>
 </view>
 
-<!-- 联系客服 -->
-<view class="contact">
-  <contact-button style="opacity:0;position:absolute;" type="default-dark" session-from="weapp" size="27">
-  </contact-button>
-</view>
-
 <!-- 底部按钮 -->
 <view class="bottom-btn">
+<view class="l">
+  <button show-message-card send-message-title="{{ goods.name }}" send-message-path="{{ goods.path }}"
+				send-message-img="{{ goods.picUrl }}" open-type="contact"  class="l-contact">
+				<van-icon class="icon" name="/static/images/customer.png" />
+			</button>
+</view>
   <view class="l l-collect" bindtap="addCollectOrNot" wx:if="{{!isGroupon}}">
     <van-icon class="icon" name="star" color="#ab956d" wx:if="{{collect}}"/>
     <van-icon class="icon" name="star-o" wx:else/>
