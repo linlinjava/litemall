@@ -32,7 +32,7 @@
     "@vue/eslint-config-prettier": "^3.0.5",
     "babel-plugin-import": "^1.9.1",
     "babel-plugin-lodash": "^3.3.4",
-    "node-sass": "^4.9.3",
+    "sass": "^1.26.2",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
   },
