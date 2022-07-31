@@ -1157,29 +1157,7 @@ showdown.subParser('anchors', function (text, options, globals) {
   };
 
   // First, handle reference-style links: [link text] [id]
-  /*
-   text = text.replace(/
-   (							// wrap whole match in $1
-   \[
-   (
-   (?:
-   \[[^\]]*\]		// allow brackets nested one level
-   |
-   [^\[]			// or anything else
-   )*
-   )
-   \]
-
-   [ ]?					// one optional space
-   (?:\n[ ]*)?				// one optional newline followed by spaces
-
-   \[
-   (.*?)					// id = $3
-   \]
-   )()()()()					// pad remaining backreferences
-   /g,_DoAnchors_callback);
-   */
-  text = text.replace(/(\[((?:\[[^\]]*]|[^\[\]])*)][ ]?(?:\n[ ]*)?\[(.*?)])()()()()/g, writeAnchorTag);
+  text = text.replace(/(\[[^\]\n]+\]\s*){2}/g, writeAnchorTag);
 
   //
   // Next, inline-style links: [link text](url "optional title")
@@ -1241,10 +1219,10 @@ showdown.subParser('autoLinks', function (text, options, globals) {
 
   text = globals.converter._dispatch('autoLinks.before', text, options, globals);
 
-  var simpleURLRegex  = /\b(((https?|ftp|dict):\/\/|www\.)[^'">\s]+\.[^'">\s]+)(?=\s|$)(?!["<>])/gi,
+  var simpleURLRegex  = /\b(((https?|ftp|dict):\/\/|www\.)[^'">\s]+\.[^'">\s]+)(?=\b)(?![^<>]*>)/gi,
       delimUrlRegex   = /<(((https?|ftp|dict):\/\/|www\.)[^'">\s]+)>/gi,
-      simpleMailRegex = /(?:^|[ \n\t])([A-Za-z0-9!#$%&'*+-/=?^_`\{|}~\.]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)(?:$|[ \n\t])/gi,
-      delimMailRegex  = /<(?:mailto:)?([-.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)>/gi;
+      simpleMailRegex = /(?:\b)([\w\d\.\-\+]{1,256}\@[\w\d\.\-\+]{1,256}\.\w{1,24}+)(?:\b)/gi,
+      delimMailRegex  = /<(?:mailto:)?([\w\d\.\-\+]{1,256}\@[\w\d\.\-\+]{1,256}\.\w{1,24})>/gi;
 
   text = text.replace(delimUrlRegex, replaceLink);
   text = text.replace(delimMailRegex, replaceMail);
