@@ -108,6 +108,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
     打开命令行，输入以下命令
     ```bash
+    #如果node版本>17，先执行 export NODE_OPTIONS=--openssl-legacy-provider
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     cd litemall/litemall-admin
     cnpm install
@@ -132,6 +133,7 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 
     打开命令行，输入以下命令
     ```bash
+   #如果node版本>17，先执行 export NODE_OPTIONS=--openssl-legacy-provider
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     cd litemall/litemall-vue
     cnpm install
