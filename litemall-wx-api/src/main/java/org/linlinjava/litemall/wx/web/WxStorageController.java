@@ -66,7 +66,7 @@ public class WxStorageController {
     @GetMapping("/fetch/{key:.+}")
     public ResponseEntity<Resource> fetch(@PathVariable String key) {
         LitemallStorage litemallStorage = litemallStorageService.findByKey(key);
-        if (key == null) {
+        if (litemallStorage==null||key == null) {
             return ResponseEntity.notFound().build();
         }
         if (key.contains("../")) {
@@ -91,7 +91,7 @@ public class WxStorageController {
     @GetMapping("/download/{key:.+}")
     public ResponseEntity<Resource> download(@PathVariable String key) {
         LitemallStorage litemallStorage = litemallStorageService.findByKey(key);
-        if (key == null) {
+        if (litemallStorage==null||key == null) {
             return ResponseEntity.notFound().build();
         }
         if (key.contains("../")) {
