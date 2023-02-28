@@ -5,7 +5,7 @@
   "author": "linlinjava <linlinjava@163.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "dev": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
     "build:prod": "vue-cli-service build --mode production",
     "build:dep": "vue-cli-service build --mode deployment",
