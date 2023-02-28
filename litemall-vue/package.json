@@ -6,8 +6,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "serve": "vue-cli-service serve",
+    "dev": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
     "build": "vue-cli-service build  --mode production",
     "build:dep": "vue-cli-service build --mode deployment",
     "build:prod": "vue-cli-service build --mode production",
