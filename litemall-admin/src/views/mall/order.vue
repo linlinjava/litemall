@@ -393,9 +393,11 @@ export default {
       if (this.listQuery.timeArray && this.listQuery.timeArray.length === 2) {
         this.listQuery.start = this.listQuery.timeArray[0]
         this.listQuery.end = this.listQuery.timeArray[1]
+        this.listLoading = false
       } else {
         this.listQuery.start = null
         this.listQuery.end = null
+        this.listLoading = false
       }
       if (this.listQuery.orderId) {
         detailOrder(this.listQuery.orderId).then(response => {
