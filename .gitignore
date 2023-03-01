@@ -24,7 +24,7 @@
 *.iml
 *.ipr
 rebel.xml
-.vscode/
+/.vscode/
 ### maven ###
 target/
 *.war
