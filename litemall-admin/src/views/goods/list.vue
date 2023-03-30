@@ -9,11 +9,11 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="danger" icon="el-icon-delete" :disabled="batchDeleteArr.length === 0" @click="handleDeleteRows">批量删除</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row @selection-change="handleSelectionChange">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" class="table-expand">
@@ -42,7 +42,7 @@
           </el-form>
         </template>
       </el-table-column>
-
+      <el-table-column type="selection" width="55" />
       <el-table-column align="center" label="商品ID" prop="id" />
 
       <el-table-column align="center" min-width="100" label="名称" prop="name" />
@@ -140,6 +140,7 @@ export default {
   components: { BackToTop, Pagination },
   data() {
     return {
+      batchDeleteArr: [],
       thumbnail,
       toPreview,
       list: [],
@@ -208,6 +209,27 @@ export default {
           })
         })
       }).catch(() => {})
+    },
+    handleSelectionChange(val) {
+      console.log(val)
+      this.batchDeleteArr = val
+    },
+    handleDeleteRows() {
+      this.batchDeleteArr.forEach(row => this.handleDeleteEachRow(row))
+      this.getList()
+    },
+    handleDeleteEachRow(row) {
+      deleteGoods(row).then(response => {
+        this.$notify.success({
+          title: '成功',
+          message: '删除成功'
+        })
+      }).catch(response => {
+        this.$notify.error({
+          title: '失败',
+          message: response.data.errmsg
+        })
+      })
     },
     handleDownload() {
       this.downloadLoading = true
