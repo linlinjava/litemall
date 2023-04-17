@@ -125,9 +125,6 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="specifications" javaType="java.lang.String[]"
                             typeHandler="org.linlinjava.litemall.db.mybatis.JsonStringArrayTypeHandler"/>
-            <columnOverride column="comments" javaType="java.lang.Integer[]"
-                            typeHandler="org.linlinjava.litemall.db.mybatis.JsonIntegerArrayTypeHandler"/>
-
         </table>
         <table tableName="litemall_region">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
