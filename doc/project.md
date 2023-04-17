@@ -395,18 +395,17 @@ flush privilege
 ### 1.4.4 Vue开发环境
 
 1. 安装[nodejs](https://nodejs.org/en/)
-2. 安装依赖库
+   2. 安装依赖库
     
-    ```
-    cd litemall/litemall-admin
-    npm install -g cnpm --registry=https://registry.npm.taobao.org
-    cnpm install
-    ```
+       ```
+       cd litemall/litemall-admin
+       npm install --registry=https://registry.npm.taobao.org
+       ```
     
 3. 编译并运行
     
     ```
-    cnpm run dev
+    npm run dev
     ```
     然后，打开浏览器，输入`http://localhost:9527`。
     如果出现管理后台登录页面，则表明管理后台的前端运行正常；
@@ -425,9 +424,9 @@ flush privilege
 1. 管理后台前端，即litemall-admin模块，配置文件在litemall-admin中，存在三个配置文件`env.development`,`env.deployment`
 和`.env.production`。这里面配置信息都是一样，最主要的配置是`VUE_APP_BASE_API`，即管理后台的服务根地址。
 
-   * 开发阶段，开发者运行命令`cnpm run dev`，这里就会采用`env.development`配置文件；
-   * 部署阶段，当开发者运行命令`cnpm run build:dep`，这里就会采用`env.deployment`配置文件；
-   * 上线阶段，当开发者运行命令`cnpm run build:prod`，这里就会采用`.env.production`配置文件。
+   * 开发阶段，开发者运行命令`npm run dev`，这里就会采用`env.development`配置文件；
+   * 部署阶段，当开发者运行命令`npm run build:dep`，这里就会采用`env.deployment`配置文件；
+   * 上线阶段，当开发者运行命令`npm run build:prod`，这里就会采用`.env.production`配置文件。
 
 2. 小商场前端，即litemall-wx模块，配置文件是`litemall-wx/project.config.json`和`litemall-wx/api.js`。
 这里面最主要的配置信息是`project.config.json`中的`appid`，开发者需要设置自己申请的appid；
@@ -899,8 +898,8 @@ sudo mysql_secure_installation
     cat ./litemall-db/sql/litemall_data.sql >> ./deploy/db/litemall.sql
     
     cd ./litemall-admin
-    cnpm install
-    cnpm run build:dep
+    npm install --registry=https://registry.npm.taobao.org
+    npm run build:dep
     
     cd ..
     mvn clean package
