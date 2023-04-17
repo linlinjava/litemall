@@ -9,32 +9,6 @@ litemall = Spring Boot后端 + Vue管理员前端 + 微信小程序用户前端 
 * [FAQ](https://linlinjava.gitbook.io/litemall/faq)
 * [API](https://linlinjava.gitbook.io/litemall/api)
 
-## 项目实例
-
-### 小商场实例
-
-暂无实例，建议开发者本地测试。
-
-### 轻商场实例
-
-请手机扫描以下二维码访问:
-
-![](./doc/pics/readme/mobmall.png)
-
-或者浏览器采用手机模式访问以下网址: [http://122.51.199.160:8080/vue/index.html#/](http://122.51.199.160:8080/vue/index.html#/)
-
-注意：
-> 1. 由于第一次加载数据量较大，建议wifi网络访问，且耐心等待数秒。
-> 2. 此实例是测试轻商场，不支持支付，而且处于开发中还不完善。
-
-### 管理后台实例
-
-![](./doc/pics/readme/admin-dashboard.png)
-
-1. 浏览器打开，输入以下网址: [http://122.51.199.160:8080/#/login](http://122.51.199.160:8080/#/login)
-2. 管理员用户名`admin123`，管理员密码`admin123`
-> 注意：此实例只是测试管理后台。
-
 ## 项目代码
 
 * [码云](https://gitee.com/linlinjava/litemall)
