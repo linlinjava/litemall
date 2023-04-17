@@ -137,7 +137,7 @@ litemall.wx.notify-url=
 
 现象：
 
-执行`cnpm install`失败
+执行`npm install`失败
 
 原因：
 
@@ -145,7 +145,7 @@ litemall.wx.notify-url=
 
 解决：
 
-清空node_modules，重新执行`cnpm install`命令，或者自行百度、Google。
+清空node_modules，重新执行`npm install`命令，或者自行百度、Google。
 
 ### 2.3 分页数据返回不正常
 

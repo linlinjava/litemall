@@ -10,8 +10,8 @@
     cat ./litemall-db/sql/litemall_data.sql >> ./deploy/db/litemall.sql
     
     cd ./litemall-admin
-    cnpm install
-    cnpm run build:dep
+    npm install --registry=https://registry.npm.taobao.org
+    npm run build:dep
     
     cd ..
     mvn clean package
