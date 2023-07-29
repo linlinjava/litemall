@@ -3,58 +3,58 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" placeholder="请输入专题标题" />
-      <el-input v-model="listQuery.subtitle" clearable class="filter-item" style="width: 200px;" placeholder="请输入专题子标题" />
-      <el-select v-model="listQuery.sort" class="filter-item" placeholder="请选择排序字段">
+      <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" :placeholder="$t('promotion_topic.placeholder.filter_title')" />
+      <el-input v-model="listQuery.subtitle" clearable class="filter-item" style="width: 200px;" :placeholder="$t('promotion_topic.placeholder.filter_subtitle')" />
+      <el-select v-model="listQuery.sort" class="filter-item" :placeholder="$t('promotion_topic.placeholder.filter_sort')">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-      <el-button v-permission="['GET /admin/topic/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button v-permission="['GET /admin/topic/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <div class="operator-container">
-      <el-button v-permission="['POST /admin/topic/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button v-permission="['POST /admin/topic/batch-delete']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
+      <el-button v-permission="['POST /admin/topic/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('app.button.create') }}</el-button>
+      <el-button v-permission="['POST /admin/topic/batch-delete']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">{{ $t('app.button.batch_delete') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row @selection-change="handleSelectionChange">
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column align="center" label="专题标题" prop="title" />
+      <el-table-column align="center" :label="$t('promotion_topic.table.title')" prop="title" />
 
-      <el-table-column align="center" label="专题子标题" min-width="200" prop="subtitle" />
+      <el-table-column align="center" :label="$t('promotion_topic.table.subtitle')" min-width="200" prop="subtitle" />
 
-      <el-table-column align="center" property="picUrl" label="图片">
+      <el-table-column align="center" property="picUrl" :label="$t('promotion_topic.table.pic_url')">
         <template slot-scope="scope">
           <el-image :src="thumbnail(scope.row.picUrl)" :preview-src-list="toPreview(scope.row, scope.row.picUrl)" style="width: 40px; height: 40px" />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="专题详情" prop="content">
+      <el-table-column align="center" :label="$t('promotion_topic.table.content')" prop="content">
         <template slot-scope="scope">
-          <el-dialog :visible.sync="contentDialogVisible" title="专题详情">
+          <el-dialog :visible.sync="contentDialogVisible" :title="$t('promotion_topic.dialog.content_detail')">
             <div v-html="contentDetail" />
           </el-dialog>
-          <el-button type="primary" size="mini" @click="showContent(scope.row.content)">查看</el-button>
+          <el-button type="primary" size="mini" @click="showContent(scope.row.content)">{{ $t('app.button.view') }}</el-button>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="底价" prop="price" />
+      <el-table-column align="center" :label="$t('promotion_topic.table.price')" prop="price" />
 
-      <el-table-column align="center" label="阅读数量" prop="readCount" />
+      <el-table-column align="center" :label="$t('promotion_topic.table.read_count')" prop="readCount" />
 
-      <el-table-column align="center" label="操作" min-width="100" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('promotion_topic.table.actions')" min-width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/topic/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/topic/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-permission="['POST /admin/topic/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('app.button.edit') }}</el-button>
+          <el-button v-permission="['POST /admin/topic/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-tooltip placement="top" content="返回顶部">
+    <el-tooltip placement="top" :content="$t('app.tooltip.back_to_top')">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
 

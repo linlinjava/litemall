@@ -3,21 +3,21 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户ID"/>
-      <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品ID"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" :placeholder="$t('user_footprint.placeholder.filter_user_id')"/>
+      <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 200px;" :placeholder="$t('user_footprint.placeholder.filter_goods_id')"/>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" width="100px" label="足迹ID" prop="id" sortable/>
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
+      <el-table-column align="center" width="100px" :label="$t('user_footprint.table.id')" prop="id" sortable />
 
-      <el-table-column align="center" min-width="100px" label="用户ID" prop="userId"/>
+      <el-table-column align="center" min-width="100px" :label="$t('user_footprint.table.user_id')" prop="userId" />
 
-      <el-table-column align="center" min-width="100px" label="商品ID" prop="goodsId"/>
+      <el-table-column align="center" min-width="100px" :label="$t('user_footprint.table.goods_id')" prop="goodsId" />
 
-      <el-table-column align="center" min-width="100px" label="添加时间" prop="addTime"/>
+      <el-table-column align="center" min-width="100px" :label="$t('user_footprint.table.add_time')" prop="addTime" />
 
     </el-table>
 

@@ -3,35 +3,35 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户ID" />
-      <el-input v-model="listQuery.valueId" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品ID" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" :placeholder="$t('goods_comment.placeholder.filter_user_id')" />
+      <el-input v-model="listQuery.valueId" clearable class="filter-item" style="width: 200px;" :placeholder="$t('goods_comment.placeholder.filter_value_id')" />
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
 
-      <el-table-column align="center" label="用户ID" prop="userId" />
+      <el-table-column align="center" :label="$t('goods_comment.table.user_id')" prop="userId" />
 
-      <el-table-column align="center" label="商品ID" prop="valueId" />
+      <el-table-column align="center" :label="$t('goods_comment.table.value_id')" prop="valueId" />
 
-      <el-table-column align="center" label="打分" prop="star" />
+      <el-table-column align="center" :label="$t('goods_comment.table.star')" prop="star" />
 
-      <el-table-column align="center" label="评论内容" prop="content" />
+      <el-table-column align="center" :label="$t('goods_comment.table.content')" prop="content" />
 
-      <el-table-column align="center" label="评论图片" prop="picUrls">
+      <el-table-column align="center" :label="$t('goods_comment.table.pic_urls')" prop="picUrls">
         <template slot-scope="scope">
           <el-image v-for="item in scope.row.picUrls" :key="item" :src="item" :preview-src-list="scope.row.picUrls" :lazy="true" style="width: 40px; height: 40px; margin-right: 5px;" />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="时间" prop="addTime" />
+      <el-table-column align="center" :label="$t('goods_comment.table.add_time')" prop="addTime" />
 
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('goods_comment.table.actions')" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleReply(scope.row)">回复</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handleReply(scope.row)">{{ $t('app.button.reply') }}</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -39,15 +39,15 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 评论回复 -->
-    <el-dialog :visible.sync="replyFormVisible" title="回复">
+    <el-dialog :visible.sync="replyFormVisible" :title="$t('goods_comment.dialog.reply')">
       <el-form ref="replyForm" :model="replyForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="回复内容" prop="content">
+        <el-form-item :label="$t('goods_comment.form.content')" prop="content">
           <el-input v-model="replyForm.content" :autosize="{ minRows: 4, maxRows: 8}" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="replyFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="reply">确定</el-button>
+        <el-button @click="replyFormVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button type="primary" @click="reply">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 

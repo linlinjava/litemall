@@ -3,40 +3,40 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" placeholder="请输入标题关键字" />
-      <el-input v-model="listQuery.content" clearable class="filter-item" style="width: 200px;" placeholder="请输入内容关键字" />
-      <el-button v-permission="['GET /admin/notice/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" :placeholder="$t('sys_notice.placeholder.filter_title')" />
+      <el-input v-model="listQuery.content" clearable class="filter-item" style="width: 200px;" :placeholder="$t('sys_notice.placeholder.filter_content')" />
+      <el-button v-permission="['GET /admin/notice/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <div class="operator-container">
-      <el-button v-permission="['POST /admin/notice/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button v-permission="['GET /admin/notice/batch-delete']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
+      <el-button v-permission="['POST /admin/notice/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('app.button.create') }}</el-button>
+      <el-button v-permission="['GET /admin/notice/batch-delete']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">{{ $t('app.button.batch_delete') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row @selection-change="handleSelectionChange">
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column align="center" label="通知标题" prop="title" />
+      <el-table-column align="center" :label="$t('sys_notice.table.title')" prop="title" />
 
-      <el-table-column align="center" label="通知详情" prop="content">
+      <el-table-column align="center" :label="$t('sys_notice.table.content')" prop="content">
         <template slot-scope="scope">
-          <el-dialog :visible.sync="contentDialogVisible" title="通知详情">
+          <el-dialog :visible.sync="contentDialogVisible" :title="$t('sys_notice.dialog.content_detail')">
             <div v-html="contentDetail" />
           </el-dialog>
-          <el-button type="primary" size="mini" @click="showContent(scope.row.content)">查看</el-button>
+          <el-button type="primary" size="mini" @click="showContent(scope.row.content)">{{ $t('app.button.view') }}</el-button>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="添加时间" prop="addTime" />
+      <el-table-column align="center" :label="$t('sys_notice.table.add_time')" prop="addTime" />
 
-      <el-table-column align="center" label="管理员ID" prop="adminId" />
+      <el-table-column align="center" :label="$t('sys_notice.table.admin_id')" prop="adminId" />
 
-      <el-table-column align="center" label="操作" min-width="100" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('sys_notice.table.actions')" min-width="100" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/notice/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/notice/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-permission="['POST /admin/notice/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('app.button.edit') }}</el-button>
+          <el-button v-permission="['POST /admin/notice/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,21 +46,21 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px">
-        <el-form-item label="通知标题" prop="title">
+        <el-form-item :label="$t('sys_notice.form.title')" prop="title">
           <el-input v-model="dataForm.title" />
         </el-form-item>
-        <el-form-item label="通知内容" prop="content">
+        <el-form-item :label="$t('sys_notice.form.content')" prop="content">
           <editor v-model="dataForm.content" :init="editorInit" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('app.button.confirm') }}</el-button>
+        <el-button v-else type="primary" @click="updateData">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 
-    <el-tooltip placement="top" content="返回顶部">
+    <el-tooltip placement="top" :content="$t('app.tooltip.back_to_top')">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
 

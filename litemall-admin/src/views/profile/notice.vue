@@ -3,39 +3,39 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" placeholder="请输入标题关键字" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-input v-model="listQuery.title" clearable class="filter-item" style="width: 200px;" :placeholder="$t('profile_notice.placeholder.filter_title')" />
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
     </div>
 
     <div class="operator-container">
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleBatchRead">批量已读</el-button>
-      <el-button class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">批量删除</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleBatchRead">{{ $t('profile_notice.button.batch_read') }}</el-button>
+      <el-button class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchDelete">{{ $t('app.button.batch_delete') }}</el-button>
     </div>
 
     <el-tabs v-model="listQuery.type" @tab-click="handleFilter">
-      <el-tab-pane label="未读通知" name="unread" />
-      <el-tab-pane label="已读通知" name="read" />
-      <el-tab-pane label="所有通知" name="all" />
+      <el-tab-pane :label="$t('profile_notice.section.unread')" name="unread" />
+      <el-tab-pane :label="$t('profile_notice.section.read')" name="read" />
+      <el-tab-pane :label="$t('profile_notice.section.all')" name="all" />
     </el-tabs>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" fit highlight-current-row @selection-change="handleSelectionChange">
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" fit highlight-current-row @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column align="center" label="通知标题" prop="noticeTitle" />
+      <el-table-column align="center" :label="$t('profile_notice.table.notice_title')" prop="noticeTitle" />
 
-      <el-table-column align="center" label="通知时间" prop="addTime" width="180" />
+      <el-table-column align="center" :label="$t('profile_notice.table.add_time')" prop="addTime" width="180" />
 
-      <el-table-column align="center" label="通知状态" prop="readTime" width="120">
+      <el-table-column align="center" :label="$t('profile_notice.table.read_time')" prop="readTime" width="120">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.readTime ? 'success' : 'error' ">{{ scope.row.readTime ? '已读' : '未读' }}</el-tag>
+          <el-tag :type="scope.row.readTime ? 'success' : 'error' ">{{ $t(scope.row.readTime ? 'profile_notice.text.read' : 'profile_notice.text.unread') }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('profile_notice.table.actions')" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleRead(scope.row)">阅读</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handleRead(scope.row)">{{ $t('profile_notice.button.read') }}</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -43,10 +43,10 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="notice.title" :visible.sync="noticeVisible" center>
-      <el-divider content-position="left">{{ notice.admin }} 于 {{ notice.time }} 通知如下内容：</el-divider>
+      <el-divider content-position="left">{{ $t('profile_notice.text.admin_time', { admin: notice.admin, time: notice.time }) }}</el-divider>
       <div v-html="notice.content" />
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="afterRead">确定</el-button>
+        <el-button type="primary" @click="afterRead">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>

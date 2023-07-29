@@ -3,32 +3,32 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户名"/>
-      <el-input v-model="listQuery.id" clearable class="filter-item" style="width: 200px;" placeholder="请输入反馈ID"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" :placeholder="$t('user_feedback.placeholder.filter_username')"/>
+      <el-input v-model="listQuery.id" clearable class="filter-item" style="width: 200px;" :placeholder="$t('user_feedback.placeholder.filter_id')"/>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
 
-      <el-table-column align="center" label="反馈ID" prop="id"/>
+      <el-table-column align="center" :label="$t('user_feedback.table.id')" prop="id" />
 
-      <el-table-column align="center" label="用户名" prop="username"/>
+      <el-table-column align="center" :label="$t('user_feedback.table.username')" prop="username" />
 
-      <el-table-column align="center" label="手机号码" prop="mobile"/>
+      <el-table-column align="center" :label="$t('user_feedback.table.mobile')" prop="mobile" />
 
-      <el-table-column align="center" label="反馈类型" prop="feedType"/>
+      <el-table-column align="center" :label="$t('user_feedback.table.feed_type')" prop="feedType" />
 
-      <el-table-column align="center" label="反馈内容" prop="content"/>
+      <el-table-column align="center" :label="$t('user_feedback.table.content')" prop="content" />
 
-      <el-table-column align="center" label="反馈图片" prop="picUrls">
+      <el-table-column align="center" :label="$t('user_feedback.table.pic_urls')" prop="picUrls">
         <template slot-scope="scope">
           <el-image v-for="item in scope.row.picUrls" :key="item" :src="item" :preview-src-list="scope.row.picUrls" :lazy="true" style="width: 40px; height: 40px; margin-right: 5px;"/>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="时间" prop="addTime"/>
+      <el-table-column align="center" :label="$t('user_feedback.table.add_time')" prop="addTime" />
 
     </el-table>
 

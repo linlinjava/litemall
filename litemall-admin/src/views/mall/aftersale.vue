@@ -3,98 +3,98 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.aftersaleSn" clearable class="filter-item" style="width: 200px;" placeholder="请输入售后编号" />
-      <el-input v-model="listQuery.orderId" clearable class="filter-item" style="width: 200px;" placeholder="请输入订单ID" />
-      <el-button v-permission="['GET /admin/aftersale/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-input v-model="listQuery.aftersaleSn" clearable class="filter-item" style="width: 200px;" :placeholder="$t('mall_aftersale.placeholder.filter_aftersale_sn')" />
+      <el-input v-model="listQuery.orderId" clearable class="filter-item" style="width: 200px;" :placeholder="$t('mall_aftersale.placeholder.filter_order_id')" />
+      <el-button v-permission="['GET /admin/aftersale/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <div class="operator-container">
-      <el-button v-permission="['GET /admin/aftersale/batch-recept']" class="filter-item" type="success" icon="el-icon-info" @click="handleBatchRecept">批量通过</el-button>
-      <el-button v-permission="['GET /admin/aftersale/batch-reject']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchReject">批量拒绝</el-button>
+      <el-button v-permission="['GET /admin/aftersale/batch-recept']" class="filter-item" type="success" icon="el-icon-info" @click="handleBatchRecept">{{ $t('mall_aftersale.button.batch_recept') }}</el-button>
+      <el-button v-permission="['GET /admin/aftersale/batch-reject']" class="filter-item" type="danger" icon="el-icon-delete" @click="handleBatchReject">{{ $t('mall_aftersale.button.batch_reject') }}</el-button>
     </div>
 
     <el-tabs v-model="tab" @tab-click="handleClick">
-      <el-tab-pane label="全部" name="all" />
-      <el-tab-pane label="待审核" name="uncheck" />
-      <el-tab-pane label="待退款" name="unrefund" />
+      <el-tab-pane :label="$t('mall_aftersale.section.all')" name="all" />
+      <el-tab-pane :label="$t('mall_aftersale.section.uncheck')" name="uncheck" />
+      <el-tab-pane :label="$t('mall_aftersale.section.unrefund')" name="unrefund" />
     </el-tabs>
 
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" fit highlight-current-row @selection-change="handleSelectionChange">
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" fit highlight-current-row @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column align="center" label="售后编号" prop="aftersaleSn" />
-      <el-table-column align="center" label="订单ID" prop="orderId" />
-      <el-table-column align="center" label="用户ID" prop="userId" />
-      <el-table-column align="center" label="售后类型" prop="type">
+      <el-table-column align="center" :label="$t('mall_aftersale.table.aftersale_sn')" prop="aftersaleSn" />
+      <el-table-column align="center" :label="$t('mall_aftersale.table.order_id')" prop="orderId" />
+      <el-table-column align="center" :label="$t('mall_aftersale.table.user_id')" prop="userId" />
+      <el-table-column align="center" :label="$t('mall_aftersale.table.type')" prop="type">
         <template slot-scope="scope">
           <el-tag :type="typeTag[scope.row.type]">{{ typeDesc[scope.row.type] }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="退款原因" prop="reason" />
-      <el-table-column align="center" label="退款价格" prop="amount" />
-      <el-table-column align="center" label="申请时间" prop="addTime" />
+      <el-table-column align="center" :label="$t('mall_aftersale.table.reason')" prop="reason" />
+      <el-table-column align="center" :label="$t('mall_aftersale.table.amount')" prop="amount" />
+      <el-table-column align="center" :label="$t('mall_aftersale.table.add_time')" prop="addTime" />
 
-      <el-table-column align="center" label="操作" min-width="120" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('mall_aftersale.table.actions')" min-width="120" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/aftersale/detail']" type="primary" size="mini" @click="handleRead(scope.row)">详情</el-button>
-          <el-button v-if="scope.row.status === 1" v-permission="['POST /admin/aftersale/recept']" type="success" size="mini" @click="handleRecept(scope.row)">通过</el-button>
-          <el-button v-if="scope.row.status === 1" v-permission="['POST /admin/aftersale/reject']" type="danger" size="mini" @click="handleReject(scope.row)">拒绝</el-button>
-          <el-button v-if="scope.row.status === 2" v-permission="['POST /admin/aftersale/refund']" type="warning" size="mini" @click="handleRefund(scope.row)">退款</el-button>
+          <el-button v-permission="['POST /admin/aftersale/detail']" type="primary" size="mini" @click="handleRead(scope.row)">{{ $t('app.button.detail') }}</el-button>
+          <el-button v-if="scope.row.status === 1" v-permission="['POST /admin/aftersale/recept']" type="success" size="mini" @click="handleRecept(scope.row)">{{ $t('mall_aftersale.button.recept') }}</el-button>
+          <el-button v-if="scope.row.status === 1" v-permission="['POST /admin/aftersale/reject']" type="danger" size="mini" @click="handleReject(scope.row)">{{ $t('mall_aftersale.button.reject') }}</el-button>
+          <el-button v-if="scope.row.status === 2" v-permission="['POST /admin/aftersale/refund']" type="warning" size="mini" @click="handleRefund(scope.row)">{{ $t('mall_aftersale.button.refund') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-tooltip placement="top" content="返回顶部">
+    <el-tooltip placement="top" :content="$t('app.tooltip.back_to_top')">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
     <!-- 详情对话框 -->
-    <el-dialog :visible.sync="aftersaleDialogVisible" title="售后详情" width="800">
+    <el-dialog :visible.sync="aftersaleDialogVisible" :title="$t('mall_aftersale.dialog.detail')" width="800">
       <section ref="print">
         <el-form :data="aftersaleDetail" label-position="left">
-          <el-form-item label="售后id">
+          <el-form-item :label="$t('mall_aftersale.form.id')">
             <el-tag>{{ aftersaleDetail.id }}</el-tag>
           </el-form-item>
-          <el-form-item label="售后编号">
+          <el-form-item :label="$t('mall_aftersale.form.aftersale_sn')">
             <el-tag>{{ aftersaleDetail.aftersaleSn }}</el-tag>
           </el-form-item>
-          <el-form-item label="订单号">
+          <el-form-item :label="$t('mall_aftersale.form.order_id')">
             <el-tag>{{ aftersaleDetail.orderId }}</el-tag>
           </el-form-item>
-          <el-form-item label="订单金额">
+          <el-form-item :label="$t('mall_aftersale.form.amount')">
             <el-tag>{{ aftersaleDetail.amount }}</el-tag>
           </el-form-item>
-          <el-form-item label="订单状态">
-            <el-tag v-if="aftersaleDetail.status === 1">已申请,待审核</el-tag>
-            <el-tag v-if="aftersaleDetail.status === 2">审核通过,待退款</el-tag>
-            <el-tag v-if="aftersaleDetail.status === 3">退款成功</el-tag>
-            <el-tag v-if="aftersaleDetail.status === 4">审核不通过,已拒绝</el-tag>
+          <el-form-item :label="$t('mall_aftersale.form.status')">
+            <el-tag v-if="aftersaleDetail.status === 1">{{ $t('mall_aftersale.value.status_1') }}</el-tag>
+            <el-tag v-if="aftersaleDetail.status === 2">{{ $t('mall_aftersale.value.status_2') }}</el-tag>
+            <el-tag v-if="aftersaleDetail.status === 3">{{ $t('mall_aftersale.value.status_3') }}</el-tag>
+            <el-tag v-if="aftersaleDetail.status === 4">{{ $t('mall_aftersale.value.status_4') }}</el-tag>
           </el-form-item>
-          <el-form-item label="订单用户id">
+          <el-form-item :label="$t('mall_aftersale.form.user_id')">
             <el-tag>{{ aftersaleDetail.userId }}</el-tag>
           </el-form-item>
-          <el-form-item label="售后类型">
-            <el-tag v-if="aftersaleDetail.type === 0">未收货退款</el-tag>
-            <el-tag v-if="aftersaleDetail.type === 1">不退货退款</el-tag>
-            <el-tag v-if="aftersaleDetail.type === 2">退货退款</el-tag>
+          <el-form-item :label="$t('mall_aftersale.form.type')">
+            <el-tag v-if="aftersaleDetail.type === 0">{{ $t('mall_aftersale.value.type_0') }}</el-tag>
+            <el-tag v-if="aftersaleDetail.type === 1">{{ $t('mall_aftersale.value.type_1') }}</el-tag>
+            <el-tag v-if="aftersaleDetail.type === 2">{{ $t('mall_aftersale.value.type_2') }}</el-tag>
           </el-form-item>
-          <el-form-item label="退款原因">
+          <el-form-item :label="$t('mall_aftersale.form.reason')">
             <span>{{ aftersaleDetail.reason }}</span>
           </el-form-item>
-          <el-form-item label="申请时间">
+          <el-form-item :label="$t('mall_aftersale.form.add_time')">
             <span>{{ aftersaleDetail.addTime }}</span>
           </el-form-item>
-          <el-form-item label="更新时间">
+          <el-form-item :label="$t('mall_aftersale.form.update_time')">
             <span>{{ aftersaleDetail.updateTime }}</span>
           </el-form-item>
-          <el-form-item label="处理时间">
+          <el-form-item :label="$t('mall_aftersale.form.handle_time')">
             <span>{{ aftersaleDetail.handleTime }}</span>
           </el-form-item>
-          <el-form-item label="售后图片">
+          <el-form-item :label="$t('mall_aftersale.form.pictures')">
             <el-table :data="aftersaleDetail.pictures" border fit highlight-current-row>
-              <el-table-column align="center" label="售后图片">
+              <el-table-column align="center" :label="$t('mall_aftersale.table.detail_pictures')">
                 <template slot-scope="scope">
                   <a :href="scope.row" target="_blank">
                     <img :src="scope.row" width="40">
@@ -106,7 +106,7 @@
         </el-form>
       </section>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="aftersaleDialogVisible = false">取 消</el-button>
+        <el-button @click="aftersaleDialogVisible = false">{{ $t('mall_aftersale.button.cancel') }}</el-button>
       </span>
     </el-dialog>
   </div>

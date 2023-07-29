@@ -3,49 +3,49 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品编号" />
-      <el-button v-permission="['GET /admin/groupon/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/groupon/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 200px;" :placeholder="$t('promotion_groupon_rule.placeholder.filter_goods_id')" />
+      <el-button v-permission="['GET /admin/groupon/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button v-permission="['POST /admin/groupon/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('app.button.create') }}</el-button>
       <el-button
         :loading="downloadLoading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出
+      >{{ $t('app.button.download') }}
       </el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="团购规则ID" prop="id" />
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
+      <el-table-column align="center" :label="$t('promotion_groupon_rule.table.id')" prop="id" />
 
-      <el-table-column align="center" label="商品ID" prop="goodsId" />
+      <el-table-column align="center" :label="$t('promotion_groupon_rule.table.goods_id')" prop="goodsId" />
 
-      <el-table-column align="center" min-width="100" label="名称" prop="goodsName" />
+      <el-table-column align="center" min-width="100" :label="$t('promotion_groupon_rule.table.goods_name')" prop="goodsName" />
 
-      <el-table-column align="center" property="picUrl" label="图片">
+      <el-table-column align="center" property="picUrl" :label="$t('promotion_groupon_rule.table.pic_url')">
         <template slot-scope="scope">
           <img :src="scope.row.picUrl" width="40">
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="团购优惠" prop="discount" />
+      <el-table-column align="center" :label="$t('promotion_groupon_rule.table.discount')" prop="discount" />
 
-      <el-table-column align="center" label="团购要求" prop="discountMember" />
+      <el-table-column align="center" :label="$t('promotion_groupon_rule.table.discount_member')" prop="discountMember" />
 
-      <el-table-column align="center" label="状态" prop="status">
+      <el-table-column align="center" :label="$t('promotion_groupon_rule.table.status')" prop="status">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === 0 ? 'success' : 'error' ">{{ statusMap[scope.row.status] }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="结束时间" prop="expireTime" />
+      <el-table-column align="center" :label="$t('promotion_groupon_rule.table.expire_time')" prop="expireTime" />
 
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('promotion_groupon_rule.table.actions')" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/groupon/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/groupon/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-permission="['POST /admin/groupon/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('app.button.edit') }}</el-button>
+          <el-button v-permission="['POST /admin/groupon/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,34 +61,34 @@
         label-width="120px"
         style="width: 400px; margin-left:50px;"
       >
-        <el-form-item label="商品ID" prop="goodsId">
+        <el-form-item :label="$t('promotion_groupon_rule.form.goods_id')" prop="goodsId">
           <el-input v-model="dataForm.goodsId" />
         </el-form-item>
-        <el-form-item label="团购折扣" prop="discount">
+        <el-form-item :label="$t('promotion_groupon_rule.form.discount')" prop="discount">
           <el-input v-model="dataForm.discount" />
         </el-form-item>
-        <el-form-item label="团购人数要求" prop="discountMember">
+        <el-form-item :label="$t('promotion_groupon_rule.form.discount_member')" prop="discountMember">
           <el-input v-model="dataForm.discountMember" />
         </el-form-item>
-        <el-form-item label="过期时间" prop="expireTime">
+        <el-form-item :label="$t('promotion_groupon_rule.form.expire_time')" prop="expireTime">
           <el-date-picker
             v-model="dataForm.expireTime"
             type="datetime"
-            placeholder="选择日期"
+            :placeholder="$t('promotion_groupon_rule.placeholder.expire_time')"
             value-format="yyyy-MM-dd HH:mm:ss"
           />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('app.button.confirm') }}</el-button>
+        <el-button v-else type="primary" @click="updateData">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-tooltip placement="top" content="返回顶部">
+    <el-tooltip placement="top" :content="$t('app.tooltip.back_to_top')">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
 

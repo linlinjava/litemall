@@ -3,39 +3,39 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品ID" />
-      <el-input v-model="listQuery.goodsSn" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品编号" />
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品名称" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
-      <el-button class="filter-item" type="danger" icon="el-icon-delete" :disabled="batchDeleteArr.length === 0" @click="handleDeleteRows">批量删除</el-button>
+      <el-input v-model="listQuery.goodsId" clearable class="filter-item" style="width: 160px;" :placeholder="$t('goods_list.placeholder.filter_goods_id')" />
+      <el-input v-model="listQuery.goodsSn" clearable class="filter-item" style="width: 160px;" :placeholder="$t('goods_list.placeholder.filter_goods_sn')" />
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 160px;" :placeholder="$t('goods_list.placeholder.filter_name')" />
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('app.button.create') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
+      <el-button class="filter-item" type="danger" icon="el-icon-delete" :disabled="batchDeleteArr.length === 0" @click="handleDeleteRows">{{ $t('app.button.batch_delete') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row @selection-change="handleSelectionChange">
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row @selection-change="handleSelectionChange">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" class="table-expand">
-            <el-form-item label="商品编号">
+            <el-form-item :label="$t('goods_list.table.goods_sn')">
               <span>{{ props.row.goodsSn }}</span>
             </el-form-item>
-            <el-form-item label="宣传画廊">
+            <el-form-item :label="$t('goods_list.table.gallery')">
               <el-image v-for="pic in props.row.gallery" :key="pic" :src="pic" class="gallery" :preview-src-list="props.row.gallery" style="width: 40px; height: 40px" />
             </el-form-item>
-            <el-form-item label="商品介绍">
+            <el-form-item :label="$t('goods_list.table.brief')">
               <span>{{ props.row.brief }}</span>
             </el-form-item>
-            <el-form-item label="商品单位">
+            <el-form-item :label="$t('goods_list.table.unit')">
               <span>{{ props.row.unit }}</span>
             </el-form-item>
-            <el-form-item label="关键字">
+            <el-form-item :label="$t('goods_list.table.keywords')">
               <span>{{ props.row.keywords }}</span>
             </el-form-item>
-            <el-form-item label="类目ID">
+            <el-form-item :label="$t('goods_list.table.category_id')">
               <span>{{ props.row.categoryId }}</span>
             </el-form-item>
-            <el-form-item label="品牌商ID">
+            <el-form-item :label="$t('goods_list.table.brand_id')">
               <span>{{ props.row.brandId }}</span>
             </el-form-item>
 
@@ -43,64 +43,64 @@
         </template>
       </el-table-column>
       <el-table-column type="selection" width="55" />
-      <el-table-column align="center" label="商品ID" prop="id" />
+      <el-table-column align="center" :label="$t('goods_list.table.id')" prop="id" />
 
-      <el-table-column align="center" min-width="100" label="名称" prop="name" />
+      <el-table-column align="center" min-width="100" :label="$t('goods_list.table.name')" prop="name" />
 
-      <el-table-column align="center" property="iconUrl" label="图片">
+      <el-table-column align="center" property="iconUrl" :label="$t('goods_list.table.pic_url')">
         <template slot-scope="scope">
           <el-image :src="thumbnail(scope.row.picUrl)" :preview-src-list="toPreview(scope.row, scope.row.picUrl)" style="width: 40px; height: 40px" />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" property="iconUrl" label="分享图">
+      <el-table-column align="center" property="iconUrl" :label="$t('goods_list.table.share_url')">
         <template slot-scope="scope">
           <img :src="scope.row.shareUrl" width="40">
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="详情" prop="detail">
+      <el-table-column align="center" :label="$t('goods_list.table.detail')" prop="detail">
         <template slot-scope="scope">
-          <el-dialog :visible.sync="detailDialogVisible" title="商品详情">
+          <el-dialog :visible.sync="detailDialogVisible" :title="$t('goods_list.dialog.detail')">
             <div class="goods-detail-box" v-html="goodsDetail" />
           </el-dialog>
-          <el-button type="primary" size="mini" @click="showDetail(scope.row.detail)">查看</el-button>
+          <el-button type="primary" size="mini" @click="showDetail(scope.row.detail)">{{ $t('app.button.view') }}</el-button>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="市场售价" prop="counterPrice" />
+      <el-table-column align="center" :label="$t('goods_list.table.counter_price')" prop="counterPrice" />
 
-      <el-table-column align="center" label="当前价格" prop="retailPrice" />
+      <el-table-column align="center" :label="$t('goods_list.table.retail_price')" prop="retailPrice" />
 
-      <el-table-column align="center" label="是否新品" prop="isNew">
+      <el-table-column align="center" :label="$t('goods_list.table.is_new')" prop="isNew">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.isNew ? 'success' : 'error' ">{{ scope.row.isNew ? '新品' : '非新品' }}</el-tag>
+          <el-tag :type="scope.row.isNew ? 'success' : 'error' ">{{ $t(scope.row.isNew ? 'goods_list.value.is_new_true' : 'goods_list.value.is_new_false') }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否热品" prop="isHot">
+      <el-table-column align="center" :label="$t('goods_list.table.is_hot')" prop="isHot">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.isHot ? 'success' : 'error' ">{{ scope.row.isHot ? '热品' : '非热品' }}</el-tag>
+          <el-tag :type="scope.row.isHot ? 'success' : 'error' ">{{ $t(scope.row.isHot ? 'goods_list.value.is_hot_true' : 'goods_list.value.is_hot_false') }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="是否在售" prop="isOnSale">
+      <el-table-column align="center" :label="$t('goods_list.table.is_on_sale')" prop="isOnSale">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.isOnSale ? 'success' : 'error' ">{{ scope.row.isOnSale ? '在售' : '未售' }}</el-tag>
+          <el-tag :type="scope.row.isOnSale ? 'success' : 'error' ">{{ $t(scope.row.isOnSale ? 'goods_list.value.is_on_sale_true' : 'goods_list.value.is_on_sale_false') }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('goods_list.table.actions')" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('app.button.edit') }}</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-tooltip placement="top" content="返回顶部">
+    <el-tooltip placement="top" :content="$t('app.tooltip.back_to_top')">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
 
