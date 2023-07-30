@@ -1,21 +1,24 @@
 <template>
   <div class="login-container">
+    <div class="locale-changer">
+      <locale-changer />
+    </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
-        <h3 class="title">管理员登录</h3>
+        <h3 class="title">{{ $t('login.page.title') }}</h3>
       </div>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" tabindex="1" auto-complete="on" placeholder="管理员账户" />
+        <el-input v-model="loginForm.username" name="username" type="text" tabindex="1" auto-complete="on" :placeholder="$t('login.placeholder.username')" />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input v-model="loginForm.password" :type="passwordType" name="password" auto-complete="on" tabindex="2" show-password placeholder="管理员密码" @keyup.enter.native="handleLogin" />
+        <el-input v-model="loginForm.password" :type="passwordType" name="password" auto-complete="on" tabindex="2" show-password :placeholder="$t('login.placeholder.password')" @keyup.enter.native="handleLogin" />
       </el-form-item>
 
       <!-- <el-form-item prop="code">
@@ -28,7 +31,7 @@
         </div>
       </el-form-item> -->
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.button.login') }}</el-button>
 
       <div style="position:relative">
         <div class="tips">
@@ -54,9 +57,11 @@
 
 <script>
 import { getKaptcha } from '@/api/login'
+import LocaleChanger from '@/components/LocaleChanger'
 
 export default {
   name: 'Login',
+  components: { LocaleChanger },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
@@ -188,6 +193,12 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
+
+  .locale-changer {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
 
   .login-form {
     position: relative;

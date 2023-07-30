@@ -3,28 +3,28 @@
 
     <div class="table-layout">
       <el-row>
-        <el-col :span="4" class="table-cell-title">名称</el-col>
-        <el-col :span="4" class="table-cell-title">介绍名称</el-col>
-        <el-col :span="4" class="table-cell-title">标签</el-col>
-        <el-col :span="4" class="table-cell-title">优惠券类型</el-col>
-        <el-col :span="4" class="table-cell-title">最低消费</el-col>
-        <el-col :span="4" class="table-cell-title">优惠面值</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.name') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.desc') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.tag') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.type') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.min') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.discount') }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="4" class="table-cell">{{ coupon.name }}</el-col>
         <el-col :span="4" class="table-cell">{{ coupon.desc }}</el-col>
         <el-col :span="4" class="table-cell">{{ coupon.tag }}</el-col>
         <el-col :span="4" class="table-cell">{{ coupon.type | formatType }}</el-col>
-        <el-col :span="4" class="table-cell">满{{ coupon.min }}元可用</el-col>
-        <el-col :span="4" class="table-cell">减免{{ coupon.discount }}元</el-col>
+        <el-col :span="4" class="table-cell">{{ $t('promotion_coupon_detail.text.coupon_min', { min: coupon.min }) }}</el-col>
+        <el-col :span="4" class="table-cell">{{ $t('promotion_coupon_detail.text.coupon_discount', { discount: coupon.discount }) }}</el-col>
       </el-row>
       <el-row>
-        <el-col :span="4" class="table-cell-title">每人限额</el-col>
-        <el-col :span="4" class="table-cell-title">当前状态</el-col>
-        <el-col :span="4" class="table-cell-title">商品范围</el-col>
-        <el-col :span="4" class="table-cell-title">有效期</el-col>
-        <el-col :span="4" class="table-cell-title">优惠兑换码</el-col>
-        <el-col :span="4" class="table-cell-title">发行数量</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.limit') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.status') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.goods_type') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.time_scope') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.code') }}</el-col>
+        <el-col :span="4" class="table-cell-title">{{ $t('promotion_coupon_detail.table.total') }}</el-col>
       </el-row>
       <el-row>
         <el-col :span="4" class="table-cell">{{ coupon.limit }}</el-col>
@@ -32,35 +32,35 @@
         <el-col :span="4" class="table-cell">{{ coupon.goodsType | formatGoodsType }}</el-col>
         <el-col :span="4" class="table-cell">{{ getTimeScope() }}</el-col>
         <el-col :span="4" class="table-cell">{{ coupon.code }}</el-col>
-        <el-col :span="4" class="table-cell">{{ coupon.total === 0 ? "不限" : coupon.total }}</el-col>
+        <el-col :span="4" class="table-cell">{{ coupon.total === 0 ? $t('promotion_coupon_detail.text.unlimited') : coupon.total }}</el-col>
       </el-row>
     </div>
 
     <!-- 查询操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户ID"/>
-      <el-select v-model="listQuery.status" clearable style="width: 200px" class="filter-item" placeholder="请选择使用状态">
+      <el-input v-model="listQuery.userId" clearable class="filter-item" style="width: 200px;" :placeholder="$t('promotion_coupon_detail.placeholder.filter_user_id')"/>
+      <el-select v-model="listQuery.status" clearable style="width: 200px" class="filter-item" :placeholder="$t('promotion_coupon_detail.placeholder.filter_status')">
         <el-option v-for="type in useStatusOptions" :key="type.value" :label="type.label" :value="type.value"/>
       </el-select>
-      <el-button v-permission="['GET /admin/coupon/listuser']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button v-permission="['GET /admin/coupon/listuser']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
 
-      <el-table-column align="center" label="用户优惠券ID" prop="id" sortable/>
+      <el-table-column align="center" :label="$t('promotion_coupon_detail.table.id')" prop="id" sortable />
 
-      <el-table-column align="center" label="用户ID" prop="userId"/>
+      <el-table-column align="center" :label="$t('promotion_coupon_detail.table.user_id')" prop="userId" />
 
-      <el-table-column align="center" label="领取时间" prop="addTime"/>
+      <el-table-column align="center" :label="$t('promotion_coupon_detail.table.add_time')" prop="addTime" />
 
-      <el-table-column align="center" label="使用状态" prop="status">
+      <el-table-column align="center" :label="$t('promotion_coupon_detail.table.use_status')" prop="status">
         <template slot-scope="scope">{{ scope.row.status | formatUseStatus }}</template>
       </el-table-column>
 
-      <el-table-column align="center" label="订单ID" prop="orderId"/>
+      <el-table-column align="center" :label="$t('promotion_coupon_detail.table.order_id')" prop="orderId" />
 
-      <el-table-column align="center" label="使用时间" prop="usedTime"/>
+      <el-table-column align="center" :label="$t('promotion_coupon_detail.table.used_time')" prop="usedTime" />
 
     </el-table>
 

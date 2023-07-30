@@ -3,28 +3,28 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入操作管理员"/>
-      <el-button v-permission="['GET /admin/log/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" :placeholder="$t('sys_log.placeholder.filter_name')"/>
+      <el-button v-permission="['GET /admin/log/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="操作管理员" prop="admin"/>
-      <el-table-column align="center" label="IP地址" prop="ip"/>
-      <el-table-column align="center" label="操作时间" prop="addTime"/>
-      <el-table-column align="center" label="操作类别" prop="type">
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
+      <el-table-column align="center" :label="$t('sys_log.table.admin')" prop="admin" />
+      <el-table-column align="center" :label="$t('sys_log.table.ip')" prop="ip" />
+      <el-table-column align="center" :label="$t('sys_log.table.add_time')" prop="addTime" />
+      <el-table-column align="center" :label="$t('sys_log.table.type')" prop="type">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作动作" prop="action"/>
-      <el-table-column align="center" label="操作状态" prop="status">
+      <el-table-column align="center" :label="$t('sys_log.table.action')" prop="action" />
+      <el-table-column align="center" :label="$t('sys_log.table.status')" prop="status">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status ? 'success' : 'error' ">{{ scope.row.status ? '成功' : '失败' }}</el-tag>
+          <el-tag :type="scope.row.status ? 'success' : 'error' ">{{ $t(scope.row.status ? 'sys_log.value.status_success' : 'sys_log.value.status_error') }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作结果" prop="result"/>
-      <el-table-column align="center" label="备注信息" prop="comment"/>
+      <el-table-column align="center" :label="$t('sys_log.table.result')" prop="result" />
+      <el-table-column align="center" :label="$t('sys_log.table.comment')" prop="comment" />
 
     </el-table>
 

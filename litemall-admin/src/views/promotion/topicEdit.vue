@@ -2,13 +2,13 @@
   <div class="app-container">
 
     <el-form ref="topic" :rules="rules" :model="topic" status-icon label-position="left" label-width="100px" style="width: 800px; margin-left:50px;">
-      <el-form-item label="专题标题" prop="title">
+      <el-form-item :label="$t('promotion_topic_edit.form.title')" prop="title">
         <el-input v-model="topic.title"/>
       </el-form-item>
-      <el-form-item label="专题子标题" prop="subtitle">
+      <el-form-item :label="$t('promotion_topic_edit.form.subtitle')" prop="subtitle">
         <el-input v-model="topic.subtitle"/>
       </el-form-item>
-      <el-form-item label="专题图片" prop="picUrl">
+      <el-form-item :label="$t('promotion_topic_edit.form.pic_url')" prop="picUrl">
         <el-upload
           :headers="headers"
           :action="uploadPath"
@@ -20,32 +20,32 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"/>
         </el-upload>
       </el-form-item>
-      <el-form-item label="专题内容" prop="content">
+      <el-form-item :label="$t('promotion_topic_edit.form.content')" prop="content">
         <editor :init="editorInit" v-model="topic.content"/>
       </el-form-item>
-      <el-form-item label="商品低价" prop="price">
+      <el-form-item :label="$t('promotion_topic_edit.form.price')" prop="price">
         <el-input v-model="topic.price"/>
       </el-form-item>
-      <el-form-item label="阅读量" prop="readCount">
+      <el-form-item :label="$t('promotion_topic_edit.form.read_count')" prop="readCount">
         <el-input v-model="topic.readCount"/>
       </el-form-item>
-      <el-form-item label="专题商品" prop="goods">
-        <el-button style="float:right;" size="mini" type="primary" @click="handleCreate()">创建商品</el-button>
+      <el-form-item :label="$t('promotion_topic_edit.form.goods')" prop="goods">
+        <el-button style="float:right;" size="mini" type="primary" @click="handleCreate()">{{ $t('promotion_topic_edit.button.goods_create') }}</el-button>
 
         <!-- 查询结果 -->
         <el-table :data="goodsList" border fit highlight-current-row>
 
-          <el-table-column align="center" label="商品ID" prop="id"/>
-          <el-table-column align="center" property="picUrl" label="图片">
+          <el-table-column align="center" :label="$t('promotion_topic_edit.table.goods_id')" prop="id" />
+          <el-table-column align="center" property="picUrl" :label="$t('promotion_topic_edit.table.goods_pic_url')">
             <template slot-scope="scope">
               <img :src="scope.row.picUrl" width="60">
             </template>
           </el-table-column>
-          <el-table-column align="center" label="商品名称" prop="name"/>
-          <el-table-column align="center" label="商品介绍" prop="brief"/>
-          <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+          <el-table-column align="center" :label="$t('promotion_topic_edit.table.goods_name')" prop="name" />
+          <el-table-column align="center" :label="$t('promotion_topic_edit.table.goods_brief')" prop="brief" />
+          <el-table-column align="center" :label="$t('promotion_topic_edit.table.goods_actions')" class-name="small-padding fixed-width">
             <template slot-scope="scope">
-              <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+              <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -53,31 +53,31 @@
 
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click="handleConfirm">确定</el-button>
+      <el-button @click="handleCancel">{{ $t('app.button.cancel') }}</el-button>
+      <el-button type="primary" @click="handleConfirm">{{ $t('app.button.confirm') }}</el-button>
     </div>
 
-    <el-dialog :visible.sync="addVisiable" title="添加商品">
+    <el-dialog :visible.sync="addVisiable" :title="$t('promotion_topic_edit.dialog.add_goods')">
       <div class="search">
-        <el-input v-model="listQuery.goodsSn" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品编号"/>
-        <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入商品名称"/>
-        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-        <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row @selection-change="handleSelectionChange">
+        <el-input v-model="listQuery.goodsSn" clearable class="filter-item" style="width: 200px;" :placeholder="$t('promotion_topic_edit.placeholder.search_goods_sn')"/>
+        <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" :placeholder="$t('promotion_topic_edit.placeholder.search_name')"/>
+        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+        <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"/>
-          <el-table-column align="center" label="商品ID" prop="id"/>
-          <el-table-column align="center" property="picUrl" label="图片">
+          <el-table-column align="center" :label="$t('promotion_topic_edit.table.search_goods_id')" prop="id" />
+          <el-table-column align="center" property="picUrl" :label="$t('promotion_topic_edit.table.search_goods_pic_url')">
             <template slot-scope="scope">
               <img :src="scope.row.picUrl" width="40">
             </template>
           </el-table-column>
-          <el-table-column align="center" label="商品名称" prop="name"/>
+          <el-table-column align="center" :label="$t('promotion_topic_edit.table.search_goods_name')" prop="name" />
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="addVisiable = false">取消</el-button>
-        <el-button type="primary" @click="confirmAdd">确定</el-button>
+        <el-button @click="addVisiable = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmAdd">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 

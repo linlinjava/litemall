@@ -3,19 +3,19 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.nickname" clearable class="filter-item" style="width: 160px;" placeholder="请输入用户昵称" />
-      <el-input v-model="listQuery.consignee" clearable class="filter-item" style="width: 160px;" placeholder="请输入收货人名称" />
-      <el-input v-model="listQuery.orderSn" clearable class="filter-item" style="width: 160px;" placeholder="请输入订单编号" />
-      <el-date-picker v-model="listQuery.timeArray" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" class="filter-item" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" />
-      <el-select v-model="listQuery.orderStatusArray" multiple style="width: 200px" class="filter-item" placeholder="请选择订单状态">
+      <el-input v-model="listQuery.nickname" clearable class="filter-item" style="width: 160px;" :placeholder="$t('mall_order.placeholder.filter_nickname')" />
+      <el-input v-model="listQuery.consignee" clearable class="filter-item" style="width: 160px;" :placeholder="$t('mall_order.placeholder.filter_consignee')" />
+      <el-input v-model="listQuery.orderSn" clearable class="filter-item" style="width: 160px;" :placeholder="$t('mall_order.placeholder.filter_order_sn')" />
+      <el-date-picker v-model="listQuery.timeArray" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" class="filter-item" :range-separator="$t('mall_order.text.date_range_separator')" :start-placeholder="$t('mall_order.placeholder.filter_time_start')" :end-placeholder="$t('mall_order.placeholder.filter_time_end')" :picker-options="pickerOptions" />
+      <el-select v-model="listQuery.orderStatusArray" multiple style="width: 200px" class="filter-item" :placeholder="$t('mall_order.placeholder.filter_order_status')">
         <el-option v-for="(key, value) in statusMap" :key="key" :label="key" :value="value" />
       </el-select>
-      <el-button v-permission="['GET /admin/order/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button v-permission="['GET /admin/order/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
 
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -24,78 +24,78 @@
               <img :src="item.picUrl" width="40">
             </div>
             <div class="name">
-              商品名称：{{ item.goodsName }}
+              {{ $t('mall_order.text.expand_goods_name', { goods_name: item.goodsName }) }}
             </div>
             <div class="spec">
-              规格：{{ item.specifications.join('-') }}
+              {{ $t('mall_order.text.expand_specifications', { specifications: item.specifications.join('-') }) }}
             </div>
             <div class="price">
-              单价：{{ item.price }} 元
+              {{ $t('mall_order.text.expand_unit_price', { price: item.price }) }}
             </div>
             <div class="num">
-              数量：{{ item.number }} 件
+              {{ $t('mall_order.text.expand_number', { number: item.number }) }}
             </div>
             <div class="price">
-              小计：{{ item.price * item.number }} 元
+              {{ $t('mall_order.text.expand_subtotal_price', { price: item.price * item.number }) }}
             </div>
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" min-width="120" label="订单编号" prop="orderSn" />
+      <el-table-column align="center" min-width="120" :label="$t('mall_order.table.order_sn')" prop="orderSn" />
 
-      <el-table-column align="center" label="用户头像" width="80">
+      <el-table-column align="center" :label="$t('mall_order.table.avatar')" width="80">
         <template slot-scope="scope">
           <el-avatar :src="scope.row.avatar" />
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="下单用户" prop="userName" />
+      <el-table-column align="center" :label="$t('mall_order.table.user_name')" prop="userName" />
 
-      <el-table-column align="center" label="下单时间" prop="addTime" min-width="100">
+      <el-table-column align="center" :label="$t('mall_order.table.add_time')" prop="addTime" min-width="100">
         <template slot-scope="scope">
           {{ (scope.row.addTime || '').substring(0, 10) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="订单状态" prop="orderStatus">
+      <el-table-column align="center" :label="$t('mall_order.table.order_status')" prop="orderStatus">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.orderStatus | orderStatusFilter }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="订单金额" prop="orderPrice">
+      <el-table-column align="center" :label="$t('mall_order.table.order_price')" prop="orderPrice">
         <template slot-scope="scope">
           {{ scope.row.orderPrice }} 元
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="实付金额" prop="actualPrice">
+      <el-table-column align="center" :label="$t('mall_order.table.actual_price')" prop="actualPrice">
         <template slot-scope="scope">
           {{ scope.row.actualPrice }} 元
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="支付时间" prop="payTime" />
+      <el-table-column align="center" :label="$t('mall_order.table.pay_time')" prop="payTime" />
 
-      <el-table-column align="center" label="收货人" prop="consignee">
+      <el-table-column align="center" :label="$t('mall_order.table.consignee')" prop="consignee">
         <template slot-scope="scope">
           <span style="color:red; font-weight:bold;">{{ scope.row.consignee }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="收货电话" prop="mobile" min-width="100" />
+      <el-table-column align="center" :label="$t('mall_order.table.mobile')" prop="mobile" min-width="100" />
 
-      <el-table-column align="center" label="物流单号" prop="shipSn" />
+      <el-table-column align="center" :label="$t('mall_order.table.ship_sn')" prop="shipSn" />
 
-      <el-table-column align="center" label="物流渠道" prop="shipChannel" />
+      <el-table-column align="center" :label="$t('mall_order.table.ship_channel')" prop="shipChannel" />
 
-      <el-table-column align="center" label="操作" width="250" class-name="oper">
+      <el-table-column align="center" :label="$t('mall_order.table.actions')" width="250" class-name="oper">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleDetail(scope.row)">详情</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
-          <el-button type="warning" size="mini" @click="handlePay(scope.row)">收款</el-button>
-          <el-button type="primary" size="mini" @click="handleShip(scope.row)">发货</el-button>
-          <el-button type="danger" size="mini" @click="handleRefund(scope.row)">退款</el-button>
+          <el-button type="primary" size="mini" @click="handleDetail(scope.row)">{{ $t('app.button.detail') }}</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
+          <el-button type="warning" size="mini" @click="handlePay(scope.row)">{{ $t('mall_order.button.pay') }}</el-button>
+          <el-button type="primary" size="mini" @click="handleShip(scope.row)">{{ $t('mall_order.button.ship') }}</el-button>
+          <el-button type="danger" size="mini" @click="handleRefund(scope.row)">{{ $t('mall_order.button.refund') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -103,96 +103,98 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 订单详情对话框 -->
-    <el-dialog :visible.sync="orderDialogVisible" title="订单详情" width="800">
+    <el-dialog :visible.sync="orderDialogVisible" :title="$t('mall_order.dialog.detail')" width="800">
       <section ref="print">
         <el-form :data="orderDetail" label-position="left">
-          <el-form-item label="订单编号">
+          <el-form-item :label="$t('mall_order.form.detail_order_sn')">
             <span>{{ orderDetail.order.orderSn }}</span>
           </el-form-item>
-          <el-form-item label="订单状态">
+          <el-form-item :label="$t('mall_order.form.detail_order_status')">
             <el-tag>{{ orderDetail.order.orderStatus | orderStatusFilter }}</el-tag>
           </el-form-item>
-          <el-form-item label="订单用户">
+          <el-form-item :label="$t('mall_order.form.detail_user_nickname')">
             <span>{{ orderDetail.user.nickname }}</span>
           </el-form-item>
-          <el-form-item label="用户留言">
+          <el-form-item :label="$t('mall_order.form.detail_message')">
             <span>{{ orderDetail.order.message }}</span>
           </el-form-item>
-          <el-form-item label="收货信息">
-            <span>（收货人）{{ orderDetail.order.consignee }}</span>
-            <span>（手机号）{{ orderDetail.order.mobile }}</span>
-            <span>（地址）{{ orderDetail.order.address }}</span>
+          <el-form-item :label="$t('mall_order.form.detail_receiving_info')">
+            <span>{{ $t('mall_order.text.detail_consigne', { consignee: orderDetail.order.consignee }) }}</span>
+            <span>{{ $t('mall_order.text.detail_mobile', { mobile: orderDetail.order.mobile }) }}</span>
+            <span>{{ $t('mall_order.text.detail_address', { address: orderDetail.order.address }) }}</span>
           </el-form-item>
-          <el-form-item label="商品信息">
+          <el-form-item :label="$t('mall_order.form.detail_goods')">
             <el-table :data="orderDetail.orderGoods" border fit highlight-current-row>
-              <el-table-column align="center" label="商品名称" prop="goodsName" />
-              <el-table-column align="center" label="商品编号" prop="goodsSn" />
-              <el-table-column align="center" label="货品规格" prop="specifications" />
-              <el-table-column align="center" label="货品价格" prop="price" />
-              <el-table-column align="center" label="货品数量" prop="number" />
-              <el-table-column align="center" label="货品图片" prop="picUrl">
+              <el-table-column align="center" :label="$t('mall_order.table.detail_goods_name')" prop="goodsName" />
+              <el-table-column align="center" :label="$t('mall_order.table.detail_goods_sn')" prop="goodsSn" />
+              <el-table-column align="center" :label="$t('mall_order.table.detail_goods_specifications')" prop="specifications" />
+              <el-table-column align="center" :label="$t('mall_order.table.detail_goods_price')" prop="price" />
+              <el-table-column align="center" :label="$t('mall_order.table.detail_goods_number')" prop="number" />
+              <el-table-column align="center" :label="$t('mall_order.table.detail_goods_pic_url')" prop="picUrl">
                 <template slot-scope="scope">
                   <img :src="scope.row.picUrl" width="40">
                 </template>
               </el-table-column>
             </el-table>
           </el-form-item>
-          <el-form-item label="费用信息">
+          <el-form-item :label="$t('mall_order.form.detail_price_info')">
             <span>
-              (实际费用){{ orderDetail.order.actualPrice }}元 =
-              (商品总价){{ orderDetail.order.goodsPrice }}元 +
-              (快递费用){{ orderDetail.order.freightPrice }}元 -
-              (优惠减免){{ orderDetail.order.couponPrice }}元 -
-              (积分减免){{ orderDetail.order.integralPrice }}元
+              {{ $t('mall_order.text.detail_price_info', {
+                actual_price: orderDetail.order.actualPrice,
+                goods_price: orderDetail.order.goodsPrice,
+                freight_price: orderDetail.order.freightPrice,
+                coupon_price: orderDetail.order.couponPrice,
+                integral_price: orderDetail.order.integralPrice
+              }) }}
             </span>
           </el-form-item>
-          <el-form-item label="支付信息">
-            <span>（支付渠道）微信支付</span>
-            <span>（支付时间）{{ orderDetail.order.payTime }}</span>
+          <el-form-item :label="$t('mall_order.form.detail_pay_info')">
+            <span>{{ $t('mall_order.text.detail_pay_channel', { pay_channel: '微信支付' }) }}</span>
+            <span>{{ $t('mall_order.text.detail_pay_time', { pay_time: orderDetail.order.payTime }) }}</span>
           </el-form-item>
-          <el-form-item label="快递信息">
-            <span>（快递公司）{{ orderDetail.order.shipChannel }}</span>
-            <span>（快递单号）{{ orderDetail.order.shipSn }}</span>
-            <span>（发货时间）{{ orderDetail.order.shipTime }}</span>
+          <el-form-item :label="$t('mall_order.form.detail_ship_info')">
+            <span>{{ $t('mall_order.text.detail_ship_channel', { ship_channel: orderDetail.order.shipChannel }) }}</span>
+            <span>{{ $t('mall_order.text.detail_ship_sn', { ship_sn: orderDetail.order.shipSn }) }}</span>
+            <span>{{ $t('mall_order.text.detail_ship_time', { ship_time: orderDetail.order.shipTime }) }}</span>
           </el-form-item>
-          <el-form-item label="退款信息">
-            <span>（退款金额）{{ orderDetail.order.refundAmount }}元</span>
-            <span>（退款类型）{{ orderDetail.order.refundType }}</span>
-            <span>（退款备注）{{ orderDetail.order.refundContent }}</span>
-            <span>（退款时间）{{ orderDetail.order.refundTime }}</span>
+          <el-form-item :label="$t('mall_order.form.detail_refund_info')">
+            <span>{{ $t('mall_order.text.detail_refund_amount', { refund_amount: orderDetail.order.refundAmount }) }}</span>
+            <span>{{ $t('mall_order.text.detail_refund_type', { refund_type: orderDetail.order.refundType }) }}</span>
+            <span>{{ $t('mall_order.text.detail_refund_content', { refund_content: orderDetail.order.refundContent }) }}</span>
+            <span>{{ $t('mall_order.text.detail_refund_time', { refund_time: orderDetail.order.refundTime }) }}</span>
           </el-form-item>
-          <el-form-item label="收货信息">
-            <span>（确认收货时间）{{ orderDetail.order.confirmTime }}</span>
+          <el-form-item :label="$t('mall_order.form.detail_receipt_info')">
+            <span>{{ $t('mall_order.text.detail_confirm_time', { confirm_time: orderDetail.order.confirmTime }) }}</span>
           </el-form-item>
         </el-form>
       </section>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="orderDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="printOrder">打 印</el-button>
+        <el-button @click="orderDialogVisible = false">{{ $t('mall_order.button.detail_cancel') }}</el-button>
+        <el-button type="primary" @click="printOrder">{{ $t('mall_order.button.detail_print') }}</el-button>
       </span>
     </el-dialog>
 
     <!-- 收款对话框 -->
-    <el-dialog :visible.sync="payDialogVisible" title="订单收款" width="40%" center>
+    <el-dialog :visible.sync="payDialogVisible" :title="$t('mall_order.dialog.pay')" width="40%" center>
       <el-form ref="payForm" :model="payForm" status-icon label-position="left" label-width="100px">
         <div style="margin-bottom: 10px;">
-          确认当前订单（订单编号 {{ payForm.orderSn }} ) 已经完成线下收款  ？
+          {{ $t('mall_order.message.pay_confirm', { order_sn: payForm.orderSn }) }}
         </div>
-        <el-form-item label="订单金额" prop="oldMoney">
+        <el-form-item :label="$t('mall_order.form.pay_old_money')" prop="oldMoney">
           <el-input-number v-model="payForm.oldMoney" :controls="false" disabled />
         </el-form-item>
-        <el-form-item label="付款金额" prop="newMoney">
+        <el-form-item :label="$t('mall_order.form.pay_new_money')" prop="newMoney">
           <el-input-number v-model="payForm.newMoney" :controls="false" />
         </el-form-item>
       </el-form>
       <el-table :data="payForm.goodsList">
-        <el-table-column property="goodsName" label="商品" />
-        <el-table-column label="规格">
+        <el-table-column property="goodsName" :label="$t('mall_order.table.pay_goods_name')" />
+        <el-table-column :label="$t('mall_order.table.pay_goods_specifications')">
           <template slot-scope="scope">
             {{ scope.row.specifications.join('-') }}
           </template>
         </el-table-column>
-        <el-table-column property="onumber" width="100" label="下单数量" />
+        <el-table-column property="onumber" width="100" :label="$t('mall_order.table.pay_goods_number')" />
         <!-- <el-table-column label="实际数量" width="100">
           <template slot-scope="scope">
             <el-input-number v-model="scope.row.number" :min="0" :controls="false" />
@@ -200,39 +202,39 @@
         </el-table-column> -->
       </el-table>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="payDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmPay">确定</el-button>
+        <el-button @click="payDialogVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmPay">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 
     <!-- 发货对话框 -->
-    <el-dialog :visible.sync="shipDialogVisible" title="发货">
+    <el-dialog :visible.sync="shipDialogVisible" :title="$t('mall_order.dialog.ship')">
       <el-form ref="shipForm" :model="shipForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="快递公司" prop="shipChannel">
-          <el-select v-model="shipForm.shipChannel" placeholder="请选择">
+        <el-form-item :label="$t('mall_order.form.ship_channel')" prop="shipChannel">
+          <el-select v-model="shipForm.shipChannel" :placeholder="$t('mall_order.placeholder.ship_channel')">
             <el-option v-for="item in channels" :key="item.code" :label="item.name" :value="item.code" />
           </el-select>
         </el-form-item>
-        <el-form-item label="快递编号" prop="shipSn">
+        <el-form-item :label="$t('mall_order.form.ship_sn')" prop="shipSn">
           <el-input v-model="shipForm.shipSn" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="shipDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmShip">确定</el-button>
+        <el-button @click="shipDialogVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmShip">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 
     <!-- 退款对话框 -->
-    <el-dialog :visible.sync="refundDialogVisible" title="退款">
+    <el-dialog :visible.sync="refundDialogVisible" :title="$t('mall_order.dialog.refund')">
       <el-form ref="refundForm" :model="refundForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="退款金额" prop="refundMoney">
+        <el-form-item :label="$t('mall_order.form.refund_money')" prop="refundMoney">
           <el-input v-model="refundForm.refundMoney" :disabled="true" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="refundDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmRefund">确定</el-button>
+        <el-button @click="refundDialogVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmRefund">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 
