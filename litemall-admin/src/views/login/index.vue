@@ -1,5 +1,8 @@
 <template>
   <div class="login-container">
+    <div class="locale-changer">
+      <locale-changer />
+    </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">{{ $t('login.page.title') }}</h3>
@@ -54,9 +57,11 @@
 
 <script>
 import { getKaptcha } from '@/api/login'
+import LocaleChanger from '@/components/LocaleChanger'
 
 export default {
   name: 'Login',
+  components: { LocaleChanger },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
@@ -188,6 +193,12 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
+
+  .locale-changer {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
 
   .login-form {
     position: relative;
