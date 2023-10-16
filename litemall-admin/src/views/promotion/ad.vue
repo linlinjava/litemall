@@ -265,13 +265,14 @@ export default {
         if (valid) {
           updateAd(this.dataForm)
             .then(() => {
-              for (const v of this.list) {
-                if (v.id === this.dataForm.id) {
-                  const index = this.list.indexOf(v)
-                  this.list.splice(index, 1, this.dataForm)
-                  break
-                }
-              }
+              // for (const v of this.list) {
+              //   if (v.id === this.dataForm.id) {
+              //     const index = this.list.indexOf(v)
+              //     this.list.splice(index, 1, this.dataForm)
+              //     break
+              //   }
+              // }
+              this.getList()
               this.dialogFormVisible = false
               this.$notify.success({
                 title: '成功',
