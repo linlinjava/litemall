@@ -57,9 +57,9 @@ public class WxCartController {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
-
+        //根据用户id查找购物车内容
         List<LitemallCart> list = cartService.queryByUid(userId);
-        List<LitemallCart> cartList = new ArrayList<>();
+        List<LitemallCartData> cartList = new ArrayList<>();
         // TODO
         // 如果系统检查商品已删除或已下架，则系统自动删除。
         // 更好的效果应该是告知用户商品失效，允许用户点击按钮来清除失效商品。
@@ -70,7 +70,8 @@ public class WxCartController {
                 logger.debug("系统自动删除失效购物车商品 goodsId=" + cart.getGoodsId() + " productId=" + cart.getProductId());
             }
             else{
-                cartList.add(cart);
+                Short stock = productService.findById(cart.getProductId()).getNumber().shortValue();//获取库存
+                cartList.add(new LitemallCartData(cart,stock));//创建传输流数据
             }
         }
 
@@ -78,7 +79,7 @@ public class WxCartController {
         BigDecimal goodsAmount = new BigDecimal(0.00);
         Integer checkedGoodsCount = 0;
         BigDecimal checkedGoodsAmount = new BigDecimal(0.00);
-        for (LitemallCart cart : cartList) {
+        for (LitemallCartData cart : cartList) {
             goodsCount += cart.getNumber();
             goodsAmount = goodsAmount.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
             if (cart.getChecked()) {

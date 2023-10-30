@@ -222,9 +222,14 @@ Page({
   },
   addNumber: function(event) {
     let itemIndex = event.target.dataset.itemIndex;
-    let cartItem = this.data.cartGoods[itemIndex];
+    let cartItem = this.data.cartGoods[itemIndex];  //LitemallCartData类
     let number = cartItem.number + 1;
-    cartItem.number = number;
+    if(number > cartItem.stock){
+      // 创建一个警告弹窗
+      alert("库存不足");
+    }else {
+      cartItem.number = number;
+    }
     this.setData({
       cartGoods: this.data.cartGoods
     });
