@@ -7,13 +7,13 @@ pagehelper:
 spring:
   datasource:
     druid:
-      url:  jdbc:mysql://localhost:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      url: jdbc:mysql://mysql-cluster.cluster-cxf9geexdj8g.us-east-1.rds.amazonaws.com:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
       driver-class-name:  com.mysql.cj.jdbc.Driver
       username:  litemall
       password:  litemall123456
-      initial-size:  10
-      max-active:  50
-      min-idle:  10
+      initial-size: 2
+      max-active: 16
+      min-idle: 2
       max-wait:  60000
       pool-prepared-statements:  true
       max-pool-prepared-statement-per-connection-size:  20
