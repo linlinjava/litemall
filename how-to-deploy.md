@@ -12,4 +12,35 @@
 - 复盘
 - 先写文档
 
-#  
+# 操作指南
+
+```shell
+mvn clean
+mvn clean package
+
+sam build
+sam deploy
+```
+
+```shell
+cd litemall/litemall-admin
+npm install --registry=https://registry.npmmirror.com
+npm run dev
+
+npm run build:dep
+npm run build:prod
+```
+
+```shell
+cd litemall/litemall-vue
+npm install --registry=https://registry.npmmirror.com
+npm run dev
+
+npm run build:dep
+npm run build:prod
+```
+
+```shell
+cd dist
+aws s3 sync . s3://litemall-think-1
+```

@@ -10,7 +10,23 @@ Globals:
     Timeout: 60
 
 Resources:
-  PetstoreFunction:
+  # 创建api-gateway资源：https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-httpapi.html
+  FunctionApiGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Description: aws lambda's api gateway
+      Name: lambda-gateway
+      CorsConfiguration:
+        AllowOrigins:
+          - "https://*"
+          - "http://*"
+        AllowHeaders:
+          - "Content-Type"
+          - "X-Litemall-Admin-Token"
+        AllowMethods:
+          - "*"
+        AllowCredentials: true
+  litemallFunction:
     Type: AWS::Serverless::Function
     Properties:
       VpcConfig:
@@ -40,19 +56,19 @@ Resources:
       Layers:
         - !Sub arn:aws:lambda:us-east-1:753240598075:layer:LambdaAdapterLayerX86:20
       Events:
-        Root:
+        litemall-all:
           Type: HttpApi
           Properties:
-            Path: /
-            Method: ANY
-        Petstore:
-          Type: HttpApi
-          Properties:
+            # 引用api-gateway资源的id
+            ApiId:
+              Ref: FunctionApiGateway
             Path: /{proxy+}
             Method: ANY
-
 Outputs:
-  PetstoreApi:
-    Description: "API Gateway endpoint URL for Prod stage for Petstore function"
-    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/admin/index/index"
+  AdminWebHomepage:
+    Description: "Admin endpoint Homepage URL"
+    Value: !Sub "https://${FunctionApiGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}/index.html"
+  AdminApiURL:
+    Description: "Admin endpoint API URL"
+    Value: !Sub "https://${FunctionApiGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}/admin/index/index"
 
