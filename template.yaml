@@ -54,9 +54,9 @@ Resources:
           # 开启如下JVM启动参数：使用分层编译，使用
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -XX:+UseParallelGC
       Layers:
-        - !Sub arn:aws:lambda:us-east-1:753240598075:layer:LambdaAdapterLayerX86:20
+        - !Sub arn:aws:lambda:us-east-1:753240598075:layer:LambdaAdapterLayerX86:21
       Events:
-        litemall-all:
+        litemallApi:
           Type: HttpApi
           Properties:
             # 引用api-gateway资源的id
