@@ -4,7 +4,7 @@ version = 0.1
 
 [default]
 [default.global.parameters]
-stack_name = "litemall-zip"
+stack_name = "litemall-all"
 
 [default.build.parameters]
 cached = true
