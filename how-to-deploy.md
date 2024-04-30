@@ -12,4 +12,19 @@
 - 复盘
 - 先写文档
 
-#  
+# 操作手册
+
+```shell
+cd litemall/litemall-admin
+npm install --registry=https://registry.npmmirror.com
+npm run dev
+
+npm run build:dep
+npm run build:prod
+```
+
+```shell
+cd litemall/litemall-vue
+npm install --registry=https://registry.npmmirror.com
+npm run dev
+```
