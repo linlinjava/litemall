@@ -3,6 +3,18 @@ spring:
     active: db, core, admin
   messages:
     encoding: UTF-8
+  redis:
+    host: master.redis-cluster.esilji.use1.cache.amazonaws.com
+    port: 6379
+    database: 0
+    password: Secure_123_redis
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 4
+        min-idle: 1
+    ssl: true
+
 
 server:
   port: 8083
