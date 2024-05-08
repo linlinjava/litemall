@@ -42,6 +42,7 @@ Resources:
       Runtime: java17
       # 函数名称
       FunctionName: litemall-all
+      Role: "arn:aws:iam::843245141269:role/poc-lambda-role"
       AutoPublishAlias: live
       SnapStart:
         ApplyOn: PublishedVersions
