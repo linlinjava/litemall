@@ -49,7 +49,6 @@ Resources:
         Variables:
           RUST_LOG: info
           READINESS_CHECK_PATH: /admin/index/index
-          #          REMOVE_BASE_PATH: /v1
           AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
           # 开启如下JVM启动参数：使用分层编译，使用
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -XX:+UseParallelGC
