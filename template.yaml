@@ -31,17 +31,17 @@ Resources:
     Properties:
       VpcConfig:
         SecurityGroupIds:
-          - sg-0f535b902427074e7
+          - <your-security-group-ids>
         SubnetIds:
-          - subnet-04fcf4683c6a14b4d
-          - subnet-03f68e34e9d2f87f0
-          - subnet-081ba9c36f1afbc3d
+          - <your-subnet-ids-1>
+          - <your-subnet-ids-2>
       MemorySize: 8192
       Handler: run.sh
       CodeUri: litemall-all/
       Runtime: java17
       # 函数名称
       FunctionName: litemall-all
+      Role: "arn:aws:iam::<your-aws-account-id>:role/lambdaFunctionRole"
       AutoPublishAlias: live
       SnapStart:
         ApplyOn: PublishedVersions
