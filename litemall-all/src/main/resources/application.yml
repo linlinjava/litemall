@@ -8,16 +8,16 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
   redis:
-    host: 47.120.69.196
+    host: <your-elasticache-primary-endpoint>
     port: 6379
     database: 0
-    password: Secure_123@red
+    #    password: <your-password>
     jedis:
       pool:
         max-active: 8
         max-idle: 4
         min-idle: 1
-    # ssl: true
+    ssl: true
 
 server:
   port: 8080

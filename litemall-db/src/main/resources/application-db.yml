@@ -1,27 +1,27 @@
 pagehelper:
-  helperDialect:  mysql
+  helperDialect: mysql
   reasonable: true
-  supportMethodsArguments:  true
+  supportMethodsArguments: true
   params: count=countSql
 
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://47.120.69.196:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
-      driver-class-name:  com.mysql.cj.jdbc.Driver
-      username:  litemall
-      password:  litemall123456
+      url: jdbc:mysql://<your-rds-mysql-writer-endpoint>:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: litemall
+      password: litemall123456
       initial-size: 2
       max-active: 16
       min-idle: 2
-      max-wait:  60000
-      pool-prepared-statements:  true
-      max-pool-prepared-statement-per-connection-size:  20
-      validation-query:  SELECT 1 FROM DUAL
-      test-on-borrow:  false
-      test-on-return:  false
-      test-while-idle:  true
-      time-between-eviction-runs-millis:  60000
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      validation-query: SELECT 1 FROM DUAL
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
       webStatFilter:
         enabled: true
       statViewServlet:
