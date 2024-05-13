@@ -20,9 +20,9 @@ capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = false
 # 使用具体的S3桶
-s3_bucket = 'thinktik-poc-devops'
+#s3_bucket = 'your-s3-bucket'
 # 使用具体的S3桶内路径
-s3_prefix = 'lambda-deploy/sam-framework'
+#s3_prefix = '<your-s3-prefix>'
 
 
 [default.package.parameters]
