@@ -31,18 +31,17 @@ Resources:
     Properties:
       VpcConfig:
         SecurityGroupIds:
-          - sg-0f535b902427074e7
+          - <your-security-group-ids>
         SubnetIds:
-          - subnet-04fcf4683c6a14b4d
-          - subnet-03f68e34e9d2f87f0
-          - subnet-081ba9c36f1afbc3d
+          - <your-subnet-ids-1>
+          - <your-subnet-ids-2>
       MemorySize: 8192
       Handler: run.sh
       CodeUri: litemall-all/
       Runtime: java17
       # 函数名称
       FunctionName: litemall-all
-      Role: "arn:aws:iam::843245141269:role/poc-lambda-role"
+      Role: "arn:aws:iam::<your-aws-account-id>:role/lambdaFunctionRole"
       AutoPublishAlias: live
       SnapStart:
         ApplyOn: PublishedVersions
@@ -50,7 +49,6 @@ Resources:
         Variables:
           RUST_LOG: info
           READINESS_CHECK_PATH: /admin/index/index
-          #          REMOVE_BASE_PATH: /v1
           AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
           # 开启如下JVM启动参数：使用分层编译，使用
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -XX:+UseParallelGC
