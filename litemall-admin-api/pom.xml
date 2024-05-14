@@ -56,6 +56,24 @@
             <artifactId>swagger-bootstrap-ui</artifactId>
             <version>1.9.6</version>
         </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>bedrock</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>bedrockruntime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
+        </dependency>
+
+        
     </dependencies>
 
     <build>

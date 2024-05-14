@@ -283,6 +283,13 @@
       </el-dialog>
     </el-card>
 
+    <el-card class="box-card">
+      <h3>{{ $t('app.menu.genai_copy') }}</h3>
+      <el-input v-model="textPrompt" type="textPrompt" />
+      <el-button type="primary" @click="generateText">{{ $t('app.button.generate') }}</el-button>
+      <el-input v-model="textAreaValue" type="textarea" />
+    </el-card>
+
     <div class="op-container">
       <el-button @click="handleCancel">{{ $t('app.button.cancel') }}</el-button>
       <el-button type="primary" @click="handlePublish">{{ $t('goods_edit.button.publish') }}</el-button>
@@ -337,7 +344,7 @@
 </style>
 
 <script>
-import { publishGoods, listCatAndBrand } from '@/api/goods'
+import { publishGoods, listCatAndBrand, askAssistant } from '@/api/goods'
 import { createStorage, uploadPath } from '@/api/storage'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
@@ -353,6 +360,8 @@ export default {
       newKeywordVisible: false,
       newKeyword: '',
       keywords: [],
+      textPrompt: '',
+      textAreaValue: '',
       categoryList: [],
       brandList: [],
       goods: { picUrl: '', gallery: [], isHot: false, isNew: true, isOnSale: true },
@@ -612,6 +621,15 @@ export default {
       }
       this.productVisiable = false
     },
+    generateText() {
+      const prompt = '' + this.textPrompt // TODO Prompt
+      askAssistant({
+        prompt: prompt
+      }).then(response => {
+        this.textAreaValue = response.data.data.list
+      })
+    },
+          
     handleAttributeShow() {
       this.attributeForm = {}
       this.attributeVisiable = true

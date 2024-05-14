@@ -16,6 +16,14 @@ export function deleteGoods(data) {
   })
 }
 
+export function askAssistant(data) {
+  return request({
+    url: '/bedrock/ask',
+    method: 'post',
+    data
+  })
+}
+
 export function publishGoods(data) {
   return request({
     url: '/goods/create',

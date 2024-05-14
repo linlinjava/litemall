@@ -50,7 +50,7 @@ const { context, messages } = loadMessages()
 
 // VueI18n instance
 const i18n = new VueI18n({
-  locale: 'zh-Hans',
+  locale: 'en',
   messages
 })
 
