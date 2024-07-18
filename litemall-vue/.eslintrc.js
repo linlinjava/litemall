@@ -1,7 +1,8 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
+    es6: true
   },
   // extends: ['plugin:vue/essential', '@vue/prettier'],
   // rules: {
@@ -12,6 +13,8 @@ module.exports = {
   //   'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   // },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
+    ecmaVersion:"latest",//最新版，或者你需要的 ECMAScript 版本
+    sourceType:"module" // 允许使用 import/export 语句
   }
 };
