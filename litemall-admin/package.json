@@ -55,7 +55,7 @@
     "lodash": "^4.17.11",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
-    "path-to-regexp": "2.4.0",
+    "path-to-regexp": "3.3.0",
     "screenfull": "4.2.0",
     "script-loader": "0.7.2",
     "v-charts": "1.19.0",
