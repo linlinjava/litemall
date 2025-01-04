@@ -56,6 +56,7 @@ public class AdminCategoryController {
                 subCategoryVo.setKeywords(subCategory.getKeywords());
                 subCategoryVo.setName(subCategory.getName());
                 subCategoryVo.setLevel(subCategory.getLevel());
+                subCategoryVo.setPid(subCategory.getPid());
 
                 children.add(subCategoryVo);
             }

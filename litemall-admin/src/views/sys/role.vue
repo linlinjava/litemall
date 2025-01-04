@@ -3,22 +3,22 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入角色名称" />
-      <el-button v-permission="['GET /admin/role/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/role/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" :placeholder="$t('sys_role.placeholder.filter_name')" />
+      <el-button v-permission="['GET /admin/role/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button v-permission="['POST /admin/role/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('app.button.create') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="角色名称" prop="name" sortable />
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
+      <el-table-column align="center" :label="$t('sys_role.table.name')" prop="name" sortable />
 
-      <el-table-column align="center" label="说明" prop="desc" />
+      <el-table-column align="center" :label="$t('sys_role.table.desc')" prop="desc" />
 
-      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('sys_role.table.actions')" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/role/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/role/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
-          <el-button v-permission="['GET /admin/role/permissions']" type="primary" size="mini" @click="handlePermission(scope.row)">授权</el-button>
+          <el-button v-permission="['POST /admin/role/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('app.button.edit') }}</el-button>
+          <el-button v-permission="['POST /admin/role/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
+          <el-button v-permission="['GET /admin/role/permissions']" type="primary" size="mini" @click="handlePermission(scope.row)">{{ $t('app.button.permission') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -28,22 +28,22 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="角色名称" prop="name">
+        <el-form-item :label="$t('sys_role.form.name')" prop="name">
           <el-input v-model="dataForm.name" />
         </el-form-item>
-        <el-form-item label="说明" prop="desc">
+        <el-form-item :label="$t('sys_role.form.desc')" prop="desc">
           <el-input v-model="dataForm.desc" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('app.button.confirm') }}</el-button>
+        <el-button v-else type="primary" @click="updateData">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 
     <!-- 权限配置对话框 -->
-    <el-dialog :visible.sync="permissionDialogFormVisible" title="权限配置">
+    <el-dialog :visible.sync="permissionDialogFormVisible" :title="$t('sys_role.dialog.permission')">
       <el-tree
         ref="tree"
         :data="systemPermissions"
@@ -58,8 +58,8 @@
         </span>
       </el-tree>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="permissionDialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="updatePermission">确定</el-button>
+        <el-button @click="permissionDialogFormVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button type="primary" @click="updatePermission">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 

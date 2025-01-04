@@ -3,38 +3,38 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" placeholder="请输入关键字" />
-      <el-input v-model="listQuery.url" clearable class="filter-item" style="width: 200px;" placeholder="请输入跳转链接" />
-      <el-button v-permission="['GET /admin/keyword/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/keyword/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-input v-model="listQuery.keyword" clearable class="filter-item" style="width: 200px;" :placeholder="$t('mall_keyword.placeholder.filter_keyword')" />
+      <el-input v-model="listQuery.url" clearable class="filter-item" style="width: 200px;" :placeholder="$t('mall_keyword.placeholder.filter_url')" />
+      <el-button v-permission="['GET /admin/keyword/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('app.button.search') }}</el-button>
+      <el-button v-permission="['POST /admin/keyword/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('app.button.create') }}</el-button>
+      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('app.button.download') }}</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" border fit highlight-current-row>
 
-      <el-table-column align="center" width="150px" label="关键词ID" prop="id" sortable />
+      <el-table-column align="center" width="150px" :label="$t('mall_keyword.table.id')" prop="id" sortable />
 
-      <el-table-column align="center" min-width="100px" label="关键词" prop="keyword" />
+      <el-table-column align="center" min-width="100px" :label="$t('mall_keyword.table.keyword')" prop="keyword" />
 
-      <el-table-column align="center" min-width="300px" label="跳转链接" prop="url" />
+      <el-table-column align="center" min-width="300px" :label="$t('mall_keyword.table.url')" prop="url" />
 
-      <el-table-column align="center" min-width="100px" label="是否推荐" prop="isHot">
+      <el-table-column align="center" min-width="100px" :label="$t('mall_keyword.table.is_hot')" prop="isHot">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.isHot ? 'success' : 'error' ">{{ scope.row.isHot ? '是' : '否' }}</el-tag>
+          <el-tag :type="scope.row.isHot ? 'success' : 'error' ">{{ $t(scope.row.isHot ? 'mall_keyword.text.yes' : 'mall_keyword.text.no') }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" min-width="100px" label="是否默认" prop="isDefault">
+      <el-table-column align="center" min-width="100px" :label="$t('mall_keyword.table.is_default')" prop="isDefault">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.isDefault ? 'success' : 'error' ">{{ scope.row.isDefault ? '是' : '否' }}</el-tag>
+          <el-tag :type="scope.row.isDefault ? 'success' : 'error' ">{{ $t(scope.row.isDefault ? 'mall_keyword.text.yes' : 'mall_keyword.text.no') }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('mall_keyword.table.actions')" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/keyword/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/keyword/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-permission="['POST /admin/keyword/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('app.button.edit') }}</el-button>
+          <el-button v-permission="['POST /admin/keyword/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">{{ $t('app.button.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,29 +44,29 @@
     <!-- 添加或修改对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="关键词" prop="keyword">
+        <el-form-item :label="$t('mall_keyword.form.keyword')" prop="keyword">
           <el-input v-model="dataForm.keyword" />
         </el-form-item>
-        <el-form-item label="跳转链接" prop="url">
+        <el-form-item :label="$t('mall_keyword.form.url')" prop="url">
           <el-input v-model="dataForm.url" />
         </el-form-item>
-        <el-form-item label="是否推荐" prop="isHot">
-          <el-select v-model="dataForm.isHot" placeholder="请选择">
-            <el-option :value="true" label="推荐" />
-            <el-option :value="false" label="普通" />
+        <el-form-item :label="$t('mall_keyword.form.is_hot')" prop="isHot">
+          <el-select v-model="dataForm.isHot" :placeholder="$t('mall_keyword.form.is_hot.placeholder')">
+            <el-option :value="true" :label="$t('mall_keyword.value.is_hot_true')" />
+            <el-option :value="false" :label="$t('mall_keyword.value.is_hot_false')" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否默认" prop="isDefault">
-          <el-select v-model="dataForm.isDefault" placeholder="请选择">
-            <el-option :value="true" label="默认" />
-            <el-option :value="false" label="非默认" />
+        <el-form-item :label="$t('mall_keyword.form.is_default')" prop="isDefault">
+          <el-select v-model="dataForm.isDefault" :placeholder="$t('mall_keyword.form.is_default.placeholder')">
+            <el-option :value="true" :label="$t('mall_keyword.value.is_default_true')" />
+            <el-option :value="false" :label="$t('mall_keyword.value.is_default_false')" />
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确定</el-button>
-        <el-button v-else type="primary" @click="updateData">确定</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('app.button.cancel') }}</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">{{ $t('app.button.confirm') }}</el-button>
+        <el-button v-else type="primary" @click="updateData">{{ $t('app.button.confirm') }}</el-button>
       </div>
     </el-dialog>
 

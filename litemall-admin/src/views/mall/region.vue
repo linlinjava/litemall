@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
 
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" row-key="id" style="width: 100%;margin-bottom: 20px;" border="">
+    <el-table v-loading="listLoading" :data="list" :element-loading-text="$t('app.message.list_loading')" row-key="id" style="width: 100%;margin-bottom: 20px;" border="">
 
-      <el-table-column label="区域名称" prop="name"/>
+      <el-table-column :label="$t('mall_region.table.name')" prop="name" />
 
-      <el-table-column label="区域类型" prop="type">
+      <el-table-column :label="$t('mall_region.table.type')" prop="type">
         <template slot-scope="scope">
           {{ scope.row.type | typeFilter }}
         </template>
       </el-table-column>
 
-      <el-table-column label="区域编码" prop="code"/>
+      <el-table-column :label="$t('mall_region.table.code')" prop="code" />
 
     </el-table>
 
