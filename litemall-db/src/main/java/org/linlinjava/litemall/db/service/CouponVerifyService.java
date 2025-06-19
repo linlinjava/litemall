@@ -95,7 +95,7 @@ public class CouponVerifyService {
                 }
             }
             //是否达到优惠券满减金额
-            if (total.compareTo(coupon.getMin()) == -1) {
+            if (goodsValueList.isEmpty() || total.compareTo(coupon.getMin()) == -1) {
                 return null;
             }
         }
