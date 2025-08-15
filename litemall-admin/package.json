@@ -101,5 +101,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "optionalDependencies": {
+    "fsevents": "^2.3.3"
+  }
 }
