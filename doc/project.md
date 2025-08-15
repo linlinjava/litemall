@@ -310,7 +310,7 @@ drop database if exists litemall;
 drop user if exists 'litemall'@'%';
 create database litemall default character set utf8mb4 collate utf8mb4_unicode_ci;
 use litemall;
-create user 'litemall'@'%' identified by 'litemall123456';
+create user 'litemall'@'%' identified by 'Litemall6u+nvz';
 grant all privileges on litemall.* to 'litemall'@'%';
 flush privilege
 ```
@@ -501,7 +501,7 @@ spring:
       url:  jdbc:mysql://localhost:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
       driver-class-name:  com.mysql.cj.jdbc.Driver
       username:  litemall
-      password:  litemall123456
+      password:  Litemall6u+nvz
       initial-size:  10
       max-active:  50
       min-idle:  10
