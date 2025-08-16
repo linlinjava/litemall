@@ -281,7 +281,7 @@ Spring Boot技术栈参考以下文档或者项目：
 
 如图所示，当前开发阶段的方案：
 
-* MySQL数据访问地址`jdbc:mysql://localhost:3306/litemall`
+* MySQL数据访问地址`jdbc:mysql://82.156.146.35:3306/litemall`
 * litemall-wx-api后端服务地址`http://localhost:8080/wx`，数据则来自MySQL
 * litemall-admin-api后端服务地址`http://localhost:8080/admin`,数据则来自MySQL
 * litemall-admin前端访问地址`http://localhost:9527`, 数据来自litemall-admin-api
@@ -498,7 +498,7 @@ flush privilege
 spring:
   datasource:
     druid:
-      url:  jdbc:mysql://localhost:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      url:  jdbc:mysql://82.156.146.35:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
       driver-class-name:  com.mysql.cj.jdbc.Driver
       username:  litemall
       password:  litemall123456
