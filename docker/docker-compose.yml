@@ -14,7 +14,7 @@ services:
       - ./db/data:/var/lib/mysql
       - ./db/init-sql:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: litemall123456
+      MYSQL_ROOT_PASSWORD: Litemall6u+nvz
     restart: always
   litemall:
     build:

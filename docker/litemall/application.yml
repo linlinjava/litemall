@@ -8,7 +8,7 @@ spring:
       url:  jdbc:mysql://mysql:3306/litemall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=true
       driver-class-name:  com.mysql.cj.jdbc.Driver
       username:  litemall
-      password:  litemall123456
+      password:  Litemall6u+nvz
       initial-size:  10
       max-active:  50
       min-idle:  10
