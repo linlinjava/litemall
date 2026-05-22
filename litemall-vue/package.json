@@ -17,7 +17,7 @@
     "@chenfengyuan/vue-countdown": "^1.1.2",
     "axios": ">=0.21.1",
     "dayjs": "^1.7.7",
-    "js-cookie": "2.2.0",
+    "js-cookie": "3.0.7",
     "lodash": "^4.17.21",
     "vant": "^2.0.6",
     "vue": "^2.5.17",
