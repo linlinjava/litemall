@@ -1,0 +1,111 @@
+version: 1
+project: litemall
+quality_dimension: performance
+status: planned-measurement
+source_design:
+  - agent-skills/skills/performance-optimization
+  - agent-skills/agents/web-performance-auditor
+  - agent-skills/references/performance-checklist.md
+metric_honesty_rule:
+  quick_mode: "No Lighthouse, CrUX, PageSpeed, DevTools trace, or RUM artifact is available. Metrics must be reported as not measured."
+  deep_mode: "At least one measurement artifact is available. Every metric must cite its source."
+  forbidden:
+    - "Do not infer Core Web Vitals from source code alone."
+    - "Do not mix lab and field data in one value."
+    - "Do not mark a performance gate as passed without an artifact path."
+workflow:
+  - measure
+  - identify
+  - fix
+  - verify
+  - guard
+frontend_targets:
+  lighthouse_performance:
+    target: 90
+    source: "Lighthouse synthetic"
+    blocking: false
+  lcp_ms:
+    target: 2500
+    source: "Core Web Vitals p75"
+    blocking: false
+  inp_ms:
+    target: 200
+    source: "Core Web Vitals p75"
+    blocking: false
+  cls:
+    target: 0.1
+    source: "Core Web Vitals p75"
+    blocking: false
+  initial_js_gzip_kb:
+    target: 200
+    source: "bundle analyzer or CI artifact"
+    blocking: false
+backend_targets:
+  order_detail_api_p95_ms:
+    target: 200
+    source: "APM, k6, JMeter, or server timing artifact"
+    blocking: false
+  submit_order_api_p95_ms:
+    target: 300
+    source: "APM, k6, JMeter, or server timing artifact"
+    blocking: false
+  pay_notify_api_p95_ms:
+    target: 200
+    source: "APM, k6, JMeter, or server timing artifact"
+    blocking: false
+audit_targets:
+  pages:
+    - id: PERF-PAGE-001
+      name: mobile home
+      path: "/"
+      risks:
+        - slow LCP from images or initial bundle
+        - render-blocking scripts
+    - id: PERF-PAGE-002
+      name: order detail
+      path: "/pages/ucenter/orderDetail/orderDetail"
+      risks:
+        - slow API response
+        - layout shifts in order status and action area
+    - id: PERF-PAGE-003
+      name: checkout
+      path: "/pages/checkout/checkout"
+      risks:
+        - slow address/cart/coupon waterfall
+        - expensive synchronous rendering before submit
+  endpoints:
+    - id: PERF-API-001
+      name: order detail
+      method: GET
+      path: "/wx/order/detail"
+      p95_ms: 200
+    - id: PERF-API-002
+      name: submit order
+      method: POST
+      path: "/wx/order/submit"
+      p95_ms: 300
+    - id: PERF-API-003
+      name: pay notify
+      method: POST
+      path: "/wx/order/pay-notify"
+      p95_ms: 200
+ci_gates:
+  pr_perf:
+    mode: quick
+    blocking: false
+    required_artifacts:
+      - performance-gate.yml validation
+      - source-level performance review
+  nightly_perf:
+    mode: deep
+    blocking: false
+    required_artifacts:
+      - Lighthouse JSON or DevTools trace
+      - API p95 report
+  release_perf:
+    mode: deep
+    blocking: true
+    required_artifacts:
+      - Lighthouse JSON
+      - API p95 report
+      - before/after comparison for any performance fix

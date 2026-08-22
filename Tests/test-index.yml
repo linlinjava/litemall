@@ -1,0 +1,198 @@
+version: 1
+project: litemall
+feature: payment-callback-reliability
+additional_features:
+  - product-browsing
+feature_profiles:
+  product-browsing:
+    business_path:
+      - home
+      - goods-list
+      - goods-detail
+      - specification-and-stock
+      - related-goods
+    focused_commands:
+      fast: ./Tests/scripts/run-layered-tests.sh browse-fast
+      backend-ut: ./Tests/scripts/run-layered-tests.sh browse-backend-ut
+      contract: ./Tests/scripts/run-layered-tests.sh browse-contract
+      frontend-it: ./Tests/scripts/run-layered-tests.sh browse-frontend-it
+      e2e: ./Tests/scripts/run-layered-tests.sh browse-e2e
+    current_gaps:
+      - specification selection and zero-stock unavailable state have no dedicated executable test
+      - related-goods browser smoke displays recommendations but does not navigate into a new detail page
+      - product browsing contract test does not validate complete response schemas
+case_id_format: MALL-<CHAIN>-AC<NN>-<NNN>
+test_case_id_format: MALL-<CHAIN>-AC<NN>-<LAYER>-<NNN>
+execution_id_format: EXEC-<YYYYMMDD>-<NNN>
+workflow_pack: ai-native-workflow/litemall-payment/workflow-pack.md
+quality_dimensions:
+  functional:
+    status: implemented
+    owns:
+      - business rule correctness
+      - API contract stability
+      - persistence behavior
+      - browser golden path smoke
+  performance:
+    status: gate-config-implemented
+    owns:
+      - Core Web Vitals budget
+      - Lighthouse synthetic regression detection
+      - frontend bundle budget
+      - key API p95 response-time budget
+      - metric honesty rule
+      - Quick mode and Deep mode audit boundary
+    suggested_tools:
+      - Lighthouse CI
+      - Playwright trace
+      - k6 or JMeter
+      - application timing/APM
+    gate_config:
+      command: ./Tests/scripts/run-layered-tests.sh performance-gate
+      file: performance/performance-gate.yml
+      validator: performance/validate-performance-gate.rb
+  coverage:
+    status: implemented-reporting
+    owns:
+      - backend JaCoCo HTML/XML/CSV reports for litemall-core, litemall-db, and litemall-wx-api classes touched by tests
+      - frontend Vitest V8 HTML/LCOV/JSON summary reports for the training slice
+      - report generation without claiming whole-system percentage gates
+    gate_config:
+      command: ./Tests/scripts/run-layered-tests.sh coverage
+      backend_report: backend/target/site/jacoco/index.html
+      frontend_report: frontend/coverage/index.html
+  accessibility:
+    status: planned
+    owns:
+      - axe-core automated scan
+      - keyboard-only critical path
+      - focus order and focus visibility
+      - form labels and semantic structure
+      - color contrast checks
+    suggested_tools:
+      - axe-core
+      - Playwright accessibility checks
+      - keyboard navigation scripts
+      - manual screen-reader spot checks
+functional_layers:
+  backend-ut:
+    command: ./Tests/scripts/run-layered-tests.sh backend-ut
+    owns:
+      - order status rules
+      - payment callback branch behavior
+      - amount consistency rejection
+      - idempotent duplicate callback behavior
+      - unpaid order cancellation compensation
+      - paid order refund transition
+      - groupon payment status transition
+    tests:
+      - backend/src/test/java/org/linlinjava/litemall/tests/unit/OrderUtilUnitTest.java
+      - backend/src/test/java/org/linlinjava/litemall/tests/unit/WxOrderPayNotifyUnitTest.java
+      - backend/src/test/java/org/linlinjava/litemall/tests/unit/WxOrderLifecycleUnitTest.java
+      - backend/src/test/java/org/linlinjava/litemall/tests/unit/OrderTimeoutCompensationServiceUnitTest.java
+      - backend/src/test/java/org/linlinjava/litemall/tests/unit/WxProductBrowsingUnitTest.java
+  backend-it:
+    command: ./Tests/scripts/run-layered-tests.sh backend-it
+    owns:
+      - MySQL mapper behavior
+      - optimistic lock update
+      - stock reduce/add behavior
+      - coupon release persistence
+      - groupon query/update behavior
+    tests:
+      - backend/src/test/java/org/linlinjava/litemall/tests/it/PaymentPersistenceIT.java
+      - backend/src/test/java/org/linlinjava/litemall/tests/it/OrderTimeoutConsistencyIT.java
+  contract:
+    command: ./Tests/scripts/run-layered-tests.sh contract
+    owns:
+      - frontend mobile order API paths
+      - backend controller mappings
+      - static OpenAPI apispec paths, methods, test case ids, and required fields
+      - WeChat callback XML required fields
+      - WeChat callback XML to SDK notify model compatibility
+      - order lifecycle endpoint stability
+    tests:
+      - backend/src/test/java/org/linlinjava/litemall/tests/contract/FrontendBackendOrderContractTest.java
+      - backend/src/test/java/org/linlinjava/litemall/tests/contract/PaymentNotifyXmlContractTest.java
+      - backend/src/test/java/org/linlinjava/litemall/tests/contract/ProductBrowsingContractTest.java
+    contracts:
+      - contracts/order-api.contract.json
+      - contracts/order-api.openapi.yaml
+      - contracts/order-api.apispec.md
+      - contracts/product-browsing-api.contract.json
+  frontend-ut:
+    command: ./Tests/scripts/run-layered-tests.sh frontend-ut
+    owns:
+      - amount display rule
+      - local storage helper behavior
+      - order action state mapping
+      - checkout payable summary formatting
+    tests:
+      - frontend/tests/unit/mobile-payment-rules.test.ts
+      - frontend/src/domain/litemallPaymentRules.ts
+  frontend-it:
+    command: ./Tests/scripts/run-layered-tests.sh frontend-it
+    owns:
+      - order submit payload
+      - prepay request
+      - h5pay request
+      - checkout query params
+      - order detail query
+      - cancel/refund/confirm/delete request payloads
+    tests:
+      - frontend/tests/it/mobile-order-api.it.test.ts
+      - frontend/tests/it/mobile-product-browsing-api.it.test.ts
+  e2e:
+    command: ./Tests/scripts/run-layered-tests.sh e2e
+    owns:
+      - browser payment golden path
+      - duplicate callback idempotency evidence
+      - unpaid order cancellation compensation smoke
+    tests:
+      - e2e/tests/payment-flow.spec.ts
+      - e2e/tests/product-browsing-flow.spec.ts
+      - e2e/fixtures/payment-flow-server.mjs
+quality_gates:
+  coverage:
+    command: ./Tests/scripts/run-layered-tests.sh coverage
+    owns:
+      - backend JaCoCo coverage report
+      - frontend Vitest V8 coverage report
+      - coverage artifacts for training review
+    reports:
+      - backend/target/site/jacoco/index.html
+      - backend/target/site/jacoco/jacoco.xml
+      - backend/target/site/jacoco/jacoco.csv
+      - frontend/coverage/index.html
+      - frontend/coverage/lcov.info
+      - frontend/coverage/coverage-summary.json
+  performance-gate:
+    command: ./Tests/scripts/run-layered-tests.sh performance-gate
+    owns:
+      - performance budget configuration
+      - measure-identify-fix-verify-guard workflow
+      - Quick mode vs Deep mode honesty
+      - required artifact rules for PR, Nightly, and Release gates
+    tests:
+      - performance/performance-gate.yml
+      - performance/validate-performance-gate.rb
+runner_checks:
+  scripts:
+    command: ./Tests/scripts/run-layered-tests.sh scripts
+    owns:
+      - layered test runner dispatch
+      - npm lockfile dependency refresh
+      - repeated npm install guard
+    tests:
+      - scripts/run-layered-tests-script-test.sh
+optional_tools:
+  ui-agent-exploration:
+    command: manual; see Tests/ui-agent/page-agent-scenarios.md
+    ci_gate: false
+    owns:
+      - natural-language UI flow exploration
+      - selector repair suggestions
+      - candidate Playwright step generation
+      - manual UI evidence for workshop demos
+    tests:
+      - ui-agent/page-agent-scenarios.md

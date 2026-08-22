@@ -123,6 +123,13 @@ export function goodsDetail(query) {
   })
 }
 const GoodsRelated='/goods/related'; //商品详情页的关联商品（大家都在看）
+export function goodsRelated(query) {
+  return request({
+    url: GoodsRelated,
+    method: 'get',
+    params: query
+  })
+}
 
 const BrandList='/brand/list'; //品牌列表
 export function brandList(query) {

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "litemall 小商场系统架构",
+    "subtitle": "Spring Boot + MyBatis + Vue + 微信小程序 全栈开源商城",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "admin-vue", "type": "frontend", "label": "Vue管理后台", "sublabel": "Element UI", "pos": [40, 40], "size": [138, 56], "tag": "前端" },
+    { "id": "wx-mini", "type": "frontend", "label": "微信小程序", "sublabel": "litemall-wx", "pos": [240, 40], "size": [130, 56], "tag": "前端" },
+    { "id": "mobile-vue", "type": "frontend", "label": "Vue移动端", "sublabel": "Vant UI", "pos": [430, 40], "size": [130, 56], "tag": "前端" },
+    { "id": "admin-api", "type": "backend", "label": "Admin API", "sublabel": "Shiro鉴权 · :8083", "pos": [90, 180], "size": [160, 60], "tag": "后端" },
+    { "id": "wx-api", "type": "backend", "label": "Wx API", "sublabel": "JWT鉴权 · :8082", "pos": [350, 180], "size": [160, 60], "tag": "后端" },
+    { "id": "core", "type": "backend", "label": "litemall-core", "sublabel": "存储 · 快递 · 二维码", "pos": [90, 340], "size": [148, 56], "tag": "工具" },
+    { "id": "services", "type": "backend", "label": "业务服务层", "sublabel": "商品·订单·用户·购物车", "pos": [350, 340], "size": [172, 64], "tag": "后端" },
+    { "id": "mybatis", "type": "database", "label": "MyBatis DAO", "sublabel": "34实体 · 36Mapper", "pos": [200, 510], "size": [152, 58], "tag": "数据" },
+    { "id": "mysql", "type": "database", "label": "MySQL", "sublabel": "Druid连接池", "pos": [560, 510], "size": [128, 56], "tag": "数据库" },
+    { "id": "cos-oss", "type": "cloud", "label": "对象存储", "sublabel": "COS · OSS · Qiniu", "pos": [90, 440], "size": [148, 56], "tag": "外部" },
+    { "id": "wxpay", "type": "external", "label": "微信支付", "sublabel": "WeChat Pay API", "pos": [620, 610], "size": [128, 56], "tag": "外部" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Spring Boot 后端", "wraps": ["admin-api", "wx-api", "core", "services", "mybatis"] },
+    { "kind": "region", "label": "Vue 前端", "wraps": ["admin-vue", "mobile-vue"] }
+  ],
+  "connections": [
+    { "from": "admin-vue", "to": "admin-api", "label": "Axios · REST API", "fromSide": "bottom", "toSide": "top" },
+    { "from": "wx-mini", "to": "wx-api", "label": "REST API", "fromSide": "bottom", "toSide": "top" },
+    { "from": "mobile-vue", "to": "wx-api", "label": "Vant · REST API", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "from": "admin-api", "to": "services", "label": "调用", "fromSide": "bottom", "toSide": "top" },
+    { "from": "wx-api", "to": "services", "label": "调用", "fromSide": "bottom", "toSide": "top", "labelDy": 28 },
+    { "from": "core", "to": "services", "label": "引用", "variant": "dashed", "fromSide": "right", "toSide": "left" },
+    { "from": "services", "to": "mybatis", "label": "依赖", "fromSide": "bottom", "toSide": "top" },
+    { "from": "mybatis", "to": "mysql", "label": "JDBC" },
+    { "from": "core", "to": "cos-oss", "label": "上传文件", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 28 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "前后端分离架构", "items": ["三个独立前端：微信小程序(C端)、Vue管理后台(B端)、Vue移动端(H5)", "后端统一REST API：Admin API走Shiro会话鉴权，Wx API走JWT Token鉴权"] },
+    { "dot": "amber", "title": "数据访问分层", "items": ["litemall-db模块：34个实体类映射MySQL表，36个MyBatis Mapper接口", "Service层封装分页查询(PageHelper)和事务操作：订单状态机、库存扣减、优惠券核验"] },
+    { "dot": "emerald", "title": "外部服务集成", "items": ["对象存储三方案：腾讯云COS、阿里云OSS、七牛云Kodo", "微信支付集成退款API，订单售后联动库存回滚和优惠券回收"] }
+  ]
+}

@@ -1,0 +1,15 @@
+<xml>
+  <return_code><![CDATA[SUCCESS]]></return_code>
+  <result_code><![CDATA[SUCCESS]]></result_code>
+  <appid><![CDATA[wxa5b486c6b918ecfb]]></appid>
+  <mch_id><![CDATA[111111]]></mch_id>
+  <nonce_str><![CDATA[test-nonce]]></nonce_str>
+  <sign><![CDATA[test-sign]]></sign>
+  <openid><![CDATA[o-test-openid]]></openid>
+  <trade_type><![CDATA[JSAPI]]></trade_type>
+  <bank_type><![CDATA[OTHERS]]></bank_type>
+  <total_fee>10000</total_fee>
+  <transaction_id><![CDATA[wxpay-transaction-001]]></transaction_id>
+  <out_trade_no><![CDATA[20260711000001]]></out_trade_no>
+  <time_end><![CDATA[20260711090000]]></time_end>
+</xml>

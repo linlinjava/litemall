@@ -1,0 +1,416 @@
+openapi: 3.0.3
+info:
+  title: litemall wx order API
+  version: 0.1.0-training
+  description: >
+    Static OpenAPI contract for the litemall mobile order and payment slice used
+    by the AI Native testing workshop. The running project still has Springfox
+    Swagger configuration, while this file is versioned with Tests so contract
+    tests, test planners, and AI skills can use one stable source of truth.
+servers:
+  - url: /wx
+    description: litemall-vue development baseURL
+tags:
+  - name: Order
+    description: Mobile order lifecycle APIs.
+  - name: Payment
+    description: WeChat payment creation and callback APIs.
+paths:
+  /order/list:
+    get:
+      tags: [Order]
+      operationId: listOrders
+      summary: List current user's orders.
+      description: Mirrors WxOrderController.list and litemall-vue orderList.
+      parameters:
+        - $ref: '#/components/parameters/ShowType'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/Order'
+      responses:
+        '200':
+          description: Litemall response containing paged order list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/detail:
+    get:
+      tags: [Order]
+      operationId: getOrderDetail
+      summary: Get one order detail.
+      x-test-case-id: MALL-PAY-AC08-FE-IT-001
+      x-frontend-path: /order/detail
+      x-backend-mapping: detail
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Order id owned by the current login user.
+      responses:
+        '200':
+          description: Litemall response containing orderInfo, orderGoods, and expressInfo.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/submit:
+    post:
+      tags: [Order]
+      operationId: submitOrder
+      summary: Submit a shopping cart order.
+      x-test-case-id: MALL-PAY-AC07-FE-IT-001
+      x-frontend-path: /order/submit
+      x-backend-mapping: submit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderSubmitRequest'
+      responses:
+        '200':
+          description: Litemall response containing the created order id and order sn.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/cancel:
+    post:
+      tags: [Order]
+      operationId: cancelOrder
+      summary: Cancel an unpaid order and release occupied resources.
+      x-test-case-id: MALL-PAY-AC09-FE-IT-001
+      x-frontend-path: /order/cancel
+      x-backend-mapping: cancel
+      requestBody:
+        $ref: '#/components/requestBodies/OrderIdJson'
+      responses:
+        '200':
+          description: Litemall response. Success also implies stock and coupon compensation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/prepay:
+    post:
+      tags: [Payment]
+      operationId: createJsapiPrepay
+      summary: Create WeChat JSAPI prepay session.
+      x-test-case-id: MALL-PAY-AC01-FE-IT-001
+      x-frontend-path: /order/prepay
+      x-backend-mapping: prepay
+      requestBody:
+        $ref: '#/components/requestBodies/OrderIdJson'
+      responses:
+        '200':
+          description: Litemall response containing WxPayMpOrderResult.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/h5pay:
+    post:
+      tags: [Payment]
+      operationId: createH5Pay
+      summary: Create WeChat H5 payment session.
+      x-test-case-id: MALL-PAY-AC01-FE-IT-002
+      x-frontend-path: /order/h5pay
+      x-backend-mapping: h5pay
+      requestBody:
+        $ref: '#/components/requestBodies/OrderIdJson'
+      responses:
+        '200':
+          description: Litemall response containing WxPayMwebOrderResult.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/pay-notify:
+    post:
+      tags: [Payment]
+      operationId: receiveWechatPayNotify
+      summary: Receive WeChat payment callback.
+      description: >
+        WeChat server-to-server callback. The service verifies SDK parsing,
+        payment result code, order existence, amount consistency, and duplicate
+        callback idempotency before mutating the order.
+      x-test-case-id: MALL-PAY-AC04-CONTRACT-001
+      x-related-test-case-ids:
+        - MALL-PAY-AC04-CONTRACT-002
+        - MALL-PAY-AC01-BE-UT-001
+        - MALL-PAY-AC02-BE-UT-001
+        - MALL-PAY-AC03-BE-UT-001
+      x-frontend-path: null
+      x-backend-mapping: pay-notify
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WechatPayNotifyXml'
+      responses:
+        '200':
+          description: WeChat XML notify response with SUCCESS or FAIL.
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/WechatPayNotifyResponse'
+  /order/refund:
+    post:
+      tags: [Order]
+      operationId: requestOrderRefund
+      summary: Request refund for a paid order.
+      x-test-case-id: MALL-PAY-AC12-FE-IT-001
+      x-frontend-path: /order/refund
+      x-backend-mapping: refund
+      requestBody:
+        $ref: '#/components/requestBodies/OrderIdJson'
+      responses:
+        '200':
+          description: Litemall response. Success moves the order to refunding.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/confirm:
+    post:
+      tags: [Order]
+      operationId: confirmOrderReceipt
+      summary: Confirm receipt of a shipped order.
+      x-test-case-id: MALL-PAY-AC13-FE-IT-001
+      x-frontend-path: /order/confirm
+      x-backend-mapping: confirm
+      requestBody:
+        $ref: '#/components/requestBodies/OrderIdJson'
+      responses:
+        '200':
+          description: Litemall response. Success moves the order to confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/delete:
+    post:
+      tags: [Order]
+      operationId: deleteOrder
+      summary: Logically delete an order that can be deleted by current user.
+      x-test-case-id: MALL-PAY-AC14-FE-IT-001
+      x-frontend-path: /order/delete
+      x-backend-mapping: delete
+      requestBody:
+        $ref: '#/components/requestBodies/OrderIdJson'
+      responses:
+        '200':
+          description: Litemall response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/goods:
+    get:
+      tags: [Order]
+      operationId: getOrderGoodsForComment
+      summary: Get one order goods item for comment.
+      parameters:
+        - name: ogid
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Order goods id.
+      responses:
+        '200':
+          description: Litemall response containing one order goods item.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+  /order/comment:
+    post:
+      tags: [Order]
+      operationId: commentOrderGoods
+      summary: Submit a comment for an order goods item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCommentRequest'
+      responses:
+        '200':
+          description: Litemall response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LitemallResponse'
+components:
+  parameters:
+    ShowType:
+      name: showType
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 0
+      description: Order tab filter. 0 means all orders.
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+    Sort:
+      name: sort
+      in: query
+      required: false
+      schema:
+        type: string
+        default: add_time
+    Order:
+      name: order
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+  requestBodies:
+    OrderIdJson:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderIdRequest'
+  schemas:
+    LitemallResponse:
+      type: object
+      required: [errno, errmsg]
+      properties:
+        errno:
+          type: integer
+          description: 0 for success; 4xx client errors; 5xx system errors; 7xx wx business errors.
+          example: 0
+        errmsg:
+          type: string
+          example: 成功
+        data:
+          description: Endpoint-specific response payload.
+    OrderSubmitRequest:
+      type: object
+      required:
+        - addressId
+        - cartId
+        - couponId
+        - userCouponId
+        - grouponLinkId
+        - grouponRulesId
+        - message
+      properties:
+        addressId:
+          type: integer
+        cartId:
+          type: integer
+          description: 0 means checked cart items; otherwise a single cart id.
+        couponId:
+          type: integer
+        userCouponId:
+          type: integer
+        grouponLinkId:
+          type: integer
+          nullable: true
+        grouponRulesId:
+          type: integer
+          nullable: true
+        message:
+          type: string
+    OrderIdRequest:
+      type: object
+      required: [orderId]
+      properties:
+        orderId:
+          type: integer
+    OrderCommentRequest:
+      type: object
+      required:
+        - orderGoodsId
+        - content
+        - star
+      properties:
+        orderGoodsId:
+          type: integer
+        content:
+          type: string
+        star:
+          type: integer
+          minimum: 1
+          maximum: 5
+        hasPicture:
+          type: boolean
+        picUrls:
+          type: array
+          items:
+            type: string
+    WechatPayNotifyXml:
+      type: object
+      required:
+        - return_code
+        - result_code
+        - out_trade_no
+        - transaction_id
+        - total_fee
+      properties:
+        return_code:
+          type: string
+          example: SUCCESS
+        result_code:
+          type: string
+          example: SUCCESS
+        appid:
+          type: string
+        mch_id:
+          type: string
+        nonce_str:
+          type: string
+        sign:
+          type: string
+        openid:
+          type: string
+        trade_type:
+          type: string
+          example: JSAPI
+        bank_type:
+          type: string
+        total_fee:
+          type: integer
+          description: Paid amount in fen.
+          example: 10000
+        transaction_id:
+          type: string
+        out_trade_no:
+          type: string
+          description: litemall orderSn.
+        time_end:
+          type: string
+    WechatPayNotifyResponse:
+      type: object
+      required: [return_code, return_msg]
+      properties:
+        return_code:
+          type: string
+          enum: [SUCCESS, FAIL]
+        return_msg:
+          type: string

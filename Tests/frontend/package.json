@@ -1,0 +1,27 @@
+{
+  "name": "litemall-tests-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:ut": "vitest run tests/unit",
+    "test:it": "vitest run tests/it",
+    "test:browse-it": "vitest run tests/it/mobile-product-browsing-api.it.test.ts",
+    "coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dayjs": "^1.11.13",
+    "lodash": "^4.17.21",
+    "vue": "2.6.10",
+    "vue-template-compiler": "2.6.10"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "2.1.9",
+    "@types/lodash": "^4.17.13",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}

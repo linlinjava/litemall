@@ -1,0 +1,81 @@
+{
+  "feature": "payment-callback-reliability",
+  "basePaths": {
+    "mobileFrontend": "litemall-vue/src/api/api.js",
+    "backendController": "litemall-wx-api/src/main/java/org/linlinjava/litemall/wx/web/WxOrderController.java"
+  },
+  "endpoints": [
+    {
+      "id": "MALL-PAY-AC07-FE-IT-001",
+      "name": "submit order",
+      "frontendPath": "/order/submit",
+      "backendMapping": "submit",
+      "method": "POST",
+      "requiredPayloadFields": ["addressId", "cartId", "couponId", "userCouponId", "grouponLinkId", "grouponRulesId", "message"]
+    },
+    {
+      "id": "MALL-PAY-AC01-FE-IT-001",
+      "name": "create JSAPI prepay",
+      "frontendPath": "/order/prepay",
+      "backendMapping": "prepay",
+      "method": "POST",
+      "requiredPayloadFields": ["orderId"]
+    },
+    {
+      "id": "MALL-PAY-AC01-FE-IT-002",
+      "name": "create H5 pay",
+      "frontendPath": "/order/h5pay",
+      "backendMapping": "h5pay",
+      "method": "POST",
+      "requiredPayloadFields": ["orderId"]
+    },
+    {
+      "id": "MALL-PAY-AC04-CONTRACT-001",
+      "name": "wechat pay notify",
+      "frontendPath": null,
+      "backendMapping": "pay-notify",
+      "method": "POST",
+      "requiredXmlFields": ["return_code", "result_code", "out_trade_no", "transaction_id", "total_fee"]
+    },
+    {
+      "id": "MALL-PAY-AC08-FE-IT-001",
+      "name": "order detail",
+      "frontendPath": "/order/detail",
+      "backendMapping": "detail",
+      "method": "GET",
+      "requiredQueryFields": ["orderId"]
+    },
+    {
+      "id": "MALL-PAY-AC09-FE-IT-001",
+      "name": "cancel unpaid order",
+      "frontendPath": "/order/cancel",
+      "backendMapping": "cancel",
+      "method": "POST",
+      "requiredPayloadFields": ["orderId"]
+    },
+    {
+      "id": "MALL-PAY-AC12-FE-IT-001",
+      "name": "refund paid order",
+      "frontendPath": "/order/refund",
+      "backendMapping": "refund",
+      "method": "POST",
+      "requiredPayloadFields": ["orderId"]
+    },
+    {
+      "id": "MALL-PAY-AC13-FE-IT-001",
+      "name": "confirm shipped order",
+      "frontendPath": "/order/confirm",
+      "backendMapping": "confirm",
+      "method": "POST",
+      "requiredPayloadFields": ["orderId"]
+    },
+    {
+      "id": "MALL-PAY-AC14-FE-IT-001",
+      "name": "delete completed order",
+      "frontendPath": "/order/delete",
+      "backendMapping": "delete",
+      "method": "POST",
+      "requiredPayloadFields": ["orderId"]
+    }
+  ]
+}

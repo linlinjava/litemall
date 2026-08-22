@@ -1,0 +1,43 @@
+version: 3
+entry_skill: test-agent-workflow
+
+custom_agents:
+  test_engineer:
+    path: .codex/agents/test-engineer.toml
+    activation: independent coverage analysis, Case review, or evidence reproduction
+
+public_skills:
+  test-agent-workflow:
+    path: .agents/skills/test-agent-workflow/SKILL.md
+    owns: [routing, lifecycle gates, repair routing, final report]
+  test-case-design:
+    path: .agents/skills/test-case-design/SKILL.md
+    owns: [test basis, obligations, existing-case decisions, layer-neutral cases]
+  test-case-quality-review:
+    path: .agents/skills/test-case-quality-review/SKILL.md
+    owns: [traceability, completeness, oracle quality, design approval]
+  test-strategy:
+    path: .agents/skills/test-strategy/SKILL.md
+    owns: [case selection, layers, actions, targets, commands, runtimes, order, gates]
+  test-execution:
+    path: .agents/skills/test-execution/SKILL.md
+    owns: [test implementation, project CLI execution, evidence]
+  test-agent-governance:
+    path: .agents/skills/test-agent-governance/SKILL.md
+    activation: explicit governance request
+
+internal_stages:
+  user-story-intake: references/stages/01-user-story-intake.md
+  acceptance-criteria: references/stages/02-acceptance-criteria.md
+  failure-repair-loop: references/stages/07-failure-repair-loop.md
+  final-test-report: references/final-test-report.md
+
+loading_policy:
+  - Load requirement stages only when approved equivalents are absent.
+  - Existing-case discovery is internal to Test Case Design.
+  - Test Strategy is the sole owner of layer selection.
+  - Test Execution loads only layer references named by the READY plan.
+  - Runtime references load only when the selected layer requires them.
+  - Governance is never a mandatory tail of the feature workflow.
+  - The test_engineer custom agent is optional and must not be spawned for every workflow run.
+  - Project commands come from Tests/test-index.yml, not from Skill defaults.

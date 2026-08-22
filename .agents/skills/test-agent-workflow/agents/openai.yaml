@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test Agent Workflow"
+  short_description: "Run the complete requirement-to-test-evidence workflow"
+  default_prompt: "Use $test-agent-workflow to complete the testing lifecycle and produce an evidence-backed final report."

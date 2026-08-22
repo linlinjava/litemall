@@ -5,16 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.system.SystemConfig;
 import org.linlinjava.litemall.core.task.Task;
 import org.linlinjava.litemall.core.util.BeanUtil;
-import org.linlinjava.litemall.db.domain.LitemallOrder;
-import org.linlinjava.litemall.db.domain.LitemallOrderGoods;
-import org.linlinjava.litemall.db.service.LitemallGoodsProductService;
-import org.linlinjava.litemall.db.service.LitemallOrderGoodsService;
-import org.linlinjava.litemall.db.service.LitemallOrderService;
-import org.linlinjava.litemall.db.util.OrderUtil;
-import org.linlinjava.litemall.wx.service.WxOrderService;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import org.linlinjava.litemall.wx.service.OrderTimeoutCompensationService;
 
 public class OrderUnpaidTask extends Task {
     private final Log logger = LogFactory.getLog(OrderUnpaidTask.class);
@@ -33,41 +24,21 @@ public class OrderUnpaidTask extends Task {
     @Override
     public void run() {
         logger.info("系统开始处理延时任务---订单超时未付款---" + this.orderId);
-
-        LitemallOrderService orderService = BeanUtil.getBean(LitemallOrderService.class);
-        LitemallOrderGoodsService orderGoodsService = BeanUtil.getBean(LitemallOrderGoodsService.class);
-        LitemallGoodsProductService productService = BeanUtil.getBean(LitemallGoodsProductService.class);
-        WxOrderService wxOrderService = BeanUtil.getBean(WxOrderService.class);
-
-        LitemallOrder order = orderService.findById(this.orderId);
-        if(order == null){
-            return;
+        try {
+            getCompensationService().closeOrder(this.orderId);
+        } catch (RuntimeException exception) {
+            logger.error("系统处理延时任务失败---订单超时未付款---订单号=" + this.orderId
+                    + ", 原因=" + exception.getMessage(), exception);
+            throw exception;
         }
-        if(!OrderUtil.isCreateStatus(order)){
-            return;
-        }
-
-        // 设置订单已取消状态
-        order.setOrderStatus(OrderUtil.STATUS_AUTO_CANCEL);
-        order.setEndTime(LocalDateTime.now());
-        if (orderService.updateWithOptimisticLocker(order) == 0) {
-            throw new RuntimeException("更新数据已失效");
-        }
-
-        // 商品货品数量增加
-        Integer orderId = order.getId();
-        List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(orderId);
-        for (LitemallOrderGoods orderGoods : orderGoodsList) {
-            Integer productId = orderGoods.getProductId();
-            Short number = orderGoods.getNumber();
-            if (productService.addStock(productId, number) == 0) {
-                throw new RuntimeException("商品货品库存增加失败");
-            }
-        }
-
-        //返还优惠券
-        wxOrderService.releaseCoupon(orderId);
-
         logger.info("系统结束处理延时任务---订单超时未付款---" + this.orderId);
+    }
+
+    /**
+     * Resolve the Spring-managed service at execution time because this task is
+     * deliberately created with {@code new} by the task scheduler.
+     */
+    protected OrderTimeoutCompensationService getCompensationService() {
+        return BeanUtil.getBean(OrderTimeoutCompensationService.class);
     }
 }

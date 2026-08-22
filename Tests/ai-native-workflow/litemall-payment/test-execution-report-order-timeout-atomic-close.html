@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Timeout · Final Test Report</title>
+  <style>
+    :root{--ink:#17202b;--muted:#66727d;--line:#dce4ea;--bg:#f4f6f8;--panel:#fff;--blue:#2563eb;--green:#11845f;--orange:#c56820;--red:#bd3030;--navy:#17202b}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    .wrap{max-width:1440px;margin:auto;padding:28px 34px 70px}.top{background:var(--panel);border:1px solid var(--line);border-top:8px solid var(--orange);padding:24px 28px 22px;position:relative}
+    .status{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:20px}.status b{font-size:27px;letter-spacing:.02em}.status .tag{background:#fff1d9;color:var(--orange);border:1px solid #efc887;padding:5px 12px;border-radius:999px;font-size:14px;font-weight:800}
+    h1{font-size:34px;line-height:1.15;margin:0 0 8px}h2{font-size:23px;margin:0 0 16px}h3{font-size:17px;margin:0 0 8px}.muted{color:var(--muted)}.small{font-size:13px;color:var(--muted)}
+    .meta{display:flex;gap:24px;flex-wrap:wrap;color:var(--muted);font-size:13px}.meta code,code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#37526d}
+    section{background:var(--panel);border:1px solid var(--line);margin-top:18px;padding:24px 28px}.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}.section-head .index{color:var(--blue);font-weight:800;font-size:12px;letter-spacing:.1em}
+    table{width:100%;border-collapse:collapse}th{text-align:left;background:var(--navy);color:#fff;padding:10px 11px;font-size:13px}td{padding:11px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}
+    .pill{display:inline-block;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:800;white-space:nowrap}.pass{color:var(--green);background:#e4f5ee}.verify{color:var(--orange);background:#fff1d9}.block{color:var(--red);background:#fde7e7}.na{color:#52606d;background:#edf1f4}.partial{color:var(--orange);font-weight:800}.ok{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}
+    .notice{padding:13px 16px;background:#fff8ed;border-left:4px solid var(--orange);margin:16px 0;color:#71451d}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid var(--line);padding:15px;background:#fafbfc}.card strong{font-size:23px;display:block}.card p{margin:4px 0;color:var(--muted)}
+    .case-list{display:grid;gap:9px}.case{border:1px solid var(--line);background:#fcfdfe}.case summary{cursor:pointer;list-style:none;padding:13px 15px;display:grid;grid-template-columns:260px 90px 130px 1fr;gap:12px;align-items:center}.case summary::-webkit-details-marker{display:none}.case summary:before{content:'＋';color:var(--blue);font-weight:800}.case[open] summary:before{content:'－'}.case summary:hover{background:#f4f7fb}.case-body{border-top:1px solid var(--line);padding:16px 18px 18px 45px;background:#fff}.case-body dl{display:grid;grid-template-columns:130px 1fr;gap:7px 16px;margin:0}.case-body dt{font-weight:800;color:#4d5b68}.case-body dd{margin:0}.case-body ul{margin:5px 0 0;padding-left:20px}.case-body .gap{margin-top:12px;padding:10px 12px;background:#fff4e9;border-left:3px solid var(--orange)}
+    .layer-report{border:1px solid var(--line);background:#fcfdfe}.layer-report summary{cursor:pointer;list-style:none;padding:14px 16px;display:flex;align-items:center;gap:14px}.layer-report summary::-webkit-details-marker{display:none}.layer-report summary:before{content:'＋';color:var(--blue);font-size:18px;font-weight:800}.layer-report[open] summary:before{content:'－'}.layer-report summary:hover{background:#f4f7fb}.layer-report-body{border-top:1px solid var(--line);padding:16px;background:#fff}
+    .section-report{border:1px solid var(--line);background:#fcfdfe}.section-report summary{cursor:pointer;list-style:none;padding:14px 16px;display:flex;align-items:baseline;gap:14px}.section-report summary::-webkit-details-marker{display:none}.section-report summary:before{content:'＋';color:var(--blue);font-size:18px;font-weight:800}.section-report[open] summary:before{content:'－'}.section-report summary:hover{background:#f4f7fb}.section-report-body{border-top:1px solid var(--line);padding:16px;background:#fff}
+    .mapping td:first-child{white-space:nowrap}.trace{font-size:13px}.legend{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0;color:var(--muted);font-size:13px}.legend span:before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);margin-right:5px}.legend .v:before{background:var(--orange)}.legend .b:before{background:var(--red)}
+    .footer{margin-top:18px;font-size:12px;color:#8996a1;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.cmd{display:block;background:#101820;color:#e9f0f5;padding:11px 13px;border-radius:3px;margin:6px 0;font:13px ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto}
+    @media(max-width:900px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.case summary{grid-template-columns:1fr;gap:3px}.case-body{padding-left:18px}.case-body dl{grid-template-columns:1fr}.top,section{padding:18px}.status{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="status"><span class="tag">NEEDS_VERIFY</span><b>最终结果：需要确认</b></div>
+    <h1>未支付订单超时关闭资源一致性</h1>
+    <p class="muted">订单状态、库存回补、优惠券释放必须在同一个可恢复的补偿边界内完成。</p>
+    <div class="meta" style="margin-top:15px"><span>Feature: <code>MALL-ORD-TIMEOUT-001</code></span><span>Strategy: <code>MALL-ORD-TIMEOUT-001-DESIGN</code></span><span>Evidence package: 2026-08-18</span><span>Latest rerun: 2026-08-22</span></div>
+    <div class="notice"><b>为什么不是 PASS？</b> 已有证据包中的 UT、IT、Contract、Frontend、E2E 均为通过；但最新完整重跑在 Testcontainers 启动处阻塞，且 AC06 真实并发、AC07 结构化日志仍未完成。因此当前结论是需要确认，而不是把历史 PASS 直接升级为本次重跑 PASS。</div>
+  </header>
+
+  <section id="layers">
+    <details class="layer-report">
+      <summary><span class="index">01 · LAYER RESULTS</span><b>分层测试执行结果</b><span class="small">6 个层级 · 新增 10 个 · 既有回归通过 · 当前重跑 NEEDS_VERIFY</span></summary>
+      <div class="layer-report-body">
+      <table>
+      <thead><tr><th>Layer</th><th>执行命令</th><th>新增</th><th>既有回归</th><th>最后成功证据</th><th>本次重跑</th><th>覆盖判断</th></tr></thead>
+      <tbody>
+        <tr><td><b>Backend UT</b></td><td><code>run-layered-tests.sh backend-ut</code></td><td>7</td><td>既有回归通过</td><td><span class="pill pass">PASS</span></td><td><span class="pill verify">需复核</span></td><td>AC01–AC04、AC06 部分、AC08</td></tr>
+        <tr><td><b>Backend IT</b></td><td><code>run-layered-tests.sh backend-it</code></td><td>3</td><td>5 个通过</td><td><span class="pill pass">8/8 PASS</span></td><td><span class="pill verify">Testcontainers 阻塞</span></td><td>AC01–AC03、AC05；AC06 并发未覆盖</td></tr>
+        <tr><td><b>Contract</b></td><td><code>run-layered-tests.sh contract</code></td><td>0</td><td>既有回归通过</td><td><span class="pill pass">PASS</span></td><td><span class="pill verify">需复核</span></td><td><span class="pill na">本次无公开契约变化</span></td></tr>
+        <tr><td><b>Frontend UT</b></td><td><code>run-layered-tests.sh frontend-ut</code></td><td>0</td><td>4/4</td><td><span class="pill pass">PASS</span></td><td><span class="pill verify">需复核</span></td><td><span class="pill na">本次无前端代码变化</span></td></tr>
+        <tr><td><b>Frontend IT</b></td><td><code>run-layered-tests.sh frontend-it</code></td><td>0</td><td>15/15</td><td><span class="pill pass">PASS</span></td><td><span class="pill verify">需复核</span></td><td>前端 API 回归，不证明事务边界</td></tr>
+        <tr><td><b>E2E</b></td><td><code>run-layered-tests.sh e2e</code></td><td>0</td><td>4/4</td><td><span class="pill pass">PASS</span></td><td><span class="pill verify">需复核</span></td><td>主流程回归，不替代 Backend IT</td></tr>
+      </tbody>
+      </table>
+      <div class="legend"><span>PASS = 已有成功证据</span><span class="v">NEEDS_VERIFY = 本次运行未形成新证据</span><span class="b">BLOCK = 阻断发布</span></div>
+      </div>
+    </details>
+  </section>
+
+  <section id="strategy">
+    <details class="section-report">
+      <summary><span class="index">02 · STRATEGY TRACEABILITY</span><b>测试策略与 Case 对应关系</b><span class="small">8 个 Case · 6 个已证明 · 2 个 partial · 展开查看层级与证据目标</span></summary>
+      <div class="section-report-body">
+    <div class="section-head"><div><span class="index">02 · STRATEGY TRACEABILITY</span><h2>测试策略与 Case 对应关系</h2></div><span class="small">Strategy 决定层级；Case 保持分层无关</span></div>
+    <table class="mapping">
+      <thead><tr><th>Case ID</th><th>AC</th><th>策略选择的层级</th><th>策略中的证据目标</th><th>Case 状态</th><th>Review 结论</th></tr></thead>
+      <tbody>
+        <tr><td><code>TEST-TIMEOUT-AC01-001</code></td><td>AC01</td><td>Backend UT + IT</td><td>101→103；库存/优惠券持久化状态</td><td><span class="pill pass">passed</span></td><td>已有证据</td></tr>
+        <tr><td><code>TEST-TIMEOUT-AC02-001</code></td><td>AC02</td><td>Backend UT + IT</td><td>终态无副作用；重复任务无变化</td><td><span class="pill pass">passed</span></td><td>已有证据</td></tr>
+        <tr><td><code>TEST-TIMEOUT-AC03-001</code></td><td>AC03</td><td>Backend UT + IT</td><td>库存失败；订单、库存、优惠券回滚</td><td><span class="pill pass">passed</span></td><td>已有证据</td></tr>
+        <tr><td><code>TEST-TIMEOUT-AC04-001</code></td><td>AC04</td><td>Backend UT</td><td>优惠券失败向上抛出</td><td><span class="pill pass">passed</span></td><td>建议补事务级失败 IT</td></tr>
+        <tr><td><code>TEST-TIMEOUT-AC05-001</code></td><td>AC05</td><td>Backend IT</td><td>第二次执行不重复增加资源</td><td><span class="pill pass">passed</span></td><td>已有证据</td></tr>
+        <tr><td><code>TEST-TIMEOUT-AC06-001</code></td><td>AC06</td><td>Backend UT；并发 IT 待补</td><td>乐观锁 loser 无补偿；并发只有一个 winner</td><td><span class="pill verify">partial</span></td><td class="partial">需真实双线程 Testcontainers IT</td></tr>
+        <tr><td><code>TEST-TIMEOUT-AC07-001</code></td><td>AC07</td><td>Code / Log Review</td><td>订单号、结果、失败原因可查询</td><td><span class="pill verify">partial</span></td><td class="partial">需结构化日志采集断言</td></tr>
+        <tr><td><code>TEST-TIMEOUT-AC08-001</code></td><td>AC01</td><td>Backend UT</td><td>Task 将订单号委托给补偿服务</td><td><span class="pill pass">passed</span></td><td>已有证据</td></tr>
+      </tbody>
+    </table>
+      </div>
+    </details>
+  </section>
+
+  <section id="cases">
+    <details class="section-report">
+      <summary><span class="index">03 · CASE REVIEW</span><b>测试 Case 列表</b><span class="small">8 个 Case · 6 PASS · 2 PARTIAL · 点击展开具体步骤、Oracle 和 Evidence</span></summary>
+      <div class="section-report-body">
+    <div class="section-head"><div><span class="index">03 · CASE REVIEW</span><h2>测试 Case 列表</h2></div><span class="small">点击任一 Case 展开细节</span></div>
+    <div class="case-list">
+      <details class="case"><summary><code>TEST-TIMEOUT-AC01-001</code><span>AC01</span><span class="pill pass">PASS</span><span>正常超时关闭</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>验证未支付订单可以完成关闭，并释放全部资源。</dd><dt>Strategy</dt><dd>Backend UT 验证编排；Backend IT 验证真实数据库状态。</dd><dt>Precondition</dt><dd>订单状态 101；库存已扣减 2；优惠券处于已使用状态。</dd><dt>Steps</dt><dd>执行超时补偿服务，查询订单、库存和优惠券记录。</dd><dt>Oracle</dt><dd>订单变为 103；库存 5→7；优惠券恢复可用。</dd><dt>Evidence</dt><dd>OrderTimeoutCompensationServiceUnitTest；OrderTimeoutConsistencyIT。</dd></dl></div></details>
+      <details class="case"><summary><code>TEST-TIMEOUT-AC02-001</code><span>AC02</span><span class="pill pass">PASS</span><span>终态门禁与无副作用</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>验证已完成或已关闭订单不会再次释放资源。</dd><dt>Strategy</dt><dd>Backend UT 验证状态分支；Backend IT 验证持久化结果。</dd><dt>Precondition</dt><dd>订单已处于不可补偿终态。</dd><dt>Steps</dt><dd>执行任务一次或重复执行，检查 update、库存和优惠券调用。</dd><dt>Oracle</dt><dd>订单和资源均无变化；无重复副作用。</dd><dt>Evidence</dt><dd>Mockito interaction verification；重复执行 IT。</dd></dl></div></details>
+      <details class="case"><summary><code>TEST-TIMEOUT-AC03-001</code><span>AC03</span><span class="pill pass">PASS</span><span>库存失败回滚</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>库存回补失败时，验证事务不会留下半完成状态。</dd><dt>Strategy</dt><dd>Backend UT 验证失败传播；Backend IT 验证 MySQL rollback。</dd><dt>Precondition</dt><dd>库存商品缺失或库存更新失败。</dd><dt>Steps</dt><dd>触发补偿，捕获异常并读取订单、库存、优惠券。</dd><dt>Oracle</dt><dd>异常可见；订单仍为 101；库存和优惠券保持原状态。</dd><dt>Evidence</dt><dd>Unit failure case；Testcontainers rollback assertion。</dd></dl></div></details>
+      <details class="case"><summary><code>TEST-TIMEOUT-AC04-001</code><span>AC04</span><span class="pill pass">PASS</span><span>优惠券失败传播</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>验证优惠券释放失败不能被静默吞掉。</dd><dt>Strategy</dt><dd>Backend UT；事务边界的 IT 失败注入仍可补充。</dd><dt>Precondition</dt><dd>优惠券更新操作抛出异常。</dd><dt>Steps</dt><dd>执行补偿服务，检查调用方是否收到失败。</dd><dt>Oracle</dt><dd>异常向上抛出；不能报告为成功。</dd><dt>Evidence</dt><dd>OrderTimeoutCompensationServiceUnitTest。</dd><div class="gap"><b>Review gap：</b>当前已证明失败传播，建议再补一条真实事务失败 IT，证明跨表状态不会半提交。</div></dl></div></details>
+      <details class="case"><summary><code>TEST-TIMEOUT-AC05-001</code><span>AC05</span><span class="pill pass">PASS</span><span>重复执行幂等</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>验证任务重试不会重复增加库存或释放优惠券。</dd><dt>Strategy</dt><dd>Backend IT；用持久化资源 delta 作为主要 Oracle。</dd><dt>Precondition</dt><dd>同一订单可被任务再次处理。</dd><dt>Steps</dt><dd>连续执行两次补偿，比较两次前后的订单、库存、优惠券。</dd><dt>Oracle</dt><dd>第二次执行不产生新的资源变化。</dd><dt>Evidence</dt><dd>OrderTimeoutConsistencyIT repeated-execution case。</dd></dl></div></details>
+      <details class="case"><summary><code>TEST-TIMEOUT-AC06-001</code><span>AC06</span><span class="pill verify">PARTIAL</span><span>并发补偿保护</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>验证两个任务同时处理同一订单时，最多只有一个有效补偿。</dd><dt>Strategy</dt><dd>当前仅有 Backend UT 的 optimistic-lock loser；真实并发 IT 尚未实现。</dd><dt>Precondition</dt><dd>两个执行线程使用同一个未支付订单。</dd><dt>Steps</dt><dd>并发启动两个补偿任务，读取最终订单、库存和优惠券。</dd><dt>Oracle</dt><dd>一个 winner 完成补偿；另一个 loser 无副作用。</dd><dt>Evidence</dt><dd>当前只有 update result=0 与 no-interaction 的 UT 证据。</dd><div class="gap"><b>Open gap：</b>必须补真实双线程 Testcontainers IT，才能把该 Case 标为 PASS。</div></dl></div></details>
+      <details class="case"><summary><code>TEST-TIMEOUT-AC07-001</code><span>AC07</span><span class="pill verify">PARTIAL</span><span>审计日志上下文</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>验证成功、跳过、失败日志都包含订单上下文和结果。</dd><dt>Strategy</dt><dd>Code / Log Review；当前未配置结构化日志采集断言。</dd><dt>Precondition</dt><dd>分别触发成功、终态跳过、依赖失败。</dd><dt>Steps</dt><dd>采集日志并按 orderId、result、failureCause 查询。</dd><dt>Oracle</dt><dd>三种路径的字段完整且 error level 正确。</dd><dt>Evidence</dt><dd>当前只有代码审查和人工日志观察。</dd><div class="gap"><b>Open gap：</b>接入 appender 或结构化 sink，并加入自动断言后再标为 PASS。</div></dl></div></details>
+      <details class="case"><summary><code>TEST-TIMEOUT-AC08-001</code><span>AC01</span><span class="pill pass">PASS</span><span>Task 委托路由</span></summary><div class="case-body"><dl><dt>Purpose</dt><dd>验证 scheduler Task 不自行持有事务，而是将订单号委托给 Spring 管理的补偿服务。</dd><dt>Strategy</dt><dd>Backend UT；验证 delegation interaction。</dd><dt>Precondition</dt><dd>Task 收到订单号。</dd><dt>Steps</dt><dd>运行 Task，检查补偿服务是否收到同一订单号。</dd><dt>Oracle</dt><dd>委托调用发生且参数正确。</dd><dt>Evidence</dt><dd>OrderUnpaidTaskUnitTest。</dd></dl></div></details>
+    </div>
+      </div>
+    </details>
+  </section>
+
+  <section id="gaps">
+    <details class="section-report">
+      <summary><span class="index">04 · REVIEW DECISION</span><b>需要确认的项目</b><span class="small">2 个 P1 风险 · 1 个环境验证项 · 关闭后才可变为 PASS</span></summary>
+      <div class="section-report-body">
+    <div class="section-head"><div><span class="index">04 · REVIEW DECISION</span><h2>需要确认的项目</h2></div><span class="small">关闭后才可从 NEEDS_VERIFY 变为 PASS</span></div>
+    <table>
+      <thead><tr><th>优先级</th><th>问题</th><th>当前状态</th><th>关闭动作</th><th>关闭标准</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill block">P1</span></td><td>真实并发 IT 未执行</td><td>AC06 partial</td><td>恢复 Colima/Testcontainers，新增双线程 IT</td><td>一个 winner、一个 loser；资源只释放一次</td></tr>
+        <tr><td><span class="pill block">P1</span></td><td>结构化日志无自动断言</td><td>AC07 partial</td><td>接入日志采集并断言 orderId/result/failureCause</td><td>成功、跳过、失败三类日志均可查询</td></tr>
+        <tr><td><span class="pill verify">P2</span></td><td>完整分层重跑被环境阻塞</td><td>未形成 2026-08-22 新证据</td><td>修复 Docker socket 后重跑 all</td><td>命令退出码 0，报告时间戳更新</td></tr>
+      </tbody>
+    </table>
+    <div class="notice"><b>Review decision：</b>当前不阻断代码评审，但阻断“无条件测试通过”结论。完成 P1 和完整重跑后，重新评审本报告首页状态。</div>
+      </div>
+    </details>
+  </section>
+
+  <section id="evidence">
+    <div class="section-head"><div><span class="index">05 · EVIDENCE</span><h2>复核入口</h2></div></div>
+    <span class="cmd">./Tests/scripts/run-layered-tests.sh all</span>
+    <span class="cmd">./Tests/scripts/run-layered-tests.sh coverage</span>
+    <span class="cmd">ruby .agents/skills/test-agent-workflow/scripts/validate-workflow.rb</span>
+    <div class="grid" style="margin-top:14px"><div class="card"><h3>Test Case Design</h3><p><code>test-case-design-order-timeout-atomic-close.md</code></p></div><div class="card"><h3>Test Strategy</h3><p><code>test-strategy-order-timeout-atomic-close.md</code></p></div><div class="card"><h3>Execution evidence</h3><p><code>Tests/backend/target/{surefire,failsafe}-reports/</code></p></div></div>
+    <div class="footer"><span>Generated for MALL-ORD-TIMEOUT-001</span><span>Final report · reviewable format</span></div>
+  </section>
+</main>
+</body>
+</html>

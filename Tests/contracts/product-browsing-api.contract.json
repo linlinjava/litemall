@@ -1,0 +1,68 @@
+{
+  "feature": "product-browsing",
+  "basePaths": {
+    "mobileFrontend": "litemall-vue/src/api/api.js",
+    "miniProgramApi": "litemall-wx/config/api.js",
+    "homeController": "litemall-wx-api/src/main/java/org/linlinjava/litemall/wx/web/WxHomeController.java",
+    "goodsController": "litemall-wx-api/src/main/java/org/linlinjava/litemall/wx/web/WxGoodsController.java"
+  },
+  "endpoints": [
+    {
+      "id": "MALL-BROWSE-AC01-CONTRACT-001",
+      "name": "home index merchandising blocks",
+      "frontendPath": "/home/index",
+      "controller": "home",
+      "backendMapping": "/index",
+      "method": "GET",
+      "responseFields": ["banner", "channel", "couponList", "newGoodsList", "hotGoodsList", "brandList", "topicList", "grouponList", "floorGoodsList"]
+    },
+    {
+      "id": "MALL-BROWSE-AC02-CONTRACT-001",
+      "name": "goods list filters and pagination",
+      "frontendPath": "/goods/list",
+      "controller": "goods",
+      "backendMapping": "list",
+      "method": "GET",
+      "optionalQueryFields": ["categoryId", "brandId", "keyword", "isNew", "isHot", "page", "limit", "sort", "order"],
+      "responseFields": ["list", "total", "page", "limit", "pages", "filterCategoryList"]
+    },
+    {
+      "id": "MALL-BROWSE-AC03-CONTRACT-001",
+      "name": "goods detail merchandising aggregate",
+      "frontendPath": "/goods/detail",
+      "controller": "goods",
+      "backendMapping": "detail",
+      "method": "GET",
+      "requiredQueryFields": ["id"],
+      "responseFields": ["info", "userHasCollect", "issue", "comment", "specificationList", "productList", "attribute", "brand", "groupon", "share", "shareImage"]
+    },
+    {
+      "id": "MALL-BROWSE-AC04-CONTRACT-001",
+      "name": "related goods for detail page",
+      "frontendPath": "/goods/related",
+      "controller": "goods",
+      "backendMapping": "related",
+      "method": "GET",
+      "requiredQueryFields": ["id"],
+      "responseFields": ["list", "total", "page", "limit", "pages"]
+    },
+    {
+      "id": "MALL-BROWSE-AC05-CONTRACT-001",
+      "name": "goods category sibling filter data",
+      "frontendPath": "/goods/category",
+      "controller": "goods",
+      "backendMapping": "category",
+      "method": "GET",
+      "requiredQueryFields": ["id"],
+      "responseFields": ["currentCategory", "parentCategory", "brotherCategory"]
+    },
+    {
+      "id": "MALL-BROWSE-AC06-CONTRACT-001",
+      "name": "on-sale goods count",
+      "frontendPath": "/goods/count",
+      "controller": "goods",
+      "backendMapping": "count",
+      "method": "GET"
+    }
+  ]
+}

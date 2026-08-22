@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Agent Governance"
+  short_description: "Maintain and evaluate the testing workflow"
+  default_prompt: "Use $test-agent-governance for the requested KB, benchmark, optimization, or CI governance task."
+policy:
+  allow_implicit_invocation: false
