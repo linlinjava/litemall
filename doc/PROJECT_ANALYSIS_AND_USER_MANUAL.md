@@ -1,6 +1,6 @@
 # litemall 项目分析报告与使用手册
 
-本文档基于当前仓库 `D:\litemall` 的实际结构整理，目标是让新成员能够快速理解项目、搭建环境、启动系统、定位配置，并具备二次开发和部署的基本判断。
+本文档基于当前仓库 `D:\litemall` 的实际结构整理，目标是让新成员能够快速理解项目、搭建环境、启动系统、定位配置，并具备二次开发和部署的基本判断。本机环境曾实际排查并修复过一批环境问题（Node 版本、Maven 空壳依赖、前端 API 占位符等），完整记录见同目录 `ENVIRONMENT_CHECK_AND_FIX_RECORD.md`，相关问题答案已并入本文档第 6、7、9、14 章。
 
 ## 1. 项目概览
 
@@ -127,13 +127,13 @@ server:
 - `src/views/stat`：统计报表。
 - `src/views/profile`：个人中心。
 
-开发环境接口配置：`litemall-admin/.env.development` 中的 `VUE_APP_BASE_API = '/admin'`。前端开发服务启动后访问 `http://localhost:9527`。
+开发环境接口配置：`litemall-admin/.env.development` 中的 `VUE_APP_BASE_API = '/admin'`。前端开发服务启动后访问 `http://localhost:9527`。注意生产构建读取的是 `.env.production`，默认是占位符地址，构建前必须修改（见 14.6）。
 
 ### 4.2 移动 H5 商城 litemall-vue
 
 目录：`litemall-vue`
 
-技术栈：Vue 2、Vue Router、Vuex、Vant、Axios。主要页面目录包括 `home`、`items`、`login`、`order`、`user`。开发环境接口配置为 `litemall-vue/.env.development` 中的 `VUE_APP_BASE_API = '/wx'`。启动后通常访问 `http://localhost:6255`。该模块原文档中标注为开发中，稳定性弱于管理后台和小程序端。
+技术栈：Vue 2、Vue Router、Vuex、Vant、Axios。主要页面目录包括 `home`、`items`、`login`、`order`、`user`。开发环境接口配置为 `litemall-vue/.env.development` 中的 `VUE_APP_BASE_API = '/wx'`。启动后通常访问 `http://localhost:6255`。生产构建同样需要先修改 `.env.production` 的接口地址（见 14.6）。该模块原文档中标注为开发中，稳定性弱于管理后台和小程序端。
 
 ### 4.3 微信小程序 litemall-wx
 
@@ -167,7 +167,13 @@ var WxApiRoot = 'http://localhost:8080/wx/';
 
 建议安装：JDK 8 或以上、Maven、MySQL 5.7 或兼容版本、Node.js 和 npm、微信开发者工具、Git、IDEA、VS Code。
 
-版本提醒：后端声明 Java 版本为 `1.8`，Spring Boot 版本为 `2.1.5.RELEASE`。管理后台要求 Node `>=8.9`、npm `>=3.0.0`，但实际安装依赖时建议使用较旧的 Node LTS 版本以减少 Vue CLI 旧项目兼容问题。
+版本提醒：后端声明 Java 版本为 `1.8`，Spring Boot 版本为 `2.1.5.RELEASE`。管理后台要求 Node `>=8.9`、npm `>=3.0.0`，但**构建前端强烈建议使用 Node 14 及更旧的 LTS 版本**：实测 Node 24 无法可靠构建这套 Vue CLI 3/4（webpack 4）项目。本机已在 `D:\node\node-v14.21.3-win-x64` 放置 Node 14.21.3，构建前执行：
+
+```bash
+export PATH="/d/node/node-v14.21.3-win-x64:$PATH"   # Git Bash
+```
+
+本机当前环境（2026-09-18 已验证可完整运行）：JDK 8（`JAVA_HOME=D:\java`）、Maven 3.6.3、MySQL 5.7（端口 3306，无 Windows 服务名，库 `litemall`，账号 `litemall / litemall123456`）。
 
 ## 7. 本地启动手册
 
@@ -185,19 +191,17 @@ mysql -uroot -p litemall < litemall-db/sql/litemall_data.sql
 
 ### 7.2 启动后端
 
+**重要：必须在项目根目录整体构建**（reactor 构建）。不要单独进入 `litemall-all` 执行 `mvn package`：如果本地 Maven 仓库中的 litemall 模块 jar 是空壳（本机曾出现 460 字节空壳 jar 的情况），单模块构建会打出只有 8MB、缺少全部业务依赖的坏 jar，启动后接口全部 404。
+
 在项目根目录执行：
 
 ```bash
-mvn install
-mvn clean package
+cd D:\litemall
+mvn clean install -DskipTests
 java -Dfile.encoding=UTF-8 -jar litemall-all/target/litemall-all-0.1.0-exec.jar
 ```
 
-也可以进入 `litemall-all` 模块运行：
-
-```bash
-mvn spring-boot:run
-```
+也可以进入 `litemall-all` 模块用 `mvn spring-boot:run` 启动（同样建议先在根目录 `mvn install` 保证依赖完整）。
 
 启动成功后可访问：
 
@@ -205,6 +209,11 @@ mvn spring-boot:run
 - `http://localhost:8080/admin/index/index`
 
 如果返回 JSON，说明后端聚合服务正常。
+
+如果前端已完成生产构建并打入 jar（见第 9 章），则单 jar 即可同时提供页面：
+
+- 管理后台：`http://localhost:8080/`（默认账号 `admin123 / admin123`）
+- H5 商城：`http://localhost:8080/vue/index.html`（注意 `/vue/` 不带文件名会 404，属 Spring Boot 原有行为）
 
 ### 7.3 启动管理后台
 
@@ -251,10 +260,11 @@ npm run dev
 
 ## 9. 打包与部署
 
-后端 Jar 包：
+后端 Jar 包（从根目录整体构建，原因见 7.2）：
 
 ```bash
-mvn clean package
+cd D:\litemall
+mvn clean install -DskipTests
 java -Dfile.encoding=UTF-8 -jar litemall-all/target/litemall-all-0.1.0-exec.jar
 ```
 
@@ -272,7 +282,15 @@ cd litemall-vue
 npm run build:prod
 ```
 
-`litemall-all/pom.xml` 中配置了资源复制：`../litemall-admin/dist` 会复制到 `target/classes/static`，`../litemall-vue/dist` 会复制到 `target/classes/static/vue`。因此如需打包成一个后端 Jar 同时托管前端，应先构建前端，再构建 `litemall-all`。
+前端生产构建注意事项：
+
+- **必须使用 Node 14 或更旧 LTS**（见第 6 章），Node 24 下构建可能失败。
+- **构建前必须修改 `.env.production` 的 `VUE_APP_BASE_API`**。仓库默认值是占位符 `https://www.example.com/...`，会写死进 bundle，导致页面所有请求超时并弹出"登录连接超时"。本机开发时应分别改为：
+  - `litemall-admin/.env.production` → `http://localhost:8080/admin`
+  - `litemall-vue/.env.production` → `http://localhost:8080/wx`
+- 开发模式（`npm run dev`）不受此影响，因为 `.env.development` 使用相对路径并走 devServer 代理。
+
+`litemall-all/pom.xml` 中配置了资源复制：`../litemall-admin/dist` 会复制到 `target/classes/static`，`../litemall-vue/dist` 会复制到 `target/classes/static/vue`。因此如需打包成一个后端 Jar 同时托管前端，应先构建前端，再从根目录构建 `litemall-all`。若 `dist` 目录为空，jar 将不含任何前端页面（根路径 404）。
 
 Docker 配置位于 `docker/docker-compose.yml`，包含 `mysql57` 和 `litemall` 两个服务。正式环境必须修改密码、存储卷、网络暴露策略和后端外部配置。
 
@@ -388,6 +406,22 @@ Docker 配置位于 `docker/docker-compose.yml`，包含 `mysql57` 和 `litemall
 
 检查 `litemall.storage.active` 是否为 `local`，`storagePath` 是否存在且后端进程有写权限，`address` 是否指向正确后端地址。如果部署在服务器，确认反向代理是否允许访问 `/wx/storage/fetch/`。
 
+### 14.6 页面能打开，但登录/首页数据弹"登录连接超时"
+
+这是生产构建最常见的问题：`.env.production` 中的 `VUE_APP_BASE_API` 还是官方占位符 `https://www.example.com/...`，请求发往不存在的地址，axios 5 秒超时后触发前端兜底弹窗（管理后台提示在 `src/utils/request.js:85`，H5 商城在 `src/utils/request.js:53`）。修复：按第 9 章把两个 `.env.production` 改成真实后端地址后重新构建。开发模式下出现该提示，则检查 devServer 代理或后端 8080 服务是否存活。
+
+### 14.7 打包出的 jar 很小（几 MB），启动后接口 404 或依赖缺失
+
+大概率在 `litemall-all` 下单独执行了 `mvn package`，而本地 Maven 仓库里的 litemall 模块 jar 是空壳（约 460 字节，可用 `ls -la ~/.m2/repository/org/linlinjava/*/0.1.0/*.jar` 检查）。修复：在项目根目录执行 `mvn clean install -DskipTests` 整体 reactor 构建，正常产物约 60MB 以上、`BOOT-INF/lib` 含 140 个左右依赖 jar。
+
+### 14.8 H5 商城前端构建报 scss 错误或找不到 regenerator-runtime
+
+`litemall-vue/package.json` 中 `"sass": "^1.26.2"` 的脱字符范围会装到不兼容的新版本（如 1.104），导致 `@import "./mixin/one-border"` 之类的旧语法编译失败；`regenerator-runtime` 未被直接声明时 npm 新版本也可能不在根目录提升。修复：sass 精确锁定 `"1.26.2"`（与 litemall-admin 一致），devDependencies 补 `"regenerator-runtime": "^0.13.11"`，再用 Node 14 重新 `npm install`。
+
+### 14.9 高版本 Node（如 24）下前端构建失败
+
+该前端基于 Vue CLI 3/4 + webpack 4，与 Node 17+ 存在 OpenSSL/工具链兼容问题。不要在高版本 Node 下折腾兼容参数，直接使用 Node 14 构建（本机路径 `D:\node\node-v14.21.3-win-x64`），实测一次通过。
+
 ## 15. 推荐开发顺序
 
 1. 导入数据库，启动 `litemall-all`。
@@ -411,7 +445,8 @@ Docker 配置位于 `docker/docker-compose.yml`，包含 `mysql57` 和 `litemall
 
 不足和风险：
 
-- 项目依赖整体偏旧，前端依赖尤其需要注意 Node 版本兼容。
+- 项目依赖整体偏旧，前端依赖尤其需要注意 Node 版本兼容（本机实测用 Node 14 可正常构建，Node 24 不可靠）。
+- 前端 `.env.production` 与 `application-core.yml` 默认值均含占位符/示例值，首次打包极易踩坑，需按第 9 章修改后再构建。
 - 默认配置含大量示例密钥和弱密码，上线前必须清理。
 - 数据库缺少外键，业务一致性依赖代码质量。
 - 安全能力偏基础，正式商用需要补充限流、审计、风控和权限加固。
