@@ -12,16 +12,28 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+/**
+ * 通知功能自动装配配置。
+ *
+ * <p>根据 {@code litemall.notify} 配置构建 {@link NotifyService}，
+ * 邮件/短信启用时分别注入对应发送器；短信渠道按 {@code active} 选择腾讯云或阿里云。
+ */
 @Configuration
 @EnableConfigurationProperties(NotifyProperties.class)
 public class NotifyAutoConfiguration {
 
+    /** 通知配置 */
     private final NotifyProperties properties;
 
     public NotifyAutoConfiguration(NotifyProperties properties) {
         this.properties = properties;
     }
 
+    /**
+     * 构建通知服务，按配置装配邮件/短信发送器
+     *
+     * @return 配置完成的 NotifyService
+     */
     @Bean
     public NotifyService notifyService() {
         NotifyService notifyService = new NotifyService();
@@ -48,6 +60,11 @@ public class NotifyAutoConfiguration {
         return notifyService;
     }
 
+    /**
+     * 构建 JavaMail 邮件发送器
+     *
+     * @return 基于配置的 JavaMailSender
+     */
     public JavaMailSender mailSender() {
         NotifyProperties.Mail mailConfig = properties.getMail();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -68,6 +85,11 @@ public class NotifyAutoConfiguration {
         return mailSender;
     }
 
+    /**
+     * 构建腾讯云短信发送器
+     *
+     * @return 基于配置的 TencentSmsSender
+     */
     public TencentSmsSender tencentSmsSender() {
         NotifyProperties.Sms smsConfig = properties.getSms();
         TencentSmsSender smsSender = new TencentSmsSender();
@@ -77,6 +99,11 @@ public class NotifyAutoConfiguration {
         return smsSender;
     }
 
+    /**
+     * 构建阿里云短信发送器
+     *
+     * @return 基于配置的 AliyunSmsSender
+     */
     public AliyunSmsSender aliyunSmsSender() {
         NotifyProperties.Sms smsConfig = properties.getSms();
         AliyunSmsSender smsSender = new AliyunSmsSender();
