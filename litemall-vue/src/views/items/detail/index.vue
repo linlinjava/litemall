@@ -260,7 +260,7 @@ export default {
       const list = this.setSkuList();
       const skuInfo = {
         price: parseInt(this.goods.info.retailPrice), // 未选择规格时的价格
-        stock_num: 0, // TODO 总库存
+        stock_num: _.sumBy(this.goods.productList, 'number'),
         collection_id: '', // 无规格商品skuId取collection_id，否则取所选sku组合对应的id
         none_sku: false, // 是否无规格商品
         hide_stock: true
