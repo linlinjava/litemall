@@ -68,6 +68,7 @@ module.exports = {
 
   OrderSubmit: WxApiRoot + 'order/submit', // 提交订单
   OrderPrepay: WxApiRoot + 'order/prepay', // 订单的预支付会话
+  OrderMockPay: WxApiRoot + 'order/mock-pay', // 模拟支付（本地演示用）
   OrderList: WxApiRoot + 'order/list', //订单列表
   OrderDetail: WxApiRoot + 'order/detail', //订单详情
   OrderCancel: WxApiRoot + 'order/cancel', //取消订单

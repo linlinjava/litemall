@@ -40,6 +40,11 @@ import java.util.Map;
  * </ul>
  */
 public class ResponseUtil {
+    /**
+     * 构建成功响应。
+     *
+     * @return 成功响应（不含数据）
+     */
     public static Object ok() {
         Map<String, Object> obj = new HashMap<String, Object>();
         obj.put("errno", 0);
@@ -47,6 +52,12 @@ public class ResponseUtil {
         return obj;
     }
 
+    /**
+     * 构建成功响应。
+     *
+     * @param data 响应数据
+     * @return 成功响应（含数据）
+     */
     public static Object ok(Object data) {
         Map<String, Object> obj = new HashMap<String, Object>();
         obj.put("errno", 0);
@@ -55,10 +66,17 @@ public class ResponseUtil {
         return obj;
     }
 
+    /**
+     * 构建分页列表成功响应。
+     *
+     * @param list 列表数据（Page 类型时自动附带分页信息）
+     * @return 成功响应（含分页数据）
+     */
     public static Object okList(List list) {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("list", list);
 
+        /* PageHelper 分页对象会附带分页信息，否则按单页处理 */
         if (list instanceof Page) {
             Page page = (Page) list;
             data.put("total", page.getTotal());
@@ -75,10 +93,18 @@ public class ResponseUtil {
         return ok(data);
     }
 
+    /**
+     * 构建分页列表成功响应。
+     *
+     * @param list      列表数据
+     * @param pagedList 用于分页信息的分页对象
+     * @return 成功响应（含分页数据）
+     */
     public static Object okList(List list, List pagedList) {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("list", list);
 
+        /* PageHelper 分页对象会附带分页信息，否则按单页处理 */
         if (pagedList instanceof Page) {
             Page page = (Page) pagedList;
             data.put("total", page.getTotal());
@@ -95,6 +121,11 @@ public class ResponseUtil {
         return ok(data);
     }
 
+    /**
+     * 构建失败响应。
+     *
+     * @return 失败响应（错误码 -1）
+     */
     public static Object fail() {
         Map<String, Object> obj = new HashMap<String, Object>();
         obj.put("errno", -1);
@@ -102,6 +133,13 @@ public class ResponseUtil {
         return obj;
     }
 
+    /**
+     * 构建失败响应。
+     *
+     * @param errno  错误码
+     * @param errmsg 错误消息
+     * @return 失败响应
+     */
     public static Object fail(int errno, String errmsg) {
         Map<String, Object> obj = new HashMap<String, Object>();
         obj.put("errno", errno);
@@ -109,6 +147,14 @@ public class ResponseUtil {
         return obj;
     }
 
+    /**
+     * 构建带数据的失败响应。
+     *
+     * @param errno  错误码
+     * @param errmsg 错误消息
+     * @param data   响应数据
+     * @return 失败响应（含数据）
+     */
     public static Object fail(int errno, String errmsg, String data) {
         Map<String, Object> obj = new HashMap<String, Object>(3);
         obj.put("errno", errno);
@@ -117,36 +163,75 @@ public class ResponseUtil {
         return obj;
     }
 
+    /**
+     * 构建参数错误响应（401）。
+     *
+     * @return 参数错误响应
+     */
     public static Object badArgument() {
         return fail(401, "参数不对");
     }
 
+    /**
+     * 构建参数值错误响应（402）。
+     *
+     * @return 参数值错误响应
+     */
     public static Object badArgumentValue() {
         return fail(402, "参数值不对");
     }
 
+    /**
+     * 构建未登录响应（501）。
+     *
+     * @return 未登录响应
+     */
     public static Object unlogin() {
         return fail(501, "请登录");
     }
 
+    /**
+     * 构建系统内部错误响应（502）。
+     *
+     * @return 系统内部错误响应
+     */
     public static Object serious() {
         return fail(502, "系统内部错误");
     }
 
+    /**
+     * 构建业务不支持响应（503）。
+     *
+     * @return 业务不支持响应
+     */
     public static Object unsupport() {
         return fail(503, "业务不支持");
     }
 
+    /**
+     * 构建更新数据失效响应（504）。
+     *
+     * @return 更新数据失效响应
+     */
     public static Object updatedDateExpired() {
         return fail(504, "更新数据已经失效");
     }
 
+    /**
+     * 构建更新数据失败响应（505）。
+     *
+     * @return 更新数据失败响应
+     */
     public static Object updatedDataFailed() {
         return fail(505, "更新数据失败");
     }
 
+    /**
+     * 构建无操作权限响应（506）。
+     *
+     * @return 无操作权限响应
+     */
     public static Object unauthz() {
         return fail(506, "无操作权限");
     }
 }
-

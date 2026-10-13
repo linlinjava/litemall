@@ -660,6 +660,53 @@ public class WxOrderService {
     }
 
     /**
+     * 模拟支付（本地开发/演示用，无需真实微信支付资质）
+     * <p>
+     * 直接标记订单为已支付，跳过微信支付的统一下单和回调流程。
+     *
+     * @param userId 用户ID
+     * @param body   订单信息，{ orderId：xxx }
+     * @return 操作结果
+     */
+    @Transactional
+    public Object mockPay(Integer userId, String body) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        Integer orderId = JacksonUtil.parseInteger(body, "orderId");
+        if (orderId == null) {
+            return ResponseUtil.badArgument();
+        }
+
+        LitemallOrder order = orderService.findById(userId, orderId);
+        if (order == null) {
+            return ResponseUtil.badArgumentValue();
+        }
+        if (!order.getUserId().equals(userId)) {
+            return ResponseUtil.badArgumentValue();
+        }
+
+        // 检测是否能够支付
+        OrderHandleOption handleOption = OrderUtil.build(order);
+        if (!handleOption.isPay()) {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "订单不能支付");
+        }
+
+        // 模拟支付成功：直接标记订单为已支付
+        order.setOrderStatus(OrderUtil.STATUS_PAY);
+        order.setPayTime(LocalDateTime.now());
+        order.setPayId("MOCK" + order.getOrderSn());
+        if (orderService.updateWithOptimisticLocker(order) == 0) {
+            return ResponseUtil.updatedDateExpired();
+        }
+
+        // 取消订单超时未支付任务
+        taskService.removeTask(new OrderUnpaidTask(order.getId()));
+
+        return ResponseUtil.ok();
+    }
+
+    /**
      * 微信H5支付
      *
      * @param userId

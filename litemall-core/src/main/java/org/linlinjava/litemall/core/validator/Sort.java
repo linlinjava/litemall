@@ -9,6 +9,11 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * 排序字段校验注解。
+ * <p>
+ * 用于校验请求参数中的排序字段是否在允许范围内（默认仅支持 add_time 和 id）。
+ */
 @Target({METHOD, FIELD, PARAMETER})
 @Retention(RUNTIME)
 @Documented

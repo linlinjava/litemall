@@ -93,6 +93,18 @@ public class WxOrderController {
     }
 
     /**
+     * 模拟支付（本地开发/演示用）
+     *
+     * @param userId 用户ID
+     * @param body   订单信息，{ orderId：xxx }
+     * @return 操作结果
+     */
+    @PostMapping("mock-pay")
+    public Object mockPay(@LoginUser Integer userId, @RequestBody String body) {
+        return wxOrderService.mockPay(userId, body);
+    }
+
+    /**
      * 微信H5支付
      * @param userId
      * @param body
