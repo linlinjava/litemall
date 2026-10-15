@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * 系统启动初始化服务
  *
- * <p>在 Spring 容器启动完成后（{@link PostConstruct}）自动执行：</p>
+ * <p>在当前 Bean 完成依赖注入后（{@link PostConstruct}）自动执行：</p>
  * <ol>
  *     <li>从数据库加载全部系统配置；若某配置项缺失则用 DEFAULT_CONFIGS 兜底并回写数据库；</li>
  *     <li>把配置整体载入 {@link SystemConfig} 的内存缓存；</li>
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @Component
 class SystemInistService {
-    // 自注入引用，供内部静态/非静态方法间相互调用（保留原项目写法）
+    // 保存当前实例引用（保留原项目写法），不是 Spring 自注入。
     private SystemInistService systemInistService;
 
     @Autowired

@@ -31,6 +31,7 @@ public class ValidatorConfiguration {
                 .configure()
                 .addProperty("hibernate.validator.fail_fast", "true")
                 .buildValidatorFactory();
-        return validatorFactory.getValidator();
+        Validator validator = validatorFactory.getValidator();
+        return validator;
     }
 }

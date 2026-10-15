@@ -28,6 +28,9 @@ public class NotifyService {
     /** 短信模板列表，元素为 {name -> templateId} 的映射 */
     private List<Map<String, String>> smsTemplate = new ArrayList<>();
 
+    /** 预留的微信模板配置；保留现有设置入口，当前发送流程不读取该字段。 */
+    private List<Map<String, String>> wxTemplate = new ArrayList<>();
+
     /**
      * 邮件通知是否启用
      *
@@ -87,7 +90,7 @@ public class NotifyService {
      * @param phoneNumber 接收通知的电话号码
      * @param notifyType  通知类别，通过该枚举值在配置文件中获取相应的模版ID
      * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
-     * @return 短信发送结果；若短信未启用或未找到模板则返回 null
+     * @return 短信发送结果；短信未启用时返回 null，模板缺失时由具体发送器处理
      */
     public SmsResult notifySmsTemplateSync(String phoneNumber, NotifyType notifyType, String[] params) {
         if (smsSender == null)
@@ -146,4 +149,11 @@ public class NotifyService {
         this.smsTemplate = smsTemplate;
     }
 
+    /**
+     * 保存预留的微信模板配置，不启用额外的消息发送渠道。
+     * @param wxTemplate 微信模板配置列表
+     */
+    public void setWxTemplate(List<Map<String, String>> wxTemplate) {
+        this.wxTemplate = wxTemplate;
+    }
 }

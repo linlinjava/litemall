@@ -20,7 +20,7 @@ public class TaskService {
     /**
      * 启动任务消费线程。
      *
-     * <p>单线程常驻消费 {@link DelayQueue}，任务到期即执行；单个任务异常不会中断消费循环。
+     * <p>单线程常驻消费 {@link DelayQueue}，任务到期即执行；循环仅捕获 InterruptedException；任务抛出未捕获的运行时异常可能终止消费。
      */
     @PostConstruct
     private void init() {
