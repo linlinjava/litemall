@@ -36,10 +36,10 @@ public class ExpressService {
     }
 
     /**
-     * 获取物流供应商名
+      * 根据供应商编码获取物流供应商名称。
      *
-     * @param vendorCode
-     * @return
+      * @param vendorCode 物流供应商编码
+      * @return 供应商名称；未找到时返回 {@code null}
      */
     public String getVendorName(String vendorCode) {
         for (Map<String, String> item : properties.getVendors()) {
@@ -54,11 +54,11 @@ public class ExpressService {
     }
 
     /**
-     * 获取物流信息
+     * 查询指定物流单的物流信息。未启用物流查询或查询失败时返回 {@code null}。
      *
-     * @param expCode
-     * @param expNo
-     * @return
+     * @param expCode 物流供应商编码
+     * @param expNo 物流单号
+     * @return 物流信息；未启用或查询失败时返回 {@code null}
      */
     public ExpressInfo getExpressInfo(String expCode, String expNo) {
         if (!properties.isEnable()) {
@@ -79,9 +79,12 @@ public class ExpressService {
     }
 
     /**
-     * Json方式 查询订单物流轨迹
+        * 以 JSON 格式请求物流轨迹。
      *
-     * @throws Exception
+        * @param expCode 物流供应商编码
+        * @param expNo 物流单号
+        * @return 物流查询接口返回的 JSON
+        * @throws Exception 请求编码或 HTTP 请求失败时抛出
      */
     private String getOrderTracesByJson(String expCode, String expNo) throws Exception {
         String requestData = "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
@@ -96,17 +99,16 @@ public class ExpressService {
 
         String result = HttpUtil.sendPost(ReqURL, params);
 
-        //根据公司业务处理返回的信息......
-
         return result;
     }
 
     /**
-     * MD5加密
+        * 使用指定字符集计算字符串的 MD5 摘要。
      *
-     * @param str     内容
-     * @param charset 编码方式
-     * @throws Exception
+        * @param str 待摘要的内容
+        * @param charset 字符编码
+        * @return 小写十六进制摘要
+        * @throws Exception 无法获取 MD5 算法或字符编码时抛出
      */
     private String MD5(String str, String charset) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
