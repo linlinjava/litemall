@@ -16,17 +16,27 @@ import org.linlinjava.litemall.core.util.JacksonUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
- * 阿里云短信服务
+/**
+ * 阿里云短信发送器。
+ *
+ * <p>基于阿里云短信 API（dysmsapi）实现 {@link SmsSender}。
+ * 注意：阿里云仅支持模板发送（{@link #sendWithTemplate}），
+ * 直发 {@link #send} 为桩实现，始终返回发送失败；如需直发请走模板发送或改用其他渠道。
  */
 public class AliyunSmsSender implements SmsSender {
+    /** 日志 */
     private final Log logger = LogFactory.getLog(AliyunSmsSender.class);
 
+    /** 阿里云区域 ID，如 cn-hangzhou */
     private String regionId;
+    /** 阿里云 AccessKey ID */
     private String accessKeyId;
+    /** 阿里云 AccessKey Secret */
     private String accessKeySecret;
+    /** 短信签名 */
     private String sign;
 
+    /** 阿里云短信发送成功的返回码 */
     private final String okCode = "OK";
 
     public String getRegionId() {
@@ -61,6 +71,16 @@ public class AliyunSmsSender implements SmsSender {
         this.sign = sign;
     }
 
+    /**
+     * 直发短信（桩实现）。
+     *
+     * <p>阿里云短信 API 不支持不指定模板的直发，此方法为占位实现，始终返回发送失败；
+     * 实际发送请使用 {@link #sendWithTemplate}。
+     *
+     * @param phone   接收通知的电话号码
+     * @param content 短消息内容
+     * @return 固定返回 successful=false
+     */
     @Override
     public SmsResult send(String phone, String content) {
         SmsResult smsResult = new SmsResult();
@@ -68,6 +88,17 @@ public class AliyunSmsSender implements SmsSender {
         return smsResult;
     }
 
+    /**
+     * 通过短信模板发送短信息。
+     *
+     * <p>阿里云模板参数约定：单参数用 code，多参数用 code/code1/code2...（见下方注释），
+     * 开发者需保证申请的模板参数名与此约定一致。
+     *
+     * @param phone      接收通知的电话号码
+     * @param templateId 通知模板ID
+     * @param params     模板参数值
+     * @return 短信发送结果，失败时 successful=false
+     */
     @Override
     public SmsResult sendWithTemplate(String phone, String templateId, String[] params) {
         DefaultProfile profile = DefaultProfile.getProfile(this.regionId, this.accessKeyId, this.accessKeySecret);

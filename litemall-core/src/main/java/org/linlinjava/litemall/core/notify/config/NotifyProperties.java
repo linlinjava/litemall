@@ -6,9 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 商城通知配置。
+ *
+ * <p>绑定前缀为 {@code litemall.notify} 的配置项，包含邮件与短信（腾讯云/阿里云）发送相关配置。
+ */
 @ConfigurationProperties(prefix = "litemall.notify")
 public class NotifyProperties {
+    /** 邮件通知配置 */
     private Mail mail;
+    /** 短信通知配置 */
     private Sms sms;
 
     public Mail getMail() {
@@ -27,13 +34,23 @@ public class NotifyProperties {
         this.sms = sms;
     }
 
+    /**
+     * 邮件发送配置，对应配置项 litemall.notify.mail.*
+     */
     public static class Mail {
+        /** 是否启用邮件通知 */
         private boolean enable;
+        /** SMTP 服务器地址 */
         private String host;
+        /** SMTP 登录用户名 */
         private String username;
+        /** SMTP 登录密码 */
         private String password;
+        /** 发件人地址 */
         private String sendfrom;
+        /** 收件人地址 */
         private String sendto;
+        /** SMTP 端口 */
         private Integer port;
         public boolean isEnable() {
             return enable;
@@ -92,12 +109,21 @@ public class NotifyProperties {
         }
     }
 
+    /**
+     * 短信发送配置，对应配置项 litemall.notify.sms.*
+     */
     public static class Sms {
+        /** 是否启用短信通知 */
         private boolean enable;
+        /** 当前生效的短信渠道，取值 tencent 或 aliyun */
         private String active;
+        /** 短信签名 */
         private String sign;
+        /** 腾讯云短信配置 */
         private Tencent tencent;
+        /** 阿里云短信配置 */
         private Aliyun aliyun;
+        /** 短信模板列表，元素为 {name -> templateId} 的映射 */
         private List<Map<String, String>> template = new ArrayList<>();
 
         public boolean isEnable() {
@@ -148,8 +174,13 @@ public class NotifyProperties {
             this.aliyun = aliyun;
         }
 
+        /**
+         * 腾讯云短信配置
+         */
         public static class Tencent {
+            /** 腾讯云短信应用 ID */
             private int appid;
+            /** 腾讯云短信应用密钥 */
             private String appkey;
 
             public int getAppid() {
@@ -169,9 +200,15 @@ public class NotifyProperties {
             }
         }
 
+        /**
+         * 阿里云短信配置
+         */
         public static class Aliyun {
+            /** 阿里云区域 ID，如 cn-hangzhou */
             private String regionId;
+            /** 阿里云 AccessKey ID */
             private String accessKeyId;
+            /** 阿里云 AccessKey Secret */
             private String accessKeySecret;
 
             public String getRegionId() {

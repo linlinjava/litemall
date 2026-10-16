@@ -18,16 +18,33 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 
+/**
+ * 小程序二维码 / 分享图生成服务。
+ *
+ * <p>生成小程序码，并将商品图片、商品名称绘制到分享图中，
+ * 最终保存到存储服务并返回可访问的图片 URL。
+ */
 @Service
 public class QCodeService {
+    /** 日志 */
     private final Log logger = LogFactory.getLog(QCodeService.class);
+    /** 微信小程序服务 */
     @Autowired
     WxMaService wxMaService;
 
+    /** 存储服务 */
     @Autowired
     private StorageService storageService;
 
 
+    /**
+     * 创建拼团分享图
+     *
+     * @param goodName   商品名称
+     * @param goodPicUrl 商品图片地址
+     * @param groupon    拼团信息，用于生成带 groupon 参数的二维码
+     * @return 分享图 URL；生成失败时返回空字符串
+     */
     public String createGrouponShareImage(String goodName, String goodPicUrl, LitemallGroupon groupon) {
         try {
             //创建该商品的二维码
@@ -57,9 +74,10 @@ public class QCodeService {
     /**
      * 创建商品分享图
      *
-     * @param goodId
-     * @param goodPicUrl
-     * @param goodName
+     * @param goodId     商品 ID，用于生成带 goods 参数的二维码
+     * @param goodPicUrl 商品图片地址
+     * @param goodName   商品名称
+     * @return 分享图 URL；未开启自动生成或生成失败时返回空字符串
      */
     public String createGoodShareImage(String goodId, String goodPicUrl, String goodName) {
         if (!SystemConfig.isAutoCreateShareImage())
@@ -88,6 +106,12 @@ public class QCodeService {
         return "";
     }
 
+    /**
+     * 生成分享图在存储服务中的对象键名
+     *
+     * @param goodId 商品/拼团 ID
+     * @return 存储对象键名，如 GOOD_QCODE_123.jpg
+     */
     private String getKeyName(String goodId) {
         return "GOOD_QCODE_" + goodId + ".jpg";
     }
@@ -98,8 +122,8 @@ public class QCodeService {
      * @param qrCodeImg  二维码图片
      * @param goodPicUrl 商品图片地址
      * @param goodName   商品名称
-     * @return
-     * @throws IOException
+     * @return 合成的 JPG 图片字节数组
+     * @throws IOException 图片读取失败时抛出
      */
     private byte[] drawPicture(InputStream qrCodeImg, String goodPicUrl, String goodName) throws IOException {
         //底图
@@ -131,10 +155,6 @@ public class QCodeService {
         //写上商品名称
         drawTextInImg(baseImage, goodName, 65, 867);
 
-        //写上商城名称
-        //        drawTextInImgCenter(baseImage, shopName, 98);
-
-
         //转jpg
         BufferedImage result = new BufferedImage(baseImage.getWidth(), baseImage
                 .getHeight(), BufferedImage.TYPE_3BYTE_BGR);
@@ -146,27 +166,14 @@ public class QCodeService {
         return bs.toByteArray();
     }
 
-    private void drawTextInImgCenter(BufferedImage baseImage, String textToWrite, int y) {
-        Graphics2D g2D = (Graphics2D) baseImage.getGraphics();
-        g2D.setColor(new Color(167, 136, 69));
-
-        String fontName = "Microsoft YaHei";
-
-        Font f = new Font(fontName, Font.PLAIN, 28);
-        g2D.setFont(f);
-        g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // 计算文字长度，计算居中的x点坐标
-        FontMetrics fm = g2D.getFontMetrics(f);
-        int textWidth = fm.stringWidth(textToWrite);
-        int widthX = (baseImage.getWidth() - textWidth) / 2;
-        // 表示这段文字在图片上的位置(x,y) .第一个是你设置的内容。
-
-        g2D.drawString(textToWrite, widthX, y);
-        // 释放对象
-        g2D.dispose();
-    }
-
+    /**
+     * 在图片上绘制文本
+     *
+     * @param baseImage   目标画布
+     * @param textToWrite 要绘制的文本
+     * @param x           文本左上角 x 坐标
+     * @param y           文本左上角 y 坐标
+     */
     private void drawTextInImg(BufferedImage baseImage, String textToWrite, int x, int y) {
         Graphics2D g2D = (Graphics2D) baseImage.getGraphics();
         g2D.setColor(new Color(167, 136, 69));
@@ -179,6 +186,16 @@ public class QCodeService {
         g2D.dispose();
     }
 
+    /**
+     * 将一张图片绘制到目标画布的指定区域
+     *
+     * @param baseImage    目标画布
+     * @param imageToWrite 待绘制的源图片
+     * @param x            绘制区域左上角 x 坐标
+     * @param y            绘制区域左上角 y 坐标
+     * @param width        绘制区域宽度
+     * @param heigth       绘制区域高度
+     */
     private void drawImgInImg(BufferedImage baseImage, BufferedImage imageToWrite, int x, int y, int width,
                               int heigth) {
         Graphics2D g2D = (Graphics2D) baseImage.getGraphics();
