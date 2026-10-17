@@ -5,7 +5,7 @@ import org.linlinjava.litemall.db.domain.LitemallOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * 订单流程：下单成功－》支付订单－》发货－》收货
  * 订单状态：
  * 101 订单生成，未支付；102，下单未支付用户取消；103，下单未支付超期系统自动取消
@@ -18,20 +18,40 @@ import java.util.List;
  * 当301商家已发货时，此时用户可以有确认收货
  * 当401用户确认收货以后，此时用户可以进行的操作是退货、删除、去评价或者再次购买
  * 当402系统自动确认收货以后，此时用户可以删除、去评价、或者再次购买
+ *
+ * @author lvweihao0403
+ * @since 1.0.0
  */
 public class OrderUtil {
 
+    /** 101 订单已生成、未支付；用户可付款或取消，超时后由系统置为 103 */
     public static final Short STATUS_CREATE = 101;
+    /** 201 支付完成、商家未发货；此时用户可申请退款（202） */
     public static final Short STATUS_PAY = 201;
+    /** 301 商家已发货、用户未收货；用户可确认收货（401），超时由系统置为 402 */
     public static final Short STATUS_SHIP = 301;
+    /** 401 用户确认收货，订单正常结束 */
     public static final Short STATUS_CONFIRM = 401;
+    /** 102 下单后用户主动取消 */
     public static final Short STATUS_CANCEL = 102;
+    /** 103 下单后超时未支付，系统自动取消 */
     public static final Short STATUS_AUTO_CANCEL = 103;
+    /** 104 管理员取消订单 */
     public static final Short STATUS_ADMIN_CANCEL = 104;
+    /** 202 已付款未发货，用户申请退款，等待处理 */
     public static final Short STATUS_REFUND = 202;
+    /** 203 退款已确认成功，订单可删除 */
     public static final Short STATUS_REFUND_CONFIRM = 203;
+    /** 402 发货后超时未确认收货，系统自动确认，订单结束 */
     public static final Short STATUS_AUTO_CONFIRM = 402;
 
+    /**
+     * 把订单状态码转换为中文文案，供后台列表与前端展示。
+     *
+     * @param order 订单实体，orderStatus 不能为空
+     * @return 状态中文文案
+     * @throws IllegalStateException 状态码不在已知范围内时抛出
+     */
     public static String orderStatusText(LitemallOrder order) {
         int status = order.getOrderStatus().intValue();
 
@@ -79,6 +99,14 @@ public class OrderUtil {
     }
 
 
+    /**
+     * 根据订单当前状态计算可用操作（支付、取消、退款、收货、评价等），
+     * 前端据此决定按钮的显示与置灰。
+     *
+     * @param order 订单实体
+     * @return 操作开关集合
+     * @throws IllegalStateException 状态码未知时抛出
+     */
     public static OrderHandleOption build(LitemallOrder order) {
         int status = order.getOrderStatus().intValue();
         OrderHandleOption handleOption = new OrderHandleOption();
@@ -115,6 +143,12 @@ public class OrderUtil {
         return handleOption;
     }
 
+    /**
+     * 把前台页签类型转换为订单状态码集合。
+     *
+     * @param showType 0 全部、1 待付款、2 待发货、3 待收货、4 待评价
+     * @return 状态码集合；0 与未知类型返回 null，表示不限状态
+     */
     public static List<Short> orderStatus(Integer showType) {
         // 全部订单
         if (showType == 0) {
@@ -133,10 +167,9 @@ public class OrderUtil {
             // 待收货订单
             status.add((short) 301);
         } else if (showType.equals(4)) {
-            // 待评价订单
+            // 待评价订单：仅 401 用户确认收货；
+            // 402 系统超时自动确认收货的订单不进入待评价列表（业务上不支持评价）
             status.add((short) 401);
-//            系统超时自动取消，此时应该不支持评价
-//            status.add((short)402);
         } else {
             return null;
         }
