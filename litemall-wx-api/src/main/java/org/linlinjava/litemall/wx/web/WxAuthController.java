@@ -36,7 +36,10 @@ import java.util.Map;
 import static org.linlinjava.litemall.wx.util.WxResponseCode.*;
 
 /**
- * 鉴权服务
+ * 微信小程序用户认证与账户管理控制器。
+ * <p>
+ * 提供账号登录、微信登录、注册、验证码申请、密码重置、
+ * 手机号绑定及个人资料维护等接口。
  */
 @RestController
 @RequestMapping("/wx/auth")
@@ -175,13 +178,13 @@ public class WxAuthController {
 
 
     /**
-     * 请求注册验证码
+     * 请求发送用户注册短信验证码。
      *
-     * TODO
-     * 这里需要一定机制防止短信验证码被滥用
+     * @param body 包含手机号 mobile 的请求体
+     * @return 请求处理结果；手机号为空或格式不正确时返回参数错误，
+     *         短信服务未启用或请求过于频繁时返回相应错误提示
      *
-     * @param body 手机号码 { mobile }
-     * @return
+     * TODO：增加验证码请求频率限制等机制，防止短信验证码被滥用。
      */
     @PostMapping("regCaptcha")
     public Object registerCaptcha(@RequestBody String body) {
@@ -325,13 +328,14 @@ public class WxAuthController {
     }
 
     /**
-     * 请求验证码
+     * 请求发送指定手机号的短信验证码。
      *
-     * TODO
-     * 这里需要一定机制防止短信验证码被滥用
+     * @param userId 当前登录用户的用户 ID，由登录用户参数解析器注入
+     * @param body 包含手机号 mobile 和验证码类型 type 的请求体
+     * @return 请求处理结果；用户未登录、参数缺失或手机号格式错误时返回相应提示，
+     *         短信服务未启用或请求过于频繁时返回相应错误提示
      *
-     * @param body 手机号码 { mobile: xxx, type: xxx }
-     * @return
+     * TODO：增加验证码请求频率限制等机制，防止短信验证码被滥用。
      */
     @PostMapping("captcha")
     public Object captcha(@LoginUser Integer userId, @RequestBody String body) {
@@ -510,11 +514,11 @@ public class WxAuthController {
     }
 
     /**
-     * 微信手机号码绑定
+     * 绑定当前登录用户的微信手机号。
      *
-     * @param userId
-     * @param body
-     * @return
+     * @param userId 当前登录用户的用户 ID，由登录用户参数解析器注入
+     * @param body 包含微信手机号加密数据 encryptedData 和初始向量 iv 的请求体
+     * @return 绑定结果；用户未登录时返回未登录提示，更新失败时返回更新失败提示
      */
     @PostMapping("bindPhone")
     public Object bindPhone(@LoginUser Integer userId, @RequestBody String body) {
@@ -532,7 +536,12 @@ public class WxAuthController {
         }
         return ResponseUtil.ok();
     }
-
+    /**
+     * 处理当前用户的退出登录请求。
+     *
+     * @param userId 当前登录用户的用户 ID，由登录用户参数解析器注入
+     * @return 退出登录处理结果；用户未登录时返回未登录提示
+     */
     @PostMapping("logout")
     public Object logout(@LoginUser Integer userId) {
         if (userId == null) {
@@ -540,7 +549,12 @@ public class WxAuthController {
         }
         return ResponseUtil.ok();
     }
-
+    /**
+     * 查询当前登录用户的基本资料。
+     *
+     * @param userId 当前登录用户的用户 ID，由登录用户参数解析器注入
+     * @return 用户昵称、头像、性别和手机号；用户未登录时返回未登录提示
+     */
     @GetMapping("info")
     public Object info(@LoginUser Integer userId) {
         if (userId == null) {

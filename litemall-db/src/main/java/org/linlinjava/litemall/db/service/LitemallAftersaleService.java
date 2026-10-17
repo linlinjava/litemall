@@ -89,7 +89,16 @@ public class LitemallAftersaleService {
         return (int) aftersaleMapper.countByExample(example);
     }
 
-    // TODO 这里应该产生一个唯一的编号，但是实际上这里仍然存在两个售后编号相同的可能性
+    /**
+     * 生成售后编号：yyyyMMdd + 6 位随机数字。
+     *
+     * <p>已知风险：编号生成后只做一次查重，并发申请时仍可能重复，
+     * 且 litemall_aftersale.aftersale_sn 没有唯一索引兜底；
+     * 后续应改为“日期 + 自增序列”等强唯一方案（原 TODO 已转入本注释）。
+     *
+     * @param userId 申请售后的用户 ID，用于限定查重范围
+     * @return 售后编号，形如 20261017004217
+     */
     public String generateAftersaleSn(Integer userId) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
         String now = df.format(LocalDate.now());

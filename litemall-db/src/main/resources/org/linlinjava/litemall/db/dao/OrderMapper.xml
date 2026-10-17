@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.linlinjava.litemall.db.dao.OrderMapper">
+    <!--
+      乐观锁更新：以读取时的 update_time 作为版本号。
+      调用方先查出订单（拿到 updateTime），再做业务校验，然后调用本语句；
+      若期间有其它事务修改过该订单，where 条件不成立，影响行数为 0，
+      业务层据此判断并发冲突并提示用户重试，避免后写覆盖先写。
+    -->
     <update id="updateWithOptimisticLocker" parameterType="map">
         update litemall_order
         <set>
@@ -98,9 +104,18 @@
                 deleted = #{order.deleted,jdbcType=BIT},
             </if>
         </set>
+        <!-- 注意：update_time 列是 datetime，此处 jdbcType 标为 INTEGER 与列定义不一致，
+             本次仅补充说明、不改 SQL，后续维护时需核对类型映射是否需要修正 -->
         where id = #{order.id,jdbcType=INTEGER} and update_time = #{lastUpdateTime,jdbcType=INTEGER}
     </update>
 
+    <!--
+      后台订单列表分两步查：
+      1) getOrderIds 只查订单 id，join 用户表与商品表做筛选，交给 PageHelper 分页；
+      2) getOrderList 用这批 id 一次性取完整订单与商品明细，供 OrderVo 组装。
+      这样做的原因：订单与订单商品是一对多，若直接对明细行分页，
+      一页里的订单条数会随商品件数波动，与前端期望的“每页 N 条订单”不一致。
+    -->
     <select id="getOrderIds" resultType="hashmap">
         select o.id, o.add_time
         from litemall_order o
@@ -109,6 +124,8 @@
         left join litemall_order_goods og
         on o.id = og.order_id
         <where>
+            <!-- query 由 Service 层拼装（含 nickname、orderSn 等请求参数），
+                 此处用 ${} 原样替换而非 #{} 预编译，存在 SQL 注入风险 -->
             <if test="query != null">
                 ${query}
             </if>
@@ -149,6 +166,7 @@
             <result column="goods_price" property="price"/>
         </collection>
     </resultMap>
+    <!-- 第二段：按 id 集合取回订单主表 + 用户昵称 + 商品明细，结果映射到 OrderVo -->
     <select id="getOrderList" resultMap="orderList">
         select o.id, o.order_sn, o.order_status, o.actual_price, o.freight_price, o.add_time, o.message,
         o.consignee, o.address, o.mobile, o.pay_time, o.order_price, o.ship_channel, o.ship_sn,
