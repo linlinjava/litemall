@@ -22,12 +22,20 @@ public class CouponVerifyService {
     private LitemallGoodsService goodsService;
 
     /**
-     * 检测优惠券是否适合
+     * 校验优惠券对当前订单是否可用，可用则返回券信息，否则返回 null。
      *
-     * @param userId
-     * @param couponId
-     * @param checkedGoodsPrice
-     * @return
+     * <p>依次校验：券是否存在且未删除、归属是否正确、是否过期、
+     * 商品或分类是否符合适用范围、券本身是否启用、是否达到最低消费。
+     * 任何一步不通过都返回 null，不区分具体原因，调用方无法据此给出差异化提示；
+     * 若需要精确提示，应在调用方分段校验。
+     *
+     * @param userId            下单用户 ID
+     * @param couponId          优惠券模板 ID（litemall_coupon.id）
+     * @param userCouponId      用户已领取的券记录 ID（litemall_coupon_user.id），可为 null，
+     *                          为 null 时按 userId + couponId 查询一条可用记录
+     * @param checkedGoodsPrice 购物车中参与结算的商品总价（已扣除不可用券商品）
+     * @param cartList          本次结算的购物车明细，用于计算适用范围与满减门槛
+     * @return 可用的优惠券实体；不可用时返回 null
      */
     public LitemallCoupon checkCoupon(Integer userId, Integer couponId, Integer userCouponId, BigDecimal checkedGoodsPrice, List<LitemallCart> cartList) {
         LitemallCoupon coupon = couponService.findById(couponId);
